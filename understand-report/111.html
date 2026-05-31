@@ -1,0 +1,146 @@
+<html><head><title>Bph.h</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="sourcestyles.css" />
+</head><body link="blue" vlink="blue">
+<h3>File: D:\Watch\TimeGrapher\Bph.h</h3>
+<SCRIPT>
+defaultStatus = "File: D:\\Watch\\TimeGrapher\\Bph.h";
+top.document.title  = "Bph.h";
+</SCRIPT>
+<pre><span class="default"></span><a name="1"><font size=-1>1     </font></a><span class="default"></span><span class="comment">/* Bph.h - BPH lists, phase-score auto-detection, and sync state.</span>
+<a name="2"><font size=-1>2     </font></a><span class="comment"> *</span>
+<a name="3"><font size=-1>3     </font></a><span class="comment"> * Three concerns covered by this header:</span>
+<a name="4"><font size=-1>4     </font></a><span class="comment"> *</span>
+<a name="5"><font size=-1>5     </font></a><span class="comment"> *   1. Candidate BPH lists. TG_AUTO_BPH_LIST is the small set used by</span>
+<a name="6"><font size=-1>6     </font></a><span class="comment"> *      auto-detection (the BPHs we'll actually try to lock onto);</span>
+<a name="7"><font size=-1>7     </font></a><span class="comment"> *      TG_MANUAL_BPH_LIST is the wider set the host UI shows for</span>
+<a name="8"><font size=-1>8     </font></a><span class="comment"> *      user-driven manual selection (covers many antique rates).</span>
+<a name="9"><font size=-1>9     </font></a><span class="comment"> *</span>
+<a name="10"><font size=-1>10     </font></a><span class="comment"> *   2. Phase-score period detection. tg_phase_score computes the</span>
+<a name="11"><font size=-1>11     </font></a><span class="comment"> *      magnitude of the Rayleigh circular mean of (event_time mod T)</span>
+<a name="12"><font size=-1>12     </font></a><span class="comment"> *      for a candidate period T, returning a 0..1 measure of phase</span>
+<a name="13"><font size=-1>13     </font></a><span class="comment"> *      alignment. tg_bph_pick_by_phase sweeps the candidate list and</span>
+<a name="14"><font size=-1>14     </font></a><span class="comment"> *      picks the best-scoring period, returning 0 if no candidate</span>
+<a name="15"><font size=-1>15     </font></a><span class="comment"> *      crosses the lock threshold.</span>
+<a name="16"><font size=-1>16     </font></a><span class="comment"> *</span>
+<a name="17"><font size=-1>17     </font></a><span class="comment"> *      V5.3 fix: tg_phase_score returns R1 (first harmonic) only.</span>
+<a name="18"><font size=-1>18     </font></a><span class="comment"> *      Earlier versions returned R1+R2 which caused half-period</span>
+<a name="19"><font size=-1>19     </font></a><span class="comment"> *      mis-detection on signals where pre-sync events came in pairs</span>
+<a name="20"><font size=-1>20     </font></a><span class="comment"> *      (the second harmonic doubled the score for half-period</span>
+<a name="21"><font size=-1>21     </font></a><span class="comment"> *      candidates). See Bph.cpp and docs/design.md sec 4 for the</span>
+<a name="22"><font size=-1>22     </font></a><span class="comment"> *      full discussion.</span>
+<a name="23"><font size=-1>23     </font></a><span class="comment"> *</span>
+<a name="24"><font size=-1>24     </font></a><span class="comment"> *   3. tg_sync_t -- a small PLL-ish tracker that, once a BPH is</span>
+<a name="25"><font size=-1>25     </font></a><span class="comment"> *      picked, predicts when each next A and C should arrive based</span>
+<a name="26"><font size=-1>26     </font></a><span class="comment"> *      on the locked beat period and within-beat A-&gt;C offset. Each</span>
+<a name="27"><font size=-1>27     </font></a><span class="comment"> *      incoming event is matched against the prediction window;</span>
+<a name="28"><font size=-1>28     </font></a><span class="comment"> *      misses are counted, and after max_misses consecutive misses</span>
+<a name="29"><font size=-1>29     </font></a><span class="comment"> *      sync is declared lost. Both the period and the A-&gt;C offset</span>
+<a name="30"><font size=-1>30     </font></a><span class="comment"> *      adapt slowly (PLL-style) to track real drift over the life</span>
+<a name="31"><font size=-1>31     </font></a><span class="comment"> *      of the recording.</span>
+<a name="32"><font size=-1>32     </font></a><span class="comment"> *</span>
+<a name="33"><font size=-1>33     </font></a><span class="comment"> * V5.5: file renamed from bph.h to Bph.h and used by Bph.cpp;</span>
+<a name="34"><font size=-1>34     </font></a><span class="comment"> * compiles under C++17. extern &quot;C&quot; in Timegrapher.h keeps the public</span>
+<a name="35"><font size=-1>35     </font></a><span class="comment"> * symbols ABI-stable for non-C++ callers. */</span>
+<a name="36"><font size=-1>36     </font></a><span class="comment"></span><span class="preproc">#ifndef <a href="dictionary_T.html#2474">TG_BPH_H</a></span>
+<a name="37"><font size=-1>37     </font></a><span class="preproc">#define <a href="dictionary_T.html#2474">TG_BPH_H</a></span>
+<a name="38"><font size=-1>38     </font></a><span class="preproc"></span>
+<a name="39"><font size=-1>39     </font></a><span class="preproc">#include </span><span class="string">&lt;stddef.h&gt;</span>
+<a name="40"><font size=-1>40     </font></a><span class="string"></span><span class="preproc">#include </span><span class="string">&lt;stdint.h&gt;</span>
+<a name="41"><font size=-1>41     </font></a><span class="string"></span><span class="preproc">#include </span><span class="string">&quot;Detector.h&quot;</span>
+<a name="42"><font size=-1>42     </font></a><span class="string"></span><span class="preproc">#include </span><span class="string">&quot;Timegrapher.h&quot;</span>
+<a name="43"><font size=-1>43     </font></a><span class="string"></span>
+<a name="44"><font size=-1>44     </font></a><span class="string"></span><span class="comment">/* Auto-detect BPH list (common rates: 12000, 14400, 18000, 19800, 21600,</span>
+<a name="45"><font size=-1>45     </font></a><span class="comment"> * 25200, 28800, 36000, 43200). */</span>
+<a name="46"><font size=-1>46     </font></a><span class="comment"></span><span class="keyword">extern const int    <a href="dictionary_T.html#113">TG_AUTO_BPH_LIST</a></span><span class="default">[];</span>
+<a name="47"><font size=-1>47     </font></a><span class="default"></span><span class="keyword">extern const </span><span class="default">size_t <a href="dictionary_T.html#112">TG_AUTO_BPH_COUNT</a>;</span>
+<a name="48"><font size=-1>48     </font></a><span class="default"></span>
+<a name="49"><font size=-1>49     </font></a><span class="default"></span><span class="comment">/* Manual-mode BPH list (covers a wider range of antique rates). */</span>
+<a name="50"><font size=-1>50     </font></a><span class="comment"></span><span class="keyword">extern const int    <a href="dictionary_T.html#1330">TG_MANUAL_BPH_LIST</a></span><span class="default">[];</span>
+<a name="51"><font size=-1>51     </font></a><span class="default"></span><span class="keyword">extern const </span><span class="default">size_t <a href="dictionary_T.html#1329">TG_MANUAL_BPH_COUNT</a>;</span>
+<a name="52"><font size=-1>52     </font></a><span class="default"></span>
+<a name="53"><font size=-1>53     </font></a><span class="default"></span><span class="comment">/* Returns 1 if bph is in the manual list, 0 otherwise. */</span>
+<a name="54"><font size=-1>54     </font></a><span class="comment"></span><span class="keyword">int <a href="dictionary_T.html#121">tg_is_valid_manual_bph</a></span><span class="default">(</span><span class="keyword">int <a href="dictionary_B.html#122">bph</a></span><span class="default">);</span>
+<a name="55"><font size=-1>55     </font></a><span class="default"></span><span class="comment">/* Returns the closest BPH from list[] within tolerance_pct of candidate_bph,</span>
+<a name="56"><font size=-1>56     </font></a><span class="comment"> * or 0 if nothing matches. */</span>
+<a name="57"><font size=-1>57     </font></a><span class="comment"></span><span class="keyword">int <a href="dictionary_T.html#1336">tg_bph_match</a></span><span class="default">(</span><span class="keyword">double <a href="dictionary_C.html#1339">candidate_bph</a></span><span class="default">,</span>
+<a name="58"><font size=-1>58     </font></a><span class="default">                 </span><span class="keyword">const int </span><span class="default">*<a href="dictionary_L.html#1342">list</a>, size_t <a href="dictionary_L.html#1343">list_len</a>,</span>
+<a name="59"><font size=-1>59     </font></a><span class="default">                 </span><span class="keyword">double <a href="dictionary_T.html#1344">tolerance_pct</a></span><span class="default">);</span>
+<a name="60"><font size=-1>60     </font></a><span class="default"></span>
+<a name="61"><font size=-1>61     </font></a><span class="default"></span><span class="comment">/* Estimate beat period (seconds) from a sequence of event times.</span>
+<a name="62"><font size=-1>62     </font></a><span class="comment"> * Uses median of t[i+2] - t[i] which equals one full beat period when</span>
+<a name="63"><font size=-1>63     </font></a><span class="comment"> * events alternate A,C,A,C,...</span>
+<a name="64"><font size=-1>64     </font></a><span class="comment"> * Returns 0.0 if not enough events. */</span>
+<a name="65"><font size=-1>65     </font></a><span class="comment"></span><span class="keyword">double <a href="dictionary_T.html#1361">tg_estimate_beat_period</a></span><span class="default">(</span><span class="keyword">const double </span><span class="default">*<a href="dictionary_E.html#1363">event_times</a>, size_t <a href="dictionary_N.html#1367">n</a>);</span>
+<a name="66"><font size=-1>66     </font></a><span class="default"></span>
+<a name="67"><font size=-1>67     </font></a><span class="default"></span><span class="comment">/* Score how well event times fit a candidate beat period using the 1st and</span>
+<a name="68"><font size=-1>68     </font></a><span class="comment"> * 2nd-harmonic Rayleigh statistics on the phase histogram (events folded</span>
+<a name="69"><font size=-1>69     </font></a><span class="comment"> * mod T). Returns 0..2; &gt; ~0.7 indicates a real fit. Robust to missed</span>
+<a name="70"><font size=-1>70     </font></a><span class="comment"> * events because each event contributes independently. */</span>
+<a name="71"><font size=-1>71     </font></a><span class="comment"></span><span class="keyword">double <a href="dictionary_T.html#123">tg_phase_score</a></span><span class="default">(</span><span class="keyword">const double </span><span class="default">*<a href="dictionary_E.html#124">event_times</a>, size_t <a href="dictionary_N.html#125">n</a>, </span><span class="keyword">double <a href="dictionary_P.html#126">period</a></span><span class="default">);</span>
+<a name="72"><font size=-1>72     </font></a><span class="default"></span>
+<a name="73"><font size=-1>73     </font></a><span class="default"></span><span class="comment">/* From a list of candidate BPH values, pick the one whose period maximizes</span>
+<a name="74"><font size=-1>74     </font></a><span class="comment"> * the phase score on the events. Returns 0 if best score below threshold or</span>
+<a name="75"><font size=-1>75     </font></a><span class="comment"> * not enough events. min_score recommended ~0.7. */</span>
+<a name="76"><font size=-1>76     </font></a><span class="comment"></span><span class="keyword">int <a href="dictionary_T.html#114">tg_bph_pick_by_phase</a></span><span class="default">(</span><span class="keyword">const double </span><span class="default">*<a href="dictionary_E.html#115">event_times</a>, size_t <a href="dictionary_N.html#118">n</a>,</span>
+<a name="77"><font size=-1>77     </font></a><span class="default">                         </span><span class="keyword">const int </span><span class="default">*<a href="dictionary_L.html#116">list</a>, size_t <a href="dictionary_L.html#117">list_len</a>,</span>
+<a name="78"><font size=-1>78     </font></a><span class="default">                         </span><span class="keyword">double <a href="dictionary_M.html#1357">min_score</a></span><span class="default">,</span>
+<a name="79"><font size=-1>79     </font></a><span class="default">                         </span><span class="keyword">double </span><span class="default">*<a href="dictionary_O.html#120">out_score</a>,</span>
+<a name="80"><font size=-1>80     </font></a><span class="default">                         </span><span class="keyword">double </span><span class="default">*<a href="dictionary_O.html#119">out_period</a>);</span>
+<a name="81"><font size=-1>81     </font></a><span class="default"></span>
+<a name="82"><font size=-1>82     </font></a><span class="default"></span><span class="comment">/* Sync state tracker. Tracks expected next event time using the current beat</span>
+<a name="83"><font size=-1>83     </font></a><span class="comment"> * period and within-beat A-C offset. */</span>
+<a name="84"><font size=-1>84     </font></a><span class="comment"></span><span class="keyword">typedef struct </span><span class="default">{</span>
+<a name="85"><font size=-1>85     </font></a><span class="default">    </span><span class="keyword">int      <a href="dictionary_T.html#1323">bph</a></span><span class="default">;             </span><span class="comment">/* current locked BPH                         */</span>
+<a name="86"><font size=-1>86     </font></a><span class="comment">    </span><span class="keyword">double   <a href="dictionary_T.html#1322">beat_period</a></span><span class="default">;     </span><span class="comment">/* seconds                                    */</span>
+<a name="87"><font size=-1>87     </font></a><span class="comment">    </span><span class="keyword">double   <a href="dictionary_T.html#1321">ac_offset</a></span><span class="default">;       </span><span class="comment">/* mean A-&gt;C delta (seconds)                  */</span>
+<a name="88"><font size=-1>88     </font></a><span class="comment"></span>
+<a name="89"><font size=-1>89     </font></a><span class="comment">    /* PLL-ish tracking */</span>
+<a name="90"><font size=-1>90     </font></a><span class="comment">    </span><span class="keyword">double   <a href="dictionary_T.html#142">next_a_time</a></span><span class="default">;     </span><span class="comment">/* predicted absolute time of next A          */</span>
+<a name="91"><font size=-1>91     </font></a><span class="comment">    </span><span class="keyword">int      <a href="dictionary_T.html#143">synced</a></span><span class="default">;</span>
+<a name="92"><font size=-1>92     </font></a><span class="default">    </span><span class="keyword">int      <a href="dictionary_T.html#1324">consecutive_misses</a></span><span class="default">;</span>
+<a name="93"><font size=-1>93     </font></a><span class="default"></span>
+<a name="94"><font size=-1>94     </font></a><span class="default">    </span><span class="comment">/* tolerance */</span>
+<a name="95"><font size=-1>95     </font></a><span class="comment">    </span><span class="keyword">double   <a href="dictionary_T.html#1328">tolerance_s</a></span><span class="default">;     </span><span class="comment">/* +/- around predicted event                 */</span>
+<a name="96"><font size=-1>96     </font></a><span class="comment">    </span><span class="keyword">int      <a href="dictionary_T.html#1326">max_misses</a></span><span class="default">;</span>
+<a name="97"><font size=-1>97     </font></a><span class="default"></span>
+<a name="98"><font size=-1>98     </font></a><span class="default">    </span><span class="comment">/* PLL gains */</span>
+<a name="99"><font size=-1>99     </font></a><span class="comment">    </span><span class="keyword">double   <a href="dictionary_T.html#1327">period_gain</a></span><span class="default">;     </span><span class="comment">/* default 0.01                               */</span>
+<a name="100"><font size=-1>100     </font></a><span class="comment">    </span><span class="keyword">double   <a href="dictionary_T.html#1320">ac_gain</a></span><span class="default">;         </span><span class="comment">/* default 0.05                               */</span>
+<a name="101"><font size=-1>101     </font></a><span class="comment"></span>
+<a name="102"><font size=-1>102     </font></a><span class="comment">    /* timestamp of the most recent matched event - used for time-based</span>
+<a name="103"><font size=-1>103     </font></a><span class="comment">     * sync loss (if current stream time advances far beyond this + miss</span>
+<a name="104"><font size=-1>104     </font></a><span class="comment">     * budget * beat_period, declare loss). */</span>
+<a name="105"><font size=-1>105     </font></a><span class="comment">    </span><span class="keyword">double   <a href="dictionary_T.html#1325">last_match_time</a></span><span class="default">;</span>
+<a name="106"><font size=-1>106     </font></a><span class="default">} <a href="dictionary_T.html#141">tg_sync_t</a>;</span>
+<a name="107"><font size=-1>107     </font></a><span class="default"></span>
+<a name="108"><font size=-1>108     </font></a><span class="default"></span><span class="keyword">void <a href="dictionary_T.html#127">tg_sync_init</a>  </span><span class="default">(<a href="dictionary_T.html#141">tg_sync_t</a> *<a href="dictionary_S.html#128">s</a>);</span>
+<a name="109"><font size=-1>109     </font></a><span class="default"></span><span class="keyword">void <a href="dictionary_T.html#139">tg_sync_reset</a> </span><span class="default">(<a href="dictionary_T.html#141">tg_sync_t</a> *<a href="dictionary_S.html#140">s</a>);</span>
+<a name="110"><font size=-1>110     </font></a><span class="default"></span>
+<a name="111"><font size=-1>111     </font></a><span class="default"></span><span class="comment">/* Set the lock parameters once BPH is known. */</span>
+<a name="112"><font size=-1>112     </font></a><span class="comment"></span><span class="keyword">void <a href="dictionary_T.html#129">tg_sync_lock</a>  </span><span class="default">(<a href="dictionary_T.html#141">tg_sync_t</a> *<a href="dictionary_S.html#137">s</a>,</span>
+<a name="113"><font size=-1>113     </font></a><span class="default">                    </span><span class="keyword">int <a href="dictionary_B.html#133">bph</a></span><span class="default">,</span>
+<a name="114"><font size=-1>114     </font></a><span class="default">                    </span><span class="keyword">double <a href="dictionary_B.html#132">beat_period</a></span><span class="default">,</span>
+<a name="115"><font size=-1>115     </font></a><span class="default">                    </span><span class="keyword">double <a href="dictionary_A.html#131">ac_offset</a></span><span class="default">,</span>
+<a name="116"><font size=-1>116     </font></a><span class="default">                    </span><span class="keyword">double <a href="dictionary_F.html#134">first_a_time</a></span><span class="default">,</span>
+<a name="117"><font size=-1>117     </font></a><span class="default">                    </span><span class="keyword">double <a href="dictionary_T.html#138">tolerance_s</a></span><span class="default">,</span>
+<a name="118"><font size=-1>118     </font></a><span class="default">                    </span><span class="keyword">int    <a href="dictionary_M.html#135">max_misses</a></span><span class="default">,</span>
+<a name="119"><font size=-1>119     </font></a><span class="default">                    </span><span class="keyword">double <a href="dictionary_P.html#136">period_gain</a></span><span class="default">,</span>
+<a name="120"><font size=-1>120     </font></a><span class="default">                    </span><span class="keyword">double <a href="dictionary_A.html#130">ac_gain</a></span><span class="default">);</span>
+<a name="121"><font size=-1>121     </font></a><span class="default"></span>
+<a name="122"><font size=-1>122     </font></a><span class="default"></span><span class="comment">/* Feed a single event. Updates internal model.</span>
+<a name="123"><font size=-1>123     </font></a><span class="comment"> * Returns:</span>
+<a name="124"><font size=-1>124     </font></a><span class="comment"> *   1 if it matches the predicted A or C window (sync maintained)</span>
+<a name="125"><font size=-1>125     </font></a><span class="comment"> *   0 if it doesn't match (a miss)</span>
+<a name="126"><font size=-1>126     </font></a><span class="comment"> * If consecutive_misses &gt;= max_misses, sets synced=0; caller checks. */</span>
+<a name="127"><font size=-1>127     </font></a><span class="comment"></span><span class="keyword">int <a href="dictionary_T.html#144">tg_sync_update</a></span><span class="default">(<a href="dictionary_T.html#141">tg_sync_t</a> *<a href="dictionary_S.html#146">s</a>, </span><span class="keyword">double <a href="dictionary_E.html#145">event_time</a></span><span class="default">);</span>
+<a name="128"><font size=-1>128     </font></a><span class="default"></span>
+<a name="129"><font size=-1>129     </font></a><span class="default"></span><span class="comment">/* Check if the current stream time (latest processed sample time) is far</span>
+<a name="130"><font size=-1>130     </font></a><span class="comment"> * enough past last_match_time to declare sync loss. Call this each</span>
+<a name="131"><font size=-1>131     </font></a><span class="comment"> * tg_process() iteration after feeding all batch events. Returns 1 if it</span>
+<a name="132"><font size=-1>132     </font></a><span class="comment"> * cleared synced to 0, else 0. */</span>
+<a name="133"><font size=-1>133     </font></a><span class="comment"></span><span class="keyword">int <a href="dictionary_T.html#1375">tg_sync_check_timeout</a></span><span class="default">(<a href="dictionary_T.html#141">tg_sync_t</a> *<a href="dictionary_S.html#1376">s</a>, </span><span class="keyword">double <a href="dictionary_S.html#1377">stream_time</a></span><span class="default">);</span>
+<a name="134"><font size=-1>134     </font></a><span class="default"></span>
+<a name="135"><font size=-1>135     </font></a><span class="default"></span><span class="preproc">#endif</span>
+<a name="136"><font size=-1>136     </font></a><span class="preproc"></span>
+</pre></body></html>

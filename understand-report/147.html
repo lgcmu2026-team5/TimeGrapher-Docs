@@ -1,0 +1,344 @@
+<html><head><title>Detector.h</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="sourcestyles.css" />
+</head><body link="blue" vlink="blue">
+<h3>File: D:\Watch\TimeGrapher\Detector.h</h3>
+<SCRIPT>
+defaultStatus = "File: D:\\Watch\\TimeGrapher\\Detector.h";
+top.document.title  = "Detector.h";
+</SCRIPT>
+<pre><span class="default"></span><a name="1"><font size=-1>1     </font></a><span class="default"></span><span class="comment">/* Detector.h - silence-based onset detector.</span>
+<a name="2"><font size=-1>2     </font></a><span class="comment"> *</span>
+<a name="3"><font size=-1>3     </font></a><span class="comment"> * Segments the envelope into SILENCE and BURST regions and emits two</span>
+<a name="4"><font size=-1>4     </font></a><span class="comment"> * events per accepted burst:</span>
+<a name="5"><font size=-1>5     </font></a><span class="comment"> *</span>
+<a name="6"><font size=-1>6     </font></a><span class="comment"> *   A (is_onset = 1) : silence -&gt; signal threshold CROSSING.</span>
+<a name="7"><font size=-1>7     </font></a><span class="comment"> *       Sub-sample timing by linear interpolation between the two</span>
+<a name="8"><font size=-1>8     </font></a><span class="comment"> *       samples straddling the onset threshold. This is the moment</span>
+<a name="9"><font size=-1>9     </font></a><span class="comment"> *       the envelope first lifts above the ambient noise floor and</span>
+<a name="10"><font size=-1>10     </font></a><span class="comment"> *       corresponds to the escapement unlock.</span>
+<a name="11"><font size=-1>11     </font></a><span class="comment"> *</span>
+<a name="12"><font size=-1>12     </font></a><span class="comment"> *   C (is_onset = 0) : PEAK of the burst envelope.</span>
+<a name="13"><font size=-1>13     </font></a><span class="comment"> *       Sub-sample timing by parabolic interpolation across the max</span>
+<a name="14"><font size=-1>14     </font></a><span class="comment"> *       sample and its two neighbors. Corresponds to the escape</span>
+<a name="15"><font size=-1>15     </font></a><span class="comment"> *       wheel dropping onto the locking face (the loudest noise).</span>
+<a name="16"><font size=-1>16     </font></a><span class="comment"> *</span>
+<a name="17"><font size=-1>17     </font></a><span class="comment"> * Thresholds are scale-invariant and derived from two robust estimators:</span>
+<a name="18"><font size=-1>18     </font></a><span class="comment"> *</span>
+<a name="19"><font size=-1>19     </font></a><span class="comment"> *   noise_floor    = 75th percentile of downsampled silence-region</span>
+<a name="20"><font size=-1>20     </font></a><span class="comment"> *                    envelope samples (a 256-slot ring buffer sampled</span>
+<a name="21"><font size=-1>21     </font></a><span class="comment"> *                    once per millisecond during silence). Tracks the</span>
+<a name="22"><font size=-1>22     </font></a><span class="comment"> *                    TYPICAL ambient level between ticks, not its</span>
+<a name="23"><font size=-1>23     </font></a><span class="comment"> *                    minimum -- crucial for preventing false onsets in</span>
+<a name="24"><font size=-1>24     </font></a><span class="comment"> *                    quiet sections where rumble hovers above the min.</span>
+<a name="25"><font size=-1>25     </font></a><span class="comment"> *</span>
+<a name="26"><font size=-1>26     </font></a><span class="comment"> *   reference_peak = median of the last 16 accepted burst peaks.</span>
+<a name="27"><font size=-1>27     </font></a><span class="comment"> *                    Robust to outliers (one loud bang doesn't move it)</span>
+<a name="28"><font size=-1>28     </font></a><span class="comment"> *                    and to sparse ticks (no decay during long gaps).</span>
+<a name="29"><font size=-1>29     </font></a><span class="comment"> *</span>
+<a name="30"><font size=-1>30     </font></a><span class="comment"> * No per-recording tuning is needed: the same gate fractions (3% onset,</span>
+<a name="31"><font size=-1>31     </font></a><span class="comment"> * 2% release, 20% min-peak) are used for all watches.</span>
+<a name="32"><font size=-1>32     </font></a><span class="comment"> *</span>
+<a name="33"><font size=-1>33     </font></a><span class="comment"> * Both the silence gate (time between beats) and the burst-end gate</span>
+<a name="34"><font size=-1>34     </font></a><span class="comment"> * (time within a beat) are WALL-CLOCK based -- counted in samples</span>
+<a name="35"><font size=-1>35     </font></a><span class="comment"> * since a reference point, not continuous-below-threshold samples.</span>
+<a name="36"><font size=-1>36     </font></a><span class="comment"> * This handles watches whose ring-down oscillates near the release</span>
+<a name="37"><font size=-1>37     </font></a><span class="comment"> * threshold without settling.</span>
+<a name="38"><font size=-1>38     </font></a><span class="comment"> *</span>
+<a name="39"><font size=-1>39     </font></a><span class="comment"> * A is held internally until burst-end so that bursts whose peak fails</span>
+<a name="40"><font size=-1>40     </font></a><span class="comment"> * the min-peak threshold (noise bumps) can be discarded entirely,</span>
+<a name="41"><font size=-1>41     </font></a><span class="comment"> * without leaving an orphan A in the output.</span>
+<a name="42"><font size=-1>42     </font></a><span class="comment"> */</span>
+<a name="43"><font size=-1>43     </font></a><span class="comment"></span><span class="preproc">#ifndef <a href="dictionary_T.html#1983">TG_DETECTOR_H</a></span>
+<a name="44"><font size=-1>44     </font></a><span class="preproc">#define <a href="dictionary_T.html#1983">TG_DETECTOR_H</a></span>
+<a name="45"><font size=-1>45     </font></a><span class="preproc"></span>
+<a name="46"><font size=-1>46     </font></a><span class="preproc">#include </span><span class="string">&lt;stddef.h&gt;</span>
+<a name="47"><font size=-1>47     </font></a><span class="string"></span><span class="preproc">#include </span><span class="string">&lt;stdint.h&gt;</span>
+<a name="48"><font size=-1>48     </font></a><span class="string"></span>
+<a name="49"><font size=-1>49     </font></a><span class="string"></span><span class="comment">/* Ring-buffer sizes (compile-time constants). */</span>
+<a name="50"><font size=-1>50     </font></a><span class="comment"></span><span class="preproc">#define <a href="dictionary_T.html#1448">TG_NOISE_HISTORY_N</a>  </span><span class="number">256  </span><span class="comment">/* ~256 ms at 1 ms/sample                */</span>
+<a name="51"><font size=-1>51     </font></a><span class="comment"></span><span class="preproc">#define <a href="dictionary_T.html#1449">TG_PEAK_HISTORY_N</a>    </span><span class="number">16  </span><span class="comment">/* ~2 s at 8 Hz beat rate               */</span>
+<a name="52"><font size=-1>52     </font></a><span class="comment"></span>
+<a name="53"><font size=-1>53     </font></a><span class="comment">/* V5.6 regime-change detector constants. */</span>
+<a name="54"><font size=-1>54     </font></a><span class="comment"></span><span class="preproc">#define <a href="dictionary_T.html#1453">TG_REGIME_RING_N</a>     </span><span class="number">8   </span><span class="comment">/* short-term burst peak ring (~1.5s at 21600 BPH) */</span>
+<a name="55"><font size=-1>55     </font></a><span class="comment"></span><span class="preproc">#define <a href="dictionary_T.html#1452">TG_REGIME_RATIO</a>    </span><span class="number">10.0  </span><span class="comment">/* trip if new peak &gt;= ratio * recent min */</span>
+<a name="56"><font size=-1>56     </font></a><span class="comment"></span><span class="preproc">#define <a href="dictionary_T.html#1451">TG_REGIME_FLOOR</a>  </span><span class="number">0.001   </span><span class="comment">/* skip ratio check when both peaks below this */</span>
+<a name="57"><font size=-1>57     </font></a><span class="comment"></span><span class="preproc">#define <a href="dictionary_T.html#1450">TG_REGIME_COOLDOWN_S</a> </span><span class="number">1.0 </span><span class="comment">/* seconds between resets */</span>
+<a name="58"><font size=-1>58     </font></a><span class="comment"></span>
+<a name="59"><font size=-1>59     </font></a><span class="comment">/* Raw event emitted by the detector. */</span>
+<a name="60"><font size=-1>60     </font></a><span class="comment"></span><span class="keyword">typedef struct </span><span class="default">{</span>
+<a name="61"><font size=-1>61     </font></a><span class="default">    uint64_t <a href="dictionary_T.html#206">sample_index</a>;       </span><span class="comment">/* integer absolute sample index         */</span>
+<a name="62"><font size=-1>62     </font></a><span class="comment">    </span><span class="keyword">double   <a href="dictionary_T.html#207">sub_sample_offset</a></span><span class="default">;  </span><span class="comment">/* in [-0.5, +0.5]                       */</span>
+<a name="63"><font size=-1>63     </font></a><span class="comment">    </span><span class="keyword">double   <a href="dictionary_T.html#208">time_seconds</a></span><span class="default">;       </span><span class="comment">/* (sample_index + offset) / fs          */</span>
+<a name="64"><font size=-1>64     </font></a><span class="comment">    </span><span class="keyword">float    <a href="dictionary_T.html#205">peak_value</a></span><span class="default">;         </span><span class="comment">/* burst peak envelope value             */</span>
+<a name="65"><font size=-1>65     </font></a><span class="comment">    </span><span class="keyword">int      <a href="dictionary_T.html#200">is_onset</a></span><span class="default">;           </span><span class="comment">/* 1 = A (onset), 0 = C (peak)           */</span>
+<a name="66"><font size=-1>66     </font></a><span class="comment"></span>
+<a name="67"><font size=-1>67     </font></a><span class="comment">    /* V5.4: C-event onset metadata. Populated by the detector for</span>
+<a name="68"><font size=-1>68     </font></a><span class="comment">     * C events when the backward-walk algorithm finds the rising</span>
+<a name="69"><font size=-1>69     </font></a><span class="comment">     * edge of the C cluster. Zero / 0 for A events and for C events</span>
+<a name="70"><font size=-1>70     </font></a><span class="comment">     * where onset detection failed. The library promotes these to</span>
+<a name="71"><font size=-1>71     </font></a><span class="comment">     * the public tg_event_t.onset_* fields. */</span>
+<a name="72"><font size=-1>72     </font></a><span class="comment">    </span><span class="default">uint64_t <a href="dictionary_T.html#201">onset_sample_index</a>;</span>
+<a name="73"><font size=-1>73     </font></a><span class="default">    </span><span class="keyword">double   <a href="dictionary_T.html#202">onset_sub_sample_offset</a></span><span class="default">;</span>
+<a name="74"><font size=-1>74     </font></a><span class="default">    </span><span class="keyword">double   <a href="dictionary_T.html#203">onset_time_seconds</a></span><span class="default">;</span>
+<a name="75"><font size=-1>75     </font></a><span class="default">    </span><span class="keyword">int      <a href="dictionary_T.html#204">onset_valid</a></span><span class="default">;</span>
+<a name="76"><font size=-1>76     </font></a><span class="default">} <a href="dictionary_T.html#199">tg_raw_event_t</a>;</span>
+<a name="77"><font size=-1>77     </font></a><span class="default"></span>
+<a name="78"><font size=-1>78     </font></a><span class="default"></span><span class="keyword">typedef struct </span><span class="default">{</span>
+<a name="79"><font size=-1>79     </font></a><span class="default">    </span><span class="comment">/* ---- configuration ---- */</span>
+<a name="80"><font size=-1>80     </font></a><span class="comment">    </span><span class="keyword">double   <a href="dictionary_T.html#1473">fs</a></span><span class="default">;                 </span><span class="comment">/* sample rate                           */</span>
+<a name="81"><font size=-1>81     </font></a><span class="comment">    </span><span class="keyword">double   <a href="dictionary_T.html#1480">noise_alpha</a></span><span class="default">;        </span><span class="comment">/* LPF coeff for EMA fallback noise floor*/</span>
+<a name="82"><font size=-1>82     </font></a><span class="comment">    </span><span class="keyword">double   <a href="dictionary_T.html#1469">ceil_alpha</a></span><span class="default">;         </span><span class="comment">/* LPF coeff for signal_ceiling bootstrap*/</span>
+<a name="83"><font size=-1>83     </font></a><span class="comment">    </span><span class="default">uint64_t <a href="dictionary_T.html#1498">warmup_samples</a>;     </span><span class="comment">/* skip first N samples                  */</span>
+<a name="84"><font size=-1>84     </font></a><span class="comment"></span>
+<a name="85"><font size=-1>85     </font></a><span class="comment">    /* Tunable gate fractions (of noise-&gt;reference-peak dynamic range).</span>
+<a name="86"><font size=-1>86     </font></a><span class="comment">     * Both are read every sample; a single-word write is atomic enough</span>
+<a name="87"><font size=-1>87     </font></a><span class="comment">     * for UI-controlled runtime adjustment. Clamped to [0.001, 0.9] by</span>
+<a name="88"><font size=-1>88     </font></a><span class="comment">     * the setters. Defaults:</span>
+<a name="89"><font size=-1>89     </font></a><span class="comment">     *   onset_fraction    = 0.03   (A onset threshold)</span>
+<a name="90"><font size=-1>90     </font></a><span class="comment">     *   min_peak_fraction = 0.20   (noise-bump rejection) */</span>
+<a name="91"><font size=-1>91     </font></a><span class="comment">    </span><span class="keyword">double   <a href="dictionary_T.html#1488">onset_fraction</a></span><span class="default">;</span>
+<a name="92"><font size=-1>92     </font></a><span class="default">    </span><span class="keyword">double   <a href="dictionary_T.html#1479">min_peak_fraction</a></span><span class="default">;</span>
+<a name="93"><font size=-1>93     </font></a><span class="default"></span>
+<a name="94"><font size=-1>94     </font></a><span class="default">    </span><span class="comment">/* V4.5: minimum wall-clock A-to-A interval. After a successful A</span>
+<a name="95"><font size=-1>95     </font></a><span class="comment">     * onset, no new A can fire until this many samples have elapsed</span>
+<a name="96"><font size=-1>96     </font></a><span class="comment">     * since that A's onset (independent of the burst-end / silence</span>
+<a name="97"><font size=-1>97     </font></a><span class="comment">     * machinery). Used to reject sub-impulses inside multi-impulse</span>
+<a name="98"><font size=-1>98     </font></a><span class="comment">     * beat clusters once the beat period is known.</span>
+<a name="99"><font size=-1>99     </font></a><span class="comment">     *</span>
+<a name="100"><font size=-1>100     </font></a><span class="comment">     * Pre-sync default: 0 (no enforcement, so BPH detection sees all</span>
+<a name="101"><font size=-1>101     </font></a><span class="comment">     * candidate events). Set by the library to 0.7 * beat_period once</span>
+<a name="102"><font size=-1>102     </font></a><span class="comment">     * sync is acquired. */</span>
+<a name="103"><font size=-1>103     </font></a><span class="comment">    </span><span class="default">uint64_t <a href="dictionary_T.html#1478">min_a_interval_samples</a>;</span>
+<a name="104"><font size=-1>104     </font></a><span class="default">    uint64_t <a href="dictionary_T.html#1495">samples_since_last_a</a>;     </span><span class="comment">/* wall-clock counter */</span>
+<a name="105"><font size=-1>105     </font></a><span class="comment"></span>
+<a name="106"><font size=-1>106     </font></a><span class="comment">    /* ---- noise floor: 75th percentile of downsampled silence samples --*/</span>
+<a name="107"><font size=-1>107     </font></a><span class="comment">    </span><span class="keyword">double   <a href="dictionary_T.html#1482">noise_history</a></span><span class="default">[<a href="dictionary_T.html#1448">TG_NOISE_HISTORY_N</a>];</span>
+<a name="108"><font size=-1>108     </font></a><span class="default">    </span><span class="keyword">int      <a href="dictionary_T.html#1483">noise_history_count</a></span><span class="default">;</span>
+<a name="109"><font size=-1>109     </font></a><span class="default">    </span><span class="keyword">int      <a href="dictionary_T.html#1484">noise_history_head</a></span><span class="default">;</span>
+<a name="110"><font size=-1>110     </font></a><span class="default">    uint64_t <a href="dictionary_T.html#1485">noise_last_sample_idx</a>;</span>
+<a name="111"><font size=-1>111     </font></a><span class="default">    uint64_t <a href="dictionary_T.html#1487">noise_sample_interval</a>;  </span><span class="comment">/* samples between decimated picks   */</span>
+<a name="112"><font size=-1>112     </font></a><span class="comment">    </span><span class="keyword">double   <a href="dictionary_T.html#1486">noise_percentile_cache</a></span><span class="default">;</span>
+<a name="113"><font size=-1>113     </font></a><span class="default">    </span><span class="keyword">double   <a href="dictionary_T.html#1481">noise_floor</a></span><span class="default">;            </span><span class="comment">/* EMA min-tracker (bootstrap only)  */</span>
+<a name="114"><font size=-1>114     </font></a><span class="comment"></span>
+<a name="115"><font size=-1>115     </font></a><span class="comment">    /* ---- reference peak: median of last N accepted burst peaks -------- */</span>
+<a name="116"><font size=-1>116     </font></a><span class="comment">    </span><span class="keyword">double   <a href="dictionary_T.html#1489">peak_history</a></span><span class="default">[<a href="dictionary_T.html#1449">TG_PEAK_HISTORY_N</a>];</span>
+<a name="117"><font size=-1>117     </font></a><span class="default">    </span><span class="keyword">int      <a href="dictionary_T.html#1490">peak_history_count</a></span><span class="default">;</span>
+<a name="118"><font size=-1>118     </font></a><span class="default">    </span><span class="keyword">int      <a href="dictionary_T.html#1491">peak_history_head</a></span><span class="default">;</span>
+<a name="119"><font size=-1>119     </font></a><span class="default">    </span><span class="keyword">double   <a href="dictionary_T.html#1477">median_peak_cache</a></span><span class="default">;</span>
+<a name="120"><font size=-1>120     </font></a><span class="default">    </span><span class="keyword">double   <a href="dictionary_T.html#1496">signal_ceiling</a></span><span class="default">;     </span><span class="comment">/* max-hold fallback used pre-history    */</span>
+<a name="121"><font size=-1>121     </font></a><span class="comment"></span>
+<a name="122"><font size=-1>122     </font></a><span class="comment">    /* ---- V5.6: regime-change detector --------------------------------</span>
+<a name="123"><font size=-1>123     </font></a><span class="comment">     *</span>
+<a name="124"><font size=-1>124     </font></a><span class="comment">     * Detects a &gt;= 10x jump in burst peak amplitude relative to the</span>
+<a name="125"><font size=-1>125     </font></a><span class="comment">     * rolling minimum of the last few accepted peaks. Trips when audio</span>
+<a name="126"><font size=-1>126     </font></a><span class="comment">     * crosses from one acoustic regime to another (e.g. quiet</span>
+<a name="127"><font size=-1>127     </font></a><span class="comment">     * ambient noise -&gt; watch on microphone, or removed and replaced).</span>
+<a name="128"><font size=-1>128     </font></a><span class="comment">     *</span>
+<a name="129"><font size=-1>129     </font></a><span class="comment">     * On trip, the library flushes the polluted adaptive state</span>
+<a name="130"><font size=-1>130     </font></a><span class="comment">     * (event history, sync state, noise floor ring, peak median ring)</span>
+<a name="131"><font size=-1>131     </font></a><span class="comment">     * and re-seeds with the triggering peak so the next beat doesn't</span>
+<a name="132"><font size=-1>132     </font></a><span class="comment">     * immediately re-trigger.</span>
+<a name="133"><font size=-1>133     </font></a><span class="comment">     *</span>
+<a name="134"><font size=-1>134     </font></a><span class="comment">     * regime_peak_ring is independent of peak_history -- peak_history</span>
+<a name="135"><font size=-1>135     </font></a><span class="comment">     * gets flushed on reset, but regime_peak_ring keeps the seeded</span>
+<a name="136"><font size=-1>136     </font></a><span class="comment">     * trigger value so the next-beat comparison has a baseline.</span>
+<a name="137"><font size=-1>137     </font></a><span class="comment">     *</span>
+<a name="138"><font size=-1>138     </font></a><span class="comment">     * Tunables:</span>
+<a name="139"><font size=-1>139     </font></a><span class="comment">     *   - ratio threshold: 10x (TG_REGIME_RATIO)</span>
+<a name="140"><font size=-1>140     </font></a><span class="comment">     *   - ring size: 8 entries (TG_REGIME_RING_N) -- ~1.5 s at 21600 BPH</span>
+<a name="141"><font size=-1>141     </font></a><span class="comment">     *   - cooldown: 1 second between resets, gated by sample counter</span>
+<a name="142"><font size=-1>142     </font></a><span class="comment">     *   - absolute floor: 0.001 -- below this, both peaks are noise</span>
+<a name="143"><font size=-1>143     </font></a><span class="comment">     *     and the ratio check is skipped (TG_REGIME_FLOOR) */</span>
+<a name="144"><font size=-1>144     </font></a><span class="comment">    </span><span class="keyword">double   <a href="dictionary_T.html#197">regime_peak_ring</a></span><span class="default">[<a href="dictionary_T.html#1453">TG_REGIME_RING_N</a>];</span>
+<a name="145"><font size=-1>145     </font></a><span class="default">    </span><span class="keyword">int      <a href="dictionary_T.html#195">regime_peak_count</a></span><span class="default">;</span>
+<a name="146"><font size=-1>146     </font></a><span class="default">    </span><span class="keyword">int      <a href="dictionary_T.html#196">regime_peak_head</a></span><span class="default">;</span>
+<a name="147"><font size=-1>147     </font></a><span class="default">    uint64_t <a href="dictionary_T.html#1493">regime_last_reset_idx</a>;  </span><span class="comment">/* abs sample idx of last reset, 0 = never */</span>
+<a name="148"><font size=-1>148     </font></a><span class="comment">    </span><span class="keyword">int      <a href="dictionary_T.html#1494">regime_reset_pending</a></span><span class="default">;    </span><span class="comment">/* set on trip, cleared by lib after flush */</span>
+<a name="149"><font size=-1>149     </font></a><span class="comment"></span>
+<a name="150"><font size=-1>150     </font></a><span class="comment">    /* ---- wall-clock gates ---- */</span>
+<a name="151"><font size=-1>151     </font></a><span class="comment">    </span><span class="default">uint64_t <a href="dictionary_T.html#1497">silence_samples</a>;    </span><span class="comment">/* samples since burst end (capped)      */</span>
+<a name="152"><font size=-1>152     </font></a><span class="comment">    </span><span class="default">uint64_t <a href="dictionary_T.html#194">min_silence_samples</a>;</span><span class="comment">/* threshold for new A onset             */</span>
+<a name="153"><font size=-1>153     </font></a><span class="comment">    </span><span class="default">uint64_t <a href="dictionary_T.html#190">burst_end_samples</a>;  </span><span class="comment">/* threshold for C emission              */</span>
+<a name="154"><font size=-1>154     </font></a><span class="comment"></span>
+<a name="155"><font size=-1>155     </font></a><span class="comment">    /* ---- state machine ---- */</span>
+<a name="156"><font size=-1>156     </font></a><span class="comment">    </span><span class="keyword">int      <a href="dictionary_T.html#1475">in_burst</a></span><span class="default">;</span>
+<a name="157"><font size=-1>157     </font></a><span class="default"></span>
+<a name="158"><font size=-1>158     </font></a><span class="default">    </span><span class="comment">/* onset (A) state */</span>
+<a name="159"><font size=-1>159     </font></a><span class="comment">    </span><span class="default">uint64_t <a href="dictionary_T.html#1461">burst_start_idx</a>;</span>
+<a name="160"><font size=-1>160     </font></a><span class="default">    </span><span class="keyword">double   <a href="dictionary_T.html#1463">burst_start_time</a></span><span class="default">;</span>
+<a name="161"><font size=-1>161     </font></a><span class="default">    </span><span class="keyword">double   <a href="dictionary_T.html#1462">burst_start_offset</a></span><span class="default">;</span>
+<a name="162"><font size=-1>162     </font></a><span class="default"></span>
+<a name="163"><font size=-1>163     </font></a><span class="default">    </span><span class="comment">/* peak (C) tracking */</span>
+<a name="164"><font size=-1>164     </font></a><span class="comment">    </span><span class="keyword">double   <a href="dictionary_T.html#191">burst_max</a></span><span class="default">;</span>
+<a name="165"><font size=-1>165     </font></a><span class="default">    uint64_t <a href="dictionary_T.html#1458">burst_max_idx</a>;</span>
+<a name="166"><font size=-1>166     </font></a><span class="default">    </span><span class="keyword">double   <a href="dictionary_T.html#1459">burst_max_y_minus1</a></span><span class="default">;</span>
+<a name="167"><font size=-1>167     </font></a><span class="default">    </span><span class="keyword">double   <a href="dictionary_T.html#1460">burst_max_y_plus1</a></span><span class="default">;</span>
+<a name="168"><font size=-1>168     </font></a><span class="default">    </span><span class="keyword">int      <a href="dictionary_T.html#1474">have_peak_plus1</a></span><span class="default">;</span>
+<a name="169"><font size=-1>169     </font></a><span class="default"></span>
+<a name="170"><font size=-1>170     </font></a><span class="default">    </span><span class="comment">/* V5.2: separate C-peak tracking. The &quot;burst_max&quot; above tracks the</span>
+<a name="171"><font size=-1>171     </font></a><span class="comment">     * absolute envelope max within a burst; that's used for the min-peak</span>
+<a name="172"><font size=-1>172     </font></a><span class="comment">     * height check at burst-end. But for C-event TIMING we need to skip</span>
+<a name="173"><font size=-1>173     </font></a><span class="comment">     * the first N samples of the burst, which often contain the A's own</span>
+<a name="174"><font size=-1>174     </font></a><span class="comment">     * impulse spike or intermediate sub-impulses that are NOT the C</span>
+<a name="175"><font size=-1>175     </font></a><span class="comment">     * cluster (especially on multi-impulse watches where one of these</span>
+<a name="176"><font size=-1>176     </font></a><span class="comment">     * earlier peaks can occasionally exceed the height of the actual C).</span>
+<a name="177"><font size=-1>177     </font></a><span class="comment">     *</span>
+<a name="178"><font size=-1>178     </font></a><span class="comment">     * burst_c_idx / burst_c_max track the envelope max ONLY in samples</span>
+<a name="179"><font size=-1>179     </font></a><span class="comment">     * past `c_search_skip_samples` from burst_start. If no peak is</span>
+<a name="180"><font size=-1>180     </font></a><span class="comment">     * found in that region (c_have_peak == 0), C falls back to</span>
+<a name="181"><font size=-1>181     </font></a><span class="comment">     * burst_max_idx (preserving behavior for very short bursts and</span>
+<a name="182"><font size=-1>182     </font></a><span class="comment">     * pre-sync recordings where the skip wasn't tuned).</span>
+<a name="183"><font size=-1>183     </font></a><span class="comment">     *</span>
+<a name="184"><font size=-1>184     </font></a><span class="comment">     * Default skip is 3 ms (covers the common &quot;first sub-impulse</span>
+<a name="185"><font size=-1>185     </font></a><span class="comment">     * spike&quot; case but stays below physical t_AC_min for any</span>
+<a name="186"><font size=-1>186     </font></a><span class="comment">     * reasonable amplitude). The library sets a longer, BPH-tuned</span>
+<a name="187"><font size=-1>187     </font></a><span class="comment">     * skip after sync (~80% of t_AC_min for max plausible amplitude). */</span>
+<a name="188"><font size=-1>188     </font></a><span class="comment">    </span><span class="default">uint64_t <a href="dictionary_T.html#1468">c_search_skip_samples</a>;</span>
+<a name="189"><font size=-1>189     </font></a><span class="default">    </span><span class="keyword">int      <a href="dictionary_T.html#1464">c_have_peak</a></span><span class="default">;</span>
+<a name="190"><font size=-1>190     </font></a><span class="default">    </span><span class="keyword">double   <a href="dictionary_T.html#1455">burst_c_max</a></span><span class="default">;</span>
+<a name="191"><font size=-1>191     </font></a><span class="default">    uint64_t <a href="dictionary_T.html#1454">burst_c_idx</a>;</span>
+<a name="192"><font size=-1>192     </font></a><span class="default">    </span><span class="keyword">double   <a href="dictionary_T.html#1456">burst_c_y_minus1</a></span><span class="default">;</span>
+<a name="193"><font size=-1>193     </font></a><span class="default">    </span><span class="keyword">double   <a href="dictionary_T.html#1457">burst_c_y_plus1</a></span><span class="default">;</span>
+<a name="194"><font size=-1>194     </font></a><span class="default">    </span><span class="keyword">int      <a href="dictionary_T.html#1465">c_have_peak_plus1</a></span><span class="default">;</span>
+<a name="195"><font size=-1>195     </font></a><span class="default"></span>
+<a name="196"><font size=-1>196     </font></a><span class="default">    </span><span class="comment">/* V5.4: C-onset detection via backward walk from burst_c_idx.</span>
+<a name="197"><font size=-1>197     </font></a><span class="comment">     *</span>
+<a name="198"><font size=-1>198     </font></a><span class="comment">     * env_ring is a small ring buffer of recent envelope samples used</span>
+<a name="199"><font size=-1>199     </font></a><span class="comment">     * to walk backward from the C peak at burst-emission time. We</span>
+<a name="200"><font size=-1>200     </font></a><span class="comment">     * walk back looking for the most recent sample where the envelope</span>
+<a name="201"><font size=-1>201     </font></a><span class="comment">     * crossed (rising) the half-of-peak threshold. Safeguards:</span>
+<a name="202"><font size=-1>202     </font></a><span class="comment">     *   - &quot;Avoid small gaps&quot;: require min_dwell_samples consecutive</span>
+<a name="203"><font size=-1>203     </font></a><span class="comment">     *     samples below threshold before declaring an onset boundary</span>
+<a name="204"><font size=-1>204     </font></a><span class="comment">     *     (otherwise within-cluster ringing notches register as onsets).</span>
+<a name="205"><font size=-1>205     </font></a><span class="comment">     *   - &quot;Don't go back too far&quot;: bound the walk to</span>
+<a name="206"><font size=-1>206     </font></a><span class="comment">     *     c_onset_search_max_samples. Beyond that we risk crossing</span>
+<a name="207"><font size=-1>207     </font></a><span class="comment">     *     into A territory.</span>
+<a name="208"><font size=-1>208     </font></a><span class="comment">     *</span>
+<a name="209"><font size=-1>209     </font></a><span class="comment">     * env_ring_capacity is chosen at init to cover the worst-case</span>
+<a name="210"><font size=-1>210     </font></a><span class="comment">     * search distance plus the burst duration that would precede</span>
+<a name="211"><font size=-1>211     </font></a><span class="comment">     * burst_c_idx in time (10 ms is plenty: at 48 kHz that's 480</span>
+<a name="212"><font size=-1>212     </font></a><span class="comment">     * samples; at 384 kHz it's 3840). */</span>
+<a name="213"><font size=-1>213     </font></a><span class="comment">    </span><span class="keyword">float   </span><span class="default">*<a href="dictionary_T.html#1470">env_ring</a>;</span>
+<a name="214"><font size=-1>214     </font></a><span class="default">    size_t   <a href="dictionary_T.html#1471">env_ring_capacity</a>;</span>
+<a name="215"><font size=-1>215     </font></a><span class="default">    size_t   <a href="dictionary_T.html#1472">env_ring_head</a>;          </span><span class="comment">/* next write position; wraps */</span>
+<a name="216"><font size=-1>216     </font></a><span class="comment">    </span><span class="default">uint64_t <a href="dictionary_T.html#193">env_ring_newest_abs</a>;    </span><span class="comment">/* abs sample index of most-recent write; 0 if empty */</span>
+<a name="217"><font size=-1>217     </font></a><span class="comment">    </span><span class="keyword">int      <a href="dictionary_T.html#192">env_ring_has_data</a></span><span class="default">;      </span><span class="comment">/* 1 once at least one sample has been written */</span>
+<a name="218"><font size=-1>218     </font></a><span class="comment"></span>
+<a name="219"><font size=-1>219     </font></a><span class="comment">    /* C-onset detection parameters. */</span>
+<a name="220"><font size=-1>220     </font></a><span class="comment">    </span><span class="default">uint64_t <a href="dictionary_T.html#1466">c_onset_dwell_samples</a>;        </span><span class="comment">/* default ~0.3 ms */</span>
+<a name="221"><font size=-1>221     </font></a><span class="comment">    </span><span class="default">uint64_t <a href="dictionary_T.html#1467">c_onset_search_max_samples</a>;   </span><span class="comment">/* default 5 ms pre-sync, ~t_AC/2 post-sync */</span>
+<a name="222"><font size=-1>222     </font></a><span class="comment"></span>
+<a name="223"><font size=-1>223     </font></a><span class="comment">    /* misc */</span>
+<a name="224"><font size=-1>224     </font></a><span class="comment">    </span><span class="keyword">double   <a href="dictionary_T.html#1492">prev_sample</a></span><span class="default">;</span>
+<a name="225"><font size=-1>225     </font></a><span class="default">    uint64_t <a href="dictionary_T.html#1476">last_event_sample</a>;</span>
+<a name="226"><font size=-1>226     </font></a><span class="default">    uint64_t <a href="dictionary_T.html#198">total_samples</a>;</span>
+<a name="227"><font size=-1>227     </font></a><span class="default">} <a href="dictionary_T.html#189">tg_detector_t</a>;</span>
+<a name="228"><font size=-1>228     </font></a><span class="default"></span>
+<a name="229"><font size=-1>229     </font></a><span class="default"></span><span class="comment">/* Initialize with sample rate. All other parameters are derived or fixed. */</span>
+<a name="230"><font size=-1>230     </font></a><span class="comment"></span><span class="keyword">void <a href="dictionary_T.html#162">tg_detector_init</a> </span><span class="default">(<a href="dictionary_T.html#189">tg_detector_t</a> *<a href="dictionary_D.html#163">d</a>, </span><span class="keyword">double <a href="dictionary_F.html#164">fs</a></span><span class="default">);</span>
+<a name="231"><font size=-1>231     </font></a><span class="default"></span>
+<a name="232"><font size=-1>232     </font></a><span class="default"></span><span class="comment">/* V5.4: free heap-allocated state (env ring buffer). Idempotent. */</span>
+<a name="233"><font size=-1>233     </font></a><span class="comment"></span><span class="keyword">void <a href="dictionary_T.html#150">tg_detector_destroy</a></span><span class="default">(<a href="dictionary_T.html#189">tg_detector_t</a> *<a href="dictionary_D.html#151">d</a>);</span>
+<a name="234"><font size=-1>234     </font></a><span class="default"></span>
+<a name="235"><font size=-1>235     </font></a><span class="default"></span><span class="keyword">void <a href="dictionary_T.html#172">tg_detector_reset</a></span><span class="default">(<a href="dictionary_T.html#189">tg_detector_t</a> *<a href="dictionary_D.html#173">d</a>);</span>
+<a name="236"><font size=-1>236     </font></a><span class="default"></span>
+<a name="237"><font size=-1>237     </font></a><span class="default"></span><span class="comment">/* Process a block of envelope samples. Appends up to max_events - *out_count</span>
+<a name="238"><font size=-1>238     </font></a><span class="comment"> * events to out_events, increments *out_count, and returns the number of</span>
+<a name="239"><font size=-1>239     </font></a><span class="comment"> * events added in this call. */</span>
+<a name="240"><font size=-1>240     </font></a><span class="comment"></span><span class="default">size_t <a href="dictionary_T.html#165">tg_detector_process</a>(<a href="dictionary_T.html#189">tg_detector_t</a> *<a href="dictionary_D.html#166">d</a>,</span>
+<a name="241"><font size=-1>241     </font></a><span class="default">                           </span><span class="keyword">const float </span><span class="default">*<a href="dictionary_E.html#167">envelope</a>, size_t <a href="dictionary_N.html#169">n</a>,</span>
+<a name="242"><font size=-1>242     </font></a><span class="default">                           <a href="dictionary_T.html#199">tg_raw_event_t</a> *<a href="dictionary_O.html#171">out_events</a>,</span>
+<a name="243"><font size=-1>243     </font></a><span class="default">                           size_t *<a href="dictionary_O.html#170">out_count</a>, size_t <a href="dictionary_M.html#168">max_events</a>);</span>
+<a name="244"><font size=-1>244     </font></a><span class="default"></span>
+<a name="245"><font size=-1>245     </font></a><span class="default"></span><span class="comment">/* Update the minimum-silence gate once BPH is known. Typical value:</span>
+<a name="246"><font size=-1>246     </font></a><span class="comment"> * 0.4 * beat_period. Until called, a 20 ms pre-sync default is used. */</span>
+<a name="247"><font size=-1>247     </font></a><span class="comment"></span><span class="keyword">void <a href="dictionary_T.html#183">tg_detector_set_min_silence</a></span><span class="default">(<a href="dictionary_T.html#189">tg_detector_t</a> *<a href="dictionary_D.html#184">d</a>, </span><span class="keyword">double <a href="dictionary_M.html#185">min_silence_s</a></span><span class="default">);</span>
+<a name="248"><font size=-1>248     </font></a><span class="default"></span>
+<a name="249"><font size=-1>249     </font></a><span class="default"></span><span class="comment">/* V4.5: set the minimum A-to-A wall-clock interval. Independent of</span>
+<a name="250"><font size=-1>250     </font></a><span class="comment"> * the silence gate (which counts time since burst end), this limits</span>
+<a name="251"><font size=-1>251     </font></a><span class="comment"> * new A onsets based on time since the previous A onset. Use to</span>
+<a name="252"><font size=-1>252     </font></a><span class="comment"> * reject sub-impulses within multi-impulse beat clusters once the</span>
+<a name="253"><font size=-1>253     </font></a><span class="comment"> * beat period is known.</span>
+<a name="254"><font size=-1>254     </font></a><span class="comment"> *</span>
+<a name="255"><font size=-1>255     </font></a><span class="comment"> * min_a_s = 0 disables (default, used pre-sync).</span>
+<a name="256"><font size=-1>256     </font></a><span class="comment"> * Library sets to ~0.7 * beat_period when sync acquires. */</span>
+<a name="257"><font size=-1>257     </font></a><span class="comment"></span><span class="keyword">void <a href="dictionary_T.html#177">tg_detector_set_min_a_interval</a></span><span class="default">(<a href="dictionary_T.html#189">tg_detector_t</a> *<a href="dictionary_D.html#178">d</a>, </span><span class="keyword">double <a href="dictionary_M.html#179">min_a_s</a></span><span class="default">);</span>
+<a name="258"><font size=-1>258     </font></a><span class="default"></span>
+<a name="259"><font size=-1>259     </font></a><span class="default"></span><span class="comment">/* V5.2: set the C-search skip window. Time since burst-start that</span>
+<a name="260"><font size=-1>260     </font></a><span class="comment"> * the C-peak tracker ignores before considering envelope samples as</span>
+<a name="261"><font size=-1>261     </font></a><span class="comment"> * candidate C peaks. Excludes the A's own impulse spike from being</span>
+<a name="262"><font size=-1>262     </font></a><span class="comment"> * mis-identified as C on multi-impulse watches.</span>
+<a name="263"><font size=-1>263     </font></a><span class="comment"> *</span>
+<a name="264"><font size=-1>264     </font></a><span class="comment"> * Default: 3 ms (a reasonable value below physical t_AC_min for any</span>
+<a name="265"><font size=-1>265     </font></a><span class="comment"> * watch that won't be knocking). Library can call this with a</span>
+<a name="266"><font size=-1>266     </font></a><span class="comment"> * BPH-tuned value once sync is acquired (e.g. 80% of theoretical</span>
+<a name="267"><font size=-1>267     </font></a><span class="comment"> * t_AC_min for the maximum plausible amplitude).</span>
+<a name="268"><font size=-1>268     </font></a><span class="comment"> *</span>
+<a name="269"><font size=-1>269     </font></a><span class="comment"> * If set to 0 or larger than the burst, the C-peak tracker won't</span>
+<a name="270"><font size=-1>270     </font></a><span class="comment"> * fire and C falls back to burst_max (V5.0 / V5.1 behavior). */</span>
+<a name="271"><font size=-1>271     </font></a><span class="comment"></span><span class="keyword">void <a href="dictionary_T.html#174">tg_detector_set_c_search_skip</a></span><span class="default">(<a href="dictionary_T.html#189">tg_detector_t</a> *<a href="dictionary_D.html#175">d</a>, </span><span class="keyword">double <a href="dictionary_S.html#176">skip_s</a></span><span class="default">);</span>
+<a name="272"><font size=-1>272     </font></a><span class="default"></span>
+<a name="273"><font size=-1>273     </font></a><span class="default"></span><span class="comment">/* V5.4: C-onset detection parameters.</span>
+<a name="274"><font size=-1>274     </font></a><span class="comment"> *</span>
+<a name="275"><font size=-1>275     </font></a><span class="comment"> * tg_detector_set_c_onset_search_max sets the backward-search bound</span>
+<a name="276"><font size=-1>276     </font></a><span class="comment"> * (seconds). If the half-height crossing isn't found within this</span>
+<a name="277"><font size=-1>277     </font></a><span class="comment"> * window before the C peak, onset_valid stays 0 on the emitted event</span>
+<a name="278"><font size=-1>278     </font></a><span class="comment"> * and the primary fields fall back to peak in TG_C_PLACEMENT_ONSET</span>
+<a name="279"><font size=-1>279     </font></a><span class="comment"> * mode.</span>
+<a name="280"><font size=-1>280     </font></a><span class="comment"> *</span>
+<a name="281"><font size=-1>281     </font></a><span class="comment"> * Library calls this at sync acquisition with t_AC_min/2 (post-sync)</span>
+<a name="282"><font size=-1>282     </font></a><span class="comment"> * and falls back to 5 ms pre-sync.</span>
+<a name="283"><font size=-1>283     </font></a><span class="comment"> *</span>
+<a name="284"><font size=-1>284     </font></a><span class="comment"> * tg_detector_set_c_onset_dwell sets the minimum below-threshold</span>
+<a name="285"><font size=-1>285     </font></a><span class="comment"> * dwell to avoid within-cluster ringing notches firing as onsets.</span>
+<a name="286"><font size=-1>286     </font></a><span class="comment"> * Default 0.3 ms. */</span>
+<a name="287"><font size=-1>287     </font></a><span class="comment"></span><span class="keyword">void <a href="dictionary_T.html#1619">tg_detector_set_c_onset_search_max</a></span><span class="default">(<a href="dictionary_T.html#189">tg_detector_t</a> *<a href="dictionary_D.html#1620">d</a>, </span><span class="keyword">double <a href="dictionary_M.html#1621">max_s</a></span><span class="default">);</span>
+<a name="288"><font size=-1>288     </font></a><span class="default"></span><span class="keyword">void <a href="dictionary_T.html#1615">tg_detector_set_c_onset_dwell</a>     </span><span class="default">(<a href="dictionary_T.html#189">tg_detector_t</a> *<a href="dictionary_D.html#1616">d</a>, </span><span class="keyword">double <a href="dictionary_D.html#1617">dwell_s</a></span><span class="default">);</span>
+<a name="289"><font size=-1>289     </font></a><span class="default"></span>
+<a name="290"><font size=-1>290     </font></a><span class="default"></span><span class="comment">/* Query the current threshold values (valid after processing has begun). */</span>
+<a name="291"><font size=-1>291     </font></a><span class="comment"></span><span class="keyword">void <a href="dictionary_T.html#156">tg_detector_get_thresholds</a></span><span class="default">(</span><span class="keyword">const <a href="dictionary_T.html#189">tg_detector_t</a> </span><span class="default">*<a href="dictionary_D.html#157">d</a>,</span>
+<a name="292"><font size=-1>292     </font></a><span class="default">                                </span><span class="keyword">double </span><span class="default">*<a href="dictionary_O.html#160">onset_thr</a>,</span>
+<a name="293"><font size=-1>293     </font></a><span class="default">                                </span><span class="keyword">double </span><span class="default">*<a href="dictionary_M.html#159">min_peak_thr</a>,</span>
+<a name="294"><font size=-1>294     </font></a><span class="default">                                </span><span class="keyword">double </span><span class="default">*<a href="dictionary_E.html#158">eff_noise</a>,</span>
+<a name="295"><font size=-1>295     </font></a><span class="default">                                </span><span class="keyword">double </span><span class="default">*<a href="dictionary_R.html#161">ref_peak</a>);</span>
+<a name="296"><font size=-1>296     </font></a><span class="default"></span>
+<a name="297"><font size=-1>297     </font></a><span class="default"></span><span class="comment">/* Get/set the tunable gate fractions (clamped to [0.001, 0.9]).</span>
+<a name="298"><font size=-1>298     </font></a><span class="comment"> *</span>
+<a name="299"><font size=-1>299     </font></a><span class="comment"> * onset_fraction    : A is fired when envelope crosses</span>
+<a name="300"><font size=-1>300     </font></a><span class="comment"> *                     noise + onset_fraction * (ref_peak - noise).</span>
+<a name="301"><font size=-1>301     </font></a><span class="comment"> *                     Default 0.03.  Raise for noisy recordings where</span>
+<a name="302"><font size=-1>302     </font></a><span class="comment"> *                     ambient noise sits above the 75th-percentile</span>
+<a name="303"><font size=-1>303     </font></a><span class="comment"> *                     floor; lower for very quiet movements.</span>
+<a name="304"><font size=-1>304     </font></a><span class="comment"> *</span>
+<a name="305"><font size=-1>305     </font></a><span class="comment"> * min_peak_fraction : A burst whose peak is below</span>
+<a name="306"><font size=-1>306     </font></a><span class="comment"> *                     noise + min_peak_fraction * (ref_peak - noise)</span>
+<a name="307"><font size=-1>307     </font></a><span class="comment"> *                     is discarded as a noise bump.</span>
+<a name="308"><font size=-1>308     </font></a><span class="comment"> *                     Default 0.20.</span>
+<a name="309"><font size=-1>309     </font></a><span class="comment"> */</span>
+<a name="310"><font size=-1>310     </font></a><span class="comment"></span><span class="keyword">double <a href="dictionary_T.html#154">tg_detector_get_onset_fraction</a>   </span><span class="default">(</span><span class="keyword">const <a href="dictionary_T.html#189">tg_detector_t</a> </span><span class="default">*<a href="dictionary_D.html#155">d</a>);</span>
+<a name="311"><font size=-1>311     </font></a><span class="default"></span><span class="keyword">double <a href="dictionary_T.html#152">tg_detector_get_min_peak_fraction</a></span><span class="default">(</span><span class="keyword">const <a href="dictionary_T.html#189">tg_detector_t</a> </span><span class="default">*<a href="dictionary_D.html#153">d</a>);</span>
+<a name="312"><font size=-1>312     </font></a><span class="default"></span><span class="keyword">void   <a href="dictionary_T.html#186">tg_detector_set_onset_fraction</a>   </span><span class="default">(<a href="dictionary_T.html#189">tg_detector_t</a> *<a href="dictionary_D.html#187">d</a>, </span><span class="keyword">double <a href="dictionary_F.html#188">frac</a></span><span class="default">);</span>
+<a name="313"><font size=-1>313     </font></a><span class="default"></span><span class="keyword">void   <a href="dictionary_T.html#180">tg_detector_set_min_peak_fraction</a></span><span class="default">(<a href="dictionary_T.html#189">tg_detector_t</a> *<a href="dictionary_D.html#181">d</a>, </span><span class="keyword">double <a href="dictionary_F.html#182">frac</a></span><span class="default">);</span>
+<a name="314"><font size=-1>314     </font></a><span class="default"></span>
+<a name="315"><font size=-1>315     </font></a><span class="default"></span><span class="comment">/* V5.6: regime-change reset coordination.</span>
+<a name="316"><font size=-1>316     </font></a><span class="comment"> *</span>
+<a name="317"><font size=-1>317     </font></a><span class="comment"> * The detector internally tracks burst peak history (separate from</span>
+<a name="318"><font size=-1>318     </font></a><span class="comment"> * the adaptive median ring). When a new peak arrives that's &gt;=</span>
+<a name="319"><font size=-1>319     </font></a><span class="comment"> * TG_REGIME_RATIO (10x) times the rolling minimum of recent peaks</span>
+<a name="320"><font size=-1>320     </font></a><span class="comment"> * AND both are above TG_REGIME_FLOOR, the regime_reset_pending flag</span>
+<a name="321"><font size=-1>321     </font></a><span class="comment"> * is set. This is the detector's signal to the library that</span>
+<a name="322"><font size=-1>322     </font></a><span class="comment"> * &quot;acoustic regime has changed -- the adaptive state is now stale.&quot;</span>
+<a name="323"><font size=-1>323     </font></a><span class="comment"> *</span>
+<a name="324"><font size=-1>324     </font></a><span class="comment"> * The library queries this via tg_detector_consume_regime_reset,</span>
+<a name="325"><font size=-1>325     </font></a><span class="comment"> * which atomically reads-and-clears the flag. On a true return,</span>
+<a name="326"><font size=-1>326     </font></a><span class="comment"> * the library flushes its higher-level state (event history,</span>
+<a name="327"><font size=-1>327     </font></a><span class="comment"> * sync/PLL state) and calls tg_detector_reset on the detector to</span>
+<a name="328"><font size=-1>328     </font></a><span class="comment"> * flush the adaptive thresholds.</span>
+<a name="329"><font size=-1>329     </font></a><span class="comment"> *</span>
+<a name="330"><font size=-1>330     </font></a><span class="comment"> * Returns 1 if a reset was pending (and clears the flag), 0 otherwise. */</span>
+<a name="331"><font size=-1>331     </font></a><span class="comment"></span><span class="keyword">int <a href="dictionary_T.html#148">tg_detector_consume_regime_reset</a></span><span class="default">(<a href="dictionary_T.html#189">tg_detector_t</a> *<a href="dictionary_D.html#149">d</a>);</span>
+<a name="332"><font size=-1>332     </font></a><span class="default"></span>
+<a name="333"><font size=-1>333     </font></a><span class="default"></span><span class="preproc">#endif</span>
+<a name="334"><font size=-1>334     </font></a><span class="preproc"></span>
+</pre></body></html>

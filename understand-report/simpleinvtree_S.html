@@ -1,0 +1,169 @@
+<!DOCTYPE html><html><head><title>Simple Invocation Tree [S]</title><meta http-equiv="Content-Type" content="text/html; charset=utf-8" /><script src="jquery-3.3.1.min.js" type="text/javascript"></script><script src="d3.js" type="text/javascript"></script><script src="d3pie.min.js" type="text/javascript"></script><script src="plotly.min.js" type="text/javascript"></script><link href="reportCSS.css" type="text/css" rel="stylesheet" /><script src="reportJS.js" type="text/javascript"></script><script src="table_of_contents.js" type="text/javascript"></script></head><body bgcolor="#ffffff" TEXT="#000000"><nav id="main-nav" class="nav"><div id="upper-nav"><img id=und-icon src="understand-logo.png" alt="Understand"></div><div class="navbar" style="position:relative;z-index:1003"><button onclick="pageToTop()" id="pagedesc" title="Return to top of page"><span id="descText">LG Team#5 · TimeGrapher - Simple Invocation Tree</span></button></div><div id="lower-nav" class=navbar><div id="main-dropdown-html" class="dropdown" tabindex="0"><button id="dropdown-button" class="dropbtn">Contents <img id="dropdown-icon" src="ToCdropdown.png" style="height:12px"></button><div id="dropdown-buffer" class="dropdown-border" style="height:120px;width:300px;"></div><div id="nav-dropdown-content" class="dropdown-content"><a href="table_of_contents.html">Table of Contents</a><txt style="font-size: 12px; text-align: center">Enable javascript to use dropdown contents and other features.</txt></div></div><div class="rightspacer" id="rightspacer"><button id="buttonRight" onclick="scrollTableRight()"><img id="imgRight" src="ToCdropdown.png" /></button><button id="buttonLeft"  onclick="scrollTableLeft()" ><img id="imgLeft" src="ToCdropdown.png"  /></button></div><div class="navCenter">
+<a2>&</a2><a2>A</a2><a2>B</a2><a href="simpleinvtree_C.html">C</a><a2>D</a2><a2>E</a2><a href="simpleinvtree_F.html">F</a><a href="simpleinvtree_G.html">G</a><a2>H</a2><a2>I</a2><a2>J</a2><a2>K</a2><a href="simpleinvtree_L.html">L</a><a href="simpleinvtree_M.html">M</a><a2>N</a2><a2>O</a2><a href="simpleinvtree_P.html">P</a><a href="simpleinvtree_Q.html">Q</a><a href="simpleinvtree_R.html">R</a><a href="simpleinvtree_S.html">S</a><a href="simpleinvtree_T.html">T</a><a href="simpleinvtree_U.html">U</a><a href="simpleinvtree_V.html">V</a><a href="simpleinvtree_W.html">W</a><a2>X</a2><a2>Y</a2><a2>Z</a2></div></div></nav>
+<script type="text/javascript">navbar();</script><script type="text/javascript">if (typeof ToC === 'undefined') {document.getElementById("dropdown-button").remove();document.getElementById("dropdown-buffer").remove();document.getElementById("nav-dropdown-content").remove();}</script>
+<div id="main-content"><pre>
+<a href="dictionary_S.html#601">SoundImageRenderer::addPersistentMarkerFromAbsoluteSample</a>
+| <a href="dictionary_S.html#583">SoundImageRenderer::Marker::Marker</a>
+| <a href="dictionary_S.html#728">SoundImageRenderer::normalizeMarkerSidePixels</a>
+| <a href="dictionary_S.html#707">SoundImageRenderer::mapRenderedSampleToPixel</a>
+| <a href="dictionary_S.html#656">SoundImageRenderer::drawCenteredMarkerBlock</a>
+
+<a href="dictionary_S.html#629">SoundImageRenderer::clearColumn</a>
+| QImage::scanLine
+
+<a href="dictionary_S.html#636">SoundImageRenderer::clearRenderedColumnStorage</a>
+| <a href="dictionary_S.html#781">SoundImageRenderer::renderedBinsPtr</a>
+
+<a href="dictionary_S.html#635">SoundImageRenderer::clearRenderStateKeepingSampleCounter</a>
+| <a href="dictionary_S.html#727">SoundImageRenderer::nextInputAbsoluteSampleIndex</a>
+
+<a href="dictionary_S.html#639">SoundImageRenderer::clearWholeImage</a>
+| QImage::scanLine
+
+<a href="dictionary_S.html#648">SoundImageRenderer::commitAnchorColumn</a>
+| <a href="dictionary_S.html#682">SoundImageRenderer::flushBufferedAnchorColumns</a>
+
+<a href="dictionary_S.html#656">SoundImageRenderer::drawCenteredMarkerBlock</a>
+| <a href="dictionary_S.html#728">SoundImageRenderer::normalizeMarkerSidePixels</a>
+| QImage::scanLine
+
+<a href="dictionary_S.html#668">SoundImageRenderer::drawCenteredMarkerContributionToColumn</a>
+| <a href="dictionary_S.html#728">SoundImageRenderer::normalizeMarkerSidePixels</a>
+| QImage::scanLine
+
+<a href="dictionary_S.html#679">SoundImageRenderer::finalizeCurrentColumnAndAdvance</a>
+| <a href="dictionary_S.html#570">SoundImageRenderer::AnchorColumn::~AnchorColumn</a>
+| <a href="dictionary_S.html#594">SoundImageRenderer::RenderedColumn::~RenderedColumn</a>
+| <a href="dictionary_S.html#565">SoundImageRenderer::AnchorColumn::AnchorColumn</a>
+| <a href="dictionary_S.html#634">SoundImageRenderer::clearCurrentBuckets</a>
+| <a href="dictionary_S.html#745">SoundImageRenderer::pruneOldMarkers</a>
+| <a href="dictionary_S.html#588">SoundImageRenderer::RenderedColumn::RenderedColumn</a>
+| <a href="dictionary_S.html#636">SoundImageRenderer::clearRenderedColumnStorage</a>
+| <a href="dictionary_S.html#755">SoundImageRenderer::rebuildColumnNeighborhood</a>
+
+<a href="dictionary_S.html#682">SoundImageRenderer::flushBufferedAnchorColumns</a>
+| <a href="dictionary_S.html#594">SoundImageRenderer::RenderedColumn::~RenderedColumn</a>
+| <a href="dictionary_S.html#588">SoundImageRenderer::RenderedColumn::RenderedColumn</a>
+| <a href="dictionary_S.html#766">SoundImageRenderer::renderBinsToColumn</a>
+| <a href="dictionary_S.html#636">SoundImageRenderer::clearRenderedColumnStorage</a>
+| <a href="dictionary_S.html#755">SoundImageRenderer::rebuildColumnNeighborhood</a>
+| <a href="dictionary_S.html#634">SoundImageRenderer::clearCurrentBuckets</a>
+| <a href="dictionary_S.html#745">SoundImageRenderer::pruneOldMarkers</a>
+
+<a href="dictionary_S.html#690">SoundImageRenderer::initialize</a>
+| QImage::format
+| QImage::width
+| QImage::height
+| <a href="dictionary_S.html#576">SoundImageRenderer::Config::operator=</a>
+| <a href="dictionary_S.html#764">SoundImageRenderer::recomputeDerived</a>
+| <a href="dictionary_S.html#786">SoundImageRenderer::resetStateOnly</a>
+| <a href="dictionary_S.html#639">SoundImageRenderer::clearWholeImage</a>
+
+<a href="dictionary_S.html#695">SoundImageRenderer::lerpColor</a>
+| qRgba
+| <a href="dictionary_S.html#696">SoundImageRenderer::lerpColor::[lambda_0]</a>
+| qRed
+| qGreen
+| qBlue
+| qAlpha
+
+<a href="dictionary_S.html#707">SoundImageRenderer::mapRenderedSampleToPixel</a>
+| <a href="dictionary_S.html#703">SoundImageRenderer::lookupRenderedColumnBySampleIndex</a>
+| <a href="dictionary_S.html#788">SoundImageRenderer::sampleToBucketInRange</a>
+| <a href="dictionary_S.html#609">SoundImageRenderer::applyVerticalOffset</a>
+| <a href="dictionary_S.html#625">SoundImageRenderer::bucketToY</a>
+
+<a href="dictionary_S.html#716">SoundImageRenderer::markAEventAbsoluteSampleIndex</a>
+| <a href="dictionary_S.html#601">SoundImageRenderer::addPersistentMarkerFromAbsoluteSample</a>
+
+<a href="dictionary_S.html#720">SoundImageRenderer::markCEventAbsoluteSampleIndex</a>
+| <a href="dictionary_S.html#601">SoundImageRenderer::addPersistentMarkerFromAbsoluteSample</a>
+
+<a href="dictionary_S.html#726">SoundImageRenderer::maxSupportedMarkerRadiusColumns</a>
+| <a href="dictionary_S.html#724">SoundImageRenderer::markerRadiusColumnsFromSide</a>
+
+<a href="dictionary_S.html#734">SoundImageRenderer::processSamples</a>
+| <a href="dictionary_S.html#810">SoundImageRenderer::startActiveColumn</a>
+| <a href="dictionary_S.html#679">SoundImageRenderer::finalizeCurrentColumnAndAdvance</a>
+| <a href="dictionary_S.html#788">SoundImageRenderer::sampleToBucketInRange</a>
+| <a href="dictionary_S.html#776">SoundImageRenderer::renderCurrentColumnToImage</a>
+
+<a href="dictionary_S.html#755">SoundImageRenderer::rebuildColumnNeighborhood</a>
+| <a href="dictionary_S.html#726">SoundImageRenderer::maxSupportedMarkerRadiusColumns</a>
+| <a href="dictionary_S.html#629">SoundImageRenderer::clearColumn</a>
+| <a href="dictionary_S.html#781">SoundImageRenderer::renderedBinsPtr</a>
+| <a href="dictionary_S.html#766">SoundImageRenderer::renderBinsToColumn</a>
+
+<a href="dictionary_S.html#766">SoundImageRenderer::renderBinsToColumn</a>
+| <a href="dictionary_S.html#781">SoundImageRenderer::renderedBinsPtr</a>
+| <a href="dictionary_S.html#629">SoundImageRenderer::clearColumn</a>
+| <a href="dictionary_S.html#609">SoundImageRenderer::applyVerticalOffset</a>
+| <a href="dictionary_S.html#625">SoundImageRenderer::bucketToY</a>
+| QImage::scanLine
+| <a href="dictionary_S.html#695">SoundImageRenderer::lerpColor</a>
+| <a href="dictionary_S.html#750">SoundImageRenderer::reapplyMarkersForColumn</a>
+
+<a href="dictionary_S.html#776">SoundImageRenderer::renderCurrentColumnToImage</a>
+| <a href="dictionary_S.html#594">SoundImageRenderer::RenderedColumn::~RenderedColumn</a>
+| <a href="dictionary_S.html#588">SoundImageRenderer::RenderedColumn::RenderedColumn</a>
+
+<a href="dictionary_S.html#783">SoundImageRenderer::reset</a>
+| <a href="dictionary_S.html#784">SoundImageRenderer::reset</a>
+
+<a href="dictionary_S.html#784">SoundImageRenderer::reset</a>
+| <a href="dictionary_S.html#786">SoundImageRenderer::resetStateOnly</a>
+| <a href="dictionary_S.html#639">SoundImageRenderer::clearWholeImage</a>
+
+<a href="dictionary_S.html#1311">SoundImageRenderer::restart</a>
+| <a href="dictionary_S.html#783">SoundImageRenderer::reset</a>
+
+<a href="dictionary_S.html#1312">SoundImageRenderer::restart</a>
+| <a href="dictionary_S.html#784">SoundImageRenderer::reset</a>
+
+<a href="dictionary_S.html#799">SoundImageRenderer::setBph</a>
+| <a href="dictionary_S.html#764">SoundImageRenderer::recomputeDerived</a>
+| <a href="dictionary_S.html#635">SoundImageRenderer::clearRenderStateKeepingSampleCounter</a>
+| <a href="dictionary_S.html#639">SoundImageRenderer::clearWholeImage</a>
+
+<a href="dictionary_S.html#803">SoundImageRenderer::setSampleRate</a>
+| <a href="dictionary_S.html#764">SoundImageRenderer::recomputeDerived</a>
+| <a href="dictionary_S.html#635">SoundImageRenderer::clearRenderStateKeepingSampleCounter</a>
+| <a href="dictionary_S.html#639">SoundImageRenderer::clearWholeImage</a>
+
+<a href="dictionary_S.html#808">SoundImageRenderer::setVerticalTimeDirection</a>
+| <a href="dictionary_S.html#635">SoundImageRenderer::clearRenderStateKeepingSampleCounter</a>
+| <a href="dictionary_S.html#639">SoundImageRenderer::clearWholeImage</a>
+
+<a href="dictionary_S.html#810">SoundImageRenderer::startActiveColumn</a>
+| <a href="dictionary_S.html#644">SoundImageRenderer::columnBoundarySample</a>
+| <a href="dictionary_S.html#634">SoundImageRenderer::clearCurrentBuckets</a>
+
+<a href="dictionary_S.html#1405">SoundImageWidget::CreateImage</a>
+| <a href="dictionary_O.html#2386">operator new</a>
+| QWidget::size
+
+<a href="dictionary_S.html#1406">SoundImageWidget::DrawImage</a>
+| QWidget::update
+| QWidget::update
+| QWidget::update
+| QWidget::update
+| QImage::fill
+| QImage::width
+| QImage::height
+| QImage::scanLine
+| qRgba
+
+<a href="dictionary_S.html#1423">SoundImageWidget::paintEvent</a>
+| QPainter::~QPainter
+| QRect::~QRect
+| QWidget::rect
+| QPainter::drawImage
+
+<a href="dictionary_S.html#1411">SoundImageWidget::SoundImageWidget</a>
+| QWidget::QWidget
+
+<a href="dictionary_S.html#1442">SoundImageWidget::tr</a>
+| QMetaObject::tr
+</pre>
+<p>
+<div class="footer"><b>Generated:</b> 2026년 5월 31일 일요일 오후 5:44:23</div><center><p><div class="scitools-tag">Scientific Toolworks, Inc.<br></div><div class="scitools-link"><A target="_blank" href="mailto:support@scitools.com">support@scitools.com</A><br><A href="http://www.scitools.com">www.scitools.com</A></div></center></div></body></html>

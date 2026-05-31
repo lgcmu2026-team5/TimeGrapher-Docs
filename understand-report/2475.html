@@ -1,0 +1,32 @@
+<html><head><title>WaveHeader.h</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="sourcestyles.css" />
+</head><body link="blue" vlink="blue">
+<h3>File: D:\Watch\TimeGrapher\WaveHeader.h</h3>
+<SCRIPT>
+defaultStatus = "File: D:\\Watch\\TimeGrapher\\WaveHeader.h";
+top.document.title  = "WaveHeader.h";
+</SCRIPT>
+<pre><span class="default"></span><a name="1"><font size=-1>1     </font></a><span class="default"></span><span class="preproc">#ifndef <a href="dictionary_W.html#1946">WAVEHEADER_H</a></span>
+<a name="2"><font size=-1>2     </font></a><span class="preproc">#define <a href="dictionary_W.html#1946">WAVEHEADER_H</a></span>
+<a name="3"><font size=-1>3     </font></a><span class="preproc">#include </span><span class="string">&lt;QtTypes&gt;</span>
+<a name="4"><font size=-1>4     </font></a><span class="string"></span><span class="keyword">typedef struct</span>
+<a name="5"><font size=-1>5     </font></a><span class="keyword"></span><span class="default">{</span>
+<a name="6"><font size=-1>6     </font></a><span class="default"> </span><span class="keyword">char <a href="dictionary_&.html#2402">riffId</a></span><span class="default">[</span><span class="number">4</span><span class="default">];         </span><span class="comment">// &quot;RIFF&quot;</span>
+<a name="7"><font size=-1>7     </font></a><span class="comment"> </span><span class="default">uint32_t <a href="dictionary_&.html#1944">fileSize</a>;      </span><span class="comment">// Size of file - 8 bytes</span>
+<a name="8"><font size=-1>8     </font></a><span class="comment"> </span><span class="keyword">char <a href="dictionary_&.html#1935">waveId</a></span><span class="default">[</span><span class="number">4</span><span class="default">];         </span><span class="comment">// &quot;WAVE&quot;</span>
+<a name="9"><font size=-1>9     </font></a><span class="comment"> </span><span class="keyword">char <a href="dictionary_&.html#2233">fmtId</a></span><span class="default">[</span><span class="number">4</span><span class="default">];          </span><span class="comment">// &quot;fmt &quot;</span>
+<a name="10"><font size=-1>10     </font></a><span class="comment"> </span><span class="default">uint32_t <a href="dictionary_&.html#2285">fmtSize</a>;       </span><span class="comment">// Usually 16 for PCM</span>
+<a name="11"><font size=-1>11     </font></a><span class="comment"> </span><span class="default">uint16_t <a href="dictionary_&.html#1989">audioFormat</a>;   </span><span class="comment">// 1 for PCM, 3 for IEEE Float</span>
+<a name="12"><font size=-1>12     </font></a><span class="comment"> </span><span class="default">uint16_t <a href="dictionary_&.html#2289">numChannels</a>;</span>
+<a name="13"><font size=-1>13     </font></a><span class="default"> uint32_t <a href="dictionary_&.html#1994">sampleRate</a>;</span>
+<a name="14"><font size=-1>14     </font></a><span class="default"> uint32_t <a href="dictionary_&.html#2051">byteRate</a>;</span>
+<a name="15"><font size=-1>15     </font></a><span class="default"> uint16_t <a href="dictionary_&.html#1982">blockAlign</a>;</span>
+<a name="16"><font size=-1>16     </font></a><span class="default"> uint16_t <a href="dictionary_&.html#2403">bitsPerSample</a>; </span><span class="comment">// 32 for float</span>
+<a name="17"><font size=-1>17     </font></a><span class="comment"> </span><span class="keyword">char <a href="dictionary_&.html#2395">dataId</a></span><span class="default">[</span><span class="number">4</span><span class="default">];         </span><span class="comment">// &quot;data&quot;</span>
+<a name="18"><font size=-1>18     </font></a><span class="comment"> </span><span class="default">uint32_t <a href="dictionary_&.html#1990">dataSize</a>;</span>
+<a name="19"><font size=-1>19     </font></a><span class="default">} <a href="dictionary_T.html#1966">TWaveHeader</a>;</span>
+<a name="20"><font size=-1>20     </font></a><span class="default"></span>
+<a name="21"><font size=-1>21     </font></a><span class="default"></span><span class="preproc">#endif </span><span class="comment">// WAVEHEADER_H</span>
+<a name="22"><font size=-1>22     </font></a><span class="comment"></span>
+</pre></body></html>
