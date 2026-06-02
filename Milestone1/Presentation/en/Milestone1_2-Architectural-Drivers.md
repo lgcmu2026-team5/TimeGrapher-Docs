@@ -124,6 +124,16 @@
 | FR-G08-05 | mandatory | The Escapement Analyzer and Marker-Line Display shall provide the user with vertical markers at the tick (A) and tock (C) event points to be analyzed. |
 | FR-G08-06 | mandatory | The Escapement Analyzer and Marker-Line Display shall provide the user with the elapsed time between markers in milliseconds. |
 | FR-G08-07 | mandatory | The Escapement Analyzer and Marker-Line Display shall provide the user with the ability to change the marker measurement reference based on signal feature points (Onset, Peak, etc.). |
+
+### G09 · Time-Frequency Spectrogram Display
+| ID | Grade | Requirement |
+|----|-------|-------------|
+| FR-G09-01 | mandatory | The Time-Frequency Spectrogram Display shall provide the user with a time-frequency spectrogram that shows how the watch's acoustic energy is distributed across time and frequency. |
+| FR-G09-02 | mandatory | The Time-Frequency Spectrogram Display shall present the spectrogram to the user with time on the horizontal axis, frequency on the vertical axis, and signal strength as color intensity. |
+| FR-G09-03 | optional | The Time-Frequency Spectrogram Display should provide the user with the ability to inspect either the most recent beat or a selected recent time window. |
+| FR-G09-04 | optional | The Time-Frequency Spectrogram Display should provide the user with the ability to view recurring energy structures at characteristic frequency ranges. |
+| FR-G09-05 | optional | The Time-Frequency Spectrogram Display should provide the user with the ability to compare one beat with the next. |
+| FR-G09-06 | optional | The Time-Frequency Spectrogram Display should provide the user with a color scale or legend for interpreting relative signal strength. |
  
 ### G10 · Waveform Comparison Display with Timing Markers
 | ID | Grade | Requirement |
@@ -144,7 +154,16 @@
 | FR-G10-14 | mandatory | The Waveform Comparison Display with Timing Markers shall provide the user with signal envelopes for each beat. |
 | FR-G10-15 | optional | The Waveform Comparison Display with Timing Markers may provide the user with degree-based reference markers. |
 | FR-G10-16 | optional | The Waveform Comparison Display with Timing Markers may provide the user with time-based reference markers. |
- 
+
+### G11 · Scope Mode with Synchronized Sweep Display
+| ID | Grade | Requirement |
+|----|-------|-------------|
+| FR-G11-01 | mandatory | The Scope Mode with Synchronized Sweep Display shall provide the user with a display of the watch's acoustic signal in a fixed sweep window, similar to an oscilloscope. |
+| FR-G11-02 | optional | The Scope Mode with Synchronized Sweep Display should provide the user with a display of the processed signal that combines the upper and lower halves of the waveform. |
+| FR-G11-03 | optional | The Scope Mode with Synchronized Sweep Display should provide the user with the ability to configure the sweep time as a multiple of the watch's tick interval. |
+| FR-G11-04 | optional | The Scope Mode with Synchronized Sweep Display should provide the user with a synchronized display in which the beat pattern stays visually stable near the nominal rate and drifts when the watch is fast or slow. |
+| FR-G11-05 | optional | The Scope Mode with Synchronized Sweep Display may provide the user with reference values (daily rate, amplitude, beat error, nominal beat rate) from the most recent timing test. |
+
 ### G12 · Scope Function with Multiple Filter Views
 | ID | Grade | Requirement |
 |----|-------|-------------|
