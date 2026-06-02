@@ -27,8 +27,8 @@
 
 ## Quality Attribute Scenarios
 
-### QAS-1 · Performance (Latency & Computation Time) — From Sound Input to Screen Display
-> While measuring as usual, when sound arrives at the microphone, the system processes it through the input → analysis → display flow and shows it on screen, guaranteeing p99 (99th-percentile) end-to-end latency (from sound arrival to on-screen display) under 500 ms and p99 computation time (the analysis processing alone, excluding audio buffering and display) under 100 ms, with 0 dropped audio blocks and 0 missed beats over a 10-min continuous run.
+### QAS-1 · Performance (Latency) — From Sound Input to Screen Display
+> While measuring as usual, when sound arrives at the microphone, the system processes it through the input → analysis → display flow and shows it on screen, guaranteeing p99 (99th-percentile) end-to-end latency (from sound arrival to on-screen display) under 500 ms, with 0 dropped audio blocks and 0 missed beats over a 10-min continuous run.
 
 | Element | Content |
 |---------|---------|
@@ -37,21 +37,33 @@
 | Artifact | The full input → analysis → display flow |
 | Environment | Measuring as usual |
 | Response | Process and show on screen |
-| Response Measure | p99 end-to-end latency (sound arrival → on-screen) ≤ 500 ms; p99 computation time (analysis processing only, excluding audio buffering and display) ≤ 100 ms; 0 dropped audio blocks and 0 missed beats over a 10-min continuous run |
+| Response Measure | p99 end-to-end latency (sound arrival → on-screen) ≤ 500 ms; 0 dropped audio blocks and 0 missed beats over a 10-min continuous run |
 
-### QAS-2 · Performance (Throughput) — No Slowdown Over Long Runs
-> While measuring continuously without stopping on the Raspberry Pi (8 GB RAM), the system keeps processing data without loss and runs stably without running out of memory, sustaining 96,000 SPS (48,000 SPS minimum) with bounded memory growth and no screen freezes over 10 minutes of continuous operation.
+### QAS-2 · Performance (Throughput) — Analysis Processing Budget
+> While measuring as usual, when an audio block arrives for analysis, the system completes the analysis processing (input → analysis stage, excluding audio buffering and display) within a bounded compute budget, guaranteeing p99 computation time under 100 ms, with 0 dropped audio blocks and 0 missed beats over a 10-min continuous run.
+
+| Element | Content |
+|---------|---------|
+| Source | The analysis/computation stage (internal) |
+| Stimulus | An audio block arrives for analysis |
+| Artifact | The input → analysis processing stage |
+| Environment | Measuring as usual |
+| Response | Complete the analysis processing within the compute budget |
+| Response Measure | p99 computation time (analysis processing only, excluding audio buffering and display) ≤ 100 ms; 0 dropped audio blocks and 0 missed beats over a 10-min continuous run |
+
+### QAS-3 · Dependability (Reliability) — No Degradation Over Long Runs
+> While measuring continuously without stopping on the Raspberry Pi (8 GB RAM), the system continues to deliver correct service without degrading over time — no memory leak, no crash, and no UI freeze — over 10 minutes of continuous operation (keeping up with the input rate is assumed, per QAS-2).
 
 | Element | Content |
 |---------|---------|
 | Source | The system |
 | Stimulus | Measuring continuously without stopping for a long time |
-| Artifact | The whole system, Raspberry Pi memory/performance |
+| Artifact | The whole system, Raspberry Pi memory/process health |
 | Environment | Long-running operation on the Raspberry Pi (8 GB RAM) |
-| Response | Keep processing data without loss, stay stable without running out of memory |
-| Response Measure | Sustains 96,000 SPS (48,000 SPS minimum); over a 10-min continuous run, RSS growth ≤ 20 MB in any 5-min window with no monotonic upward trend; 0 screen freezes, where a freeze = no screen update for ≥ 2 s |
+| Response | Continue correct service without degrading: no resource exhaustion, no crash, no freeze |
+| Response Measure | Over a 10-min continuous run: RSS growth ≤ 20 MB in any 5-min window with no monotonic upward trend; 0 crashes; 0 screen freezes, where a freeze = no screen update for ≥ 2 s |
 
-### QAS-3 · Dependability (Reliability) — Consistent Values Across Displays
+### QAS-4 · Dependability (Reliability) — Consistent Values Across Displays
 > While measuring as usual, when a single measurement result is produced and fanned out to multiple graphs and numbers, the system renders every display in a given on-screen frame from the same underlying measurement snapshot (each tagged with a snapshot ID) so they do not disagree, with 0 value mismatches across displays — a mismatch being any two displays in the same frame whose values trace to different snapshot IDs.
 
 | Element | Content |
@@ -63,7 +75,7 @@
 | Response | Render all displays in a frame from the same measurement snapshot (tagged with a snapshot ID) so they do not disagree |
 | Response Measure | 0 value mismatches across displays in the same on-screen frame, where a mismatch = two displays whose values trace to different snapshot IDs |
 
-### QAS-4 · Dependability (Reliability) — Under Noisy or Weak Signals
+### QAS-5 · Dependability (Reliability) — Under Noisy or Weak Signals
 > In a poor environment where ambient noise mixes in or a weak signal arrives, the system (noise removal / beat detection) filters out noise while preserving the needed sounds, and when the signal is bad it shows a "signal weak" indication instead of a wrong value, meeting beat detection rate ≥ 95% and rate error ≤ ±3 s/d under noise conditions of SNR ≥ 14 dB (using a reference instrument's reading as ground truth, over a sample of at least 1,000 beats), while signals weaker than that show only "signal weak" and output 0 wrong values.
 
 | Element | Content |
@@ -75,8 +87,8 @@
 | Response | Filter out noise while preserving needed sounds; when the signal is bad, show "signal weak" instead of a wrong value |
 | Response Measure | Using a reference instrument's reading as ground truth, over a sample of ≥ 1,000 beats: beat detection rate ≥ 95% and rate error ≤ ±3 s/d under SNR ≥ 14 dB; weaker signals show only "signal weak" and output 0 wrong values |
 
-### QAS-5 · Dependability (Reliability) — Pinpointing Beats Precisely
-> While measuring as usual, when a new beat (tick/tock) arrives in the input stream, the system (beat detection / time calculation) determines its onset and peak positions accurately and maintains timing precision throughout the measurement, locating onset/peak within ≤ 0.1 ms (≈10 samples at 96,000 SPS) so beat error is resolved down to 0.1 ms; this is verified against synthetic input signals with known onset/peak positions (per QAS-9), since 0.1 ms ground truth cannot be obtained from real hardware.
+### QAS-6 · Dependability (Reliability) — Pinpointing Beats Precisely
+> While measuring as usual, when a new beat (tick/tock) arrives in the input stream, the system (beat detection / time calculation) determines its onset and peak positions accurately and maintains timing precision throughout the measurement, locating onset/peak within ≤ 0.1 ms (≈10 samples at 96,000 SPS) so beat error is resolved down to 0.1 ms; this is verified against synthetic input signals with known onset/peak positions (per QAS-10), since 0.1 ms ground truth cannot be obtained from real hardware.
 
 | Element | Content |
 |---------|---------|
@@ -85,9 +97,9 @@
 | Artifact | The beat-detection / time-calculation part |
 | Environment | Measuring as usual |
 | Response | Determine the arriving beat's onset and peak positions accurately and maintain timing precision throughout |
-| Response Measure | Onset/peak detection position error ≤ 0.1 ms (≈10 samples at 96,000 SPS), verified against synthetic signals with known onset/peak positions (per QAS-9, no real hardware); beat error resolvable to 0.1 ms |
+| Response Measure | Onset/peak detection position error ≤ 0.1 ms (≈10 samples at 96,000 SPS), verified against synthetic signals with known onset/peak positions (per QAS-10, no real hardware); beat error resolvable to 0.1 ms |
 
-### QAS-6 · Modifiability (Extensibility) — Adding a New Graph
+### QAS-7 · Modifiability (Extensibility) — Adding a New Graph
 > In a tight-schedule development situation, when a developer wants to add a new measurement/filter/graph, they can add it incrementally without heavily tearing into existing code and test it in isolation, completing within schedule with ≤ 1 existing module changed (registration/wiring only), 0 regressions in existing features, and ≤ 5 person-days of effort for adding one new graph.
 
 | Element | Content |
@@ -99,7 +111,7 @@
 | Response | Add incrementally without heavily tearing into existing code; test in isolation |
 | Response Measure | Adding one new graph: ≤ 1 existing module changed (registration/wiring only), 0 regressions in existing features, ≤ 5 person-days of effort |
 
-### QAS-7 · Modifiability (Modularity) — Fixing in One Place
+### QAS-8 · Modifiability (Modularity) — Fixing in One Place
 > During maintenance, when a developer wants to change one responsibility that used to be crammed together with others on the main screen, changing that one thing has no effect elsewhere, so that fixing one responsibility touches 1 file with 0 ripple changes to other responsibilities.
 
 | Element | Content |
@@ -111,7 +123,7 @@
 | Response | Changing one responsibility has no effect on the others |
 | Response Measure | Fixing one responsibility changes 1 file; 0 ripple changes to other responsibilities |
 
-### QAS-8 · Portability — Running on Other Devices/OSes
+### QAS-9 · Portability — Running on Other Devices/OSes
 > When porting to a different environment or supporting a new sound device, when a developer migrates between Windows ↔ Raspberry Pi, etc., the system can support the new OS / sound device, with 1 module changed/added and 0 lines of existing domain code changed when adding a new environment.
 
 | Element | Content |
@@ -123,7 +135,7 @@
 | Response | Support the new OS / sound device |
 | Response Measure | Adding a new environment (OS / sound device): 1 module changed/added, 0 lines of existing domain code changed |
 
-### QAS-9 · Modifiability (Testability) — Testing Parts in Isolation
+### QAS-10 · Modifiability (Testability) — Testing Parts in Isolation
 > During testing, when a developer/tester wants to test just the sound-analysis stages or the input part separately, the stage-by-stage analysis parts and the sound-input part can be checked in isolation by feeding fake input without real hardware, meeting unit-test coverage ≥ 80% on the core analysis stages and 100% of unit tests runnable without real hardware.
 
 | Element | Content |
@@ -135,7 +147,7 @@
 | Response | Check parts in isolation by feeding fake input without real hardware |
 | Response Measure | Unit-test coverage ≥ 80% on core analysis stages, 100% of unit tests runnable without real hardware |
 
-### QAS-10 · Usability — Reading and Operating on the Low-Resolution Touchscreen
+### QAS-11 · Usability — Reading and Operating on the Low-Resolution Touchscreen
 > While using the device as usual on the Raspberry Pi's 800×480 touchscreen, when the user reads measurement values and switches modes, the system presents the key readings legibly without scrolling/zooming and lets the user operate primary functions by touch alone, keeping primary readings (rate, beat error, amplitude) readable at normal working distance, all primary touch targets ≥ 9 mm (≈ 48 px), and any primary mode reachable in ≤ 2 taps.
 
 | Element | Content |
@@ -147,7 +159,7 @@
 | Response | Present key readings legibly and allow primary functions to be operated by touch alone |
 | Response Measure | Primary readings (rate, beat error, amplitude) shown simultaneously without scroll/zoom at ≥ 24 px font, readable at ~40 cm working distance; all primary touch targets ≥ 9 mm (≈ 48 px); any primary mode reachable in ≤ 2 taps |
 
-### QAS-11 · Availability (Recoverability) — Audio Device Disconnect/Reconnect
+### QAS-12 · Availability (Recoverability) — Audio Device Disconnect/Reconnect
 > While measuring as usual, when the audio input device is disconnected or errors out, the system detects the fault without crashing, informs the user, and resumes measurement without a manual restart once the device is reconnected, with 0 crashes, a "no device" indication within 5 s, automatic resumption within 10 s of reconnection, and 0 data corruption.
 
 | Element | Content |
@@ -195,8 +207,8 @@
 
 ## Quality Attribute Scenarios
 
-### QAS-1 · Performance (Latency & Computation Time) — From Sound Input to Screen Display
-> 평소처럼 측정하는 동안 마이크로 소리가 들어오면, 시스템은 입력 → 분석 → 표시 흐름으로 처리하여 화면에 표시하며, 소리가 들어온 시점부터 화면에 뜰 때까지의 p99(99 백분위) 종단 지연 시간이 500 ms 미만이고, 연산 시간(오디오 버퍼링과 화면 표시를 제외한 분석 처리만)이 p99 기준 100 ms 미만이며, 10분 연속 실행 동안 오디오 블록과 비트 누락이 0회임을 보장한다.
+### QAS-1 · Performance (Latency) — From Sound Input to Screen Display
+> 평소처럼 측정하는 동안 마이크로 소리가 들어오면, 시스템은 입력 → 분석 → 표시 흐름으로 처리하여 화면에 표시하며, 소리가 들어온 시점부터 화면에 뜰 때까지의 p99(99 백분위) 종단 지연 시간이 500 ms 미만이고, 10분 연속 실행 동안 오디오 블록과 비트 누락이 0회임을 보장한다.
 
 | 요소 | 내용 |
 |------|------|
@@ -205,21 +217,33 @@
 | 대상 산출물 | 전체 입력 → 분석 → 표시 흐름 |
 | 환경 | 평소처럼 측정 중 |
 | 응답 | 처리하여 화면에 표시함 |
-| 응답 척도 | p99 종단 지연 시간(소리 도착 → 화면 표시) ≤ 500 ms; p99 연산 시간(오디오 버퍼링·화면 표시 제외, 분석 처리만) ≤ 100 ms; 10분 연속 실행 동안 드롭된 오디오 블록 0개, 놓친 비트 0개 |
+| 응답 척도 | p99 종단 지연 시간(소리 도착 → 화면 표시) ≤ 500 ms; 10분 연속 실행 동안 드롭된 오디오 블록 0개, 놓친 비트 0개 |
 
-### QAS-2 · Performance (Throughput) — No Slowdown Over Long Runs
-> Raspberry Pi(8 GB RAM)에서 멈추지 않고 연속 측정하는 동안, 시스템은 데이터 손실 없이 계속 처리하고 메모리가 고갈되지 않도록 안정적으로 실행되며, 10분 연속 실행 동안 96,000 SPS(최소 48,000 SPS)를 유지하고 메모리 증가를 제한하며 화면 멈춤이 0회이다.
+### QAS-2 · Performance (Throughput) — Analysis Processing Budget
+> 평소처럼 측정하는 동안 분석할 오디오 블록이 들어오면, 시스템은 분석 처리(입력 → 분석 단계, 오디오 버퍼링과 화면 표시 제외)를 제한된 연산 예산 내에 완료하여, p99 연산 시간이 100 ms 미만이고 10분 연속 실행 동안 오디오 블록과 비트 누락이 0회임을 보장한다.
+
+| 요소 | 내용 |
+|------|------|
+| 출처 | 분석/계산 단계 (내부) |
+| 자극 | 분석할 오디오 블록이 들어옴 |
+| 대상 산출물 | 입력 → 분석 처리 단계 |
+| 환경 | 평소처럼 측정 중 |
+| 응답 | 분석 처리를 연산 예산 내에 완료함 |
+| 응답 척도 | p99 연산 시간(오디오 버퍼링·화면 표시 제외, 분석 처리만) ≤ 100 ms; 10분 연속 실행 동안 드롭된 오디오 블록 0개, 놓친 비트 0개 |
+
+### QAS-3 · Dependability (Reliability) — No Degradation Over Long Runs
+> Raspberry Pi(8 GB RAM)에서 멈추지 않고 연속 측정하는 동안, 시스템은 시간이 지나도 성능이 열화되지 않고 정상 서비스를 계속 제공하여 — 메모리 누수 없음, 크래시 없음, 화면 멈춤 없음 — 10분 연속 실행을 견딘다(입력 rate를 따라가는 것은 QAS-2에서 전제).
 
 | 요소 | 내용 |
 |------|------|
 | 출처 | 시스템 |
 | 자극 | 오랫동안 멈추지 않고 연속 측정함 |
-| 대상 산출물 | 전체 시스템, Raspberry Pi 메모리/성능 |
+| 대상 산출물 | 전체 시스템, Raspberry Pi 메모리/프로세스 상태 |
 | 환경 | Raspberry Pi(8 GB RAM)에서 장시간 실행 |
-| 응답 | 데이터 손실 없이 계속 처리하고, 메모리 부족 없이 안정적으로 유지됨 |
-| 응답 척도 | 96,000 SPS 유지(최소 48,000 SPS); 10분 연속 실행 중 임의 5분 구간에서 RSS 증가 ≤ 20 MB, 단조 증가 추세 없음; 화면 멈춤 0회(멈춤 = 화면 업데이트가 2초 이상 미갱신) |
+| 응답 | 열화 없이 정상 서비스를 계속 제공: 자원 고갈 없음, 크래시 없음, 멈춤 없음 |
+| 응답 척도 | 10분 연속 실행 중: 임의 5분 구간에서 RSS 증가 ≤ 20 MB, 단조 증가 추세 없음; 크래시 0회; 화면 멈춤 0회(멈춤 = 화면 업데이트가 2초 이상 미갱신) |
 
-### QAS-3 · Dependability (Reliability) — Consistent Values Across Displays
+### QAS-4 · Dependability (Reliability) — Consistent Values Across Displays
 > 평소처럼 측정하는 동안 하나의 측정 결과가 산출되어 여러 그래프와 숫자로 전달될 때, 시스템은 한 화면 프레임의 모든 표시를 동일한 측정 스냅샷(각 스냅샷 ID 부여)에서 렌더링하여 서로 불일치하지 않게 하며, 표시 간 값 불일치가 0회이다 — 불일치란 같은 프레임의 두 표시가 서로 다른 스냅샷 ID에서 파생된 경우를 말한다.
 
 | 요소 | 내용 |
@@ -231,7 +255,7 @@
 | 응답 | 한 프레임의 모든 표시를 동일한 측정 스냅샷(스냅샷 ID 부여)에서 렌더링하여 서로 불일치하지 않게 함 |
 | 응답 척도 | 같은 화면 프레임의 표시 간 값 불일치 0회. 불일치 = 두 표시의 값이 서로 다른 스냅샷 ID에서 파생된 경우 |
 
-### QAS-4 · Dependability (Reliability) — Under Noisy or Weak Signals
+### QAS-5 · Dependability (Reliability) — Under Noisy or Weak Signals
 > 주변 잡음이 섞이거나 약한 신호가 들어오는 열악한 환경에서, 시스템(잡음 제거/비트 감지)은 필요한 소리를 보존하면서 잡음을 걸러내고, 신호가 나쁠 때는 잘못된 값을 표시하는 대신 "신호 약함" 표시를 보여준다. 기준 장비 판독값을 정답으로 사용하여 최소 1,000비트 표본 기준, SNR ≥ 14 dB 잡음 조건에서 비트 감지율 ≥ 95%, 일오차 ≤ ±3 s/d를 만족하며, 그보다 약한 신호는 "신호 약함"만 표시하고 잘못된 값 출력은 0회이다.
 
 | 요소 | 내용 |
@@ -243,8 +267,8 @@
 | 응답 | 필요한 소리를 보존하면서 잡음을 걸러냄; 신호가 나쁠 때 잘못된 값 대신 "신호 약함"을 표시함 |
 | 응답 척도 | 기준 장비 판독값을 정답으로, 최소 1,000비트 표본 기준 SNR ≥ 14 dB 조건에서 비트 감지율 ≥ 95%, 일오차 ≤ ±3 s/d; 더 약한 신호는 "신호 약함"만 표시하고 잘못된 값 출력 0회 |
 
-### QAS-5 · Dependability (Reliability) — Pinpointing Beats Precisely
-> 평소처럼 측정하는 동안 새 비트(틱/톡)가 입력 스트림에 도착할 때, 시스템(비트 감지/시간 계산)은 그 비트의 시작점과 피크 위치를 정확히 찾아내고 측정 내내 시간 정밀도를 유지하여, 시작/피크 검출 위치 오차가 ≤ 0.1 ms(96,000 SPS에서 약 10샘플)이고 비트 오차를 0.1 ms까지 해상할 수 있다. 0.1 ms 정답은 실제 하드웨어로 얻을 수 없으므로, 시작/피크 위치가 알려진 합성 입력 신호로 검증한다(QAS-9 연계).
+### QAS-6 · Dependability (Reliability) — Pinpointing Beats Precisely
+> 평소처럼 측정하는 동안 새 비트(틱/톡)가 입력 스트림에 도착할 때, 시스템(비트 감지/시간 계산)은 그 비트의 시작점과 피크 위치를 정확히 찾아내고 측정 내내 시간 정밀도를 유지하여, 시작/피크 검출 위치 오차가 ≤ 0.1 ms(96,000 SPS에서 약 10샘플)이고 비트 오차를 0.1 ms까지 해상할 수 있다. 0.1 ms 정답은 실제 하드웨어로 얻을 수 없으므로, 시작/피크 위치가 알려진 합성 입력 신호로 검증한다(QAS-10 연계).
 
 | 요소 | 내용 |
 |------|------|
@@ -253,9 +277,9 @@
 | 대상 산출물 | 비트 감지 / 시간 계산 부분 |
 | 환경 | 평소처럼 측정 중 |
 | 응답 | 도착한 비트의 시작점과 피크 위치를 정확히 찾아내고 측정 내내 시간 정밀도를 유지함 |
-| 응답 척도 | 시작/피크 검출 위치 오차 ≤ 0.1 ms(96,000 SPS에서 약 10샘플), 시작/피크 위치가 알려진 합성 신호로 검증(QAS-9 연계, 실제 하드웨어 불요); 비트 오차 0.1 ms 해상 가능 |
+| 응답 척도 | 시작/피크 검출 위치 오차 ≤ 0.1 ms(96,000 SPS에서 약 10샘플), 시작/피크 위치가 알려진 합성 신호로 검증(QAS-10 연계, 실제 하드웨어 불요); 비트 오차 0.1 ms 해상 가능 |
 
-### QAS-6 · Modifiability (Extensibility) — Adding a New Graph
+### QAS-7 · Modifiability (Extensibility) — Adding a New Graph
 > 일정이 촉박한 개발 상황에서 개발자가 새 측정/필터/그래프를 추가하려고 할 때, 기존 코드를 크게 뜯어고치지 않고 점진적으로 추가하고 독립적으로 테스트할 수 있으며, 새 그래프 하나 추가에 대해 기존 모듈 변경 ≤ 1개(등록/배선부만), 기존 기능 회귀 0건, 작업량 ≤ 5인일로 일정 내 완료한다.
 
 | 요소 | 내용 |
@@ -267,7 +291,7 @@
 | 응답 | 기존 코드를 크게 뜯어고치지 않고 점진적으로 추가함; 독립적으로 테스트함 |
 | 응답 척도 | 새 그래프 하나 추가: 기존 모듈 변경 ≤ 1개(등록/배선부만), 기존 기능 회귀 0건, 작업량 ≤ 5인일 |
 
-### QAS-7 · Modifiability (Modularity) — Fixing in One Place
+### QAS-8 · Modifiability (Modularity) — Fixing in One Place
 > 유지보수 중 개발자가 메인 화면에 다른 책임들과 함께 몰려 있던 한 가지 책임을 변경하려고 할 때, 그 한 가지 변경이 다른 곳에 영향을 주지 않으며, 하나의 책임 수정 시 1개 파일만 변경되고 다른 책임으로의 변경 전파가 0건이다.
 
 | 요소 | 내용 |
@@ -279,7 +303,7 @@
 | 응답 | 한 가지 책임 변경이 다른 책임에 영향을 주지 않음 |
 | 응답 척도 | 하나의 책임 수정 시 1개 파일 변경; 다른 책임으로의 변경 전파 0건 |
 
-### QAS-8 · Portability — Running on Other Devices/OSes
+### QAS-9 · Portability — Running on Other Devices/OSes
 > 다른 환경으로 포팅하거나 새 사운드 장치를 지원할 때, 개발자가 Windows ↔ Raspberry Pi 등으로 이전하더라도 시스템은 새 OS/사운드 장치를 지원할 수 있으며, 새 환경(OS / 사운드 장치) 추가 시 1개 모듈만 변경/추가하고 기존 도메인 코드 변경은 0줄이다.
 
 | 요소 | 내용 |
@@ -291,7 +315,7 @@
 | 응답 | 새 OS / 사운드 장치를 지원함 |
 | 응답 척도 | 새 환경(OS / 사운드 장치) 추가: 1개 모듈 변경/추가, 기존 도메인 코드 변경 0줄 |
 
-### QAS-9 · Modifiability (Testability) — Testing Parts in Isolation
+### QAS-10 · Modifiability (Testability) — Testing Parts in Isolation
 > 테스트 중 개발자/테스터가 사운드 분석 단계나 입력 부분만 따로 테스트하려고 할 때, 단계별 분석 부분과 사운드 입력 부분은 실제 하드웨어 없이 가짜 입력을 주입하여 독립적으로 확인할 수 있으며, 핵심 분석 단계의 단위 테스트 커버리지 ≥ 80%, 실제 하드웨어 없이 실행 가능한 단위 테스트 100%를 만족한다.
 
 | 요소 | 내용 |
@@ -303,7 +327,7 @@
 | 응답 | 실제 하드웨어 없이 가짜 입력을 주입하여 부분별로 독립 확인함 |
 | 응답 척도 | 핵심 분석 단계 단위 테스트 커버리지 ≥ 80%, 실제 하드웨어 없이 실행 가능한 단위 테스트 100% |
 
-### QAS-10 · Usability — Reading and Operating on the Low-Resolution Touchscreen
+### QAS-11 · Usability — Reading and Operating on the Low-Resolution Touchscreen
 > Raspberry Pi의 800×480 터치스크린에서 평소처럼 사용하는 동안 사용자가 측정값을 읽고 모드를 전환할 때, 시스템은 핵심 측정값을 스크롤/확대 없이 가독성 있게 표시하고 주요 기능을 터치만으로 조작할 수 있게 하며, 주요 측정값(일오차·비트오차·진폭)을 정상 작업 거리에서 판독 가능하게 표시하고, 모든 주요 터치 타깃을 ≥ 9 mm(≈ 48 px)로, 주요 모드 도달을 ≤ 2 탭으로 유지한다.
 
 | 요소 | 내용 |
@@ -315,7 +339,7 @@
 | 응답 | 핵심 측정값을 가독성 있게 표시하고 주요 기능을 터치만으로 조작 가능하게 함 |
 | 응답 척도 | 주요 측정값(일오차·비트오차·진폭)을 스크롤/확대 없이 동시 표시, 폰트 ≥ 24 px, 약 40 cm 작업 거리에서 판독 가능; 모든 주요 터치 타깃 ≥ 9 mm(≈ 48 px); 주요 모드 도달 ≤ 2 탭 |
 
-### QAS-11 · Availability (Recoverability) — Audio Device Disconnect/Reconnect
+### QAS-12 · Availability (Recoverability) — Audio Device Disconnect/Reconnect
 > 평소처럼 측정하는 동안 오디오 입력 장치가 분리되거나 오류를 일으킬 때, 시스템은 크래시 없이 오류를 감지하고 사용자에게 알리며 장치 재연결 시 수동 재시작 없이 측정을 재개하여, 크래시 0회, 5초 이내 "장치 없음" 표시, 재연결 후 10초 이내 자동 측정 재개, 데이터 손상 0을 보장한다.
 
 | 요소 | 내용 |
