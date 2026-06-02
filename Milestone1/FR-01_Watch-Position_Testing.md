@@ -22,11 +22,17 @@
 
 [KO] CH, CB, 6H, 9H, 3H, 12H 중 하나의 position이 active인 상태에서 결과가 캡처되면, 시스템은 측정된 rate, amplitude, beat error를 정확히 하나의 일치하는 position 식별자와 연결한다.
 
+**Quality Attribute Rationale**
+
+[EN] Accurateness is selected because each measurement result must be linked to the actual watch position where it was measured.
+
+[KO] 각 측정 결과가 실제로 측정된 watch position과 정확히 연결되어야 하므로 Accurateness를 선택한다.
+
 | Field | Description |
 |---|---|
 | ID | QA-01-01 |
-| Quality Attribute | [EN] Accuracy<br>[KO] 정확도 |
-| Source of Stimulus | [EN] Measurement result<br>[KO] 측정 결과 |
+| Quality Attribute | [EN] Accurateness<br>[KO] 정확성 |
+| Source of Stimulus | [EN] Measurement acquisition process<br>[KO] 측정 수집 프로세스 |
 | Stimulus | [EN] A position measurement result is captured while a watch position is active.<br>[KO] watch position이 활성화된 상태에서 position 측정 결과가 캡처된다. |
 | Artifact | [EN] Position result<br>[KO] Position result |
 | Environment | [EN] Live, Playback, or Sim measurement mode<br>[KO] Live, Playback 또는 Sim 측정 모드 |
@@ -40,6 +46,12 @@
 [EN] While measuring or reviewing a position result, the user checks the GUI and identifies the active or selected position near the displayed measurement values within 5 seconds.
 
 [KO] position result를 측정하거나 검토하는 동안 사용자는 GUI를 확인하고 표시된 측정값 근처에서 active 또는 selected position을 5초 이내에 식별한다.
+
+**Quality Attribute Rationale**
+
+[EN] Usability is selected because the user must quickly identify the active or selected position in the GUI.
+
+[KO] 사용자가 GUI에서 active 또는 selected position을 빠르게 식별해야 하므로 Usability를 선택한다.
 
 | Field | Description |
 |---|---|
@@ -60,11 +72,17 @@
 
 [KO] CH, CB, 6H, 9H, 3H, 12H가 weak, noisy, partially missing, clipped signal condition에서 측정되면, 시스템은 영향을 받은 결과를 정상 valid result로 표시하지 않고 invalid 또는 low-confidence로 표시한다.
 
+**Quality Attribute Rationale**
+
+[EN] Accurateness is selected because a result from a weak, noisy, partially missing, or clipped signal must not be treated as an accurate normal measurement.
+
+[KO] weak, noisy, partially missing, clipped signal에서 나온 결과가 정확한 정상 측정값처럼 취급되면 안 되므로 Accurateness를 선택한다.
+
 | Field | Description |
 |---|---|
 | ID | QA-01-03 |
-| Quality Attribute | [EN] Accuracy<br>[KO] 정확도 |
-| Source of Stimulus | [EN] Signal input<br>[KO] 신호 입력 |
+| Quality Attribute | [EN] Accurateness<br>[KO] 정확성 |
+| Source of Stimulus | [EN] Watch acoustic signal<br>[KO] 시계 음향 신호 |
 | Stimulus | [EN] The input signal is weak, noisy, missing, clipped, or otherwise insufficient during position measurement.<br>[KO] position 측정 중 입력 신호가 약하거나, noisy하거나, 누락되거나, clipped되거나, 그 밖의 이유로 충분하지 않다. |
 | Artifact | [EN] Position result<br>[KO] Position result |
 | Environment | [EN] Live, Playback, or Sim measurement mode<br>[KO] Live, Playback 또는 Sim 측정 모드 |
