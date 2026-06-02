@@ -1,6 +1,6 @@
 # Milestone1 Jae-hong Oh
 
-> English version above, Korean version below. (한국어는 아래쪽에)
+> English version above, Korean version below. (위쪽은 영어 버전, 아래쪽은 한국어 버전입니다.)
 
 ## Functional Requirements
 
@@ -27,8 +27,8 @@
 
 ## Quality Attribute Scenarios
 
-### QAS-1 · Performance (Latency) — From Sound Input to Screen Display
-> While measuring as usual, when sound arrives at the microphone, the system processes it through the input → analysis → display flow and shows it on screen, guaranteeing p99 (99th-percentile) end-to-end latency (from sound arrival to on-screen display) under 100 ms, with 0 dropped audio blocks and 0 missed beats over a 10-min continuous run.
+### QAS-1 · Performance (Latency & Computation Time) — From Sound Input to Screen Display
+> While measuring as usual, when sound arrives at the microphone, the system processes it through the input → analysis → display flow and shows it on screen, guaranteeing p99 (99th-percentile) end-to-end latency (from sound arrival to on-screen display) under 500 ms and p99 computation time (the analysis processing alone, excluding audio buffering and display) under 100 ms, with 0 dropped audio blocks and 0 missed beats over a 10-min continuous run.
 
 | Element | Content |
 |---------|---------|
@@ -37,7 +37,7 @@
 | Artifact | The full input → analysis → display flow |
 | Environment | Measuring as usual |
 | Response | Process and show on screen |
-| Response Measure | p99 (99th-percentile) end-to-end latency (sound arrival → on-screen) under 100 ms; 0 dropped audio blocks and 0 missed beats over a 10-min continuous run |
+| Response Measure | p99 end-to-end latency (sound arrival → on-screen) ≤ 500 ms; p99 computation time (analysis processing only, excluding audio buffering and display) ≤ 100 ms; 0 dropped audio blocks and 0 missed beats over a 10-min continuous run |
 
 ### QAS-2 · Performance (Throughput) — No Slowdown Over Long Runs
 > While measuring continuously without stopping on the Raspberry Pi (8 GB RAM), the system keeps processing data without loss and runs stably without running out of memory, sustaining 96,000 SPS (48,000 SPS minimum) with bounded memory growth and no screen freezes over 10 minutes of continuous operation.
@@ -195,8 +195,8 @@
 
 ## Quality Attribute Scenarios
 
-### QAS-1 · Performance (Latency) — From Sound Input to Screen Display
-> 평소처럼 측정하는 동안 마이크로 소리가 들어오면, 시스템은 입력 → 분석 → 표시 흐름으로 처리하여 화면에 표시하며, 소리가 들어온 시점부터 화면에 뜰 때까지의 p99(99 백분위) 종단 지연 시간이 100 ms 미만이고, 10분 연속 실행 동안 오디오 블록과 비트 누락이 0회임을 보장한다.
+### QAS-1 · Performance (Latency & Computation Time) — From Sound Input to Screen Display
+> 평소처럼 측정하는 동안 마이크로 소리가 들어오면, 시스템은 입력 → 분석 → 표시 흐름으로 처리하여 화면에 표시하며, 소리가 들어온 시점부터 화면에 뜰 때까지의 p99(99 백분위) 종단 지연 시간이 500 ms 미만이고, 연산 시간(오디오 버퍼링과 화면 표시를 제외한 분석 처리만)이 p99 기준 100 ms 미만이며, 10분 연속 실행 동안 오디오 블록과 비트 누락이 0회임을 보장한다.
 
 | 요소 | 내용 |
 |------|------|
@@ -205,7 +205,7 @@
 | 대상 산출물 | 전체 입력 → 분석 → 표시 흐름 |
 | 환경 | 평소처럼 측정 중 |
 | 응답 | 처리하여 화면에 표시함 |
-| 응답 척도 | p99(99 백분위) 종단 지연 시간(소리 도착 → 화면 표시) 100 ms 미만; 10분 연속 실행 동안 드롭된 오디오 블록 0개, 놓친 비트 0개 |
+| 응답 척도 | p99 종단 지연 시간(소리 도착 → 화면 표시) ≤ 500 ms; p99 연산 시간(오디오 버퍼링·화면 표시 제외, 분석 처리만) ≤ 100 ms; 10분 연속 실행 동안 드롭된 오디오 블록 0개, 놓친 비트 0개 |
 
 ### QAS-2 · Performance (Throughput) — No Slowdown Over Long Runs
 > Raspberry Pi(8 GB RAM)에서 멈추지 않고 연속 측정하는 동안, 시스템은 데이터 손실 없이 계속 처리하고 메모리가 고갈되지 않도록 안정적으로 실행되며, 10분 연속 실행 동안 96,000 SPS(최소 48,000 SPS)를 유지하고 메모리 증가를 제한하며 화면 멈춤이 0회이다.
