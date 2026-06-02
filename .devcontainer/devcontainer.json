@@ -1,0 +1,16 @@
+{
+  "name": "TimeGrapher Reference + Code",
+  "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
+  "customizations": {
+    "codespaces": {
+      "repositories": {
+        "lgcmu2026-team5/TimeGrapher": {
+          "permissions": {
+            "contents": "write"
+          }
+        }
+      }
+    }
+  },
+  "postCreateCommand": "cd /workspaces && if [ ! -d TimeGrapher ]; then git clone https://github.com/lgcmu2026-team5/TimeGrapher.git; fi"
+}
