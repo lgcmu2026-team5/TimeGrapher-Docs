@@ -8,27 +8,27 @@
 
 | ID | Grade | Requirement |
 |----|-------|-------------|
-| FR-G09-01 | mandatory | The system shall provide the user with a time-frequency spectrogram that shows how the watch's acoustic energy is distributed across time and frequency. |
-| FR-G09-02 | mandatory | The system shall present the spectrogram to the user with time on the horizontal axis, frequency on the vertical axis, and signal strength as color intensity. |
-| FR-G09-03 | optional | The system should provide the user with the ability to inspect either the most recent beat or a selected recent time window. |
-| FR-G09-04 | optional | The system should provide the user with the ability to view recurring energy structures at characteristic frequency ranges. |
-| FR-G09-05 | optional | The system should provide the user with the ability to compare one beat with the next. |
-| FR-G09-06 | optional | The system should provide the user with a color scale or legend for interpreting relative signal strength. |
+| FR-G09-01 | mandatory | The Time-Frequency Spectrogram Display shall provide the user with a time-frequency spectrogram that shows how the watch's acoustic energy is distributed across time and frequency. |
+| FR-G09-02 | mandatory | The Time-Frequency Spectrogram Display shall present the spectrogram to the user with time on the horizontal axis, frequency on the vertical axis, and signal strength as color intensity. |
+| FR-G09-03 | optional | The Time-Frequency Spectrogram Display should provide the user with the ability to inspect either the most recent beat or a selected recent time window. |
+| FR-G09-04 | optional | The Time-Frequency Spectrogram Display should provide the user with the ability to view recurring energy structures at characteristic frequency ranges. |
+| FR-G09-05 | optional | The Time-Frequency Spectrogram Display should provide the user with the ability to compare one beat with the next. |
+| FR-G09-06 | optional | The Time-Frequency Spectrogram Display should provide the user with a color scale or legend for interpreting relative signal strength. |
 
 ### G11 · Scope Mode with Synchronized Sweep Display
 
 | ID | Grade | Requirement |
 |----|-------|-------------|
-| FR-G11-01 | mandatory | The system shall provide the user with a display of the watch's acoustic signal in a fixed sweep window, similar to an oscilloscope. |
-| FR-G11-02 | optional | The system should provide the user with a display of the processed signal that combines the upper and lower halves of the waveform. |
-| FR-G11-03 | optional | The system should provide the user with the ability to configure the sweep time as a multiple of the watch's tick interval. |
-| FR-G11-04 | optional | The system should provide the user with a synchronized display in which the beat pattern stays visually stable near the nominal rate and drifts when the watch is fast or slow. |
-| FR-G11-05 | optional | The system may provide the user with reference values (daily rate, amplitude, beat error, nominal beat rate) from the most recent timing test. |
+| FR-G11-01 | mandatory | The Scope Mode with Synchronized Sweep Display shall provide the user with a display of the watch's acoustic signal in a fixed sweep window, similar to an oscilloscope. |
+| FR-G11-02 | optional | The Scope Mode with Synchronized Sweep Display should provide the user with a display of the processed signal that combines the upper and lower halves of the waveform. |
+| FR-G11-03 | optional | The Scope Mode with Synchronized Sweep Display should provide the user with the ability to configure the sweep time as a multiple of the watch's tick interval. |
+| FR-G11-04 | optional | The Scope Mode with Synchronized Sweep Display should provide the user with a synchronized display in which the beat pattern stays visually stable near the nominal rate and drifts when the watch is fast or slow. |
+| FR-G11-05 | optional | The Scope Mode with Synchronized Sweep Display may provide the user with reference values (daily rate, amplitude, beat error, nominal beat rate) from the most recent timing test. |
 
 ## Quality Attribute Scenarios
 
 ### QAS-1 · Performance (Latency) — From Sound Input to Screen Display
-> While measuring as usual, when sound arrives at the microphone, the system processes it through the input → analysis → display flow and shows it on screen, guaranteeing average end-to-end latency (from sound arrival to on-screen display) under 100 ms with 0 dropped audio blocks and 0 missed beats.
+> While measuring as usual, when sound arrives at the microphone, the system processes it through the input → analysis → display flow and shows it on screen, guaranteeing p99 (99th-percentile) end-to-end latency (from sound arrival to on-screen display) under 100 ms, with 0 dropped audio blocks and 0 missed beats over a 10-min continuous run.
 
 | Element | Content |
 |---------|---------|
@@ -37,7 +37,7 @@
 | Artifact | The full input → analysis → display flow |
 | Environment | Measuring as usual |
 | Response | Process and show on screen |
-| Response Measure | Average end-to-end latency (sound arrival → on-screen) under 100 ms, 0 dropped audio blocks, 0 missed beats |
+| Response Measure | p99 (99th-percentile) end-to-end latency (sound arrival → on-screen) under 100 ms; 0 dropped audio blocks and 0 missed beats over a 10-min continuous run |
 
 ### QAS-2 · Performance (Throughput) — No Slowdown Over Long Runs
 > While measuring continuously without stopping on the Raspberry Pi (8 GB RAM), the system keeps processing data without loss and runs stably without running out of memory, sustaining 96,000 SPS (48,000 SPS minimum) with bounded memory growth and no screen freezes over 10 minutes of continuous operation.
@@ -52,7 +52,7 @@
 | Response Measure | Sustains 96,000 SPS (48,000 SPS minimum); over a 10-min continuous run, RSS growth ≤ 20 MB in any 5-min window with no monotonic upward trend; 0 screen freezes, where a freeze = no screen update for ≥ 2 s |
 
 ### QAS-3 · Dependability (Reliability) — Consistent Values Across Displays
-> While measuring as usual, when a single measurement result is produced and fanned out to multiple graphs and numbers, the system renders every display from the same underlying measurement snapshot so they do not disagree, with 0 mismatches across displays for the same input and agreement with the simulation reference value within rate ±1 s/d, beat error ±0.1 ms, amplitude ±3°.
+> While measuring as usual, when a single measurement result is produced and fanned out to multiple graphs and numbers, the system renders every display in a given on-screen frame from the same underlying measurement snapshot (each tagged with a snapshot ID) so they do not disagree, with 0 value mismatches across displays — a mismatch being any two displays in the same frame whose values trace to different snapshot IDs.
 
 | Element | Content |
 |---------|---------|
@@ -60,8 +60,8 @@
 | Stimulus | A single measurement result is produced and fanned out to multiple displays (graphs/numbers) |
 | Artifact | Numeric readouts and multiple graph displays |
 | Environment | Measuring as usual |
-| Response | Render all displays from the same measurement snapshot so they do not disagree |
-| Response Measure | 0 value mismatches across displays for the same input; within rate ±1 s/d, beat error ±0.1 ms, amplitude ±3° of the simulation reference value |
+| Response | Render all displays in a frame from the same measurement snapshot (tagged with a snapshot ID) so they do not disagree |
+| Response Measure | 0 value mismatches across displays in the same on-screen frame, where a mismatch = two displays whose values trace to different snapshot IDs |
 
 ### QAS-4 · Dependability (Reliability) — Under Noisy or Weak Signals
 > In a poor environment where ambient noise mixes in or a weak signal arrives, the system (noise removal / beat detection) filters out noise while preserving the needed sounds, and when the signal is bad it shows a "signal weak" indication instead of a wrong value, meeting beat detection rate ≥ 95% and rate error ≤ ±3 s/d under noise conditions of SNR ≥ 14 dB (using a reference instrument's reading as ground truth, over a sample of at least 1,000 beats), while signals weaker than that show only "signal weak" and output 0 wrong values.
@@ -76,7 +76,7 @@
 | Response Measure | Using a reference instrument's reading as ground truth, over a sample of ≥ 1,000 beats: beat detection rate ≥ 95% and rate error ≤ ±3 s/d under SNR ≥ 14 dB; weaker signals show only "signal weak" and output 0 wrong values |
 
 ### QAS-5 · Dependability (Reliability) — Pinpointing Beats Precisely
-> While measuring as usual, when a new beat (tick/tock) arrives in the input stream, the system (beat detection / time calculation) determines its onset and peak positions accurately and maintains timing precision throughout the measurement, locating onset/peak within ≤ 0.1 ms (≈10 samples at 96 kSps) so beat error is resolved down to 0.1 ms.
+> While measuring as usual, when a new beat (tick/tock) arrives in the input stream, the system (beat detection / time calculation) determines its onset and peak positions accurately and maintains timing precision throughout the measurement, locating onset/peak within ≤ 0.1 ms (≈10 samples at 96,000 SPS) so beat error is resolved down to 0.1 ms; this is verified against synthetic input signals with known onset/peak positions (per QAS-9), since 0.1 ms ground truth cannot be obtained from real hardware.
 
 | Element | Content |
 |---------|---------|
@@ -85,10 +85,10 @@
 | Artifact | The beat-detection / time-calculation part |
 | Environment | Measuring as usual |
 | Response | Determine the arriving beat's onset and peak positions accurately and maintain timing precision throughout |
-| Response Measure | Onset/peak detection position error ≤ 0.1 ms (≈10 samples at 96 kSps), beat error resolvable to 0.1 ms |
+| Response Measure | Onset/peak detection position error ≤ 0.1 ms (≈10 samples at 96,000 SPS), verified against synthetic signals with known onset/peak positions (per QAS-9, no real hardware); beat error resolvable to 0.1 ms |
 
 ### QAS-6 · Modifiability (Extensibility) — Adding a New Graph
-> In a tight-schedule development situation, when a developer wants to add a new measurement/filter/graph, they can add it incrementally without heavily tearing into existing code and test it in isolation, completing within schedule with 0 existing modules changed (additions only), 0 regressions in existing features, and ≤ 5 person-days of effort for adding one new graph.
+> In a tight-schedule development situation, when a developer wants to add a new measurement/filter/graph, they can add it incrementally without heavily tearing into existing code and test it in isolation, completing within schedule with ≤ 1 existing module changed (registration/wiring only), 0 regressions in existing features, and ≤ 5 person-days of effort for adding one new graph.
 
 | Element | Content |
 |---------|---------|
@@ -97,7 +97,7 @@
 | Artifact | The system (codebase holding the measurement/display features) |
 | Environment | During development, tight schedule |
 | Response | Add incrementally without heavily tearing into existing code; test in isolation |
-| Response Measure | Adding one new graph: 0 existing modules changed (additions only), 0 regressions in existing features, ≤ 5 person-days of effort |
+| Response Measure | Adding one new graph: ≤ 1 existing module changed (registration/wiring only), 0 regressions in existing features, ≤ 5 person-days of effort |
 
 ### QAS-7 · Modifiability (Modularity) — Fixing in One Place
 > During maintenance, when a developer wants to change one responsibility that used to be crammed together with others on the main screen, changing that one thing has no effect elsewhere, so that fixing one responsibility touches 1 file with 0 ripple changes to other responsibilities.
@@ -176,27 +176,27 @@
 
 | ID | Grade | 요구사항 |
 |----|-------|----------|
-| FR-G09-01 | mandatory | 시스템은 사용자에게 시계의 음향 에너지가 시간과 주파수에 따라 어떻게 분포하는지 보여주는 시간-주파수 스펙트로그램을 제공해야 한다. |
-| FR-G09-02 | mandatory | 시스템은 스펙트로그램을 사용자에게 표시할 때 가로축은 시간, 세로축은 주파수, 색상 강도는 신호 세기를 나타내도록 해야 한다. |
-| FR-G09-03 | optional | 시스템은 사용자가 가장 최근 비트 또는 선택한 최근 시간 구간을 검사할 수 있는 기능을 제공해야 한다. |
-| FR-G09-04 | optional | 시스템은 사용자가 특징적인 주파수 범위에서 반복적으로 나타나는 에너지 구조를 볼 수 있는 기능을 제공해야 한다. |
-| FR-G09-05 | optional | 시스템은 사용자가 한 비트와 다음 비트를 비교할 수 있는 기능을 제공해야 한다. |
-| FR-G09-06 | optional | 시스템은 상대적인 신호 세기를 해석할 수 있도록 색상 스케일 또는 범례를 제공해야 한다. |
+| FR-G09-01 | mandatory | Time-Frequency Spectrogram Display는 사용자에게 시계의 음향 에너지가 시간과 주파수에 따라 어떻게 분포하는지 보여주는 시간-주파수 스펙트로그램을 제공해야 한다. |
+| FR-G09-02 | mandatory | Time-Frequency Spectrogram Display는 스펙트로그램을 사용자에게 표시할 때 가로축은 시간, 세로축은 주파수, 색상 강도는 신호 세기를 나타내도록 해야 한다. |
+| FR-G09-03 | optional | Time-Frequency Spectrogram Display는 사용자가 가장 최근 비트 또는 선택한 최근 시간 구간을 검사할 수 있는 기능을 제공해야 한다. |
+| FR-G09-04 | optional | Time-Frequency Spectrogram Display는 사용자가 특징적인 주파수 범위에서 반복적으로 나타나는 에너지 구조를 볼 수 있는 기능을 제공해야 한다. |
+| FR-G09-05 | optional | Time-Frequency Spectrogram Display는 사용자가 한 비트와 다음 비트를 비교할 수 있는 기능을 제공해야 한다. |
+| FR-G09-06 | optional | Time-Frequency Spectrogram Display는 상대적인 신호 세기를 해석할 수 있도록 색상 스케일 또는 범례를 제공해야 한다. |
 
 ### G11 · Scope Mode with Synchronized Sweep Display
 
 | ID | Grade | 요구사항 |
 |----|-------|----------|
-| FR-G11-01 | mandatory | 시스템은 오실로스코프와 유사하게 고정된 스윕 창에서 시계의 음향 신호를 표시하는 화면을 사용자에게 제공해야 한다. |
-| FR-G11-02 | optional | 시스템은 파형의 위쪽 절반과 아래쪽 절반을 결합한 처리 신호 표시를 사용자에게 제공해야 한다. |
-| FR-G11-03 | optional | 시스템은 사용자가 시계 틱 간격의 배수로 스윕 시간을 설정할 수 있는 기능을 제공해야 한다. |
-| FR-G11-04 | optional | 시스템은 비트 패턴이 명목 속도 근처에서는 시각적으로 안정적으로 유지되고, 시계가 빠르거나 느릴 때는 드리프트가 보이는 동기화 표시를 제공해야 한다. |
-| FR-G11-05 | optional | 시스템은 가장 최근 타이밍 테스트에서 얻은 기준값(일오차, 진폭, 비트 오차, 명목 비트 속도)을 사용자에게 제공할 수 있다. |
+| FR-G11-01 | mandatory | Scope Mode with Synchronized Sweep Display는 오실로스코프와 유사하게 고정된 스윕 창에서 시계의 음향 신호를 표시하는 화면을 사용자에게 제공해야 한다. |
+| FR-G11-02 | optional | Scope Mode with Synchronized Sweep Display는 파형의 위쪽 절반과 아래쪽 절반을 결합한 처리 신호 표시를 사용자에게 제공해야 한다. |
+| FR-G11-03 | optional | Scope Mode with Synchronized Sweep Display는 사용자가 시계 틱 간격의 배수로 스윕 시간을 설정할 수 있는 기능을 제공해야 한다. |
+| FR-G11-04 | optional | Scope Mode with Synchronized Sweep Display는 비트 패턴이 명목 속도 근처에서는 시각적으로 안정적으로 유지되고, 시계가 빠르거나 느릴 때는 드리프트가 보이는 동기화 표시를 제공해야 한다. |
+| FR-G11-05 | optional | Scope Mode with Synchronized Sweep Display는 가장 최근 타이밍 테스트에서 얻은 기준값(일오차, 진폭, 비트 오차, 명목 비트 속도)을 사용자에게 제공할 수 있다. |
 
 ## Quality Attribute Scenarios
 
 ### QAS-1 · Performance (Latency) — From Sound Input to Screen Display
-> 평소처럼 측정하는 동안 마이크로 소리가 들어오면, 시스템은 입력 → 분석 → 표시 흐름으로 처리하여 화면에 표시하며, 소리가 들어온 시점부터 화면에 뜰 때까지의 평균 종단 지연 시간이 100 ms 미만이고 오디오 블록과 비트 누락이 0회임을 보장한다.
+> 평소처럼 측정하는 동안 마이크로 소리가 들어오면, 시스템은 입력 → 분석 → 표시 흐름으로 처리하여 화면에 표시하며, 소리가 들어온 시점부터 화면에 뜰 때까지의 p99(99 백분위) 종단 지연 시간이 100 ms 미만이고, 10분 연속 실행 동안 오디오 블록과 비트 누락이 0회임을 보장한다.
 
 | 요소 | 내용 |
 |------|------|
@@ -205,7 +205,7 @@
 | 대상 산출물 | 전체 입력 → 분석 → 표시 흐름 |
 | 환경 | 평소처럼 측정 중 |
 | 응답 | 처리하여 화면에 표시함 |
-| 응답 척도 | 평균 종단 지연 시간(소리 도착 → 화면 표시) 100 ms 미만, 드롭된 오디오 블록 0개, 놓친 비트 0개 |
+| 응답 척도 | p99(99 백분위) 종단 지연 시간(소리 도착 → 화면 표시) 100 ms 미만; 10분 연속 실행 동안 드롭된 오디오 블록 0개, 놓친 비트 0개 |
 
 ### QAS-2 · Performance (Throughput) — No Slowdown Over Long Runs
 > Raspberry Pi(8 GB RAM)에서 멈추지 않고 연속 측정하는 동안, 시스템은 데이터 손실 없이 계속 처리하고 메모리가 고갈되지 않도록 안정적으로 실행되며, 10분 연속 실행 동안 96,000 SPS(최소 48,000 SPS)를 유지하고 메모리 증가를 제한하며 화면 멈춤이 0회이다.
@@ -220,7 +220,7 @@
 | 응답 척도 | 96,000 SPS 유지(최소 48,000 SPS); 10분 연속 실행 중 임의 5분 구간에서 RSS 증가 ≤ 20 MB, 단조 증가 추세 없음; 화면 멈춤 0회(멈춤 = 화면 업데이트가 2초 이상 미갱신) |
 
 ### QAS-3 · Dependability (Reliability) — Consistent Values Across Displays
-> 평소처럼 측정하는 동안 하나의 측정 결과가 산출되어 여러 그래프와 숫자로 전달될 때, 시스템은 모든 표시를 동일한 측정 스냅샷에서 렌더링하여 서로 불일치하지 않게 하며, 같은 입력에 대한 표시 간 불일치가 0회이고 시뮬레이션 기준값과 일오차 ±1 s/d, 비트 오차 ±0.1 ms, 진폭 ±3° 이내로 일치한다.
+> 평소처럼 측정하는 동안 하나의 측정 결과가 산출되어 여러 그래프와 숫자로 전달될 때, 시스템은 한 화면 프레임의 모든 표시를 동일한 측정 스냅샷(각 스냅샷 ID 부여)에서 렌더링하여 서로 불일치하지 않게 하며, 표시 간 값 불일치가 0회이다 — 불일치란 같은 프레임의 두 표시가 서로 다른 스냅샷 ID에서 파생된 경우를 말한다.
 
 | 요소 | 내용 |
 |------|------|
@@ -228,8 +228,8 @@
 | 자극 | 하나의 측정 결과가 산출되어 여러 표시(그래프/숫자)로 전달됨 |
 | 대상 산출물 | 수치 표시값과 여러 그래프 표시 |
 | 환경 | 평소처럼 측정 중 |
-| 응답 | 모든 표시를 동일한 측정 스냅샷에서 렌더링하여 서로 불일치하지 않게 함 |
-| 응답 척도 | 같은 입력에 대해 표시 간 값 불일치 0회; 시뮬레이션 기준값 대비 일오차 ±1 s/d, 비트 오차 ±0.1 ms, 진폭 ±3° 이내 |
+| 응답 | 한 프레임의 모든 표시를 동일한 측정 스냅샷(스냅샷 ID 부여)에서 렌더링하여 서로 불일치하지 않게 함 |
+| 응답 척도 | 같은 화면 프레임의 표시 간 값 불일치 0회. 불일치 = 두 표시의 값이 서로 다른 스냅샷 ID에서 파생된 경우 |
 
 ### QAS-4 · Dependability (Reliability) — Under Noisy or Weak Signals
 > 주변 잡음이 섞이거나 약한 신호가 들어오는 열악한 환경에서, 시스템(잡음 제거/비트 감지)은 필요한 소리를 보존하면서 잡음을 걸러내고, 신호가 나쁠 때는 잘못된 값을 표시하는 대신 "신호 약함" 표시를 보여준다. 기준 장비 판독값을 정답으로 사용하여 최소 1,000비트 표본 기준, SNR ≥ 14 dB 잡음 조건에서 비트 감지율 ≥ 95%, 일오차 ≤ ±3 s/d를 만족하며, 그보다 약한 신호는 "신호 약함"만 표시하고 잘못된 값 출력은 0회이다.
@@ -244,7 +244,7 @@
 | 응답 척도 | 기준 장비 판독값을 정답으로, 최소 1,000비트 표본 기준 SNR ≥ 14 dB 조건에서 비트 감지율 ≥ 95%, 일오차 ≤ ±3 s/d; 더 약한 신호는 "신호 약함"만 표시하고 잘못된 값 출력 0회 |
 
 ### QAS-5 · Dependability (Reliability) — Pinpointing Beats Precisely
-> 평소처럼 측정하는 동안 새 비트(틱/톡)가 입력 스트림에 도착할 때, 시스템(비트 감지/시간 계산)은 그 비트의 시작점과 피크 위치를 정확히 찾아내고 측정 내내 시간 정밀도를 유지하여, 시작/피크 검출 위치 오차가 ≤ 0.1 ms(96 kSps에서 약 10샘플)이고 비트 오차를 0.1 ms까지 해상할 수 있다.
+> 평소처럼 측정하는 동안 새 비트(틱/톡)가 입력 스트림에 도착할 때, 시스템(비트 감지/시간 계산)은 그 비트의 시작점과 피크 위치를 정확히 찾아내고 측정 내내 시간 정밀도를 유지하여, 시작/피크 검출 위치 오차가 ≤ 0.1 ms(96,000 SPS에서 약 10샘플)이고 비트 오차를 0.1 ms까지 해상할 수 있다. 0.1 ms 정답은 실제 하드웨어로 얻을 수 없으므로, 시작/피크 위치가 알려진 합성 입력 신호로 검증한다(QAS-9 연계).
 
 | 요소 | 내용 |
 |------|------|
@@ -253,10 +253,10 @@
 | 대상 산출물 | 비트 감지 / 시간 계산 부분 |
 | 환경 | 평소처럼 측정 중 |
 | 응답 | 도착한 비트의 시작점과 피크 위치를 정확히 찾아내고 측정 내내 시간 정밀도를 유지함 |
-| 응답 척도 | 시작/피크 검출 위치 오차 ≤ 0.1 ms(96 kSps에서 약 10샘플), 비트 오차 0.1 ms 해상 가능 |
+| 응답 척도 | 시작/피크 검출 위치 오차 ≤ 0.1 ms(96,000 SPS에서 약 10샘플), 시작/피크 위치가 알려진 합성 신호로 검증(QAS-9 연계, 실제 하드웨어 불요); 비트 오차 0.1 ms 해상 가능 |
 
 ### QAS-6 · Modifiability (Extensibility) — Adding a New Graph
-> 일정이 촉박한 개발 상황에서 개발자가 새 측정/필터/그래프를 추가하려고 할 때, 기존 코드를 크게 뜯어고치지 않고 점진적으로 추가하고 독립적으로 테스트할 수 있으며, 새 그래프 하나 추가에 대해 기존 모듈 변경 0개(추가만), 기존 기능 회귀 0건, 작업량 ≤ 5인일로 일정 내 완료한다.
+> 일정이 촉박한 개발 상황에서 개발자가 새 측정/필터/그래프를 추가하려고 할 때, 기존 코드를 크게 뜯어고치지 않고 점진적으로 추가하고 독립적으로 테스트할 수 있으며, 새 그래프 하나 추가에 대해 기존 모듈 변경 ≤ 1개(등록/배선부만), 기존 기능 회귀 0건, 작업량 ≤ 5인일로 일정 내 완료한다.
 
 | 요소 | 내용 |
 |------|------|
@@ -265,7 +265,7 @@
 | 대상 산출물 | 시스템(측정·표시 기능을 담은 코드베이스) |
 | 환경 | 개발 중, 일정이 촉박함 |
 | 응답 | 기존 코드를 크게 뜯어고치지 않고 점진적으로 추가함; 독립적으로 테스트함 |
-| 응답 척도 | 새 그래프 하나 추가: 기존 모듈 변경 0개(추가만), 기존 기능 회귀 0건, 작업량 ≤ 5인일 |
+| 응답 척도 | 새 그래프 하나 추가: 기존 모듈 변경 ≤ 1개(등록/배선부만), 기존 기능 회귀 0건, 작업량 ≤ 5인일 |
 
 ### QAS-7 · Modifiability (Modularity) — Fixing in One Place
 > 유지보수 중 개발자가 메인 화면에 다른 책임들과 함께 몰려 있던 한 가지 책임을 변경하려고 할 때, 그 한 가지 변경이 다른 곳에 영향을 주지 않으며, 하나의 책임 수정 시 1개 파일만 변경되고 다른 책임으로의 변경 전파가 0건이다.
