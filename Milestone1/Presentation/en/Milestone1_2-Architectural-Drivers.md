@@ -2,10 +2,6 @@
 
 ## Functional Requirements
  
-> Grade normalization: `Mandatory → mandatory`, `Desired → desired`, `Optional → optional`,
-> `O → mandatory / X → optional`, `Y → mandatory / N → optional`.
-> The subject of each requirement is the feature's FR name; the obligation level is carried by the Grade column.
- 
 ### G01 · Watch-Position Testing
 | ID | Grade | Requirement |
 |----|-------|-------------|
