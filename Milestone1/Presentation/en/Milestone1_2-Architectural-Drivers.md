@@ -34,14 +34,13 @@ The following domain terms are used throughout the functional requirements below
 |----|-------|-------------|
 | FR-02-01 | mandatory | The Trace Display shall provide the user with a graph of rate deviation over time. |
 | FR-02-02 | mandatory | The Trace Display shall provide the user with a graph of amplitude over time. |
-| FR-02-03 | optional | The Trace Display may provide the user with rate deviation and amplitude as a vertically stacked graph. |
-| FR-02-04 | optional | The Trace Display may provide the user with rate deviation and amplitude as two separate graphs. |
-| FR-02-05 | mandatory | The Trace Display shall provide the user with a smoothing function for the daily rate (s/d) measurement. |
-| FR-02-06 | mandatory | The Trace Display shall provide the user with an alert when the rate indicates the watch is running late. |
-| FR-02-07 | mandatory | The Trace Display shall provide the user with descriptive text or labels for each graph. |
-| FR-02-08 | mandatory | The Trace Display shall provide the user with an average value and a rolling average that updates over time. |
-| FR-02-09 | mandatory | The Trace Display shall provide the user with long-term summary information for both measurements (rate deviation and amplitude). |
-| FR-02-10 | mandatory | The Trace Display shall provide the user with an alert when the measured amplitude falls outside the 270°–300° range. |
+| FR-02-03 | optional | The Trace Display may provide the user with rate deviation and amplitude as either a vertically stacked graph or two separate graphs. |
+| FR-02-04 | mandatory | The Trace Display shall provide the user with a smoothing function for the daily rate (s/d) measurement. |
+| FR-02-05 | mandatory | The Trace Display shall provide the user with an alert when the rate indicates the watch is running late. |
+| FR-02-06 | mandatory | The Trace Display shall provide the user with descriptive text or labels for each graph. |
+| FR-02-07 | mandatory | The Trace Display shall provide the user with an average value and a rolling average that updates over time. |
+| FR-02-08 | mandatory | The Trace Display shall provide the user with long-term summary information for both measurements (rate deviation and amplitude). |
+| FR-02-09 | mandatory | The Trace Display shall provide the user with an alert when the measured amplitude falls outside the 270°–300° range. |
 
 ### G03 · Rate and Amplitude Stability Over Time (Vario Display)
 | ID | Grade | Requirement |
