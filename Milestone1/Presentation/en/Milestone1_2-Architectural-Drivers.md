@@ -172,10 +172,9 @@
 | FR-12-04 | mandatory | The Scope Function with Multiple Filter Views shall provide the user with all filter views rendered from the same input signal data and the same time axis. |
 | FR-12-05 | mandatory | F0 shall provide the user with the signal as captured, formatted to fit the screen and mirrored symmetrically around its average value, treated as the closest available representation of the raw watch signal. |
 | FR-12-06 | mandatory | F1 shall provide the user with a moving-average-filtered view of the F0 signal that smooths the waveform envelope and removes a large portion of background noise. |
-| FR-12-07 | mandatory | The Scope Function with Multiple Filter Views shall provide the user with documentation noting that low-amplitude signal components may become less visible in F1 mode. |
-| FR-12-08 | mandatory | F2 shall provide the user with a view that builds on F1 by emphasizing rising slopes and attenuating falling slopes to make beat features stand out, especially T3 (and to some extent T2). |
-| FR-12-09 | optional | F2 may provide the user with an attenuation function that decays after a local rise. |
-| FR-12-10 | mandatory | F3 shall provide the user with a view of only the upper portion of the signal relative to its average value, applying emphasis to rising edges and attenuation to falling portions, to support identification of T1 and especially T3. |
-| FR-12-11 | mandatory | Each filter view shall provide the user with its filter label (F0/F1/F2/F3). |
-| FR-12-12 | mandatory | The Scope Function with Multiple Filter Views shall provide the user with a UI to display the four filters simultaneously or switch between them for comparison. |
-| FR-12-13 | mandatory | The filter views shall provide the user with Live, Playback, and Sim modes, including pause and navigation through captured data. |
+| FR-12-07 | mandatory | F2 shall provide the user with a view that builds on F1 by emphasizing rising slopes and attenuating falling slopes to make beat features stand out, especially T3 (and to some extent T2). |
+| FR-12-08 | optional | F2 may provide the user with an attenuation function that decays after a local rise. |
+| FR-12-09 | mandatory | F3 shall provide the user with a view of only the upper portion of the signal relative to its average value, applying emphasis to rising edges and attenuation to falling portions, to support identification of T1 and especially T3. |
+| FR-12-10 | mandatory | Each filter view shall provide the user with its filter label (F0/F1/F2/F3). |
+| FR-12-11 | mandatory | The Scope Function with Multiple Filter Views shall provide the user with a UI to display the four filters simultaneously or switch between them for comparison. |
+| FR-12-12 | mandatory | The filter views shall provide the user with Live, Playback, and Sim modes, including pause and navigation through captured data. |
