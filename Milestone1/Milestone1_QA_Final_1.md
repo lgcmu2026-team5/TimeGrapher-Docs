@@ -1,4 +1,4 @@
-# Milestone1 Jae-hong Oh — QA Final 1
+# Milestone1 — QA Final 1
 
 > English version above, Korean version below. (위쪽은 영어 버전, 아래쪽은 한국어 버전입니다.)
 >
@@ -149,7 +149,7 @@ B = business importance, R = technical risk (H/M/L), per the draft-3 priority ta
 
 ---
 
-# Milestone1 Jae-hong Oh — QA Final 1 (한국어)
+# Milestone1 — QA Final 1 (한국어)
 
 > **Final 1 (2026-06-03)** — `Milestone1_QA_draft3.md`에서 Milestone-1 발표용으로 선정한 6개 시나리오를 우선순위 순서로 정리. QAS-1은 지연을 세 부분 — (1) processing latency, (2) display latency, (3) processing+display latency — 으로 분해해 보고하도록 수정. 시나리오 ID는 draft 3 그대로 유지하여 교차 참조가 유효함; 미선정 시나리오(QAS-2/3/10/12/13)와 제약 C-1–C-6에 대한 참조는 `Milestone1_QA_draft3.md`에서 확인.
 
