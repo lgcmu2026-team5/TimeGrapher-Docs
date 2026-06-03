@@ -23,8 +23,9 @@
 | Response Measure | Over a 10-min run: (1) processing latency — p99 reported; (2) display latency — p99 reported; (3) end-to-end — **p99 ≤ 500 ms** (the pass/fail gate) |
 
 **Why these numbers**
-- **≤ 500 ms** — ≈ 4 beat periods at the typical 28,800 BPH, and inside the ≈ 600 ms bound where a display still feels live. The Plan sets no number → provisional, confirmed by experiment.
-- **10 min** — the Witschi reference instrument's maximum continuous measurement time.
+- **≤ 500 ms** — per Google's INP (Interaction to Next Paint) thresholds, 500 ms is the last value before a response is rated "poor" (good ≤ 200 ms · needs improvement ≤ 500 ms · poor > 500 ms); adopted as the maximum allowable limit for the final display update.
+
+**Related FRs** — FR-08-01, FR-12-04, FR-05-03, FR-12-14 (real-time / Live display features)
 
 ### QAS-2 · Accuracy — Pinpointing Beats Precisely
 > **In one line: locate each tick/tock to within 0.1 ms.**
@@ -48,14 +49,16 @@
 - **0.1 ms** — equals the Witschi X1 beat-error spec, and ≈ 1/6 of the Plan's 0.6 ms "good" bound, so meaningful differences stay visible.
 - Feasible: the baseline detector already interpolates below one sample.
 
-### QAS-3 · Accuracy & Availability (Graceful Degradation) — Under Noisy or Weak Signals
+**Related FRs** — FR-08-04…06, FR-05-13, FR-06-01…04 (beat markers and the values derived from them)
+
+### QAS-3 · Availability (Graceful Degradation) — Under Noisy or Weak Signals
 > **In one line: in noise, filter and measure correctly — and below the limit, say "signal weak" rather than show a wrong number.**
 >
 > In a noisy or weak-signal environment, the system reduces extraneous noise (e.g., nearby speech) while preserving the watch features needed for detection. At SNR ≥ 14 dB it still detects ≥ 95 % of beats with rate error ≤ ±3 s/d; below the threshold it shows "signal weak" only — 0 wrong values, and invalid results are excluded from X/D summaries.
 
 **Why this attribute**
 - Plan: *"the system should degrade gracefully when the signal is weak, noisy, or partially missing, rather than producing unstable or misleading outputs"* — and graceful degradation is a catalogued SAP **Availability** tactic.
-- Above the threshold the gate is **accuracy under noise**; below it, the **availability of correct service** ("signal weak" instead of a wrong value) — hence the dual label.
+- Both halves are about **continuing to deliver correct service under adverse conditions**: within tolerance while signal quality allows, and a graceful "signal weak" — never a wrong value — below the threshold. That is Availability.
 
 | Element | Content |
 |---------|---------|
@@ -70,6 +73,8 @@
 - **14 dB** — ≥ 16 dB below the worst clean recording measured with the team's microphone (30–51 dB over 9 recordings): a severe condition reachable only by deliberate noise injection; provisional.
 - **±3 s/d** — half-width of the tightest Witschi grade band (Chronometer −2…+6 s/d); **95 %** is a team target to confirm by experiment.
 - Ground truth = synthetic beats + injected noise — a reference instrument hears the same noise, so it cannot serve as the truth.
+
+**Related FRs** — FR-12-08, FR-05-17…18, FR-04-06 (noise filtering, averaging, excluding invalid results)
 
 ### QAS-4 · Consistency — Consistent Values Across Displays
 > **In one line: every number and graph on screen comes from the same measurement result.**
@@ -93,6 +98,8 @@
 - **0** is the only sensible target — consistency is a correctness-class property, not a tunable number.
 - The check is genuinely verifiable because each display exposes which result it came from.
 
+**Related FRs** — FR-12-05, FR-06-06, FR-04-05…07, FR-02-07…08 (views and summaries showing the same data)
+
 ### QAS-5 · Modifiability (Extensibility) — Adding a New Measurement/Filter/Graph
 > **In one line: adding a new graph, filter, or measurement touches one registration point — and breaks nothing.**
 >
@@ -114,6 +121,8 @@
 **Why these numbers**
 - ~11 mandatory graphs in a 5-week schedule — only a bounded touch surface makes that feasible.
 - "0 regressions" is tied to a concrete detection method (the test set), not just declared.
+
+**Related FRs** — G01–G12 overall; e.g., FR-05-01 (new tab), FR-12-01 (new filters), FR-04-06…07 (new measurements)
 
 ### QAS-6 · Usability — Reading and Operating on the Low-Resolution Touchscreen
 > **In one line: on the small 800×480 touchscreen, the three key readings are readable at a glance and operable by finger.**
@@ -138,6 +147,8 @@
 - **1.9 mm glyphs + 4.5:1 contrast** — replaces vague "readable" with a perception spec verifiable without test subjects.
 - **≤ 2 taps, 5 s / 10 s tasks** — team criteria that make "easy to use" measurable.
 
+**Related FRs** — FR-06-06, FR-01-05, FR-04-03, FR-02-06, FR-06-11·13 (at-a-glance readings, position indication, alerts)
+
 ## Priority
 
 ATAM style: each scenario carries a (**B**usiness importance, technical **R**isk) pair, H/M/L. The H/H scenarios shape the architecture most.
@@ -146,7 +157,7 @@ ATAM style: each scenario carries a (**B**usiness importance, technical **R**isk
 |----------|-----|---------|---|---|-----------|
 | 1 | QAS-1 | Performance (Latency) | H | H | The headline "real-time" driver; feasibility on the Pi is the stated project risk |
 | 2 | QAS-2 | Accuracy | H | H | Every derived measure depends on event-position accuracy — the foundation |
-| 3 | QAS-3 | Accuracy & Availability | H | H | Usable measurement in real environments; noise robustness builds on QAS-2 |
+| 3 | QAS-3 | Availability | H | H | Usable measurement in real environments; noise robustness builds on QAS-2 |
 | 4 | QAS-4 | Consistency | H | M | Explicit Plan driver; the design solution (single source of truth) is well understood |
 | 5 | QAS-5 | Modifiability | H | M | 11 graphs in 5 weeks demand cheap, regression-free addition |
 | 6 | QAS-6 | Usability | M | M | Fixed small panel; mostly layout discipline once sizes are pinned |
@@ -178,8 +189,9 @@ ATAM style: each scenario carries a (**B**usiness importance, technical **R**isk
 | 응답 척도 | 10분 연속 실행 동안: (1) processing latency — p99 보고; (2) display latency — p99 보고; (3) 종단 — **p99 ≤ 500 ms** (pass/fail 게이트) |
 
 **측정값 근거**
-- **≤ 500 ms** — 일반적인 28,800 BPH에서 약 4비트 주기이고, 화면이 실시간으로 느껴지는 한계(약 600 ms) 안쪽. 플랜에 수치가 없으므로 잠정값 — 실험으로 확정.
-- **10분** — Witschi 기준 계측기의 최대 연속 측정 시간.
+- **≤ 500 ms** — Google INP(Interaction to Next Paint) 기준에서 "poor"로 넘어가기 직전 값(good ≤ 200 ms · needs improvement ≤ 500 ms · poor > 500 ms); 최종 디스플레이 갱신의 최대 허용 한계값으로 채택.
+
+**관련 FR** — FR-08-01, FR-12-04, FR-05-03, FR-12-14 (실시간/Live 표시 기능)
 
 ### QAS-2 · Accuracy — 비트 위치 정밀 검출
 > **한 줄 요약: 틱/톡 하나하나의 위치를 0.1 ms 오차 안에서 찾아낸다.**
@@ -203,14 +215,16 @@ ATAM style: each scenario carries a (**B**usiness importance, technical **R**isk
 - **0.1 ms** — Witschi X1의 beat error 스펙과 동일하고, 플랜의 0.6 ms "양호" 기준의 약 1/6 → 의미 있는 차이를 구분 가능.
 - 실현 가능: 베이스라인 검출기가 이미 서브샘플 보간을 수행.
 
-### QAS-3 · Accuracy & Availability (Graceful Degradation) — 잡음·약신호 환경
+**관련 FR** — FR-08-04…06, FR-05-13, FR-06-01…04 (비트 마커와 거기서 파생되는 측정값)
+
+### QAS-3 · Availability (Graceful Degradation) — 잡음·약신호 환경
 > **한 줄 요약: 시끄러우면 걸러서 정확히 재고, 한계 아래면 틀린 값 대신 "신호 약함"을 보여준다.**
 >
 > 잡음이 섞이거나 신호가 약한 환경에서, 시스템은 검출에 필요한 시계 신호 특징은 보존하면서 주변 대화 같은 불요 잡음을 줄인다. SNR ≥ 14 dB에서는 비트 감지율 ≥ 95%, 일오차 ≤ ±3 s/d를 유지하고; 임계 미만에서는 "신호 약함"만 표시한다 — 잘못된 값 0회, invalid 결과는 X/D summary에서 제외.
 
 **왜 이 속성인가**
 - 플랜 원문: *"the system should degrade gracefully when the signal is weak, noisy, or partially missing, rather than producing unstable or misleading outputs."* — graceful degradation은 SAP에 수록된 **Availability 전술**.
-- 임계 이상에서는 **잡음 하 정확도**를, 임계 미만에서는 **올바른 서비스의 지속**("신호 약함" ≠ 잘못된 값)을 게이트 → 두 속성의 결합이 정확한 이름.
+- 임계 이상에서는 허용오차 내 감지·측정을, 임계 미만에서는 우아한 성능 저하("신호 약함" ≠ 잘못된 값)를 게이트 — 둘 다 **악조건에서도 올바른 서비스를 계속 제공하는 능력** → Availability.
 
 | 요소 | 내용 |
 |------|------|
@@ -225,6 +239,8 @@ ATAM style: each scenario carries a (**B**usiness importance, technical **R**isk
 - **14 dB** — 팀 마이크로 실측한 최악 클린 녹음(9개, 30–51 dB)보다 ≥ 16 dB 낮은 심한 조건 — 의도적 잡음 주입으로만 도달; 잠정값.
 - **±3 s/d** — 가장 엄격한 Witschi 등급 대역(Chronometer −2…+6 s/d)의 반폭; **95%**는 실험으로 확정할 팀 목표.
 - 정답 = 합성 신호 + 주입 잡음 — 기준 장비도 같은 잡음을 듣기 때문에 정답이 될 수 없음.
+
+**관련 FR** — FR-12-08, FR-05-17…18, FR-04-06 (잡음 필터링·averaging·invalid 제외)
 
 ### QAS-4 · Consistency — 표시 간 값 일치
 > **한 줄 요약: 화면의 모든 숫자와 그래프는 같은 측정 결과에서 나온다.**
@@ -248,6 +264,8 @@ ATAM style: each scenario carries a (**B**usiness importance, technical **R**isk
 - **0** 이 유일하게 말이 되는 목표 — 일관성은 정합성 계열 속성이지 조정 가능한 수치가 아님.
 - 각 표시가 어느 결과에서 왔는지 노출하므로 "0"을 실제로 검증 가능.
 
+**관련 FR** — FR-12-05, FR-06-06, FR-04-05…07, FR-02-07…08 (여러 뷰·요약이 같은 데이터를 표시)
+
 ### QAS-5 · Modifiability (Extensibility) — 새 측정/필터/그래프 추가
 > **한 줄 요약: 새 그래프·필터·측정값 추가 = 등록 지점 한 곳만 고치고, 기존 기능은 깨지지 않는다.**
 >
@@ -269,6 +287,8 @@ ATAM style: each scenario carries a (**B**usiness importance, technical **R**isk
 **측정값 근거**
 - 5주 일정에 필수 그래프 약 11종 — 좁은 변경 표면이어야만 가능한 일정.
 - "회귀 0건"은 구체적 검출 수단(테스트 셋)에 묶여 있음 — 선언만 하는 0이 아님.
+
+**관련 FR** — G01–G12 전체; 예: FR-05-01(새 탭), FR-12-01(새 필터), FR-04-06…07(새 측정값)
 
 ### QAS-6 · Usability — 저해상도 터치스크린에서 읽기·조작
 > **한 줄 요약: 작은 800×480 터치스크린에서도 핵심 값 3개를 한눈에 읽고 손가락으로 조작한다.**
@@ -293,6 +313,8 @@ ATAM style: each scenario carries a (**B**usiness importance, technical **R**isk
 - **글리프 1.9 mm + 대비 4.5:1** — 막연한 "읽기 좋게"를 피험자 없이 검증 가능한 지각 사양으로 교체.
 - **≤ 2 탭, 5초/10초 과업** — "쓰기 쉽다"를 측정 가능하게 만드는 팀 기준.
 
+**관련 FR** — FR-06-06, FR-01-05, FR-04-03, FR-02-06, FR-06-11·13 (한눈에 읽기·포지션 표시·경보)
+
 ## 우선순위
 
 ATAM 방식: 각 시나리오에 (**B**비즈니스 중요도, 기술 리스크 **R**) 쌍을 부여(H/M/L). H/H 시나리오가 아키텍처를 가장 좌우한다.
@@ -301,7 +323,7 @@ ATAM 방식: 각 시나리오에 (**B**비즈니스 중요도, 기술 리스크 
 |------|-----|----------|---|---|------|
 | 1 | QAS-1 | Performance (Latency) | H | H | 대표 "real-time" 드라이버; Pi에서의 실현 가능성이 명시된 리스크 |
 | 2 | QAS-2 | Accuracy | H | H | 모든 파생 측정값이 이벤트 위치 정확도에 의존 — 토대 |
-| 3 | QAS-3 | Accuracy & Availability | H | H | 실제 환경에서 쓸 수 있는 측정; QAS-2 위에 쌓이는 잡음 강건성 |
+| 3 | QAS-3 | Availability | H | H | 실제 환경에서 쓸 수 있는 측정; QAS-2 위에 쌓이는 잡음 강건성 |
 | 4 | QAS-4 | Consistency | H | M | 플랜 명시 드라이버; 해법(single source of truth)은 잘 알려짐 |
 | 5 | QAS-5 | Modifiability | H | M | 5주에 그래프 11종 — 저비용·무회귀 추가가 필수 |
 | 6 | QAS-6 | Usability | M | M | 고정 소형 패널; 크기 확정 후엔 주로 레이아웃 규율 문제 |
