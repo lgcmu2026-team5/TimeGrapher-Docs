@@ -112,7 +112,7 @@
 | Response Measure | Adding one new graph: ≤ 1 existing module changed (registration/wiring only), 0 regressions in existing features, ≤ 5 person-days of effort |
 
 ### QAS-8 · Modifiability (Modularity) — Fixing in One Place
-> During maintenance, when a developer wants to change one responsibility that used to be crammed together with others on the main screen, changing that one thing has no effect elsewhere, so that fixing one responsibility touches 1 file with 0 ripple changes to other responsibilities.
+> During maintenance, when a developer wants to change one responsibility that used to be crammed together with others on the main screen, changing that one thing has no effect elsewhere, so that fixing one responsibility touches 1 file with 0 ripple changes to other responsibilities. [JYP] Intent is sound, but "1 file" mismeasures modularity even in the ideal case (interface+impl, code+test legitimately span >1 file) — measure by module, not file; and "0 ripple" holds only for changes inside a single responsibility boundary, not for cross-cutting changes.
 
 | Element | Content |
 |---------|---------|
@@ -121,7 +121,7 @@
 | Artifact | The main-screen code where all functions were lumped together |
 | Environment | During maintenance |
 | Response | Changing one responsibility has no effect on the others |
-| Response Measure | Fixing one responsibility changes 1 file; 0 ripple changes to other responsibilities |
+| Response Measure | Fixing one responsibility changes 1 file; 0 ripple changes to other responsibilities [JYP] (1) Use "≤ 1 module (excluding its own tests)" instead of "1 file". (2) Scope to a predefined set of representative change scenarios that fall within a single responsibility boundary. (3) State that cross-cutting changes (shared types, pipeline-wide fields) are out of scope. — aligns the unit with QAS-7. |
 
 ### QAS-9 · Portability — Running on Other Devices/OSes
 > When porting to a different environment or supporting a new sound device, when a developer migrates between Windows ↔ Raspberry Pi, etc., the system can support the new OS / sound device, with 1 module changed/added and 0 lines of existing domain code changed when adding a new environment.
@@ -292,7 +292,7 @@
 | 응답 척도 | 새 그래프 하나 추가: 기존 모듈 변경 ≤ 1개(등록/배선부만), 기존 기능 회귀 0건, 작업량 ≤ 5인일 |
 
 ### QAS-8 · Modifiability (Modularity) — Fixing in One Place
-> 유지보수 중 개발자가 메인 화면에 다른 책임들과 함께 몰려 있던 한 가지 책임을 변경하려고 할 때, 그 한 가지 변경이 다른 곳에 영향을 주지 않으며, 하나의 책임 수정 시 1개 파일만 변경되고 다른 책임으로의 변경 전파가 0건이다.
+> 유지보수 중 개발자가 메인 화면에 다른 책임들과 함께 몰려 있던 한 가지 책임을 변경하려고 할 때, 그 한 가지 변경이 다른 곳에 영향을 주지 않으며, 하나의 책임 수정 시 1개 파일만 변경되고 다른 책임으로의 변경 전파가 0건이다. [JYP] 의도는 타당하나 "1개 파일"은 이상적으로 봐도 모듈성을 잘못 측정함(인터페이스+구현, 코드+테스트는 정상적으로 2개 이상 파일에 걸침) — 파일이 아니라 모듈 단위로 측정할 것. 또한 "전파 0건"은 단일 책임 경계 안 변경에서만 성립하며 횡단 변경은 예외.
 
 | 요소 | 내용 |
 |------|------|
@@ -301,7 +301,7 @@
 | 대상 산출물 | 모든 기능이 한데 뭉쳐 있던 메인 화면 코드 |
 | 환경 | 유지보수 중 |
 | 응답 | 한 가지 책임 변경이 다른 책임에 영향을 주지 않음 |
-| 응답 척도 | 하나의 책임 수정 시 1개 파일 변경; 다른 책임으로의 변경 전파 0건 |
+| 응답 척도 | 하나의 책임 수정 시 1개 파일 변경; 다른 책임으로의 변경 전파 0건 [JYP] (1) "1개 파일" 대신 "≤ 1개 모듈(자기 테스트 제외)"로. (2) 단일 책임 경계 내에 떨어지는 대표 변경 시나리오 집합으로 범위를 한정. (3) 횡단 변경(공유 타입·파이프라인 관통 필드)은 범위 밖임을 명시. → 단위를 QAS-7과 일관화. |
 
 ### QAS-9 · Portability — Running on Other Devices/OSes
 > 다른 환경으로 포팅하거나 새 사운드 장치를 지원할 때, 개발자가 Windows ↔ Raspberry Pi 등으로 이전하더라도 시스템은 새 OS/사운드 장치를 지원할 수 있으며, 새 환경(OS / 사운드 장치) 추가 시 1개 모듈만 변경/추가하고 기존 도메인 코드 변경은 0줄이다.
