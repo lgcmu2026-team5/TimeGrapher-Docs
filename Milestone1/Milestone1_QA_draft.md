@@ -1,29 +1,8 @@
 # Milestone1 Jae-hong Oh
 
 > English version above, Korean version below. (위쪽은 영어 버전, 아래쪽은 한국어 버전입니다.)
-
-## Functional Requirements
-
-### G09 · Time-Frequency Spectrogram Display
-
-| ID | Grade | Requirement |
-|----|-------|-------------|
-| FR-G09-01 | mandatory | The Time-Frequency Spectrogram Display shall provide the user with a time-frequency spectrogram that shows how the watch's acoustic energy is distributed across time and frequency. |
-| FR-G09-02 | mandatory | The Time-Frequency Spectrogram Display shall present the spectrogram to the user with time on the horizontal axis, frequency on the vertical axis, and signal strength as color intensity. |
-| FR-G09-03 | optional | The Time-Frequency Spectrogram Display should provide the user with the ability to inspect either the most recent beat or a selected recent time window. |
-| FR-G09-04 | optional | The Time-Frequency Spectrogram Display should provide the user with the ability to view recurring energy structures at characteristic frequency ranges. |
-| FR-G09-05 | optional | The Time-Frequency Spectrogram Display should provide the user with the ability to compare one beat with the next. |
-| FR-G09-06 | optional | The Time-Frequency Spectrogram Display should provide the user with a color scale or legend for interpreting relative signal strength. |
-
-### G11 · Scope Mode with Synchronized Sweep Display
-
-| ID | Grade | Requirement |
-|----|-------|-------------|
-| FR-G11-01 | mandatory | The Scope Mode with Synchronized Sweep Display shall provide the user with a display of the watch's acoustic signal in a fixed sweep window, similar to an oscilloscope. |
-| FR-G11-02 | optional | The Scope Mode with Synchronized Sweep Display should provide the user with a display of the processed signal that combines the upper and lower halves of the waveform. |
-| FR-G11-03 | optional | The Scope Mode with Synchronized Sweep Display should provide the user with the ability to configure the sweep time as a multiple of the watch's tick interval. |
-| FR-G11-04 | optional | The Scope Mode with Synchronized Sweep Display should provide the user with a synchronized display in which the beat pattern stays visually stable near the nominal rate and drifts when the watch is fast or slow. |
-| FR-G11-05 | optional | The Scope Mode with Synchronized Sweep Display may provide the user with reference values (daily rate, amplitude, beat error, nominal beat rate) from the most recent timing test. |
+>
+> Functional Requirements have been split into per-feature files (see `FR-G09_Time-Frequency_Spectrogram_Display.md`, `FR-G11_Scope_Mode_with_Synchronized_Sweep_Display.md`). This file keeps the Quality Attribute Scenarios and Constraints. (기능 요구사항은 기능별 파일로 분리되었습니다. 이 파일에는 품질 속성 시나리오와 제약사항만 남깁니다.)
 
 ## Quality Attribute Scenarios
 
@@ -181,29 +160,6 @@
 | C-4 | The system shall operate with Auto Gain Control turned off. |
 
 ---
-
-## Functional Requirements
-
-### G09 · Time-Frequency Spectrogram Display
-
-| ID | Grade | 요구사항 |
-|----|-------|----------|
-| FR-G09-01 | mandatory | Time-Frequency Spectrogram Display는 사용자에게 시계의 음향 에너지가 시간과 주파수에 따라 어떻게 분포하는지 보여주는 시간-주파수 스펙트로그램을 제공해야 한다. |
-| FR-G09-02 | mandatory | Time-Frequency Spectrogram Display는 스펙트로그램을 사용자에게 표시할 때 가로축은 시간, 세로축은 주파수, 색상 강도는 신호 세기를 나타내도록 해야 한다. |
-| FR-G09-03 | optional | Time-Frequency Spectrogram Display는 사용자가 가장 최근 비트 또는 선택한 최근 시간 구간을 검사할 수 있는 기능을 제공해야 한다. |
-| FR-G09-04 | optional | Time-Frequency Spectrogram Display는 사용자가 특징적인 주파수 범위에서 반복적으로 나타나는 에너지 구조를 볼 수 있는 기능을 제공해야 한다. |
-| FR-G09-05 | optional | Time-Frequency Spectrogram Display는 사용자가 한 비트와 다음 비트를 비교할 수 있는 기능을 제공해야 한다. |
-| FR-G09-06 | optional | Time-Frequency Spectrogram Display는 상대적인 신호 세기를 해석할 수 있도록 색상 스케일 또는 범례를 제공해야 한다. |
-
-### G11 · Scope Mode with Synchronized Sweep Display
-
-| ID | Grade | 요구사항 |
-|----|-------|----------|
-| FR-G11-01 | mandatory | Scope Mode with Synchronized Sweep Display는 오실로스코프와 유사하게 고정된 스윕 창에서 시계의 음향 신호를 표시하는 화면을 사용자에게 제공해야 한다. |
-| FR-G11-02 | optional | Scope Mode with Synchronized Sweep Display는 파형의 위쪽 절반과 아래쪽 절반을 결합한 처리 신호 표시를 사용자에게 제공해야 한다. |
-| FR-G11-03 | optional | Scope Mode with Synchronized Sweep Display는 사용자가 시계 틱 간격의 배수로 스윕 시간을 설정할 수 있는 기능을 제공해야 한다. |
-| FR-G11-04 | optional | Scope Mode with Synchronized Sweep Display는 비트 패턴이 명목 속도 근처에서는 시각적으로 안정적으로 유지되고, 시계가 빠르거나 느릴 때는 드리프트가 보이는 동기화 표시를 제공해야 한다. |
-| FR-G11-05 | optional | Scope Mode with Synchronized Sweep Display는 가장 최근 타이밍 테스트에서 얻은 기준값(일오차, 진폭, 비트 오차, 명목 비트 속도)을 사용자에게 제공할 수 있다. |
 
 ## Quality Attribute Scenarios
 
