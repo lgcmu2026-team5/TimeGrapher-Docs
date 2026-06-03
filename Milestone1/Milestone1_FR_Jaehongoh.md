@@ -64,7 +64,7 @@
 | Response Measure | Over a 10-min continuous run: RSS growth ≤ 20 MB in any 5-min window with no monotonic upward trend; 0 crashes; 0 screen freezes, where a freeze = no screen update for ≥ 2 s |
 
 ### QAS-4 · Dependability (Reliability) — Consistent Values Across Displays
-> While measuring as usual, when a single measurement result is produced and fanned out to multiple graphs and numbers, the system renders every display in a given on-screen frame from the same underlying measurement snapshot (each tagged with a snapshot ID) so they do not disagree, with 0 value mismatches across displays — a mismatch being any two displays in the same frame whose values trace to different snapshot IDs.
+> While measuring as usual, when a single measurement result is produced and fanned out to multiple graphs and numbers, the system renders every display in a given on-screen frame from the same underlying measurement snapshot (each tagged with a snapshot ID) so they do not disagree, with 0 value mismatches across displays — a mismatch being any two displays in the same frame whose values trace to different snapshot IDs. [SJ] For sequence features, the X/D summary uses the same captured result set as the per-position display.
 
 | Element | Content |
 |---------|---------|
@@ -72,11 +72,11 @@
 | Stimulus | A single measurement result is produced and fanned out to multiple displays (graphs/numbers) |
 | Artifact | Numeric readouts and multiple graph displays |
 | Environment | Measuring as usual |
-| Response | Render all displays in a frame from the same measurement snapshot (tagged with a snapshot ID) so they do not disagree |
-| Response Measure | 0 value mismatches across displays in the same on-screen frame, where a mismatch = two displays whose values trace to different snapshot IDs |
+| Response | Render all displays in a frame from the same measurement snapshot (tagged with a snapshot ID) so they do not disagree; [SJ] derive X/D sequence summaries from the displayed per-position result set |
+| Response Measure | 0 value mismatches across displays in the same on-screen frame, where a mismatch = two displays whose values trace to different snapshot IDs; [SJ] X/D source mismatch between sequence summary and displayed per-position values = 0 cases |
 
 ### QAS-5 · Dependability (Reliability) — Under Noisy or Weak Signals
-> In a poor environment where ambient noise mixes in or a weak signal arrives, the system (noise removal / beat detection) filters out noise while preserving the needed sounds, and when the signal is bad it shows a "signal weak" indication instead of a wrong value, meeting beat detection rate ≥ 95% and rate error ≤ ±3 s/d under noise conditions of SNR ≥ 14 dB (using a reference instrument's reading as ground truth, over a sample of at least 1,000 beats), while signals weaker than that show only "signal weak" and output 0 wrong values.
+> In a poor environment where ambient noise mixes in or a weak signal arrives, the system (noise removal / beat detection) filters out noise while preserving the needed sounds, and when the signal is bad it shows a "signal weak" indication instead of a wrong value, meeting beat detection rate ≥ 95% and rate error ≤ ±3 s/d under noise conditions of SNR ≥ 14 dB (using a reference instrument's reading as ground truth, over a sample of at least 1,000 beats), while signals weaker than that show only "signal weak" and output 0 wrong values. [SJ] Invalid or low-confidence position results are excluded from X/D sequence calculations.
 
 | Element | Content |
 |---------|---------|
@@ -84,8 +84,8 @@
 | Stimulus | Noise mixes in or the signal arrives weak |
 | Artifact | The noise-removal / beat-detection part |
 | Environment | Poor environment |
-| Response | Filter out noise while preserving needed sounds; when the signal is bad, show "signal weak" instead of a wrong value |
-| Response Measure | Using a reference instrument's reading as ground truth, over a sample of ≥ 1,000 beats: beat detection rate ≥ 95% and rate error ≤ ±3 s/d under SNR ≥ 14 dB; weaker signals show only "signal weak" and output 0 wrong values |
+| Response | Filter out noise while preserving needed sounds; when the signal is bad, show "signal weak" instead of a wrong value; [SJ] exclude invalid or low-confidence position results from X/D calculations |
+| Response Measure | Using a reference instrument's reading as ground truth, over a sample of ≥ 1,000 beats: beat detection rate ≥ 95% and rate error ≤ ±3 s/d under SNR ≥ 14 dB; weaker signals show only "signal weak" and output 0 wrong values; [SJ] invalid/low-confidence values included in X/D calculations = 0 cases |
 
 ### QAS-6 · Dependability (Reliability) — Pinpointing Beats Precisely
 > While measuring as usual, when a new beat (tick/tock) arrives in the input stream, the system (beat detection / time calculation) determines its onset and peak positions accurately and maintains timing precision throughout the measurement, locating onset/peak within ≤ 0.1 ms (≈10 samples at 96,000 SPS) so beat error is resolved down to 0.1 ms; this is verified against synthetic input signals with known onset/peak positions (per QAS-10), since 0.1 ms ground truth cannot be obtained from real hardware.
@@ -136,7 +136,7 @@
 | Response Measure | Adding a new environment (OS / sound device): 1 module changed/added, 0 lines of existing domain code changed |
 
 ### QAS-10 · Modifiability (Testability) — Testing Parts in Isolation
-> During testing, when a developer/tester wants to test just the sound-analysis stages or the input part separately, the stage-by-stage analysis parts and the sound-input part can be checked in isolation by feeding fake input without real hardware, meeting unit-test coverage ≥ 80% on the core analysis stages and 100% of unit tests runnable without real hardware.
+> During testing, when a developer/tester wants to test just the sound-analysis stages or the input part separately, the stage-by-stage analysis parts and the sound-input part can be checked in isolation by feeding fake input without real hardware, meeting unit-test coverage ≥ 80% on the core analysis stages and 100% of unit tests runnable without real hardware. [SJ] X/D sequence summaries are reproducible with the same Sim/Playback input and traceable to included/excluded position results.
 
 | Element | Content |
 |---------|---------|
@@ -144,11 +144,11 @@
 | Stimulus | Wants to test just the sound-analysis stages or input part separately |
 | Artifact | The stage-by-stage analysis parts, the sound-input part |
 | Environment | During testing |
-| Response | Check parts in isolation by feeding fake input without real hardware |
-| Response Measure | Unit-test coverage ≥ 80% on core analysis stages, 100% of unit tests runnable without real hardware |
+| Response | Check parts in isolation by feeding fake input without real hardware; [SJ] produce repeatable X/D sequence results and expose the included/excluded position results used to calculate them |
+| Response Measure | Unit-test coverage ≥ 80% on core analysis stages, 100% of unit tests runnable without real hardware; [SJ] X/D values are identical across 3 repeated runs with the same standard-position input, and X/D trace-back coverage = 100% |
 
 ### QAS-11 · Usability — Reading and Operating on the Low-Resolution Touchscreen
-> While using the device as usual on the Raspberry Pi's 800×480 touchscreen, when the user reads measurement values and switches modes, the system presents the key readings legibly without scrolling/zooming and lets the user operate primary functions by touch alone, keeping primary readings (rate, beat error, amplitude) readable at normal working distance, all primary touch targets ≥ 9 mm (≈ 48 px), and any primary mode reachable in ≤ 2 taps.
+> While using the device as usual on the Raspberry Pi's 800×480 touchscreen, when the user reads measurement values and switches modes, the system presents the key readings legibly without scrolling/zooming and lets the user operate primary functions by touch alone, keeping primary readings (rate, beat error, amplitude) readable at normal working distance, all primary touch targets ≥ 9 mm (≈ 48 px), and any primary mode reachable in ≤ 2 taps. [SJ] During position and sequence review, the user can quickly identify the active/selected position and X/D summary.
 
 | Element | Content |
 |---------|---------|
@@ -156,8 +156,8 @@
 | Stimulus | Reads measurement values and switches modes on the 800×480 touchscreen |
 | Artifact | The GUI (spectrogram/scope/numeric displays and controls) |
 | Environment | Raspberry Pi 5 with the 800×480 touch display, in normal use |
-| Response | Present key readings legibly and allow primary functions to be operated by touch alone |
-| Response Measure | Primary readings (rate, beat error, amplitude) shown simultaneously without scroll/zoom at ≥ 24 px font, readable at ~40 cm working distance; all primary touch targets ≥ 9 mm (≈ 48 px); any primary mode reachable in ≤ 2 taps |
+| Response | Present key readings legibly and allow primary functions to be operated by touch alone; [SJ] show active/selected position and X/D near the related measurement values |
+| Response Measure | Primary readings (rate, beat error, amplitude) shown simultaneously without scroll/zoom at ≥ 24 px font, readable at ~40 cm working distance; all primary touch targets ≥ 9 mm (≈ 48 px); any primary mode reachable in ≤ 2 taps; [SJ] active/selected position identifiable within 5 seconds, and X/D identifiable within 10 seconds |
 
 ### QAS-12 · Availability (Recoverability) — Audio Device Disconnect/Reconnect
 > While measuring as usual, when the audio input device is disconnected or errors out, the system detects the fault without crashing, informs the user, and resumes measurement without a manual restart once the device is reconnected, with 0 crashes, a "no device" indication within 5 s, automatic resumption within 10 s of reconnection, and 0 data corruption.
@@ -244,7 +244,7 @@
 | 응답 척도 | 10분 연속 실행 중: 임의 5분 구간에서 RSS 증가 ≤ 20 MB, 단조 증가 추세 없음; 크래시 0회; 화면 멈춤 0회(멈춤 = 화면 업데이트가 2초 이상 미갱신) |
 
 ### QAS-4 · Dependability (Reliability) — Consistent Values Across Displays
-> 평소처럼 측정하는 동안 하나의 측정 결과가 산출되어 여러 그래프와 숫자로 전달될 때, 시스템은 한 화면 프레임의 모든 표시를 동일한 측정 스냅샷(각 스냅샷 ID 부여)에서 렌더링하여 서로 불일치하지 않게 하며, 표시 간 값 불일치가 0회이다 — 불일치란 같은 프레임의 두 표시가 서로 다른 스냅샷 ID에서 파생된 경우를 말한다.
+> 평소처럼 측정하는 동안 하나의 측정 결과가 산출되어 여러 그래프와 숫자로 전달될 때, 시스템은 한 화면 프레임의 모든 표시를 동일한 측정 스냅샷(각 스냅샷 ID 부여)에서 렌더링하여 서로 불일치하지 않게 하며, 표시 간 값 불일치가 0회이다 — 불일치란 같은 프레임의 두 표시가 서로 다른 스냅샷 ID에서 파생된 경우를 말한다. [SJ] Sequence 기능에서는 X/D summary가 position별 표시와 동일한 captured result set을 사용한다.
 
 | 요소 | 내용 |
 |------|------|
@@ -252,11 +252,11 @@
 | 자극 | 하나의 측정 결과가 산출되어 여러 표시(그래프/숫자)로 전달됨 |
 | 대상 산출물 | 수치 표시값과 여러 그래프 표시 |
 | 환경 | 평소처럼 측정 중 |
-| 응답 | 한 프레임의 모든 표시를 동일한 측정 스냅샷(스냅샷 ID 부여)에서 렌더링하여 서로 불일치하지 않게 함 |
-| 응답 척도 | 같은 화면 프레임의 표시 간 값 불일치 0회. 불일치 = 두 표시의 값이 서로 다른 스냅샷 ID에서 파생된 경우 |
+| 응답 | 한 프레임의 모든 표시를 동일한 측정 스냅샷(스냅샷 ID 부여)에서 렌더링하여 서로 불일치하지 않게 함; [SJ] 표시된 position별 result set으로부터 X/D sequence summary를 산출함 |
+| 응답 척도 | 같은 화면 프레임의 표시 간 값 불일치 0회. 불일치 = 두 표시의 값이 서로 다른 스냅샷 ID에서 파생된 경우; [SJ] sequence summary와 표시된 position별 값 사이의 X/D source mismatch 0건 |
 
 ### QAS-5 · Dependability (Reliability) — Under Noisy or Weak Signals
-> 주변 잡음이 섞이거나 약한 신호가 들어오는 열악한 환경에서, 시스템(잡음 제거/비트 감지)은 필요한 소리를 보존하면서 잡음을 걸러내고, 신호가 나쁠 때는 잘못된 값을 표시하는 대신 "신호 약함" 표시를 보여준다. 기준 장비 판독값을 정답으로 사용하여 최소 1,000비트 표본 기준, SNR ≥ 14 dB 잡음 조건에서 비트 감지율 ≥ 95%, 일오차 ≤ ±3 s/d를 만족하며, 그보다 약한 신호는 "신호 약함"만 표시하고 잘못된 값 출력은 0회이다.
+> 주변 잡음이 섞이거나 약한 신호가 들어오는 열악한 환경에서, 시스템(잡음 제거/비트 감지)은 필요한 소리를 보존하면서 잡음을 걸러내고, 신호가 나쁠 때는 잘못된 값을 표시하는 대신 "신호 약함" 표시를 보여준다. 기준 장비 판독값을 정답으로 사용하여 최소 1,000비트 표본 기준, SNR ≥ 14 dB 잡음 조건에서 비트 감지율 ≥ 95%, 일오차 ≤ ±3 s/d를 만족하며, 그보다 약한 신호는 "신호 약함"만 표시하고 잘못된 값 출력은 0회이다. [SJ] Invalid 또는 low-confidence position result는 X/D sequence 계산에서 제외된다.
 
 | 요소 | 내용 |
 |------|------|
@@ -264,8 +264,8 @@
 | 자극 | 잡음이 섞이거나 신호가 약하게 들어옴 |
 | 대상 산출물 | 잡음 제거 / 비트 감지 부분 |
 | 환경 | 열악한 환경 |
-| 응답 | 필요한 소리를 보존하면서 잡음을 걸러냄; 신호가 나쁠 때 잘못된 값 대신 "신호 약함"을 표시함 |
-| 응답 척도 | 기준 장비 판독값을 정답으로, 최소 1,000비트 표본 기준 SNR ≥ 14 dB 조건에서 비트 감지율 ≥ 95%, 일오차 ≤ ±3 s/d; 더 약한 신호는 "신호 약함"만 표시하고 잘못된 값 출력 0회 |
+| 응답 | 필요한 소리를 보존하면서 잡음을 걸러냄; 신호가 나쁠 때 잘못된 값 대신 "신호 약함"을 표시함; [SJ] invalid 또는 low-confidence position result를 X/D 계산에서 제외함 |
+| 응답 척도 | 기준 장비 판독값을 정답으로, 최소 1,000비트 표본 기준 SNR ≥ 14 dB 조건에서 비트 감지율 ≥ 95%, 일오차 ≤ ±3 s/d; 더 약한 신호는 "신호 약함"만 표시하고 잘못된 값 출력 0회; [SJ] invalid/low-confidence 값의 X/D 계산 포함 0건 |
 
 ### QAS-6 · Dependability (Reliability) — Pinpointing Beats Precisely
 > 평소처럼 측정하는 동안 새 비트(틱/톡)가 입력 스트림에 도착할 때, 시스템(비트 감지/시간 계산)은 그 비트의 시작점과 피크 위치를 정확히 찾아내고 측정 내내 시간 정밀도를 유지하여, 시작/피크 검출 위치 오차가 ≤ 0.1 ms(96,000 SPS에서 약 10샘플)이고 비트 오차를 0.1 ms까지 해상할 수 있다. 0.1 ms 정답은 실제 하드웨어로 얻을 수 없으므로, 시작/피크 위치가 알려진 합성 입력 신호로 검증한다(QAS-10 연계).
@@ -316,7 +316,7 @@
 | 응답 척도 | 새 환경(OS / 사운드 장치) 추가: 1개 모듈 변경/추가, 기존 도메인 코드 변경 0줄 |
 
 ### QAS-10 · Modifiability (Testability) — Testing Parts in Isolation
-> 테스트 중 개발자/테스터가 사운드 분석 단계나 입력 부분만 따로 테스트하려고 할 때, 단계별 분석 부분과 사운드 입력 부분은 실제 하드웨어 없이 가짜 입력을 주입하여 독립적으로 확인할 수 있으며, 핵심 분석 단계의 단위 테스트 커버리지 ≥ 80%, 실제 하드웨어 없이 실행 가능한 단위 테스트 100%를 만족한다.
+> 테스트 중 개발자/테스터가 사운드 분석 단계나 입력 부분만 따로 테스트하려고 할 때, 단계별 분석 부분과 사운드 입력 부분은 실제 하드웨어 없이 가짜 입력을 주입하여 독립적으로 확인할 수 있으며, 핵심 분석 단계의 단위 테스트 커버리지 ≥ 80%, 실제 하드웨어 없이 실행 가능한 단위 테스트 100%를 만족한다. [SJ] X/D sequence summary는 동일 Sim/Playback input으로 재현 가능하고 included/excluded position result로 역추적 가능하다.
 
 | 요소 | 내용 |
 |------|------|
@@ -324,11 +324,11 @@
 | 자극 | 사운드 분석 단계 또는 입력 부분만 따로 테스트하려고 함 |
 | 대상 산출물 | 단계별 분석 부분, 사운드 입력 부분 |
 | 환경 | 테스트 중 |
-| 응답 | 실제 하드웨어 없이 가짜 입력을 주입하여 부분별로 독립 확인함 |
-| 응답 척도 | 핵심 분석 단계 단위 테스트 커버리지 ≥ 80%, 실제 하드웨어 없이 실행 가능한 단위 테스트 100% |
+| 응답 | 실제 하드웨어 없이 가짜 입력을 주입하여 부분별로 독립 확인함; [SJ] 반복 가능한 X/D sequence result를 산출하고 계산에 사용된 included/excluded position result를 제시함 |
+| 응답 척도 | 핵심 분석 단계 단위 테스트 커버리지 ≥ 80%, 실제 하드웨어 없이 실행 가능한 단위 테스트 100%; [SJ] 동일 standard-position input 3회 반복 실행 시 X/D 값이 동일하고 X/D 역추적 가능률 100% |
 
 ### QAS-11 · Usability — Reading and Operating on the Low-Resolution Touchscreen
-> Raspberry Pi의 800×480 터치스크린에서 평소처럼 사용하는 동안 사용자가 측정값을 읽고 모드를 전환할 때, 시스템은 핵심 측정값을 스크롤/확대 없이 가독성 있게 표시하고 주요 기능을 터치만으로 조작할 수 있게 하며, 주요 측정값(일오차·비트오차·진폭)을 정상 작업 거리에서 판독 가능하게 표시하고, 모든 주요 터치 타깃을 ≥ 9 mm(≈ 48 px)로, 주요 모드 도달을 ≤ 2 탭으로 유지한다.
+> Raspberry Pi의 800×480 터치스크린에서 평소처럼 사용하는 동안 사용자가 측정값을 읽고 모드를 전환할 때, 시스템은 핵심 측정값을 스크롤/확대 없이 가독성 있게 표시하고 주요 기능을 터치만으로 조작할 수 있게 하며, 주요 측정값(일오차·비트오차·진폭)을 정상 작업 거리에서 판독 가능하게 표시하고, 모든 주요 터치 타깃을 ≥ 9 mm(≈ 48 px)로, 주요 모드 도달을 ≤ 2 탭으로 유지한다. [SJ] Position 및 sequence review 중 사용자는 active/selected position과 X/D summary를 빠르게 식별할 수 있다.
 
 | 요소 | 내용 |
 |------|------|
@@ -336,8 +336,8 @@
 | 자극 | 800×480 터치스크린에서 측정값을 읽고 모드를 전환함 |
 | 대상 산출물 | GUI(스펙트로그램/스코프/수치 표시와 컨트롤) |
 | 환경 | Raspberry Pi 5 + 800×480 터치 디스플레이, 평소 사용 중 |
-| 응답 | 핵심 측정값을 가독성 있게 표시하고 주요 기능을 터치만으로 조작 가능하게 함 |
-| 응답 척도 | 주요 측정값(일오차·비트오차·진폭)을 스크롤/확대 없이 동시 표시, 폰트 ≥ 24 px, 약 40 cm 작업 거리에서 판독 가능; 모든 주요 터치 타깃 ≥ 9 mm(≈ 48 px); 주요 모드 도달 ≤ 2 탭 |
+| 응답 | 핵심 측정값을 가독성 있게 표시하고 주요 기능을 터치만으로 조작 가능하게 함; [SJ] active/selected position과 X/D를 관련 측정값 근처에 표시함 |
+| 응답 척도 | 주요 측정값(일오차·비트오차·진폭)을 스크롤/확대 없이 동시 표시, 폰트 ≥ 24 px, 약 40 cm 작업 거리에서 판독 가능; 모든 주요 터치 타깃 ≥ 9 mm(≈ 48 px); 주요 모드 도달 ≤ 2 탭; [SJ] active/selected position은 5초 이내 식별 가능, X/D는 10초 이내 식별 가능 |
 
 ### QAS-12 · Availability (Recoverability) — Audio Device Disconnect/Reconnect
 > 평소처럼 측정하는 동안 오디오 입력 장치가 분리되거나 오류를 일으킬 때, 시스템은 크래시 없이 오류를 감지하고 사용자에게 알리며 장치 재연결 시 수동 재시작 없이 측정을 재개하여, 크래시 0회, 5초 이내 "장치 없음" 표시, 재연결 후 10초 이내 자동 측정 재개, 데이터 손상 0을 보장한다.
