@@ -85,35 +85,32 @@
 ### G06 · Beat Error Display and Diagnostic Trace
 | ID | Grade | Requirement |
 |----|-------|-------------|
-| FR-06-01 | mandatory | The Beat Error Display and Diagnostic Trace shall provide the user with a beat error display and a diagnostic trace. |
-| FR-06-02 | mandatory | The Beat Error Display and Diagnostic Trace shall provide the user with the rate, amplitude, beat error, and BPH values with numbers and units. |
-| FR-06-03 | mandatory | The Beat Error Display and Diagnostic Trace shall provide the user with tick/tock trace lines that represent the watch's timing behavior. |
-| FR-06-04 | mandatory | The Beat Error Display and Diagnostic Trace shall provide the user with the measurement values (rate, amplitude, beat error, BPH) and the tick/tock trace lines simultaneously. |
-| FR-06-05 | optional | The Beat Error Display and Diagnostic Trace should provide the user with the tick and tock trace lines as visually distinguished elements. |
-| FR-06-06 | mandatory | The Beat Error Display and Diagnostic Trace shall provide the user with the spacing between the tick/tock trace lines. |
-| FR-06-07 | optional | The Beat Error Display and Diagnostic Trace should provide the user with the ability to configure the acceptable range of the trace-line spacing. |
-| FR-06-08 | mandatory | The Beat Error Display and Diagnostic Trace shall provide the user with a defined acceptable range for the trace-line spacing. |
-| FR-06-09 | mandatory | The Beat Error Display and Diagnostic Trace shall provide the user with a warning when the trace-line spacing exceeds the acceptable range. |
-| FR-06-10 | mandatory | The Beat Error Display and Diagnostic Trace shall provide the user with the slope of the trace lines. |
-| FR-06-11 | mandatory | The Beat Error Display and Diagnostic Trace shall provide the user with a fault-state indication when the trace-line slope reaches 45 degrees or more. |
+| FR-06-01 | mandatory | The Beat Error Display and Diagnostic Trace shall provide the user with the rate, amplitude, beat error, and BPH values with numbers and units. |
+| FR-06-02 | mandatory | The Beat Error Display and Diagnostic Trace shall provide the user with tick/tock trace lines that represent the watch's timing behavior. |
+| FR-06-03 | mandatory | The Beat Error Display and Diagnostic Trace shall provide the user with the measurement values (rate, amplitude, beat error, BPH) and the tick/tock trace lines simultaneously. |
+| FR-06-04 | optional | The Beat Error Display and Diagnostic Trace should provide the user with the tick and tock trace lines as visually distinguished elements. |
+| FR-06-05 | mandatory | The Beat Error Display and Diagnostic Trace shall provide the user with the spacing between the tick/tock trace lines. |
+| FR-06-06 | optional | The Beat Error Display and Diagnostic Trace should provide the user with the ability to configure the acceptable range of the trace-line spacing. |
+| FR-06-07 | mandatory | The Beat Error Display and Diagnostic Trace shall provide the user with a defined acceptable range for the trace-line spacing. |
+| FR-06-08 | mandatory | The Beat Error Display and Diagnostic Trace shall provide the user with a warning when the trace-line spacing exceeds the acceptable range. |
+| FR-06-09 | mandatory | The Beat Error Display and Diagnostic Trace shall provide the user with the slope of the trace lines. |
+| FR-06-10 | mandatory | The Beat Error Display and Diagnostic Trace shall provide the user with a fault-state indication when the trace-line slope reaches 45 degrees or more. |
  
 ### G07 · Long-Term Performance Graph
 | ID | Grade | Requirement |
 |----|-------|-------------|
-| FR-07-01 | mandatory | The Long-Term Performance Graph shall provide the user with a long-term performance graph. |
-| FR-07-02 | mandatory | The Long-Term Performance Graph shall provide the user with a display of the long-term performance graph. |
-| FR-07-03 | mandatory | The Long-Term Performance Graph shall provide the user with a recording of the watch's rate over an extended period of time. |
-| FR-07-04 | mandatory | The Long-Term Performance Graph shall provide the user with a recording of the watch's amplitude over an extended period of time. |
-| FR-07-05 | mandatory | The Long-Term Performance Graph shall provide the user with a recording of the watch's beat error over an extended period of time. |
-| FR-07-06 | mandatory | The Long-Term Performance Graph shall provide the user with the changes in rate over time. |
-| FR-07-07 | mandatory | The Long-Term Performance Graph shall provide the user with the changes in amplitude over time. |
-| FR-07-08 | mandatory | The Long-Term Performance Graph shall provide the user with the changes in beat error over time. |
-| FR-07-09 | optional | The Long-Term Performance Graph should provide the user with periodic updates of the graph during the test. |
-| FR-07-10 | optional | The Long-Term Performance Graph should provide the user with overall average values. |
-| FR-07-11 | optional | The Long-Term Performance Graph should provide the user with a visual indication of the variation range. |
-| FR-07-12 | optional | The Long-Term Performance Graph should provide the user with support for long-duration tests. |
-| FR-07-13 | mandatory | The Long-Term Performance Graph shall provide the user with a reduced update frequency as elapsed time increases. |
-| FR-07-14 | optional | The Long-Term Performance Graph should provide the user with maintained readability. |
+| FR-07-01 | mandatory | The Long-Term Performance Graph shall provide the user with a recording of the watch's rate over an extended period of time. |
+| FR-07-02 | mandatory | The Long-Term Performance Graph shall provide the user with a recording of the watch's amplitude over an extended period of time. |
+| FR-07-03 | mandatory | The Long-Term Performance Graph shall provide the user with a recording of the watch's beat error over an extended period of time. |
+| FR-07-04 | mandatory | The Long-Term Performance Graph shall provide the user with the changes in rate over time. |
+| FR-07-05 | mandatory | The Long-Term Performance Graph shall provide the user with the changes in amplitude over time. |
+| FR-07-06 | mandatory | The Long-Term Performance Graph shall provide the user with the changes in beat error over time. |
+| FR-07-07 | optional | The Long-Term Performance Graph should provide the user with periodic updates of the graph during the test. |
+| FR-07-08 | optional | The Long-Term Performance Graph should provide the user with overall average values. |
+| FR-07-09 | optional | The Long-Term Performance Graph should provide the user with a visual indication of the variation range. |
+| FR-07-10 | optional | The Long-Term Performance Graph should provide the user with support for long-duration tests. |
+| FR-07-11 | mandatory | The Long-Term Performance Graph shall provide the user with a reduced update frequency as elapsed time increases. |
+| FR-07-12 | optional | The Long-Term Performance Graph should provide the user with maintained readability. |
  
 ### G08 · Escapement Analyzer and Marker-Line Display
 | ID | Grade | Requirement |
@@ -138,22 +135,21 @@
 ### G10 · Waveform Comparison Display with Timing Markers
 | ID | Grade | Requirement |
 |----|-------|-------------|
-| FR-10-01 | mandatory | The Waveform Comparison Display with Timing Markers shall provide the user with a waveform comparison display that includes timing markers. |
-| FR-10-02 | mandatory | The Waveform Comparison Display with Timing Markers shall provide the user with multiple beat waveforms presented in aligned lanes. |
-| FR-10-03 | mandatory | The Waveform Comparison Display with Timing Markers shall provide the user with the ability to compare waveform shape across beats. |
-| FR-10-04 | mandatory | The Waveform Comparison Display with Timing Markers shall provide the user with the ability to compare waveform spacing across beats. |
-| FR-10-05 | mandatory | The Waveform Comparison Display with Timing Markers shall provide the user with the ability to compare waveform consistency across beats. |
-| FR-10-06 | optional | The Waveform Comparison Display with Timing Markers should provide the user with overlaid waveform displays that include vertical guide markers. |
-| FR-10-07 | mandatory | The Waveform Comparison Display with Timing Markers shall provide the user with the rate value. |
-| FR-10-08 | mandatory | The Waveform Comparison Display with Timing Markers shall provide the user with the beat error value. |
-| FR-10-09 | mandatory | The Waveform Comparison Display with Timing Markers shall provide the user with the beats per hour value. |
-| FR-10-10 | optional | The Waveform Comparison Display with Timing Markers should provide the user with the ability to compare successive beats. |
-| FR-10-11 | mandatory | The Waveform Comparison Display with Timing Markers shall provide the user with the ability to identify landmarks in the waveform signal. |
-| FR-10-12 | mandatory | The Waveform Comparison Display with Timing Markers shall provide the user with the ability to inspect changes in waveform structure between beats. |
-| FR-10-13 | optional | The Waveform Comparison Display with Timing Markers should provide the user with the ability to decompose the waveform signal. |
-| FR-10-14 | mandatory | The Waveform Comparison Display with Timing Markers shall provide the user with signal envelopes for each beat. |
-| FR-10-15 | optional | The Waveform Comparison Display with Timing Markers may provide the user with degree-based reference markers. |
-| FR-10-16 | optional | The Waveform Comparison Display with Timing Markers may provide the user with time-based reference markers. |
+| FR-10-01 | mandatory | The Waveform Comparison Display with Timing Markers shall provide the user with multiple beat waveforms presented in aligned lanes. |
+| FR-10-02 | mandatory | The Waveform Comparison Display with Timing Markers shall provide the user with the ability to compare waveform shape across beats. |
+| FR-10-03 | mandatory | The Waveform Comparison Display with Timing Markers shall provide the user with the ability to compare waveform spacing across beats. |
+| FR-10-04 | mandatory | The Waveform Comparison Display with Timing Markers shall provide the user with the ability to compare waveform consistency across beats. |
+| FR-10-05 | optional | The Waveform Comparison Display with Timing Markers should provide the user with overlaid waveform displays that include vertical guide markers. |
+| FR-10-06 | mandatory | The Waveform Comparison Display with Timing Markers shall provide the user with the rate value. |
+| FR-10-07 | mandatory | The Waveform Comparison Display with Timing Markers shall provide the user with the beat error value. |
+| FR-10-08 | mandatory | The Waveform Comparison Display with Timing Markers shall provide the user with the beats per hour value. |
+| FR-10-09 | optional | The Waveform Comparison Display with Timing Markers should provide the user with the ability to compare successive beats. |
+| FR-10-10 | mandatory | The Waveform Comparison Display with Timing Markers shall provide the user with the ability to identify landmarks in the waveform signal. |
+| FR-10-11 | mandatory | The Waveform Comparison Display with Timing Markers shall provide the user with the ability to inspect changes in waveform structure between beats. |
+| FR-10-12 | optional | The Waveform Comparison Display with Timing Markers should provide the user with the ability to decompose the waveform signal. |
+| FR-10-13 | mandatory | The Waveform Comparison Display with Timing Markers shall provide the user with signal envelopes for each beat. |
+| FR-10-14 | optional | The Waveform Comparison Display with Timing Markers may provide the user with degree-based reference markers. |
+| FR-10-15 | optional | The Waveform Comparison Display with Timing Markers may provide the user with time-based reference markers. |
 
 ### G11 · Scope Mode with Synchronized Sweep Display
 | ID | Grade | Requirement |
