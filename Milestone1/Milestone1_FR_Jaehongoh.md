@@ -177,7 +177,7 @@
 |----|------------|
 | C-1 | The system shall run on a Raspberry Pi 5 (8 GB RAM, 128 GB microSD) with a touchscreen. |
 | C-2 | The system shall render and operate the GUI correctly on the low-resolution (800×480) display attached to the Raspberry Pi 5. |
-| C-3 | The system shall run on both Windows PC and Debian Linux Raspberry Pi 5. |
+| C-3 | The system shall run on both a Windows 11 (x64) PC and a Raspberry Pi 5 running Raspberry Pi OS (Debian-based, 64-bit/ARM64). |
 | C-4 | The system shall operate with Auto Gain Control turned off. |
 
 ---
@@ -357,5 +357,5 @@
 |----|----------|
 | C-1 | 시스템은 터치스크린이 연결된 Raspberry Pi 5(8 GB RAM, 128 GB microSD)에서 실행되어야 한다. |
 | C-2 | 시스템은 Raspberry Pi 5에 연결된 저해상도(800×480) 디스플레이에서 GUI를 올바르게 렌더링하고 동작해야 한다. |
-| C-3 | 시스템은 Windows PC와 Debian Linux Raspberry Pi 5 모두에서 실행되어야 한다. |
+| C-3 | 시스템은 Windows 11 (x64) PC와 Raspberry Pi OS(Debian 기반, 64-bit/ARM64)를 실행하는 Raspberry Pi 5 모두에서 실행되어야 한다. |
 | C-4 | 시스템은 Auto Gain Control이 꺼진 상태에서 동작해야 한다. |
