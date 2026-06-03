@@ -68,7 +68,7 @@
 | Response | [EN] The system warns the user when a defect is detected.<br>[KO] 시스템은 결함 발생 시 사용자에게 경고한다. |
 | Response Measure | [EN] The defect is identified within 5 seconds.<br>[KO] 결함은 5초 이내에 판별된다. |
 
-### QA-G06-03 No Signal Handling
+### QA-G06-03 No Signal Error Handling
 
 **Scenario**
 
@@ -78,14 +78,14 @@
 
 **Quality Attribute Rationale**
 
-[EN] Availability is selected because Project Plan Draft p.26 requires graceful degradation when the signal is weak, noisy, or partially missing rather than unstable or misleading outputs.
+[EN] Measurement Accuracy / Error Handling is selected because Project Plan Draft p.26 requires graceful degradation when the signal is weak, noisy, or partially missing rather than unstable or misleading outputs.
 
-[KO] Project Plan Draft p.26이 신호가 weak, noisy, partially missing인 경우 unstable 또는 misleading output 대신 graceful degradation을 제공해야 한다고 요구하므로 Availability를 선택한다.
+[KO] Project Plan Draft p.26이 신호가 weak, noisy, partially missing인 경우 unstable 또는 misleading output 대신 graceful degradation을 제공해야 한다고 요구하므로 Measurement Accuracy / Error Handling을 선택한다.
 
 | Field | Description |
 |---|---|
 | ID | QA-G06-03 |
-| Quality Attribute | [EN] Availability<br>[KO] 가용성 |
+| Quality Attribute | [EN] Measurement Accuracy / Error Handling<br>[KO] 측정 정확성 / 오류 처리 |
 | Source of Stimulus | [EN] User<br>[KO] 사용자 |
 | Stimulus | [EN] Watch operating sound input is absent.<br>[KO] 시계 동작 소리의 입력이 없다. |
 | Artifact | [EN] System signal-state display<br>[KO] 시스템 신호 상태 display |
@@ -93,11 +93,61 @@
 | Response | [EN] The system displays No signal.<br>[KO] 시스템은 데이터 부재(No signal)를 표시한다. |
 | Response Measure | [EN] The system waits for data input while continuing normal operation.<br>[KO] 시스템은 데이터 입력을 기다리며 정상 동작한다. |
 
+### QA-G06-04 Trace and Numeric Consistency
+
+**Scenario**
+
+[EN] When the system generates the beat error numeric value and diagnostic trace from detected timing events, the displayed trace remains consistent with the numeric measurement.
+
+[KO] 시스템이 감지된 timing event로부터 beat error 수치와 diagnostic trace를 생성할 때, 표시된 trace는 수치 측정값과 일관성을 유지한다.
+
+**Quality Attribute Rationale**
+
+[EN] Correctness / Data Consistency is selected because Project Plan Draft p.18 requires the line display to be consistent with numeric values, and p.25 requires displayed values and graphs to correspond to the underlying watch events while remaining internally consistent.
+
+[KO] Project Plan Draft p.18이 line display와 numeric value의 일관성을 요구하고, p.25가 표시값과 graph가 underlying watch event와 대응하며 내부적으로 일관되어야 한다고 요구하므로 Correctness / Data Consistency를 선택한다.
+
+| Field | Description |
+|---|---|
+| ID | QA-G06-04 |
+| Quality Attribute | [EN] Correctness / Data Consistency<br>[KO] 정확성 / 데이터 일관성 |
+| Source of Stimulus | [EN] Measurement calculation pipeline<br>[KO] 측정 계산 파이프라인 |
+| Stimulus | [EN] Beat error numeric value and diagnostic trace are generated from detected timing events.<br>[KO] 감지된 timing event에서 beat error 수치와 diagnostic trace가 생성된다. |
+| Artifact | [EN] Beat Error Display and Diagnostic Trace<br>[KO] Beat Error Display and Diagnostic Trace |
+| Environment | [EN] Normal Live, Playback, or Sim measurement operation with valid timing events<br>[KO] 유효한 timing event가 있는 정상 Live, Playback, Sim 측정 동작 |
+| Response | [EN] The system displays numeric beat error and trace lines derived from the same timing event data, with trace direction and separation consistent with the numeric interpretation.<br>[KO] 시스템은 동일한 timing event data에서 도출된 beat error 수치와 trace line을 표시하고, trace 방향과 간격은 수치 해석과 일관된다. |
+| Response Measure | [EN] 100% of reviewed beat error numeric values can be traced to the same timing event data used for the displayed trace, and inconsistent numeric/trace interpretations are 0 cases in the reviewed sample set.<br>[KO] 검토한 beat error 수치의 100%는 표시 trace에 사용된 동일 timing event data로 추적 가능하며, 검토 sample set에서 수치/trace 해석 불일치는 0건이다. |
+
+### QA-G06-05 Controlled Input Testability
+
+**Scenario**
+
+[EN] When a tester runs the same Playback or Sim input set multiple times, the beat error numeric value, trace separation, and warning behavior remain repeatable.
+
+[KO] 테스터가 동일한 Playback 또는 Sim 입력 세트를 여러 번 실행하면, beat error 수치, trace separation, warning 동작은 반복 가능하게 유지된다.
+
+**Quality Attribute Rationale**
+
+[EN] Testability is selected because Paulo's guidance requires measurable QA scenarios, and Project Plan Draft p.8 to p.9 define Playback and Sim modes as controlled inputs for reviewing past captures, debugging software, and testing GUI/calculation behavior.
+
+[KO] 파울로 교수의 지침은 측정 가능한 QA scenario를 요구하며, Project Plan Draft p.8~p.9는 Playback과 Sim mode를 past capture 검토, software debugging, GUI/calculation behavior 테스트를 위한 controlled input으로 정의하므로 Testability를 선택한다.
+
+| Field | Description |
+|---|---|
+| ID | QA-G06-05 |
+| Quality Attribute | [EN] Testability<br>[KO] 테스트 용이성 |
+| Source of Stimulus | [EN] Tester<br>[KO] 테스터 |
+| Stimulus | [EN] The same Playback or Sim input set is executed repeatedly for beat error display verification.<br>[KO] beat error display 검증을 위해 동일한 Playback 또는 Sim 입력 세트가 반복 실행된다. |
+| Artifact | [EN] Beat error calculation, diagnostic trace, and warning behavior<br>[KO] Beat error 계산, diagnostic trace, warning 동작 |
+| Environment | [EN] Development or integration test environment using controlled Playback or Sim data<br>[KO] controlled Playback 또는 Sim data를 사용하는 개발 또는 통합 테스트 환경 |
+| Response | [EN] The system produces repeatable numeric values, trace patterns, and warning results for the same input data.<br>[KO] 시스템은 동일 입력 데이터에 대해 반복 가능한 수치값, trace pattern, warning 결과를 생성한다. |
+| Response Measure | [EN] Across 3 repeated runs of the same input set, beat error numeric values, trace separation classification, and warning/no-warning outcomes are identical within the displayed precision.<br>[KO] 동일 입력 세트 3회 반복 실행에서 beat error 수치, trace separation 분류, warning/no-warning 결과는 표시 정밀도 이내에서 동일하다. |
+
 ## Traceability Summary
 
 | Requirement | Related QA | Notes |
 |---|---|---|
-| FR-G06-01 to FR-G06-04 | QA-G06-01, QA-G06-02 | Project Plan Draft p.18 requires numeric measurements and graphical trace lines for diagnostic interpretation. |
-| FR-G06-05 to FR-G06-09 | QA-G06-01, QA-G06-02 | Project Plan Draft p.6 and p.18 connect tic/tac line separation with beat error and require alerting when separation exceeds an acceptable range. |
-| FR-G06-10 to FR-G06-11 | QA-G06-02 | Project Plan Draft p.18 connects trace slope with positive/negative readings and requires major fault indication above 45 degrees magnitude. |
-| FR-G06-01 to FR-G06-04 | QA-G06-03 | Project Plan Draft p.26 supports graceful handling of weak, noisy, or missing signals. |
+| FR-G06-01 to FR-G06-04 | QA-G06-01, QA-G06-02, QA-G06-04, QA-G06-05 | Project Plan Draft p.18 requires numeric measurements and graphical trace lines for diagnostic interpretation, and p.25 requires displayed values and graphs to remain consistent with underlying watch events. |
+| FR-G06-05 to FR-G06-09 | QA-G06-01, QA-G06-02, QA-G06-04, QA-G06-05 | Project Plan Draft p.6 and p.18 connect tic/tac line separation with beat error and require alerting when separation exceeds an acceptable range. |
+| FR-G06-10 to FR-G06-11 | QA-G06-02, QA-G06-04, QA-G06-05 | Project Plan Draft p.18 connects trace slope with positive/negative readings and requires major fault indication above 45 degrees magnitude. |
+| FR-G06-01 to FR-G06-04 | QA-G06-03 | Project Plan Draft p.26 supports graceful degradation for weak, noisy, or missing signals so the display does not produce unstable or misleading outputs. |

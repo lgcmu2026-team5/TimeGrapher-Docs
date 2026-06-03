@@ -63,7 +63,7 @@
 | Response | [EN] The system applies the configured marker value to the algorithm.<br>[KO] 시스템은 설정한 마크 값으로 알고리즘을 적용한다. |
 | Response Measure | [EN] When a new algorithm module is added or changed, the impact on existing code remains below 10%.<br>[KO] 새로운 알고리즘 모듈 추가 또는 변경 시 기존 코드 수정 영향도는 10% 미만이다. |
 
-### QA-G08-03 Analysis Visualization Continuity
+### QA-G08-03 Analysis Visualization Correctness
 
 **Scenario**
 
@@ -73,14 +73,14 @@
 
 **Quality Attribute Rationale**
 
-[EN] Availability is selected because Project Plan Draft p.11 requires users to inspect prior data without losing the recorded signal or forcing a reset, and p.25 requires GUI presentation of waveform, markers, and computed values without stale data, backlog, or timing failures.
+[EN] Correctness / Measurement Accuracy is selected because Project Plan Draft p.11 requires users to inspect prior data without losing the recorded signal or forcing a reset, and p.25 requires displayed values and graphs to correspond to the underlying watch events while avoiding stale data, backlog, or timing failures.
 
-[KO] Project Plan Draft p.11이 recorded signal 손실이나 reset 없이 prior data를 검사할 수 있어야 한다고 요구하고, p.25가 stale data, backlog, timing failure를 관찰 및 방지할 수 있도록 waveform, marker, computed value 표시를 요구하므로 Availability를 선택한다.
+[KO] Project Plan Draft p.11이 recorded signal 손실이나 reset 없이 prior data를 검사할 수 있어야 한다고 요구하고, p.25가 표시값과 graph가 underlying watch event와 대응하며 stale data, backlog, timing failure를 피해야 한다고 요구하므로 Correctness / Measurement Accuracy를 선택한다.
 
 | Field | Description |
 |---|---|
 | ID | QA-G08-03 |
-| Quality Attribute | [EN] Availability<br>[KO] 가용성 |
+| Quality Attribute | [EN] Correctness / Measurement Accuracy<br>[KO] 정확성 / 측정 정확성 |
 | Source of Stimulus | [EN] User<br>[KO] 사용자 |
 | Stimulus | [EN] The user enters analysis mode.<br>[KO] 사용자가 분석모드 상황에 진입한다. |
 | Artifact | [EN] Audio-data visualization display<br>[KO] 음성 데이터 시각화 display |
@@ -88,11 +88,86 @@
 | Response | [EN] The visualized audio-data screen is shown.<br>[KO] 시각화한 음성데이터 화면이 보여진다. |
 | Response Measure | [EN] The audio-data buffer is dumped without distortion.<br>[KO] 음성 데이터 버퍼는 왜곡 없이 덤프된다. |
 
+### QA-G08-04 Marker and Waveform Alignment
+
+**Scenario**
+
+[EN] When A/C event markers are generated from the acoustic waveform, the marker positions remain aligned with the signal features they represent and the elapsed time is calculated from those same event timestamps.
+
+[KO] acoustic waveform에서 A/C event marker가 생성되면, marker position은 자신이 나타내는 signal feature와 정렬을 유지하고 elapsed time은 동일 event timestamp에서 계산된다.
+
+**Quality Attribute Rationale**
+
+[EN] Correctness / Measurement Accuracy is selected because Project Plan Draft p.20 requires marker positions to update consistently with the waveform and remain visually aligned with the signal features, and p.26 requires accurate identification of start/onset and peak of important acoustic signals.
+
+[KO] Project Plan Draft p.20이 marker position이 waveform과 일관되게 업데이트되고 signal feature와 시각적으로 정렬되어야 한다고 요구하며, p.26이 중요한 acoustic signal의 start/onset과 peak를 정확히 식별해야 한다고 요구하므로 Correctness / Measurement Accuracy를 선택한다.
+
+| Field | Description |
+|---|---|
+| ID | QA-G08-04 |
+| Quality Attribute | [EN] Correctness / Measurement Accuracy<br>[KO] 정확성 / 측정 정확성 |
+| Source of Stimulus | [EN] Acoustic event detection pipeline<br>[KO] Acoustic event detection pipeline |
+| Stimulus | [EN] A and C event markers are generated from the waveform.<br>[KO] waveform에서 A 및 C event marker가 생성된다. |
+| Artifact | [EN] Escapement Analyzer and Marker-Line Display<br>[KO] Escapement Analyzer and Marker-Line Display |
+| Environment | [EN] Live or Playback mode with valid watch signal and visible waveform<br>[KO] 유효한 watch signal과 visible waveform이 있는 Live 또는 Playback mode |
+| Response | [EN] The system displays marker lines aligned with detected A/C waveform features and calculates elapsed time from the same event timestamps.<br>[KO] 시스템은 감지된 A/C waveform feature와 정렬된 marker line을 표시하고 동일 event timestamp에서 elapsed time을 계산한다. |
+| Response Measure | [EN] In the reviewed sample set, marker positions remain visually aligned with their corresponding waveform features, and marker interval values are derived from the same A/C event timestamps with 0 inconsistent marker/interval references.<br>[KO] 검토 sample set에서 marker position은 대응 waveform feature와 시각적 정렬을 유지하고, marker interval 값은 동일 A/C event timestamp에서 도출되며 marker/interval reference 불일치는 0건이다. |
+
+### QA-G08-05 Marker Measurement Testability
+
+**Scenario**
+
+[EN] When a tester runs the same Playback or Sim input set multiple times, the marker positions and marker interval measurements remain repeatable.
+
+[KO] 테스터가 동일한 Playback 또는 Sim 입력 세트를 여러 번 실행하면, marker position과 marker interval 측정값은 반복 가능하게 유지된다.
+
+**Quality Attribute Rationale**
+
+[EN] Testability is selected because Paulo's guidance requires measurable QA scenarios, and Project Plan Draft p.8 to p.9 define Playback and Sim modes as controlled inputs for reviewing captures, debugging software, and evaluating detection, graphing, and GUI behavior.
+
+[KO] 파울로 교수의 지침은 측정 가능한 QA scenario를 요구하며, Project Plan Draft p.8~p.9는 Playback과 Sim mode를 capture 검토, software debugging, detection/graphing/GUI behavior 평가를 위한 controlled input으로 정의하므로 Testability를 선택한다.
+
+| Field | Description |
+|---|---|
+| ID | QA-G08-05 |
+| Quality Attribute | [EN] Testability<br>[KO] 테스트 용이성 |
+| Source of Stimulus | [EN] Tester<br>[KO] 테스터 |
+| Stimulus | [EN] The same Playback or Sim input set is executed repeatedly for marker-line verification.<br>[KO] marker-line 검증을 위해 동일한 Playback 또는 Sim 입력 세트가 반복 실행된다. |
+| Artifact | [EN] Marker placement and marker interval calculation<br>[KO] Marker 배치 및 marker interval 계산 |
+| Environment | [EN] Development or integration test environment using controlled Playback or Sim data<br>[KO] controlled Playback 또는 Sim data를 사용하는 개발 또는 통합 테스트 환경 |
+| Response | [EN] The system produces repeatable marker positions and elapsed-time measurements for the same input data.<br>[KO] 시스템은 동일 입력 데이터에 대해 반복 가능한 marker position과 elapsed-time measurement를 생성한다. |
+| Response Measure | [EN] Across 3 repeated runs of the same input set, selected A/C marker positions and displayed marker intervals match within the displayed precision.<br>[KO] 동일 입력 세트 3회 반복 실행에서 선택된 A/C marker position과 표시 marker interval은 표시 정밀도 이내에서 일치한다. |
+
+### QA-G08-06 Reference Point Interpretability
+
+**Scenario**
+
+[EN] When the user compares onset-based and peak-based timing interpretations, the display supports deciding which reference point produces the more stable and meaningful timing result.
+
+[KO] 사용자가 onset 기준과 peak 기준 timing 해석을 비교할 때, display는 어떤 reference point가 더 안정적이고 의미 있는 timing result를 만드는지 판단할 수 있게 지원한다.
+
+**Quality Attribute Rationale**
+
+[EN] Usability is selected because Project Plan Draft p.20 says the interface should allow alternative interpretations of the signal, such as measuring from start/onset or peak, to help determine which reference point produces stable and meaningful timing results.
+
+[KO] Project Plan Draft p.20이 interface가 start/onset 또는 peak 기준 측정 같은 signal의 alternative interpretation을 비교할 수 있게 하고, 어떤 reference point가 stable하고 meaningful한 timing result를 만드는지 판단하도록 도와야 한다고 설명하므로 Usability를 선택한다.
+
+| Field | Description |
+|---|---|
+| ID | QA-G08-06 |
+| Quality Attribute | [EN] Usability<br>[KO] 사용성 |
+| Source of Stimulus | [EN] User<br>[KO] 사용자 |
+| Stimulus | [EN] The user compares timing measured from onset against timing measured from peak.<br>[KO] 사용자가 onset 기준 timing과 peak 기준 timing을 비교한다. |
+| Artifact | [EN] Escapement Analyzer and Marker-Line Display<br>[KO] Escapement Analyzer and Marker-Line Display |
+| Environment | [EN] Acoustic waveform, A/C markers, and millisecond labels are visible during analysis<br>[KO] 분석 중 acoustic waveform, A/C marker, millisecond label이 표시되는 상태 |
+| Response | [EN] The system presents the alternative reference-point interpretations in a way that supports comparison.<br>[KO] 시스템은 alternative reference-point interpretation을 비교 가능한 방식으로 제시한다. |
+| Response Measure | [EN] During review or demo, the user can identify which reference point produces the more stable and meaningful timing result for the displayed input set.<br>[KO] review 또는 demo 중 사용자는 표시된 input set에 대해 어떤 reference point가 더 stable하고 meaningful한 timing result를 만드는지 식별할 수 있다. |
+
 ## Traceability Summary
 
 | Requirement | Related QA | Notes |
 |---|---|---|
-| FR-G08-01 to FR-G08-03 | QA-G08-01, QA-G08-03 | Project Plan Draft p.6 to p.11 support live visualization, playback review, pause, and captured-data navigation. |
-| FR-G08-05 to FR-G08-06 | QA-G08-01 | Project Plan Draft p.20 requires vertical timing markers, millisecond labels, A/C event markers, and elapsed-time calculation. |
-| FR-G08-07 | QA-G08-02 | Project Plan Draft p.20 supports comparing onset-based and peak-based marker interpretations. |
-| FR-G08-01 to FR-G08-07 | QA-G08-03 | Project Plan Draft p.25 to p.26 support low-latency, consistent marker-based analysis and extensible display architecture. |
+| FR-G08-01 to FR-G08-03 | QA-G08-01, QA-G08-03, QA-G08-05 | Project Plan Draft p.6 to p.11 support live visualization, playback review, pause, captured-data navigation, and controlled input review. |
+| FR-G08-05 to FR-G08-06 | QA-G08-01, QA-G08-04, QA-G08-05 | Project Plan Draft p.20 requires vertical timing markers, millisecond labels, A/C event markers, elapsed-time calculation, and visual alignment with signal features. |
+| FR-G08-07 | QA-G08-02, QA-G08-06 | Project Plan Draft p.20 supports comparing onset-based and peak-based marker interpretations to determine the most stable and meaningful timing reference. |
+| FR-G08-01 to FR-G08-07 | QA-G08-03, QA-G08-04, QA-G08-05, QA-G08-06 | Project Plan Draft p.11, p.20, p.25, and p.26 support preserving recorded signal data, aligning markers with waveform features, comparing reference points, and keeping displays consistent with underlying watch events. |
