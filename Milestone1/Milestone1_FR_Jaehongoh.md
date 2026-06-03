@@ -52,16 +52,16 @@
 | Response Measure | p99 computation time (analysis processing only, excluding audio buffering and display) ≤ 100 ms; 0 dropped audio blocks and 0 missed beats over a 10-min continuous run |
 
 ### QAS-3 · Dependability (Reliability) — No Degradation Over Long Runs
-> While measuring continuously without stopping on the Raspberry Pi (8 GB RAM), the system continues to deliver correct service without degrading over time — no memory leak, no crash, and no UI freeze — over 10 minutes of continuous operation (keeping up with the input rate is assumed, per QAS-2).
+> While measuring continuously without stopping on the Raspberry Pi (8 GB RAM), the system continues to deliver correct service without degrading over time — no memory leak, no crash, and no UI freeze — over 10 minutes of continuous operation (keeping up with the input rate is assumed, per QAS-2). [JYP] "long-running / over time" needs a concrete bound — define the duration explicitly (rec. 2) and raise the 10-min measure to match that intent (rec. 1).
 
 | Element | Content |
 |---------|---------|
 | Source | The system |
 | Stimulus | Measuring continuously without stopping for a long time |
 | Artifact | The whole system, Raspberry Pi memory/process health |
-| Environment | Long-running operation on the Raspberry Pi (8 GB RAM) |
+| Environment | Long-running operation on the Raspberry Pi (8 GB RAM) [JYP] Define "long-running" concretely (e.g., ≥ 2 h continuous, ideally ≥ 6 h per the Long-Term Performance Graph) — the bare term is ambiguous and not testable on its own. |
 | Response | Continue correct service without degrading: no resource exhaustion, no crash, no freeze |
-| Response Measure | Over a 10-min continuous run: RSS growth ≤ 20 MB in any 5-min window with no monotonic upward trend; 0 crashes; 0 screen freezes, where a freeze = no screen update for ≥ 2 s |
+| Response Measure | Over a 10-min continuous run: RSS growth ≤ 20 MB in any 5-min window with no monotonic upward trend; 0 crashes; 0 screen freezes, where a freeze = no screen update for ≥ 2 s [JYP] 10 min is too short to substantiate "no degradation over long runs" — raise the verification window to the representative long-term duration defined in Environment (e.g., ≥ 2 h) and require no monotonic RSS upward trend over any 30-min window. |
 
 ### QAS-4 · Dependability (Reliability) — Consistent Values Across Displays
 > While measuring as usual, when a single measurement result is produced and fanned out to multiple graphs and numbers, the system renders every display in a given on-screen frame from the same underlying measurement snapshot (each tagged with a snapshot ID) so they do not disagree, with 0 value mismatches across displays — a mismatch being any two displays in the same frame whose values trace to different snapshot IDs. [SJ] For sequence features, the X/D summary uses the same captured result set as the per-position display.
@@ -232,16 +232,16 @@
 | 응답 척도 | p99 연산 시간(오디오 버퍼링·화면 표시 제외, 분석 처리만) ≤ 100 ms; 10분 연속 실행 동안 드롭된 오디오 블록 0개, 놓친 비트 0개 |
 
 ### QAS-3 · Dependability (Reliability) — No Degradation Over Long Runs
-> Raspberry Pi(8 GB RAM)에서 멈추지 않고 연속 측정하는 동안, 시스템은 시간이 지나도 성능이 열화되지 않고 정상 서비스를 계속 제공하여 — 메모리 누수 없음, 크래시 없음, 화면 멈춤 없음 — 10분 연속 실행을 견딘다(입력 rate를 따라가는 것은 QAS-2에서 전제).
+> Raspberry Pi(8 GB RAM)에서 멈추지 않고 연속 측정하는 동안, 시스템은 시간이 지나도 성능이 열화되지 않고 정상 서비스를 계속 제공하여 — 메모리 누수 없음, 크래시 없음, 화면 멈춤 없음 — 10분 연속 실행을 견딘다(입력 rate를 따라가는 것은 QAS-2에서 전제). [JYP] "장시간 / 시간이 지나도"에는 구체적 기준이 필요함 — 지속시간을 명시적으로 정의하고(권고 2) 10분 척도를 그 의도에 맞게 상향할 것(권고 1).
 
 | 요소 | 내용 |
 |------|------|
 | 출처 | 시스템 |
 | 자극 | 오랫동안 멈추지 않고 연속 측정함 |
 | 대상 산출물 | 전체 시스템, Raspberry Pi 메모리/프로세스 상태 |
-| 환경 | Raspberry Pi(8 GB RAM)에서 장시간 실행 |
+| 환경 | Raspberry Pi(8 GB RAM)에서 장시간 실행 [JYP] "장시간"을 구체적 지속시간으로 정의할 것(예: 연속 ≥ 2시간, 가능하면 Long-Term Performance Graph 기준 ≥ 6시간) — 표현만으로는 모호하고 그 자체로 검증 불가. |
 | 응답 | 열화 없이 정상 서비스를 계속 제공: 자원 고갈 없음, 크래시 없음, 멈춤 없음 |
-| 응답 척도 | 10분 연속 실행 중: 임의 5분 구간에서 RSS 증가 ≤ 20 MB, 단조 증가 추세 없음; 크래시 0회; 화면 멈춤 0회(멈춤 = 화면 업데이트가 2초 이상 미갱신) |
+| 응답 척도 | 10분 연속 실행 중: 임의 5분 구간에서 RSS 증가 ≤ 20 MB, 단조 증가 추세 없음; 크래시 0회; 화면 멈춤 0회(멈춤 = 화면 업데이트가 2초 이상 미갱신) [JYP] 10분은 "장기 무열화"를 입증하기엔 너무 짧음 — 검증 구간을 환경 칸에서 정의한 대표 장기 지속시간(예: ≥ 2시간)으로 상향하고, 임의 30분 구간에서 RSS 단조 증가가 없어야 함. |
 
 ### QAS-4 · Dependability (Reliability) — Consistent Values Across Displays
 > 평소처럼 측정하는 동안 하나의 측정 결과가 산출되어 여러 그래프와 숫자로 전달될 때, 시스템은 한 화면 프레임의 모든 표시를 동일한 측정 스냅샷(각 스냅샷 ID 부여)에서 렌더링하여 서로 불일치하지 않게 하며, 표시 간 값 불일치가 0회이다 — 불일치란 같은 프레임의 두 표시가 서로 다른 스냅샷 ID에서 파생된 경우를 말한다. [SJ] Sequence 기능에서는 X/D summary가 position별 표시와 동일한 captured result set을 사용한다.
