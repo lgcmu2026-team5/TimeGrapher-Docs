@@ -148,7 +148,7 @@
 | Response Measure | Unit-test coverage ≥ 80% on core analysis stages, 100% of unit tests runnable without real hardware; [SJ] X/D values are identical across 3 repeated runs with the same standard-position input, and X/D trace-back coverage = 100% |
 
 ### QAS-11 · Usability — Reading and Operating on the Low-Resolution Touchscreen
-> While using the device as usual on the Raspberry Pi's 800×480 touchscreen, when the user reads measurement values and switches modes, the system presents the key readings legibly without scrolling/zooming and lets the user operate primary functions by touch alone, keeping primary readings (rate, beat error, amplitude) readable at normal working distance, all primary touch targets ≥ 9 mm (≈ 48 px), and any primary mode reachable in ≤ 2 taps. [SJ] During position and sequence review, the user can quickly identify the active/selected position and X/D summary.
+> While using the device as usual on the Raspberry Pi's 800×480 touchscreen, when the user reads measurement values and switches modes, the system presents the key readings legibly without scrolling/zooming and lets the user operate primary functions by touch alone, keeping primary readings (rate, beat error, amplitude) readable at normal working distance, all primary touch targets ≥ 9 mm (≈ 48 px), and any primary mode reachable in ≤ 2 taps. [SJ] During position and sequence review, the user can quickly identify the active/selected position and X/D summary. [JYP] "operate by touch" is a derived assumption from the provided touchscreen hardware (Draft, Hardware §), not an explicit Draft requirement — and it is scoped to single tap/drag only. Multi-touch gestures (swipe, pinch-zoom) are out of scope (no basis in the Draft); zoom/navigate are satisfied by tap-based controls (buttons/sliders).
 
 | Element | Content |
 |---------|---------|
@@ -157,7 +157,7 @@
 | Artifact | The GUI (spectrogram/scope/numeric displays and controls) |
 | Environment | Raspberry Pi 5 with the 800×480 touch display, in normal use |
 | Response | Present key readings legibly and allow primary functions to be operated by touch alone; [SJ] show active/selected position and X/D near the related measurement values |
-| Response Measure | Primary readings (rate, beat error, amplitude) shown simultaneously without scroll/zoom at ≥ 24 px font, readable at ~40 cm working distance; all primary touch targets ≥ 9 mm (≈ 48 px); any primary mode reachable in ≤ 2 taps; [SJ] active/selected position identifiable within 5 seconds, and X/D identifiable within 10 seconds |
+| Response Measure | Primary readings (rate, beat error, amplitude) shown simultaneously without scroll/zoom at ≥ 24 px font, readable at ~40 cm working distance; all primary touch targets ≥ 9 mm (≈ 48 px); any primary mode reachable in ≤ 2 taps; [SJ] active/selected position identifiable within 5 seconds, and X/D identifiable within 10 seconds [JYP] Touch = single tap/drag; "≤ 2 taps" and "≥ 9 mm targets" already scope this to tap level. No multi-touch gesture (swipe/pinch) is required or measured. |
 
 ### QAS-12 · Availability (Recoverability) — Audio Device Disconnect/Reconnect
 > While measuring as usual, when the audio input device is disconnected or errors out, the system detects the fault without crashing, informs the user, and resumes measurement without a manual restart once the device is reconnected, with 0 crashes, a "no device" indication within 5 s, automatic resumption within 10 s of reconnection, and 0 data corruption.
@@ -328,7 +328,7 @@
 | 응답 척도 | 핵심 분석 단계 단위 테스트 커버리지 ≥ 80%, 실제 하드웨어 없이 실행 가능한 단위 테스트 100%; [SJ] 동일 standard-position input 3회 반복 실행 시 X/D 값이 동일하고 X/D 역추적 가능률 100% |
 
 ### QAS-11 · Usability — Reading and Operating on the Low-Resolution Touchscreen
-> Raspberry Pi의 800×480 터치스크린에서 평소처럼 사용하는 동안 사용자가 측정값을 읽고 모드를 전환할 때, 시스템은 핵심 측정값을 스크롤/확대 없이 가독성 있게 표시하고 주요 기능을 터치만으로 조작할 수 있게 하며, 주요 측정값(일오차·비트오차·진폭)을 정상 작업 거리에서 판독 가능하게 표시하고, 모든 주요 터치 타깃을 ≥ 9 mm(≈ 48 px)로, 주요 모드 도달을 ≤ 2 탭으로 유지한다. [SJ] Position 및 sequence review 중 사용자는 active/selected position과 X/D summary를 빠르게 식별할 수 있다.
+> Raspberry Pi의 800×480 터치스크린에서 평소처럼 사용하는 동안 사용자가 측정값을 읽고 모드를 전환할 때, 시스템은 핵심 측정값을 스크롤/확대 없이 가독성 있게 표시하고 주요 기능을 터치만으로 조작할 수 있게 하며, 주요 측정값(일오차·비트오차·진폭)을 정상 작업 거리에서 판독 가능하게 표시하고, 모든 주요 터치 타깃을 ≥ 9 mm(≈ 48 px)로, 주요 모드 도달을 ≤ 2 탭으로 유지한다. [SJ] Position 및 sequence review 중 사용자는 active/selected position과 X/D summary를 빠르게 식별할 수 있다. [JYP] 여기서 "터치로 조작"은 제공된 터치스크린 하드웨어(Draft Hardware 절)에서 파생한 가정이지 Draft의 명시 요구가 아니며, 단일 탭/드래그 수준으로 한정함. 멀티터치 제스처(swipe·pinch-zoom)는 범위 밖(Draft에 근거 없음); zoom·navigate는 버튼/슬라이더 등 탭 기반 컨트롤로 충족.
 
 | 요소 | 내용 |
 |------|------|
@@ -337,7 +337,7 @@
 | 대상 산출물 | GUI(스펙트로그램/스코프/수치 표시와 컨트롤) |
 | 환경 | Raspberry Pi 5 + 800×480 터치 디스플레이, 평소 사용 중 |
 | 응답 | 핵심 측정값을 가독성 있게 표시하고 주요 기능을 터치만으로 조작 가능하게 함; [SJ] active/selected position과 X/D를 관련 측정값 근처에 표시함 |
-| 응답 척도 | 주요 측정값(일오차·비트오차·진폭)을 스크롤/확대 없이 동시 표시, 폰트 ≥ 24 px, 약 40 cm 작업 거리에서 판독 가능; 모든 주요 터치 타깃 ≥ 9 mm(≈ 48 px); 주요 모드 도달 ≤ 2 탭; [SJ] active/selected position은 5초 이내 식별 가능, X/D는 10초 이내 식별 가능 |
+| 응답 척도 | 주요 측정값(일오차·비트오차·진폭)을 스크롤/확대 없이 동시 표시, 폰트 ≥ 24 px, 약 40 cm 작업 거리에서 판독 가능; 모든 주요 터치 타깃 ≥ 9 mm(≈ 48 px); 주요 모드 도달 ≤ 2 탭; [SJ] active/selected position은 5초 이내 식별 가능, X/D는 10초 이내 식별 가능 [JYP] 터치 = 단일 탭/드래그; "≤ 2 탭", "≥ 9 mm 타깃"이 이미 탭 수준으로 한정함. 멀티터치 제스처(swipe/pinch)는 요구·측정 대상 아님. |
 
 ### QAS-12 · Availability (Recoverability) — Audio Device Disconnect/Reconnect
 > 평소처럼 측정하는 동안 오디오 입력 장치가 분리되거나 오류를 일으킬 때, 시스템은 크래시 없이 오류를 감지하고 사용자에게 알리며 장치 재연결 시 수동 재시작 없이 측정을 재개하여, 크래시 0회, 5초 이내 "장치 없음" 표시, 재연결 후 10초 이내 자동 측정 재개, 데이터 손상 0을 보장한다.
