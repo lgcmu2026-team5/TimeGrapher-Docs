@@ -42,9 +42,9 @@
 | FR-03-11 | optional | The Vario Display should provide the user with the standard deviation of amplitude. |
 | FR-03-12 | mandatory | The Vario Display shall provide the user with the elapsed measurement time of amplitude. |
 | FR-03-13 | mandatory | The Vario Display shall provide the user with the current value of amplitude. |
-| FR-03-14 | mandatory | The Vario Display shall provide the user with the acceptable minimum–maximum range of each measurement shown as a green zone on the graph. |
-| FR-03-15 | mandatory | The Vario Display shall provide the user with the minimum/maximum value of each measurement shown as blue arrows on the graph. |
-| FR-03-16 | mandatory | The Vario Display shall provide the user with the average value of each measurement shown as a red arrow on the graph. |
+| FR-03-14 | mandatory | The Vario Display shall provide the user with the acceptable minimum–maximum range of each measurement, visually distinguished on the graph. |
+| FR-03-15 | mandatory | The Vario Display shall provide the user with the minimum/maximum value of each measurement, visually distinguished on the graph. |
+| FR-03-16 | mandatory | The Vario Display shall provide the user with the average value of each measurement, visually distinguished on the graph. |
 | FR-03-17 | optional | The Vario Display should provide the user with the maximum–minimum difference of each measurement. |
  
 ### G04 · Multi-Position Sequence Display
@@ -58,14 +58,14 @@
 | FR-04-06 | mandatory | The Multi-Position Sequence Display shall provide the user with X, the mean value of all valid test positions. |
 | FR-04-07 | mandatory | The Multi-Position Sequence Display shall provide the user with D, the difference between the largest and smallest measured value. |
 | FR-04-08 | desired | The Multi-Position Sequence Display should provide the user with a comparison between vertical and horizontal positions. |
-| FR-04-09 | desired | The Multi-Position Sequence Display should provide the user with indicators that help reveal possible balance-wheel unbalance. |
+| FR-04-09 | desired | The Multi-Position Sequence Display should provide the user with indicators that can reveal possible balance-wheel unbalance. |
  
 ### G05 · Beat-Noise Scope Display
 | ID | Grade | Requirement |
 |----|-------|-------------|
 | FR-05-01 | mandatory | The Beat-Noise Scope Display shall provide the user with a Beat-Noise Scope tab in the Tabbed Graph Panel that can be displayed without restarting the program. |
 | FR-05-02 | mandatory | The Beat-Noise Scope Display shall provide the user with two related views, Scope 1 and Scope 2. |
-| FR-05-03 | mandatory | The Beat-Noise Scope Display shall provide the user with Live, Playback, and Sim modes, including pause and forward/backward navigation through captured data without data loss. |
+| FR-05-03 | mandatory | The Beat-Noise Scope Display shall provide the user with Live, Playback, and Sim modes, including pause and forward/backward navigation through captured data. |
 | FR-05-04 | mandatory | Scope 1 shall provide the user with a waveform display of the watch's alternating tick/tock beat noises. |
 | FR-05-05 | mandatory | Scope 1 shall provide the user with selectable time ranges of 20 ms, 200 ms, and 400 ms. |
 | FR-05-06 | mandatory | Scope 1 shall provide the user with the most recent beat noises as small strips beneath the current waveform after sufficient measurement time. |
@@ -110,7 +110,6 @@
 | FR-07-09 | optional | The Long-Term Performance Graph should provide the user with a visual indication of the variation range. |
 | FR-07-10 | optional | The Long-Term Performance Graph should provide the user with support for long-duration tests. |
 | FR-07-11 | mandatory | The Long-Term Performance Graph shall provide the user with a reduced update frequency as elapsed time increases. |
-| FR-07-12 | optional | The Long-Term Performance Graph should provide the user with maintained readability. |
  
 ### G08 · Escapement Analyzer and Marker-Line Display
 | ID | Grade | Requirement |
@@ -118,7 +117,7 @@
 | FR-08-01 | mandatory | The Escapement Analyzer and Marker-Line Display shall provide the user with a visualization of real-time microphone input. |
 | FR-08-02 | mandatory | The Escapement Analyzer and Marker-Line Display shall provide the user with a visualization of stored recording files. |
 | FR-08-03 | mandatory | The Escapement Analyzer and Marker-Line Display shall provide the user with a pause/capture mode for analysis. |
-| FR-08-04 | mandatory | The Escapement Analyzer and Marker-Line Display shall provide the user with vertical markers at the tick (A) and tock (C) event points to be analyzed. |
+| FR-08-04 | mandatory | The Escapement Analyzer and Marker-Line Display shall provide the user with markers at the tick (A) and tock (C) event points to be analyzed. |
 | FR-08-05 | mandatory | The Escapement Analyzer and Marker-Line Display shall provide the user with the elapsed time between markers in milliseconds. |
 | FR-08-06 | mandatory | The Escapement Analyzer and Marker-Line Display shall provide the user with the ability to change the marker measurement reference based on signal feature points (Onset, Peak, etc.). |
 
@@ -168,7 +167,7 @@
 |----|-------|-------------|
 | FR-12-01 | mandatory | The Scope Function with Multiple Filter Views shall provide the user with four filter views — F0, F1, F2, F3 — over the same watch signal. |
 | FR-12-02 | mandatory | The Scope Function with Multiple Filter Views shall provide the user with the ability to switch among the four filters and compare how each one changes the waveform and the visibility of key events (T1, T2, T3). |
-| FR-12-03 | mandatory | The Scope Function with Multiple Filter Views shall provide the user with real-time updates of all filter views as measurements are acquired and processed. |
+| FR-12-03 | mandatory | The Scope Function with Multiple Filter Views shall provide the user with updates of all filter views as measurements are acquired and processed. |
 | FR-12-04 | mandatory | The Scope Function with Multiple Filter Views shall provide the user with all filter views rendered from the same input signal data and the same time axis. |
 | FR-12-05 | mandatory | F0 shall provide the user with the signal as captured, formatted to fit the screen and mirrored symmetrically around its average value, treated as the closest available representation of the raw watch signal. |
 | FR-12-06 | mandatory | F1 shall provide the user with a moving-average-filtered view of the F0 signal that smooths the waveform envelope and removes a large portion of background noise. |
