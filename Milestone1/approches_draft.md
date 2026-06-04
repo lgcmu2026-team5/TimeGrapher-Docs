@@ -30,10 +30,9 @@ flowchart LR
 
     subgraph Render["UI Render Layer"]
         GR[GraphFrameRenderer]
-        SCP[ScopePlot]
-        RTP[RatePlot]
-        IMG[SoundImageWidget]
-        RES[Results QLabel]
+        SCP[Graph 1]
+        RTP[Graph 2]
+        IMG[Graph n]
     end
 
     AW --> BUF
@@ -57,7 +56,6 @@ flowchart LR
     GR --> SCP
     GR --> RTP
     GR --> IMG
-    GR --> RES
 ```
 
 `MainWindow`는 전체 실행 흐름을 조정하는 UI coordinator 역할만 맡는다.
