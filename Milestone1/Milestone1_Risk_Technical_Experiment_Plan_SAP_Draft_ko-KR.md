@@ -5,9 +5,6 @@
 | 실험 ID | 대응 리스크 | 관련 QAS | 우선순위 | 핵심 질문 |
 |---|---|---|---|---|
 | EXP-A1 | R-A1, R-A3 | QAS-1 | High | Pi5에서 실시간 처리 가능한 샘플레이트 상한은? |
-| EXP-B1 | R-B1, R-B4 | QAS-2 | High | 틱/톡 0.1ms 수준 검출 정밀도가 가능한가? |
-| EXP-B2 | R-B2, R-D1 | QAS-2 | High | SNR 저하 시 검출률/오차 기준을 만족하는가? |
-| EXP-F6 | R-F6 | QAS-4 | High | Pi 의존도를 줄인 검증체계를 만들 수 있는가? |
 | EXP-F2S | R-F2 | QAS-1, QAS-4 | High | TimeGrapher_v10.4 구조를 빠르게 이해하고 실시간 최적화를 위한 C++ 설계 패턴을 제안할 수 있는가? |
 | EXP-F4 | R-F4 | QAS-1, QAS-2 | Mid | TinyML 추론을 추가해도 실시간성과 신뢰성을 유지할 수 있는가? |
 | EXP-A4 | R-A4 | QAS-1 | Mid | 장시간 실행에서 메모리/지연 열화가 발생하는가? |
@@ -32,25 +29,32 @@ Pi5 Live 환경에서 입력-분석-표시 파이프라인이 실시간 요구�
 ### 예상 산출물
 - 샘플레이트별 성능 비교표(p50/p95/p99)
 - block drop/missed beat 통계표
+- WAV fixture vs Live 입력 비교 결과표
 - 샘플레이트 목표안(Go/No-Go)
 
 ### 필요한 자원
 - Raspberry Pi 5 실장비 1대
-- Live 입력 또는 동일 Playback 파일 세트
+- Live 입력 + Playback WAV fixture(TimeGrapherTestFilesWeishiMic)
 - 지연/드롭 로깅 코드
 - 작업 공수: 1.5 person-days
 
 ### 실험 설명
 1. 48k/96k/192k를 동일 입력 조건에서 각각 10분 실행한다.
-2. capture->processing, processing->display, total latency를 기록한다.
-3. block drop, missed beat, CPU/RAM을 수집한다.
-4. SAP 시나리오 기준으로 측정 결과를 판단한다.
+2. 입력 타입을 분리해 반복 측정한다.
+- Playback WAV fixture
+- Live 마이크 입력
+3. capture->processing, processing->display, total latency를 기록한다.
+4. block drop, missed beat, CPU/RAM을 수집한다.
+5. SAP 시나리오 기준으로 측정 결과를 판단한다.
 	- Source: 마이크 입력 스트림
 	- Stimulus: 연속 오디오 입력 도착
 	- Artifact: 입력-분석-표시 파이프라인
 	- Environment: RPi5 Live/Playback
 	- Response: 실시간 처리 및 화면 갱신
-	- Response Measure: total latency p99 <= 500 ms, block drop=0(목표)
+	- Response Measure: total latency p99 <= 500 ms, 96k에서 dropped block=0, missed beat=0
+6. 의사결정을 명시한다.
+- 96k 기준 미달 시 48k를 기본 운영 샘플레이트로 고정
+- 192k는 stretch 목표로 분리
 
 ### 기간
 - D1-D2: 계측 코드 준비
@@ -61,141 +65,7 @@ Pi5 Live 환경에서 입력-분석-표시 파이프라인이 실시간 요구�
 - Milestone1_Risk_Assessment.md
 - Milestone1_Architectural_Drivers_QAS.md
 
-## 실험 2: EXP-B1 (R-B1, R-B4)
-
-### 결과 및 권장 사항
-TO-DO: 틱/톡 검출 알고리즘 유지/개선/교체 결론을 기록한다.
-
-### 목적
-0.1 ms급 정밀도 검출 가능성을 ground truth 기반으로 검증한다.
-핵심 질문은 다음과 같다.
-- Q1. onset/peak 검출 오차가 목표 범위에 들어오는가?
-- Q2. 오차가 rate/beat error/amplitude에 미치는 영향은 허용 가능한가?
-
-### 상태
-계획됨
-
-### 예상 산출물
-- 검출 시점 오차 분포(p50/p95/p99)
-- 미검출/오검출 통계
-- 파생지표 오차 전파 분석표
-
-### 필요한 자원
-- 합성신호 생성기(Sim)
-- 정답 라벨(ground truth timestamp)
-- Playback 재현 세트
-- 작업 공수: 2.0 person-days
-
-### 실험 설명
-1. SNR, BPM, 진폭 조건을 스윕한 합성신호 세트를 생성한다.
-2. 알고리즘 검출 결과와 정답 라벨 차이를 계산한다.
-3. 미검출/오검출/시점오차를 집계한다.
-4. 파생지표 오차 전파를 분석한다.
-5. SAP 시나리오 기준으로 판단한다.
-	- Source: 합성신호 생성기/Playback
-	- Stimulus: 알려진 이벤트 시점 입력
-	- Artifact: beat detection + 계산 모듈
-	- Environment: Sim/Playback 반복 환경
-	- Response: 이벤트 검출 및 파생지표 계산
-	- Response Measure: 시점오차 p95 <= 0.1 ms(목표), 미검출 <= 5%
-
-### 기간
-- D4-D6
-
-### 링크 및 참고 자료
-- Milestone1_Risk_Assessment.md
-- Milestone1_Architectural_Drivers_QAS.md
-
-## 실험 3: EXP-B2 (R-B2, R-D1)
-
-### 결과 및 권장 사항
-TO-DO: 신호품질 임계값과 "signal weak" 게이팅 기준을 기록한다.
-
-### 목적
-잡음/약신호 환경에서 검출률과 정확도를 확인하고 graceful degradation 정책을 확정한다.
-핵심 질문은 다음과 같다.
-- Q1. SNR >= 14 dB에서 detection >= 95%를 달성하는가?
-- Q2. 임계 미만에서 잘못된 수치 대신 signal weak를 안정적으로 표출하는가?
-
-### 상태
-계획됨
-
-### 예상 산출물
-- SNR 구간별 성능 곡선
-- signal weak 임계값 권고안
-- AGC/마이크 결합 체크리스트 초안
-
-### 필요한 자원
-- 노이즈 주입 가능한 Sim/Playback 벤치
-- AGC on/off 제어 가능한 환경
-- 성능 집계 스크립트
-- 작업 공수: 2.0 person-days
-
-### 실험 설명
-1. SNR 단계(예: 8/10/12/14/16/20 dB)별 테스트 세트를 구성한다.
-2. AGC on/off, 결합 상태(정상/불량)를 조합해 측정한다.
-3. 검출률, rate 오차, 오표시율을 계산한다.
-4. 임계값 후보를 비교해 신호품질 게이팅 기준을 선택한다.
-5. SAP 시나리오 기준으로 평가한다.
-	- Source: 잡음 섞인 입력/약신호 입력
-	- Stimulus: SNR 저하, AGC 상태 변화
-	- Artifact: 필터링 + 품질판정 + 표시 로직
-	- Environment: Sim/Playback 노이즈 주입
-	- Response: 허용구간은 측정, 임계 미만은 signal weak
-	- Response Measure: SNR >= 14 dB에서 detection >= 95%, rate error <= +/-3 s/d
-
-### 기간
-- D6-D7
-
-### 링크 및 참고 자료
-- Milestone1_Risk_Assessment.md
-- Milestone1_Architectural_Drivers_QAS.md
-
-## 실험 4: EXP-F6 (R-F6)
-
-### 결과 및 권장 사항
-TO-DO: Pi 의존도를 낮춘 표준 검증 전략(필수/비필수)을 기록한다.
-
-### 목적
-Pi 단일 장비 제약에서도 핵심 리스크를 일정 내 검증할 수 있는 테스트 전략을 수립한다.
-핵심 질문은 다음과 같다.
-- Q1. 핵심 시나리오를 Sim/Playback으로 얼마나 대체 검증 가능한가?
-- Q2. Pi 실장비 필수 검증 항목의 최소 집합은 무엇인가?
-
-### 상태
-계획됨
-
-### 예상 산출물
-- Pi 필수/비필수 테스트 분류표
-- Sim/Playback 회귀 테스트 세트
-- 주간 검증 운영안
-
-### 필요한 자원
-- Windows 개발 환경
-- 재현 가능한 테스트 데이터셋
-- Pi 샘플 검증 슬롯
-- 작업 공수: 1.0 person-days
-
-### 실험 설명
-1. 리스크별 검증 항목을 Pi 필수/비필수로 분류한다.
-2. 비필수 항목은 Sim/Playback 회귀로 전환한다.
-3. Pi 필수 항목은 성능/입출력/터치 중심 최소 집합으로 고정한다.
-4. SAP 시나리오 기준으로 전략 적합성을 검토한다.
-	- Source: 일정 및 장비 제약
-	- Stimulus: Pi 접근 제한
-	- Artifact: 테스트 아키텍처
-	- Environment: 병행 개발 환경
-	- Response: 검증 가능성 유지
-	- Response Measure: 핵심 시나리오 70% 이상 Pi 없이 재현 검증
-
-### 기간
-- D1-D3
-
-### 링크 및 참고 자료
-- Milestone1_Risk_Assessment.md
-- Milestone1_Architectural_Drivers_QAS.md
-
-## 실험 5: EXP-F4 (R-F4)
+## 실험 2: EXP-F4 (R-F4)
 
 ### 결과 및 권장 사항
 TO-DO: TinyML 기능 채택 여부(채택/조건부 채택/보류)와 채택 조건을 기록한다.
@@ -211,7 +81,7 @@ TinyML 기반 분류(예: signal-quality, bad-data-rejection)를 RPi 온디바�
 
 ### 예상 산출물
 - 모델 크기/추론시간/CPU 점유율 비교표
-- TinyML on/off 성능 비교표(지연, 프레임타임, 오표시율)
+- TinyML on/off 성능 비교표(지연, 프레임타임, 오표시율, confusion matrix)
 - 채택 여부 결정 메모(Go/Conditional/No-Go)
 
 ### 필요한 자원
@@ -223,20 +93,25 @@ TinyML 기반 분류(예: signal-quality, bad-data-rejection)를 RPi 온디바�
 
 ### 실험 설명
 1. 기준선(Baseline)으로 TinyML 미적용 상태의 지연/프레임타임/오표시율을 측정한다.
-2. 경량 모델 1~2종을 온디바이스에 탑재해 동일 입력으로 반복 측정한다.
+2. Windows 환경에서 모델 후보를 선검증한 뒤 RPi5로 이식해 동일 입력으로 반복 측정한다.
 3. 실시간 그래프 렌더링 성능 검증 항목을 참조해 다음 공통 성능 지표를 함께 기록한다.
 - p95 FPS 또는 프레임타임 안정성
 - UI freeze 횟수
 - end-to-end latency p99
 - CPU/RAM 증가량
 4. TinyML on/off의 signal weak 오표시율 및 검출률 차이를 비교한다.
-5. SAP 시나리오 기준으로 평가한다.
+5. 분류 성능 지표를 함께 기록한다.
+- confusion matrix
+- false accept / false reject
+6. SAP 시나리오 기준으로 평가한다.
 	- Source: 온디바이스 TinyML 추론 요청
 	- Stimulus: 실시간 입력 중 분류 추론 수행
 	- Artifact: 분석 파이프라인 + TinyML 모듈
 	- Environment: RPi5 Live/Playback
 	- Response: 실시간 분석/표시 유지 + 분류 결과 반영
-	- Response Measure: total latency p99 기준 유지, UI freeze 0회, 오표시율 감소
+	- Response Measure: total latency p99 기준 유지, UI freeze 0회, 오표시율 감소, false accept/reject 허용 범위 내
+7. 채택 실패 시 폴백 전략을 명시한다.
+- TinyML 보류 시 규칙기반(signal weak 게이팅) 경로 유지
 
 ### 기간
 - D7-D8
@@ -245,7 +120,7 @@ TinyML 기반 분류(예: signal-quality, bad-data-rejection)를 RPi 온디바�
 - Milestone1_Risk_Assessment.md
 - Milestone1_Architectural_Drivers_QAS.md
 
-## 실험 6: EXP-A4 (R-A4)
+## 실험 3: EXP-A4 (R-A4)
 
 ### 결과 및 권장 사항
 TO-DO: 장시간 실행 안정성 결론과 버퍼/메모리 정책 권고안을 기록한다.
@@ -273,13 +148,14 @@ TO-DO: 장시간 실행 안정성 결론과 버퍼/메모리 정책 권고안을
 1. 6시간 단기 검증 후 24시간 확장 검증을 수행한다.
 2. 1분 단위로 RSS, CPU, latency, 오류카운트를 기록한다.
 3. 전반부 대비 후반부의 지연/처리량 변화를 분석한다.
-4. SAP 시나리오 기준으로 합격 여부를 판단한다.
+4. 24시간 연속 검증이 어려운 경우 1시간 단위 결과를 조합해 24시간 추정치를 산출한다.
+5. SAP 시나리오 기준으로 합격 여부를 판단한다.
 	- Source: 장시간 연속 입력
 	- Stimulus: 24h 지속 실행
 	- Artifact: 버퍼/집계/표시 루프
 	- Environment: Pi 장시간 실행
 	- Response: 안정 동작 유지
-	- Response Measure: 크래시 0회, RSS 증가율 안정, p99 latency 악화 없음
+	- Response Measure: 크래시 0회, RSS가 상한 내 수렴(비증가 추세), p99 latency 악화 없음
 
 ### 기간
 - D8-D10
@@ -288,7 +164,7 @@ TO-DO: 장시간 실행 안정성 결론과 버퍼/메모리 정책 권고안을
 - Milestone1_Risk_Assessment.md
 - Milestone1_Architectural_Drivers_QAS.md
 
-## 실험 7: EXP-E1E3 (R-E1, R-E3)
+## 실험 4: EXP-E1E3 (R-E1, R-E3)
 
 ### 결과 및 권장 사항
 TO-DO: 글자 크기 기준안(최소/권장), 터치 타깃 기준안, 최종 UI 레이아웃 권고안을 기록한다.
@@ -305,7 +181,7 @@ TO-DO: 글자 크기 기준안(최소/권장), 터치 타깃 기준안, 최종 U
 ### 예상 산출물
 - 글자 크기 단계별 사용자 만족도 설문 결과표
 - 글자 크기/터치 타깃 조합별 터치 성공률 및 오터치율 표
-- UI 기준안: 최소 글자 높이(mm), 권장 글자 높이(mm), 최소 터치 타깃(mm)
+- UI 기준안: 최소 글자 높이(mm), 권장 글자 높이(mm), 최소 터치 타깃(mm), 모드 전환 탭 구조
 
 ### 필요한 자원
 - Raspberry Pi 5 + 800x480 터치 디스플레이
@@ -325,6 +201,8 @@ TO-DO: 글자 크기 기준안(최소/권장), 터치 타깃 기준안, 최종 U
 - T1: 요약바에서 rate/beat error/amplitude 읽기
 - T2: 그래프 모드 전환 버튼 터치
 - T3: 스코프 관련 컨트롤 3회 연속 터치
+- T4: active position 확인
+- T5: X/D 확인
 4. 각 조건마다 객관 지표를 기록한다.
 - 읽기 완료 시간
 - 읽기 오류율
@@ -344,9 +222,12 @@ TO-DO: 글자 크기 기준안(최소/권장), 터치 타깃 기준안, 최종 U
 - Response: 값 읽기 가능, 터치 조작 성공, 사용자 만족도 확보
 - Response Measure:
 	- 글자 높이 2.9 mm 이상 조건에서 만족도 평균 5.0/7 이상
+	- 명암 대비 4.5:1 이상
 	- 터치 타깃 9 mm 이상 조건에서 터치 성공률 95% 이상
 	- 오터치율 5% 이하
 	- 주요 태스크 완료율 95% 이상
+	- 주요 모드 진입 <= 2탭
+	- active position 확인 <= 5초(90% 이상), X/D 확인 <= 10초(90% 이상)
 
 ### 기간
 - D9: 실험 빌드 준비 및 설문 문항 확정
@@ -358,7 +239,7 @@ TO-DO: 글자 크기 기준안(최소/권장), 터치 타깃 기준안, 최종 U
 - Milestone1_Architectural_Drivers_QAS.md
 - technical-experiment-template_ko-KR.md
 
-## 실험 8: EXP-F2S (R-F2)
+## 실험 5: EXP-F2S (R-F2)
 
 ### 결과 및 권장 사항
 TO-DO: 코드 이해 산출물(모듈맵/콜플로우)과 실시간 최적화 설계 패턴 제안서(채택 우선순위 포함)를 기록한다.
@@ -377,6 +258,7 @@ TO-DO: 코드 이해 산출물(모듈맵/콜플로우)과 실시간 최적화 �
 - 핵심 콜 플로우 다이어그램(입력 -> DSP/계산 -> 렌더)
 - 병목 후보 리스트(CPU, 메모리 할당, 잠금 경합, 렌더링 경로)
 - 실시간 최적화 패턴 제안서(패턴별 적용 위치, 기대효과, 리스크)
+- 모듈 분리 골격 스파이크 결과(계층 경계/등록 지점)
 - 1주 온보딩 스터디 가이드(C++/Qt/동시성 최소 필수 주제)
 
 ### 필요한 자원
@@ -395,17 +277,21 @@ TO-DO: 코드 이해 산출물(모듈맵/콜플로우)과 실시간 최적화 �
 - 함수 단위 호출시간 상위 구간 추출
 - 프레임 루프의 동적 메모리 할당 지점 확인
 - 큐/락 사용 구간의 대기시간 확인
-3. 실시간 최적화 설계 패턴 후보를 제안하고, 현재 구조 적합도를 평가한다.
+3. 모듈 분리 골격 스파이크를 수행한다.
+- acquisition / processing / calculation / presentation 4계층 골격 분리
+- 새 그래프 1종, 새 필터 1종, 새 측정값 1종을 시범 추가
+- 기능 추가 시 변경된 기존 모듈 수와 등록 지점 수를 계측
+4. 실시간 최적화 설계 패턴 후보를 제안하고, 현재 구조 적합도를 평가한다.
 - DP-1. Producer-Consumer + Ring Buffer: 오디오 캡처와 분석 단계 decouple
 - DP-2. Active Object: 분석 작업 비동기 큐잉으로 UI 블로킹 최소화
 - DP-3. Strategy Pattern: 필터/알고리즘 교체 비용 축소 및 실험 용이
 - DP-4. Double Buffering: 렌더링 데이터 스냅샷 일관성 확보
 - DP-5. Object Pool: 프레임 루프 내 빈번한 new/delete 감소
-4. 패턴별 우선순위를 결정한다.
+5. 패턴별 우선순위를 결정한다.
 - 효과(지연/안정성 개선 가능성)
 - 적용 난이도(코드 변경 범위)
 - 팀 숙련도 적합성(C++ 경험 수준)
-5. SAP 시나리오 기준으로 결과를 판정한다.
+6. SAP 시나리오 기준으로 결과를 판정한다.
 - Source: 개발팀(낮은 C++ 숙련도)
 - Stimulus: 베이스라인 코드 이해 필요 + 실시간 성능 개선 요구
 - Artifact: 입력/분석/표시 코드 구조 및 스레드/큐/메모리 경로
@@ -413,6 +299,8 @@ TO-DO: 코드 이해 산출물(모듈맵/콜플로우)과 실시간 최적화 �
 - Response: 빠른 온보딩 + 적용 가능한 최적화 패턴 제안
 - Response Measure:
 	- 핵심 모듈 80% 이상에 대해 책임/입출력/호출관계 설명 가능
+	- 새 그래프/필터/측정값 추가 시 각 항목별 기존 모듈 변경 <= 1
+	- 회귀 테스트 실패 0건
 	- 패턴 제안서 3개 이상, 각 패턴에 적용 위치와 기대효과 명시
 	- 우선순위 1-2개 패턴에 대해 PoC 범위 정의 완료
 
@@ -427,9 +315,9 @@ TO-DO: 코드 이해 산출물(모듈맵/콜플로우)과 실시간 최적화 �
 - technical-experiment-template_ko-KR.md
 
 ## 통합 일정
-- Week 1: EXP-F2S, EXP-F6, EXP-A1, EXP-B1
-- Week 2: EXP-B2, EXP-F4
-- Week 3: EXP-A4, EXP-E1E3 및 미해결 항목 재실험
+- Week 1: EXP-F2S, EXP-A1
+- Week 2: EXP-F4, EXP-E1E3
+- Week 3: EXP-A4, EXP-E1E3(확장 검증) 및 미해결 항목 재실험
 
 ## 공통 승인 기준
 - High 우선순위 실험(성능/강건성) pass/fail 판정 완료
