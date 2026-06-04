@@ -1,4 +1,4 @@
-# Milestone1 — QA Final 1
+# Milestone1 — Architectural Drivers QAS+Constraints+Priority
 
 > English version above, Korean version below. (위쪽은 영어 버전, 아래쪽은 한국어 버전입니다.)
 
@@ -192,7 +192,7 @@ ATAM style: each scenario carries a (**B**usiness importance, technical **R**isk
 
 ---
 
-# Milestone1 — QA Final 1 (한국어)
+# Milestone1 — Architectural Drivers QAS+Constraints+Priority
 
 ## Quality Attribute Scenarios
 
