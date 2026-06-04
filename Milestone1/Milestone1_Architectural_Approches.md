@@ -132,6 +132,20 @@ One decision per driver — what we decided, and why it works.
 - **Why — two payoffs.** ① The pass criteria of QAS-2·3·4 are all defined against Sim/Playback runs with known answers — those tests run without a Pi, a watch, or a microphone. ② All platform audio code (Windows / RPi OS, C-3) and the AGC-off check (C-4) live in `TAudioWorker` alone.
 - *Tactics: abstract data sources · defer binding time*
 
+## Design Patterns in the Design
+
+The decisions above land on familiar design patterns — listed in order of how naturally they fit and how much they pay off:
+
+| Pattern | Where | Role in one line |
+|---------|-------|------------------|
+| Strategy | Input sources (AP-7) · filter stages (AP-5) | Mic / playback / Sim — and each filter — plug in behind one interface; swap without touching the rest |
+| Adapter | Platform audio inside `TAudioWorker` (C-3) | WASAPI (Windows) and ALSA (RPi OS) are adapted to one capture interface |
+| State | Session control in `MainWindow` — Idle → Measuring ⇄ Paused | Start/pause/stop transitions live in state objects — no scattered boolean flags |
+| Observer | Qt signals/slots — data-ready, frame delivery (AP-1·4) | Producers don't know their consumers; displays subscribe to frames |
+| Facade | Wrapper around the C detector core (AP-2) | One clean call hides the C structs and configuration of `tg_process` |
+
+Already named elsewhere: Producer–Consumer (AP-1), immutable DTO (AP-4), and the pipe-and-filter backbone — patterns too, just not GoF. Considered and left out: Factory (three workers created once — a switch is enough) and Mediator (a name for MainWindow's role, not something extra to build).
+
 ## How It Runs
 
 ```mermaid
@@ -329,6 +343,20 @@ flowchart LR
 - **결정** — 세 소스 모두 같은 샘플 형식을 같은 버퍼에 쓴다; 이후 단계는 완전히 동일하다.
 - **이유 — 효용 두 가지.** ① QAS-2·3·4의 합격 기준은 전부 정답을 아는 Sim/Playback 실행으로 정의되어 있다 — 그 시험에는 Pi도, 시계도, 마이크도 필요 없다. ② 플랫폼 오디오 코드(Windows / RPi OS, C-3)와 AGC-off 확인(C-4)은 전부 `TAudioWorker` 한 곳에만 모여 있다.
 - *전술: 데이터 소스 추상화 · 바인딩 시점 지연*
+
+## 설계에 녹아 있는 디자인 패턴
+
+위 결정들은 익숙한 디자인 패턴 위에 서 있다 — 자연스럽게 맞고 실효가 큰 순서로:
+
+| 패턴 | 위치 | 역할 한 줄 요약 |
+|------|------|-----------|
+| Strategy | 입력 소스(AP-7) · 필터 단계(AP-5) | 마이크/재생/Sim도, 각 필터도 하나의 인터페이스 뒤에 꽂힌다; 나머지를 건드리지 않고 교체 |
+| Adapter | `TAudioWorker` 안의 플랫폼 오디오 (C-3) | WASAPI(Windows)와 ALSA(RPi OS)를 하나의 캡처 인터페이스에 맞춘다 |
+| State | `MainWindow`의 세션 제어 — Idle → Measuring ⇄ Paused | 시작/일시정지/정지 전이가 상태 객체에 모인다 — 흩어진 boolean 플래그가 없다 |
+| Observer | Qt 시그널/슬롯 — data-ready, 프레임 전달 (AP-1·4) | 생산자는 소비자를 모른다; 표시들이 프레임을 구독한다 |
+| Facade | C 검출 코어를 감싸는 래퍼 (AP-2) | `tg_process`의 C 구조체와 설정을 깔끔한 호출 하나 뒤에 숨긴다 |
+
+이미 이름 붙인 것들 — Producer–Consumer(AP-1), 불변 DTO(AP-4), pipe-and-filter 골격 — 도 패턴이다. GoF가 아닐 뿐. 고려했지만 뺀 것 — Factory(워커 3개를 한 번 만들 뿐이라 switch면 충분)와 Mediator(MainWindow 역할의 이름일 뿐, 따로 만들 게 없음).
 
 ## 실행 흐름
 
