@@ -34,16 +34,16 @@
   - Evidence: pdf (p.25 Real Time Performance), QAS-1
   - Probability / Impact: High / High
   - Mitigation: Week-1 spike to measure the RPi's processing limit, then fix the sample-rate target (192k demoted to stretch)
-  - Comment: Decide the spec after the experiment
-  - Tradeoff point: the sample rate trades measurement precision (more samples per 0.1 ms) against Performance (this risk) — the week-1 experiment picks the balance
+  - Tradeoff point: the sample rate trades measurement precision (more samples per 0.1 ms) against Performance (this risk)
+  - Comment: Use the week-1 spike result to set the final sample-rate target
 
 - **R-A2 — Rendering four filters (F0→F3) plus multiple graphs at once makes the screen stutter (<20 FPS · UI freeze)**
   - Quality attribute: Performance
   - Evidence: FR-12-01, FR-12-04, QAS-1
   - Probability / Impact: Medium~High / High
   - Mitigation: Reuse a shared input buffer, stop rendering inactive views, measure an FPS budget
-  - Comment: 4 simultaneous views vs one-at-a-time decided after the performance check
-  - Tradeoff point: showing 4 views at once trades Usability (QAS-5) against Performance — decided after the performance check
+  - Tradeoff point: showing 4 views at once trades Usability (QAS-5) against Performance
+  - Comment: Decide 4 simultaneous views vs one-at-a-time after the performance check
 
 - **R-A3 — The sound-to-screen 0.5 s (p99 ≤ 500 ms) target is missed**
   - Quality attribute: Performance (Latency)
@@ -239,16 +239,16 @@
   - 근거: pdf (p.25 Real Time Performance), QAS-1
   - 발생 확률 / 영향: High / High
   - 완화 방향: 1주차 spike로 RPi 처리 한계 측정 후 샘플레이트 목표 확정(192k는 stretch로 격하)
-  - 코멘트: 실험 진행 후 스펙 결정
-  - Tradeoff point: 샘플레이트는 측정 정밀도(0.1 ms당 샘플 수 증가)↔Performance(본 리스크)의 tradeoff point — 1주차 실험으로 균형점 결정
+  - Tradeoff point: 샘플레이트는 측정 정밀도(0.1 ms당 샘플 수 증가)↔Performance(본 리스크)의 tradeoff point
+  - 코멘트: 1주차 spike 결과로 최종 샘플레이트 목표 결정
 
 - **R-A2 — 필터 4개(F0→F3) + 그래프 여러 개를 동시에 그리면 화면이 버벅인다(<20 FPS·UI freeze)**
   - 품질요소: Performance
   - 근거: FR-12-01, FR-12-04, QAS-1
   - 발생 확률 / 영향: Medium~High / High
   - 완화 방향: 공유 입력버퍼 재사용, 비활성 뷰 렌더 중단, FPS 예산 측정
+  - Tradeoff point: 동시 4뷰 표시는 Usability(QAS-5)↔Performance의 tradeoff point
   - 코멘트: 4개 동시 뷰 / 1개씩 뷰는 성능 확인 후 결정
-  - Tradeoff point: 동시 4뷰 표시는 Usability(QAS-5)↔Performance의 tradeoff point — 성능 확인 후 결정
 
 - **R-A3 — 소리→화면 0.5초(p99 ≤ 500 ms) 목표를 못 지킨다**
   - 품질요소: Performance (Latency)
