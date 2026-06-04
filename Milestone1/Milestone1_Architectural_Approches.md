@@ -12,7 +12,6 @@
 | Ring buffer | A fixed-size circular buffer — memory never grows; sized so unread samples are never overwritten |
 | AnalysisFrame (DTO) | One analysis pass's complete result, packed into a single data bundle |
 | Sample domain | Time counted in sample numbers — at 96,000 SPS, one sample ≈ 0.0104 ms |
-| Frame coalescing | When drawing falls behind, skip stale frames and draw only the newest — display frames only, never audio |
 
 ## The Architecture in One Picture
 
@@ -123,7 +122,7 @@ One decision per driver — what we decided, and why it works.
 ### AP-6 · The UI only draws, and all size rules live in one place — Usability (QAS-6)
 > **In one line: uppercase letters ≥ 2.9 mm and touch targets ≥ 9 mm are shared constants in one renderer.**
 
-- **Decision** — `GraphFrameRenderer` is the only place a frame is mapped onto graphs and labels; QAS-6's mm rules (and "three key readings always visible") are shared constants there.
+- **Decision** — `GraphFrameRenderer` is the only place a frame is mapped onto graphs and labels; QAS-6's mm rules (and "rate / beat error / amplitude always visible") are shared constants there.
 - **Why** — On a fixed 800×480 panel, sizes are global rules; kept in one file, compliance is checked in one look. And since analysis never touches the UI thread (AP-1), touch stays responsive while measuring.
 
 ### AP-7 · Three swappable input sources — Verification & Portability (C-3·4)
@@ -211,7 +210,6 @@ A few numbers in this design are still assertions, not measurements — so they 
 | 링 버퍼 (ring buffer) | 고정 크기 순환 버퍼 — 메모리가 늘지 않고, 읽지 않은 샘플이 덮어써지지 않게 크기를 잡는다 |
 | AnalysisFrame (DTO) | 분석 1회의 완결된 결과를 담은 단일 데이터 묶음 |
 | 샘플 도메인 | 시각을 샘플 번호로 세는 것 — 96,000 SPS에서 1샘플 ≈ 0.0104 ms |
-| 프레임 합치기 (coalescing) | 그리기가 밀리면 묵은 프레임은 건너뛰고 최신 것만 그림 — 표시 프레임에만 적용, 오디오에는 절대 적용 안 함 |
 
 ## 한 장으로 보는 아키텍처
 
@@ -274,12 +272,12 @@ flowchart LR
 
 - **입력 소스 3종** — 라이브 마이크, WAV 재생, Sim 생성기 — 이 하나의 공유 버퍼에 기록한다 (실행당 1개만 활성).
 - **분석 워커 하나**가 비트를 검출하고(`tg_process`), 모든 측정값을 한 번만 계산하고(`WatchMetrics`), 신호 품질을 검사한 뒤, 전부를 하나의 `AnalysisFrame`에 담는다.
-- **UI 스레드는 프레임이 말하는 것만 그린다.** `MainWindow`는 조정만 한다 (모드 선택, 시작/중지).
+- **UI 스레드는 프레임에 담긴 것만 그린다.** `MainWindow`는 조정만 한다 (모드 선택, 시작/중지).
 
 **왜 이 모양인가?**
 
 - 음향 계측 앱은 그 자체로 단방향 스트림이다 — 샘플이 들어오고 숫자가 나간다. 파이프라인이 가장 자연스러운 형태다.
-- 그러면 각 드라이버가 작동할 자리가 하나씩 정해진다: 지연시간 = 단계별 예산(QAS-1), 정확도 = 검출 단계(QAS-2), 성능 저하 대응 = 게이트 하나(QAS-3), 일관성 = 분배 지점 하나(QAS-4).
+- 그러면 각 드라이버를 다룰 자리가 하나씩 정해진다: 지연시간 = 단계별 예산(QAS-1), 정확도 = 검출 단계(QAS-2), 성능 저하 대응 = 게이트 하나(QAS-3), 일관성 = 분배 지점 하나(QAS-4).
 - 레거시 코드는 캡처·분석·그리기를 전부 UI 클래스 하나에 몰아넣었다. 500 ms 지연 게이트(QAS-1)와 "기능당 모듈 1개 변경" 예산(QAS-5) 아래서 그 구조는 버틸 수 없다 — 그래서 위처럼 분해했다.
 
 ## 핵심 결정 7가지
@@ -287,49 +285,49 @@ flowchart LR
 드라이버 하나당 결정 하나 — 무엇을 결정했고, 왜 통하는지.
 
 ### AP-1 · 분석은 전용 스레드에서 돈다 — Performance (QAS-1)
-> **한 줄 요약: 무거운 일은 절대 UI 스레드에서 돌지 않고, 아무것도 쌓이지 않는다.**
+> **한 줄 요약: 무거운 작업은 UI 스레드에서 절대 돌지 않고, 아무것도 쌓이지 않는다.**
 
-- **결정** — 모든 검출·측정은 워커 스레드에서. 캡처 버퍼는 유한하고(읽지 않은 샘플은 덮어쓰지 않음), 그리기가 밀리면 묵은 프레임은 건너뛰고 최신 것만 그린다.
+- **결정** — 모든 검출·측정은 워커 스레드에서. 캡처 버퍼는 유한하고(읽지 않은 샘플은 덮어쓰지 않음), 그리기가 밀리면 오래된 프레임은 건너뛰고 최신 것만 그린다.
 - **이유** — p99 목표를 죽이는 건 평균 속도가 아니라 적체다. 쌓일 곳이 없으면 최악 1%도 평소 수준에 머문다. 프레임마다 타임스탬프(**T0** 캡처 · **T1** 분석 완료 · **T2** 그리기 완료)를 실어, QAS-1의 3구간 지연 보고가 설계에 내장된다.
 - *전술: 동시성 도입 · 큐 크기 제한 · 이벤트 응답 제한*
 
-### AP-2 · 비트 위치는 샘플 번호로 산다 — Accuracy (QAS-2)
+### AP-2 · 비트 위치는 샘플 번호 그대로 다닌다 — Accuracy (QAS-2)
 > **한 줄 요약: 위치는 끝까지 샘플 인덱스로 다니고, ms 변환은 딱 한 번.**
 
 - **결정** — 검출 코어(`tg_process`)는 Qt 의존 없는 순수 C로 유지한다. onset/peak 위치는 샘플 인덱스로 전달되고, 중간에 아무것도 리샘플링하지 않는다.
-- **이유** — 1샘플 ≈ 96k에서 0.0104 ms, 48k에서 0.0208 ms — 0.1 ms 예산보다 5–10배 정밀하다. 아키텍처 자체는 오차를 전혀 더하지 않는다; 검출기가 0.1 ms를 넘는지는 Sim 벤치(AP-7)로 입증한다. 일오차·비트오차는 이 위치들로부터 계산되므로 정밀도를 그대로 물려받는다.
+- **이유** — 1샘플 ≈ 96k에서 0.0104 ms, 48k에서 0.0208 ms — 0.1 ms 예산보다 5–10배 정밀하다. 아키텍처 자체는 오차를 전혀 더하지 않는다; 검출기가 0.1 ms 이내인지는 Sim 벤치(AP-7)로 입증한다. 일오차·비트오차는 이 위치들로부터 계산되므로 정밀도를 그대로 물려받는다.
 
 ### AP-3 · 화면 앞의 품질 게이트 — Availability (QAS-3)
-> **한 줄 요약: 품질 임계 미만이면 프레임은 "신호 약함"을 말한다 — 틀린 숫자는 절대 아니다.**
+> **한 줄 요약: 품질 임계 미만이면 프레임은 "신호 약함" 상태가 된다 — 틀린 숫자는 절대 내보내지 않는다.**
 
-- **결정** — 분석 윈도마다 신호 품질을 추정한다. 임계 미만이면 프레임 상태가 **SignalWeak**가 되고 측정값 필드는 빈 채로 남는다. 표시는 프레임이 말하는 것만 그린다.
-- **이유** — 게이트가 모든 표시의 유일한 데이터 소스 앞에 있으므로, 기각된 값은 화면에 *도달할 수 없다* — 위젯별 조심성이 아니라 구조가 보장한다. (14 dB에서 검출률 95% 달성은 검출기 튜닝 목표이며, 잡음 벤치로 검증한다.)
+- **결정** — 분석 윈도마다 신호 품질을 추정한다. 임계 미만이면 프레임 상태가 **SignalWeak**가 되고 측정값 필드는 빈 채로 남는다. 표시는 프레임에 담긴 것만 그린다.
+- **이유** — 게이트가 모든 표시의 유일한 데이터 소스 앞에 있으므로, 기각된 값은 화면에 *도달할 수 없다* — 위젯마다 주의를 기울여서가 아니라 구조가 보장한다. (14 dB에서 검출률 95% 달성은 검출기 튜닝 목표이며, 잡음 벤치로 검증한다.)
 - *전술: 우아한 성능 저하 (graceful degradation)*
 
 ### AP-4 · 한 번 계산해서, 한 프레임으로 분배 — Consistency (QAS-4)
 > **한 줄 요약: 한 화면 갱신 안의 모든 숫자와 그래프는 같은 AnalysisFrame에서 나온다.**
 
-- **결정** — `WatchMetrics`가 일오차/비트오차/진폭을 한 번만 계산한다; 하류에서는 아무도 재계산하지 않는다. 프레임은 불변이고 **frameId**를 가지며, 한 프레임이 모든 표시를 먹인다.
+- **결정** — `WatchMetrics`가 일오차/비트오차/진폭을 한 번만 계산한다; 이후 단계에서는 아무도 재계산하지 않는다. 프레임은 불변이고 **frameId**를 가지며, 한 프레임이 모든 표시에 데이터를 공급한다.
 - **이유** — 표시들이 따로 계산할 때만 불일치가 생긴다. 프레임 하나가 유일한 소스이면 "불일치 0회"는 구조적으로 성립하고 — 각 표시가 자기 frameId를 보여줄 수 있으므로, QAS-4가 요구하는 대로 검사도 가능하다.
 
 ### AP-5 · 기능 추가 = 새 코드 + 등록 1곳 — Modifiability (QAS-5)
 > **한 줄 요약: 새 그래프·필터·측정값 때문에 기존 코드를 수술하는 일은 없다.**
 
 - **결정** — 고정된 확장 지점: **새 그래프** → `GraphFrameRenderer`에 등록 · **새 필터** → 분석 체인에 등록 · **새 측정값** → 계산 1개 + 프레임 필드 1개 · **새 요약/경보** → 기존 프레임 필드를 읽는 새 소비자.
-- **이유** — 3주에 기능 12종(기능당 8 person-days)은 추가가 연쇄되지 않아야만 가능하다. "기존 모듈 변경 ≤ 1개" 예산이 개발자의 조심성이 아니라 구조의 속성이 된다.
+- **이유** — 3주에 기능 12종(기능당 8 person-days)은 추가가 연쇄되지 않아야만 가능하다. "기존 모듈 변경 ≤ 1개" 예산이 개발자가 신경 써서 지키는 약속이 아니라 구조 자체의 속성이 된다.
 - *전술: 응집도 증가 · 캡슐화 · 의존성 제한*
 
 ### AP-6 · UI는 그리기만, 크기 규칙은 한 곳에 — Usability (QAS-6)
 > **한 줄 요약: 대문자 ≥ 2.9 mm, 터치 ≥ 9 mm는 렌더러 한 곳의 공유 상수다.**
 
-- **결정** — 프레임을 그래프와 라벨로 매핑하는 곳은 `GraphFrameRenderer` 하나뿐이고, QAS-6의 mm 규칙("핵심 측정값 3종 상시 표시" 포함)은 그곳의 공유 상수다.
+- **결정** — 프레임을 그래프와 라벨로 매핑하는 곳은 `GraphFrameRenderer` 하나뿐이고, QAS-6의 mm 규칙("일오차·비트오차·진폭 상시 표시" 포함)은 그곳의 공유 상수다.
 - **이유** — 고정된 800×480 패널에서 크기는 전역 규칙이다. 한 파일에 모이면 준수 여부를 한눈에 검사할 수 있다. 그리고 분석이 UI 스레드를 건드리지 않으므로(AP-1) 측정 중에도 터치가 계속 반응한다.
 
 ### AP-7 · 갈아 끼우는 입력 소스 3종 — 검증과 이식성 (C-3·4)
 > **한 줄 요약: 시스템은 자기가 듣는 것이 마이크인지, 파일인지, 시뮬레이터인지 모른다.**
 
-- **결정** — 세 소스 모두 같은 샘플 형식을 같은 버퍼에 쓴다; 하류는 완전히 동일하다.
-- **이유 — 효용 두 가지.** ① QAS-2·3·4의 합격 기준은 전부 정답을 아는 Sim/Playback 실행으로 정의되어 있다 — 그 시험에는 Pi도, 시계도, 마이크도 필요 없다. ② 플랫폼 오디오 코드(Windows / RPi OS, C-3)와 AGC-off 확인(C-4)은 전부 `TAudioWorker` 한 곳에만 산다.
+- **결정** — 세 소스 모두 같은 샘플 형식을 같은 버퍼에 쓴다; 이후 단계는 완전히 동일하다.
+- **이유 — 효용 두 가지.** ① QAS-2·3·4의 합격 기준은 전부 정답을 아는 Sim/Playback 실행으로 정의되어 있다 — 그 시험에는 Pi도, 시계도, 마이크도 필요 없다. ② 플랫폼 오디오 코드(Windows / RPi OS, C-3)와 AGC-off 확인(C-4)은 전부 `TAudioWorker` 한 곳에만 모여 있다.
 - *전술: 데이터 소스 추상화 · 바인딩 시점 지연*
 
 ## 실행 흐름
@@ -352,7 +350,7 @@ sequenceDiagram
 ```
 
 - QAS-1의 세 보고값은 타임스탬프에서 그대로 나온다: **처리 = T1−T0 · 표시 = T2−T1 · 전체 = T2−T0** (10분 실행의 p99).
-- 신호가 약할 때도 같은 흐름이 돈다 — 프레임이 측정값 대신 상태를 싣고 갈 뿐이다.
+- 신호가 약할 때도 같은 흐름이 돈다 — 프레임이 측정값 대신 상태를 담아 보낼 뿐이다.
 
 ## 드라이버 ↔ 결정 매핑
 
@@ -361,9 +359,9 @@ sequenceDiagram
 | QAS-1 Latency | AP-1 | UI 스레드 작업 없음, 적체 없음; 지연 보고 내장 |
 | QAS-2 Accuracy | AP-2 (+AP-7) | 샘플 도메인 정밀도 — 아키텍처는 오차를 더하지 않고, 나머지는 Sim 벤치가 입증 |
 | QAS-3 Availability | AP-3 (+AP-7) | 틀린 숫자는 구조적으로 화면에 도달할 수 없음 |
-| QAS-4 Consistency | AP-4 | 한 프레임이 전부를 먹임; frameId로 "불일치 0회" 검사 가능 |
+| QAS-4 Consistency | AP-4 | 한 프레임이 모든 표시에 공급됨; frameId로 "불일치 0회" 검사 가능 |
 | QAS-5 Modifiability | AP-5 | 모든 추가 = 새 코드 + 등록 1곳 |
-| QAS-6 Usability | AP-6 (+AP-1) | mm 규칙은 한 곳에; 터치는 절대 안 막힘 |
+| QAS-6 Usability | AP-6 (+AP-1) | mm 규칙은 한 곳에; 터치는 멈추지 않음 |
 | C-1 Raspberry Pi 5 | AP-1 | 유한 버퍼; 예산은 타깃에서 조기 측정 |
 | C-2 800×480 | AP-6 | 레이아웃 규칙을 렌더러 하나에 중앙화 |
 | C-3 Windows + RPi OS | AP-7 | 플랫폼 코드를 모듈 하나에 격리 |
