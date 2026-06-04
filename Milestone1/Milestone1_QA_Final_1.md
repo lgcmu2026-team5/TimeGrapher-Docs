@@ -16,6 +16,8 @@
 | Rate | Seconds the watch gains or loses per day (s/d) |
 | Beat error | Asymmetry between the tick and tock intervals (ms) |
 | Amplitude | Swing angle of the balance wheel (°) — a key indicator of watch health |
+| Onset / Peak | The start (leading edge) / maximum point of a beat's waveform — the measurement reference points |
+| Sim / Playback | Sim = synthetic watch-signal generator mode (ground truth known in advance); Playback = replay of a recorded file |
 | SMPTE | Society of Motion Picture and Television Engineers — source of the viewing-distance / viewing-angle guideline |
 | ISO 9241-303 | International ergonomics standard for electronic displays — source of the character-size guideline |
 | Glyph | The visual shape of a single character on screen |
@@ -197,6 +199,8 @@ ATAM style: each scenario carries a (**B**usiness importance, technical **R**isk
 | 일오차 (rate) | 시계가 하루에 빨라지거나 느려지는 초 수 (s/d) |
 | 비트오차 (beat error) | 틱과 톡 사이 간격의 비대칭 정도 (ms) |
 | 진폭 (amplitude) | 밸런스 휠이 흔들리는 회전 각도 (°) — 시계 건강 상태의 핵심 지표 |
+| Onset / Peak | 비트 파형의 시작점(앞 가장자리) / 최대점 — 측정의 기준점 |
+| Sim / Playback | Sim = 합성 시계 신호 생성 모드(정답을 미리 알고 있음); Playback = 녹음 파일 재생 모드 |
 | SMPTE | 미국 영화·TV 기술자 협회 — 화면 시청 거리·시야각 권고 기준의 출처 |
 | ISO 9241-303 | 전자 디스플레이 인간공학 국제 표준 — 글자 크기 권고 기준의 출처 |
 | 글리프 (glyph) | 화면에 표시되는 글자 한 개의 모양 |
@@ -264,7 +268,7 @@ ATAM style: each scenario carries a (**B**usiness importance, technical **R**isk
 | 대상 | 잡음 제거 / 비트 감지 부분과 신호 품질 표시 |
 | 환경 | 주변 잡음이 포함된 열악한 작업 환경 or Sim/Playback 입력에 보정된 잡음을 일정 SNR로 주입한 데이터 |
 | 응답 | 잡음 하에서 허용오차 내로 감지·측정; 품질 임계 미만이면 어떤 값도 아닌 "신호 약함"을 표시 |
-| 응답측정 | 생성기의 기지 스케줄 대비, 1,000비트 이상: SNR ≥ 14 dB에서 감지율 ≥ 95%, 일오차 ≤ ±3 s/d; 임계 미만에서는 "신호 약함"만 표시 |
+| 응답측정 | 생성기의 알려진 스케줄 대비, 1,000비트 이상: SNR ≥ 14 dB에서 감지율 ≥ 95%, 일오차 ≤ ±3 s/d; 임계 미만에서는 "신호 약함"만 표시 |
 
 **측정값 근거**
 - **14 dB** — 팀 마이크로 실측한 최악 클린 녹음(9개, 30–51 dB)보다 ≥ 16 dB 낮은 심한 조건 — 의도적 잡음 주입으로만 도달; 잠정값.
@@ -288,7 +292,7 @@ ATAM style: each scenario carries a (**B**usiness importance, technical **R**isk
 | 대상 | 수치 표시값과 그래프 표시 |
 | 환경 | 평소처럼 측정 중 (검증은 Sim/Playback) |
 | 응답 | 한 프레임에 함께 표시되는 모든 것이 하나의 결과에서 파생되어 일치 |
-| 응답측정 | 기지 입력의 10분 실행 동안: 동시에 표시되는 모든 표시에서 **불일치 0회**(표시 반올림 이내); 각 표시는 소스 결과 식별자를 노출하여 검사 가능 |
+| 응답측정 | 알려진 기준 입력의 10분 실행 동안: 동시에 표시되는 모든 표시에서 **불일치 0회**(표시 반올림 이내); 각 표시는 소스 결과 식별자를 노출하여 검사 가능 |
 
 **측정값 근거**
 - **0** 이 유일하게 말이 되는 목표 — 일관성은 정합성 계열 속성이지 조정 가능한 수치가 아님.
