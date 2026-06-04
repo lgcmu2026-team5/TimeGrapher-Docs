@@ -160,6 +160,7 @@
 **Why these numbers**
 - **mm, not px** — a pixel criterion flips pass/fail with the panel; 9 mm is the standard touch-target size.
 - **Uppercase letter height ≥ 2.9 mm** — considering full-screen visibility (SMPTE), character legibility (ISO 9241-303), and room for touch operation, the design viewing distance is conservatively set to 50 cm. At 50 cm, ISO 9241-303's recommended glyph size of ≥ 20 arcmin converts to 2.9 mm on this panel (8″ 800×480).
+  - Calculation: 20 arcmin = 20/60° = 0.333° ≈ 0.00582 rad → letter height = viewing distance × visual angle = 500 mm × 0.00582 ≈ **2.9 mm**
 
 **Related FRs** — FR-06-06, FR-01-05, FR-04-03, FR-02-06, FR-06-11·13 (at-a-glance readings, position indication, alerts)
 
@@ -340,6 +341,7 @@ ATAM style: each scenario carries a (**B**usiness importance, technical **R**isk
 **측정값 근거**
 - **px가 아닌 mm** — 픽셀 기준은 패널에 따라 합격/불합격이 뒤바뀜; 9 mm는 통용되는 터치 타깃 크기.
 - **영어 대문자 글자 높이 ≥ 2.9mm** — 화면 전체 가시성(SMPTE)·글자 가독성(ISO 9241-303)·터치 조작 여유를 고려해 설계 시야 거리를 보수적으로 50cm로 채택. 50cm에서 ISO 9241-303 권장 글자 크기 ≥ 20 arcmin을 본 패널(8″ 800×480)로 환산하면 2.9mm.
+  - 계산: 20 arcmin = 20/60° = 0.333° ≈ 0.00582 rad → 글자 높이 = 시야 거리 × 시각 = 500 mm × 0.00582 ≈ **2.9 mm**
 
 **관련 FR** — FR-06-06, FR-01-05, FR-04-03, FR-02-06, FR-06-11·13 (한눈에 읽기·포지션 표시·경보)
 
