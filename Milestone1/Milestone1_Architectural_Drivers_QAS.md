@@ -44,7 +44,7 @@
 **Why these numbers**
 - **≤ 500 ms** — p99 (the slowest 1 %) sits at Google's INP (Interaction to Next Paint) boundary just before "poor" (good ≤ 200 ms · needs improvement ≤ 500 ms · poor > 500 ms); adopted as the maximum allowable limit for the final display update.
 
-**Related FRs** — FR-08-01, FR-12-04, FR-05-03, FR-12-14 (real-time / Live display features)
+**Related FRs** — FR-08-01, FR-12-04, FR-05-03, FR-12-14 (Live display and low-latency feedback features)
 
 ### QAS-2 · Availability (Graceful Degradation) — Under Noisy or Weak Signals
 > **In one line: in noise, filter and measure correctly — and below the limit, say "signal weak" rather than show a wrong number.**
@@ -154,17 +154,17 @@
 
 ## Priority
 
-ATAM style: each scenario carries a (**B**usiness importance, technical **R**isk) pair, H/M/L. The H/H scenarios shape the architecture most.
+ATAM style: each scenario carries an (**I**mportance, **D**ifficulty) pair, H/M/L. The H/H scenarios shape the architecture most.
 
-| Priority | QAS | Quality | B | R | Rationale |
+| Priority | QAS | Quality | I | D | Rationale |
 |----------|-----|---------|---|---|-----------|
-| 1 | QAS-1 | Performance (Latency) | H | H | The headline "real-time" driver; feasibility on the Pi is the stated project risk |
-| 2 | QAS-2 | Availability | H | H | Usable measurement in real environments; noise robustness is a binding risk |
-| 3 | QAS-3 | Consistency | H | M | Explicit Plan driver; the design solution (single source of truth) is well understood |
-| 4 | QAS-4 | Modifiability | H | M | 12 features in 3 weeks demand cheap, incremental addition |
-| 5 | QAS-5 | Usability | M | M | Fixed small panel; mostly layout discipline once sizes are pinned |
+| 1 | QAS-1 | Performance (Latency) | H | H | The result must appear quickly, and the Pi may be the bottleneck |
+| 2 | QAS-2 | Availability | H | H | Noisy or weak signals are likely in actual use |
+| 3 | QAS-3 | Consistency | H | M | Users should not see different values for the same result |
+| 4 | QAS-4 | Modifiability | H | M | Many required features still need to be added |
+| 5 | QAS-5 | Usability | M | M | The small touchscreen limits layout choices |
 
-**Ordering:** the H/H group (QAS-1 · 2) leads — QAS-1 is the headline driver, and QAS-2 captures usable measurement under real bench conditions. Then QAS-3 (explicit Plan driver) over QAS-4; QAS-5 is the only B = M.
+**Ordering:** QAS-1 and QAS-2 come first because they affect whether the device is usable at all. QAS-3 and QAS-4 follow because they keep the results trustworthy and the project manageable. QAS-5 is still important, but its risk is more contained.
 
 ---
 
@@ -322,14 +322,14 @@ ATAM style: each scenario carries a (**B**usiness importance, technical **R**isk
 
 ## 우선순위
 
-ATAM 방식: 각 시나리오에 (**B**비즈니스 중요도, 기술 리스크 **R**) 쌍을 부여(H/M/L). H/H 시나리오가 아키텍처를 가장 좌우한다.
+ATAM 방식: 각 시나리오에 (**I**중요도, **D**난이도) 쌍을 부여(H/M/L). H/H 시나리오가 아키텍처를 가장 좌우한다.
 
-| 순위 | QAS | 품질 속성 | B | R | 근거 |
+| 순위 | QAS | 품질 속성 | I | D | 근거 |
 |------|-----|----------|---|---|------|
-| 1 | QAS-1 | Performance (Latency) | H | H | 대표 "real-time" 드라이버; Pi에서의 실현 가능성이 명시된 리스크 |
-| 2 | QAS-2 | Availability | H | H | 실제 환경에서 쓸 수 있는 측정; 잡음 강건성이 결정적 리스크 |
-| 3 | QAS-3 | Consistency | H | M | 플랜 명시 드라이버; 해법(single source of truth)은 잘 알려짐 |
-| 4 | QAS-4 | Modifiability | H | M | 3주에 기능 12종 — 저비용·점진적 추가가 필수 |
-| 5 | QAS-5 | Usability | M | M | 고정 소형 패널; 크기 확정 후엔 주로 레이아웃 규율 문제 |
+| 1 | QAS-1 | Performance (Latency) | H | H | 결과가 빨리 떠야 하고, Pi 성능이 병목이 될 수 있음 |
+| 2 | QAS-2 | Availability | H | H | 실제 사용 환경에서는 잡음이나 약한 신호가 자주 생길 수 있음 |
+| 3 | QAS-3 | Consistency | H | M | 같은 측정 결과가 화면마다 다르게 보이면 안 됨 |
+| 4 | QAS-4 | Modifiability | H | M | 아직 추가해야 할 기능이 많음 |
+| 5 | QAS-5 | Usability | M | M | 작은 터치스크린이라 화면 배치가 제한됨 |
 
-**정렬:** H/H 그룹(QAS-1 · 2)이 선두 — QAS-1은 헤드라인 드라이버, QAS-2는 실제 작업대 조건에서 쓸 수 있는 측정을 다룬다. 그다음 플랜 명시 드라이버인 QAS-3이 QAS-4보다 앞; QAS-5는 유일한 B = M.
+**정렬:** QAS-1과 QAS-2는 장치가 실제로 쓸 만한지에 직접 연결되므로 앞에 둔다. QAS-3과 QAS-4는 결과 신뢰성과 개발 진행을 지키는 항목이라 그다음이다. QAS-5도 중요하지만 위험은 비교적 제한적이다.
