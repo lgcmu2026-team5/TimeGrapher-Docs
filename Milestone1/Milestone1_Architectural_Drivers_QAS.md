@@ -46,30 +46,7 @@
 
 **Related FRs** — FR-08-01, FR-12-04, FR-05-03, FR-12-14 (real-time / Live display features)
 
-### QAS-2 · Accuracy — Pinpointing Beats Precisely
-> **In one line: locate each tick/tock to within 0.1 ms.**
->
-> While measuring as usual, when a new beat (tick/tock) of the watch sound arrives at the beat-detection / time-calculation part, the system locates its onset/peak accurately and preserves timing precision through every stage — maximum error must be **≤ 0.1 ms** over ≥ 1,000 synthetic beats with known positions.
-
-**Why this attribute**
-- Plan §Measurement Accuracy: *"the software must accurately identify the start/onset and peak of the important acoustic signals."*
-- The measure is **closeness to the true value** — that is Accuracy, not speed (Performance) and not display agreement (Consistency). Accuracy is outside SAP's catalog, so it is specified in the same six-part form per the textbook's guidance for other quality attributes.
-
-| Element | Content |
-|---------|---------|
-| Source | Watch sound (external) |
-| Stimulus | A new beat (tick/tock) arrives |
-| Artifact | The beat-detection / time-calculation part |
-| Environment | Measuring as usual; verified at 96,000 and 48,000 SPS |
-| Response | Locate onset/peak accurately; preserve timing precision through every stage |
-| Response Measure | Maximum onset/peak position error **≤ 0.1 ms** over ≥ 1,000 synthetic beats with known positions |
-
-**Why these numbers**
-- **0.1 ms** — equals the Witschi X1 beat-error spec.
-
-**Related FRs** — FR-08-04…06, FR-05-13, FR-06-01…04 (beat markers and the values derived from them)
-
-### QAS-3 · Availability (Graceful Degradation) — Under Noisy or Weak Signals
+### QAS-2 · Availability (Graceful Degradation) — Under Noisy or Weak Signals
 > **In one line: in noise, filter and measure correctly — and below the limit, say "signal weak" rather than show a wrong number.**
 >
 > In a noisy working environment, when watch sound mixed with ambient noise — or a weak signal — reaches the noise-removal / beat-detection part, the system detects and measures within tolerance and, below the quality threshold, shows "signal weak" instead of any value — detection **≥ 95 %** and rate error **≤ ±3 s/d** at SNR ≥ 14 dB.
@@ -93,14 +70,14 @@
 
 **Related FRs** — FR-12-08, FR-05-17…18 (noise filtering, averaging)
 
-### QAS-4 · Consistency — Consistent Values Across Displays
+### QAS-3 · Consistency — Consistent Values Across Displays
 > **In one line: every number and graph on screen comes from the same measurement result.**
 >
 > While measuring as usual, when the analysis/computation stage fans a single measurement result out to multiple graph and numeric displays, everything rendered in the same frame derives from that one result and agrees — **0 mismatches** over a 10-min run.
 
 **Why this attribute**
 - Plan §Correctness: *"remaining internally consistent across the GUI, derived measurements, and longer-term summaries"* — *"calculations and visualizations are based on the same underlying data."*
-- That Plan section bundles three demands: event-position accuracy (→ QAS-2), stay internally consistent (→ **this scenario**), stay usable under noise (→ QAS-3). This scenario measures only consistency, so that is its name — "Correctness" would overclaim the other two.
+- That Plan section bundles multiple demands: stay internally consistent (→ **this scenario**) and stay usable under noise (→ QAS-2). This scenario measures only consistency, so that is its name — "Correctness" would overclaim the other parts.
 
 | Element | Content |
 |---------|---------|
@@ -117,7 +94,7 @@
 
 **Related FRs** — FR-12-05, FR-06-06, FR-02-07…08 (views and summaries showing the same data)
 
-### QAS-5 · Modifiability (Extensibility) — Adding a New Measurement/Filter/Graph
+### QAS-4 · Modifiability (Extensibility) — Adding a New Measurement/Filter/Graph
 > **In one line: adding a new graph, filter, or measurement touches one place — 8 person-days per feature.**
 >
 > During development under a tight schedule, when a developer adds a new graph, filter, or measurement to the codebase, the addition is incremental without tearing into existing code — **≤ 1 existing module changed** (common parts only), 8 person-days per feature.
@@ -141,7 +118,7 @@
 
 **Related FRs** — all requirements
 
-### QAS-6 · Usability — Reading and Operating on the Low-Resolution Touchscreen
+### QAS-5 · Usability — Reading and Operating on the Low-Resolution Touchscreen
 > **In one line: on the small 800×480 touchscreen, the three key readings are readable at a glance and operable by finger.**
 >
 > On the Raspberry Pi 5's 800×480 (8-inch) touchscreen, when the user reads measurement values and switches modes in the GUI, key readings are shown legibly and primary functions operate by touch alone — rate / beat error / amplitude visible simultaneously, uppercase letter height ≥ 2.9 mm, touch targets ≥ 9 mm. Physical sizes (mm) are normative.
@@ -182,13 +159,12 @@ ATAM style: each scenario carries a (**B**usiness importance, technical **R**isk
 | Priority | QAS | Quality | B | R | Rationale |
 |----------|-----|---------|---|---|-----------|
 | 1 | QAS-1 | Performance (Latency) | H | H | The headline "real-time" driver; feasibility on the Pi is the stated project risk |
-| 2 | QAS-2 | Accuracy | H | H | Every derived measure depends on event-position accuracy — the foundation |
-| 3 | QAS-3 | Availability | H | H | Usable measurement in real environments; noise robustness builds on QAS-2 |
-| 4 | QAS-4 | Consistency | H | M | Explicit Plan driver; the design solution (single source of truth) is well understood |
-| 5 | QAS-5 | Modifiability | H | M | 12 features in 3 weeks demand cheap, incremental addition |
-| 6 | QAS-6 | Usability | M | M | Fixed small panel; mostly layout discipline once sizes are pinned |
+| 2 | QAS-2 | Availability | H | H | Usable measurement in real environments; noise robustness is a binding risk |
+| 3 | QAS-3 | Consistency | H | M | Explicit Plan driver; the design solution (single source of truth) is well understood |
+| 4 | QAS-4 | Modifiability | H | M | 12 features in 3 weeks demand cheap, incremental addition |
+| 5 | QAS-5 | Usability | M | M | Fixed small panel; mostly layout discipline once sizes are pinned |
 
-**Ordering:** the H/H group (QAS-1 · 2 · 3) leads — QAS-1 is the headline driver, and QAS-2 precedes QAS-3 because position accuracy is the foundation noise robustness builds on. Then QAS-4 (explicit Plan driver) over QAS-5; QAS-6 is the only B = M.
+**Ordering:** the H/H group (QAS-1 · 2) leads — QAS-1 is the headline driver, and QAS-2 captures usable measurement under real bench conditions. Then QAS-3 (explicit Plan driver) over QAS-4; QAS-5 is the only B = M.
 
 ---
 
@@ -238,30 +214,7 @@ ATAM style: each scenario carries a (**B**usiness importance, technical **R**isk
 
 **관련 FR** — FR-08-01, FR-12-04, FR-05-03, FR-12-14 (실시간/Live 표시 기능)
 
-### QAS-2 · Accuracy — 비트 위치 정밀 검출
-> **한 줄 요약: 틱/톡 하나하나의 위치를 0.1 ms 오차 안에서 찾아낸다.**
->
-> 평소처럼 측정하는 동안 시계 소리의 새 비트(틱/톡)가 비트 감지·시간 계산 부분에 도착하면, 시스템은 onset/peak 위치를 정확히 찾고 전 단계에서 시간 정밀도를 보존하며, 위치가 알려진 합성 비트 ≥ 1,000개에서 최대 오차 **≤ 0.1 ms**이어야 한다.
-
-**왜 이 속성인가**
-- 플랜 원문(§Measurement Accuracy): *"the software must accurately identify the start/onset and peak of the important acoustic signals."* — onset/peak의 정확한 식별을 직접 요구.
-- 척도가 **참값에 얼마나 가까운가** → 빠르기(Performance)도 표시 일치(Consistency)도 아닌 Accuracy. SAP 카탈로그에 없는 속성이라, 교재의 '기타 품질 속성' 가이드대로 동일한 6-part 형식으로 기술.
-
-| 요소 | 내용 |
-|------|------|
-| 자극유발원 | 시계 소리 (외부) |
-| 자극 | 새 비트(틱/톡)가 도착함 |
-| 대상 | 비트 감지 / 시간 계산 부분 |
-| 환경 | 평소처럼 측정 중; 96,000과 48,000 SPS에서 검증 |
-| 응답 | onset/peak 위치를 정확히 찾고, 전 단계에서 시간 정밀도를 보존함 |
-| 응답측정 | 위치가 알려진 합성 비트 ≥ 1,000개에서 onset/peak 최대 오차 **≤ 0.1 ms** |
-
-**측정값 근거**
-- **0.1 ms** — Witschi X1의 beat error 스펙과 동일.
-
-**관련 FR** — FR-08-04…06, FR-05-13, FR-06-01…04 (비트 마커와 거기서 파생되는 측정값)
-
-### QAS-3 · Availability (Graceful Degradation) — 잡음·약신호 환경
+### QAS-2 · Availability (Graceful Degradation) — 잡음·약신호 환경
 > **한 줄 요약: 시끄러우면 걸러서 정확히 재고, 한계 아래면 틀린 값 대신 "신호 약함"을 보여준다.**
 >
 > 잡음이 포함된 열악한 작업 환경에서 잡음 섞인 시계 소리 또는 약한 시계 소리가 잡음 제거·비트 감지 부분에 들어오면, 시스템은 잡음 하에서 허용오차 내로 감지·측정하고 품질 임계 미만이면 잘못된 값 대신 "신호 약함"을 표시하며, SNR ≥ 14 dB에서 감지율 **≥ 95%** · 일오차 **≤ ±3 s/d**이어야 한다.
@@ -285,14 +238,14 @@ ATAM style: each scenario carries a (**B**usiness importance, technical **R**isk
 
 **관련 FR** — FR-12-08, FR-05-17…18 (잡음 필터링·averaging)
 
-### QAS-4 · Consistency — 표시 간 값 일치
+### QAS-3 · Consistency — 표시 간 값 일치
 > **한 줄 요약: 화면의 모든 숫자와 그래프는 같은 측정 결과에서 나온다.**
 >
 > 평소처럼 측정하는 동안 분석/계산 단계가 하나의 측정 결과를 여러 그래프·숫자 표시에 전달하면, 한 프레임에 함께 표시되는 모든 것이 그 단일 결과에서 파생되어 일치하며, 10분 실행 동안 **불일치 0회**이어야 한다.
 
 **왜 이 속성인가**
 - 플랜 §Correctness 원문: *"remaining internally consistent across the GUI, derived measurements, and longer-term summaries"* / *"calculations and visualizations are based on the same underlying data."*
-- 그 절은 세 요구의 묶음: 이벤트 위치 정확도(→ QAS-2), 내부 일관성(→ **본 시나리오**), 잡음 하 사용 가능(→ QAS-3). 본 시나리오는 일관성만 측정하므로 이름도 Consistency — Correctness라 부르면 나머지 둘까지 커버하는 듯한 과대 표기.
+- 그 절은 여러 요구의 묶음: 내부 일관성(→ **본 시나리오**)과 잡음 하 사용 가능(→ QAS-2). 본 시나리오는 일관성만 측정하므로 이름도 Consistency — Correctness라 부르면 나머지 부분까지 커버하는 듯한 과대 표기.
 
 | 요소 | 내용 |
 |------|------|
@@ -309,7 +262,7 @@ ATAM style: each scenario carries a (**B**usiness importance, technical **R**isk
 
 **관련 FR** — FR-12-05, FR-06-06, FR-02-07…08 (여러 뷰·요약이 같은 데이터를 표시)
 
-### QAS-5 · Modifiability (Extensibility) — 새 측정/필터/그래프 추가
+### QAS-4 · Modifiability (Extensibility) — 새 측정/필터/그래프 추가
 > **한 줄 요약: 새 그래프·필터·측정값 추가 = 한 곳만 고친다 — 기능당 8 person-days.**
 >
 > 일정이 촉박한 개발 중에 개발자가 코드베이스에 새 그래프·필터·측정값을 추가하려 할 때, 기존 코드를 뜯어고치지 않고 점진적으로 추가하며, 기존 모듈 변경 **≤ 1개**(공통 부분만) · 기능당 8 person-days이어야 한다.
@@ -333,7 +286,7 @@ ATAM style: each scenario carries a (**B**usiness importance, technical **R**isk
 
 **관련 FR** — 모든 요구사항
 
-### QAS-6 · Usability — 저해상도 터치스크린에서 읽기·조작
+### QAS-5 · Usability — 저해상도 터치스크린에서 읽기·조작
 > **한 줄 요약: 작은 800×480 터치스크린에서도 핵심 값 3개를 한눈에 읽고 손가락으로 조작한다.**
 >
 > Raspberry Pi 5의 800×480(8인치) 터치스크린에서 사용자가 GUI의 측정값을 읽고 모드를 전환할 때, 핵심 측정값을 가독성 있게 표시하고 주요 기능을 터치만으로 조작할 수 있으며, 일오차·비트오차·진폭 동시 표시 · 영어 대문자 글자 높이 ≥ 2.9 mm · 터치 타깃 ≥ 9 mm를 만족해야 한다. 물리 크기(mm)가 규범 기준.
@@ -374,10 +327,9 @@ ATAM 방식: 각 시나리오에 (**B**비즈니스 중요도, 기술 리스크 
 | 순위 | QAS | 품질 속성 | B | R | 근거 |
 |------|-----|----------|---|---|------|
 | 1 | QAS-1 | Performance (Latency) | H | H | 대표 "real-time" 드라이버; Pi에서의 실현 가능성이 명시된 리스크 |
-| 2 | QAS-2 | Accuracy | H | H | 모든 파생 측정값이 이벤트 위치 정확도에 의존 — 토대 |
-| 3 | QAS-3 | Availability | H | H | 실제 환경에서 쓸 수 있는 측정; QAS-2 위에 쌓이는 잡음 강건성 |
-| 4 | QAS-4 | Consistency | H | M | 플랜 명시 드라이버; 해법(single source of truth)은 잘 알려짐 |
-| 5 | QAS-5 | Modifiability | H | M | 3주에 기능 12종 — 저비용·점진적 추가가 필수 |
-| 6 | QAS-6 | Usability | M | M | 고정 소형 패널; 크기 확정 후엔 주로 레이아웃 규율 문제 |
+| 2 | QAS-2 | Availability | H | H | 실제 환경에서 쓸 수 있는 측정; 잡음 강건성이 결정적 리스크 |
+| 3 | QAS-3 | Consistency | H | M | 플랜 명시 드라이버; 해법(single source of truth)은 잘 알려짐 |
+| 4 | QAS-4 | Modifiability | H | M | 3주에 기능 12종 — 저비용·점진적 추가가 필수 |
+| 5 | QAS-5 | Usability | M | M | 고정 소형 패널; 크기 확정 후엔 주로 레이아웃 규율 문제 |
 
-**정렬:** H/H 그룹(QAS-1 · 2 · 3)이 선두 — QAS-1은 헤드라인 드라이버, QAS-2가 QAS-3보다 앞서는 이유는 위치 정확도가 잡음 강건성의 토대이기 때문. 그다음 플랜 명시 드라이버인 QAS-4가 QAS-5보다 앞; QAS-6은 유일한 B = M.
+**정렬:** H/H 그룹(QAS-1 · 2)이 선두 — QAS-1은 헤드라인 드라이버, QAS-2는 실제 작업대 조건에서 쓸 수 있는 측정을 다룬다. 그다음 플랜 명시 드라이버인 QAS-3이 QAS-4보다 앞; QAS-5는 유일한 B = M.

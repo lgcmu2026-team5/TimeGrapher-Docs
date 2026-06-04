@@ -35,7 +35,7 @@
   - Probability / Impact: High / High
   - Mitigation: Week-1 spike to measure the RPi's processing limit, then fix the sample-rate target (192k demoted to stretch)
   - Comment: Decide the spec after the experiment
-  - Tradeoff point: the sample rate trades Accuracy (QAS-2 — more samples per 0.1 ms) against Performance (this risk) — the week-1 experiment picks the balance
+  - Tradeoff point: the sample rate trades measurement precision (more samples per 0.1 ms) against Performance (this risk) — the week-1 experiment picks the balance
 
 - **R-A2 — Rendering four filters (F0→F3) plus multiple graphs at once makes the screen stutter (<20 FPS · UI freeze)**
   - Quality attribute: Performance
@@ -43,7 +43,7 @@
   - Probability / Impact: Medium~High / High
   - Mitigation: Reuse a shared input buffer, stop rendering inactive views, measure an FPS budget
   - Comment: 4 simultaneous views vs one-at-a-time decided after the performance check
-  - Tradeoff point: showing 4 views at once trades Usability (QAS-6) against Performance — decided after the performance check
+  - Tradeoff point: showing 4 views at once trades Usability (QAS-5) against Performance — decided after the performance check
 
 - **R-A3 — The sound-to-screen 0.5 s (p99 ≤ 500 ms) target is missed**
   - Quality attribute: Performance (Latency)
@@ -63,14 +63,14 @@
 
 - **R-B1 — If tick/tock positions can't be found to 0.1 ms, rate, beat error, and amplitude are all contaminated**
   - Quality attribute: Dependability (Reliability)
-  - Evidence: QAS-2
+  - Evidence: FR-08-04…06, FR-06-01…04
   - Probability / Impact: High / High
   - Mitigation: Early-verify the detection algorithm on a synthetic-signal bench (ground truth known)
   - Comment: Confirm the current logic works; improve if needed
 
 - **R-B2 — Mis-detection and mis-measurement in noisy or weak-signal environments (SNR ≥ 14 dB, detection ≥ 95 %)**
   - Quality attribute: Dependability (Reliability)
-  - Evidence: QAS-3
+  - Evidence: QAS-2
   - Probability / Impact: Medium~High / High
   - Mitigation: Filtering and signal-quality judgment; isolate bad data behind a "signal weak" indication
   - Comment: Test per noise level; improve the logic if needed
@@ -84,7 +84,7 @@
 
 - **R-B4 — 0.1 ms-level ground truth can't be obtained from real hardware, making "it's accurate" hard to prove**
   - Quality attribute: Modifiability (Testability)
-  - Evidence: QAS-2
+  - Evidence: FR-05-05, FR-12-16
   - Probability / Impact: Medium / Medium
   - Mitigation: Sim/Playback reproducible tests; predefine verification scenarios
   - Comment: Pass
@@ -100,7 +100,7 @@
 
 - **R-C3 — Without up-front design of the filter/marker extension structure (e.g., adding F4), late-stage cost soars**
   - Quality attribute: Modifiability (Extensibility)
-  - Evidence: FR-12-01, QAS-5
+  - Evidence: FR-12-01, QAS-4
   - Probability / Impact: Medium / Medium
   - Mitigation: Pre-design a Filter interface (strategy) and a plug-in registration scheme
   - Comment: Better modularization should cover it
@@ -132,7 +132,7 @@
 
 - **R-E1 — The small screen can't legibly hold the summary bar + multiple graphs + scope strip (letters ≥ 2.9 mm · touch ≥ 9 mm)**
   - Quality attribute: Usability
-  - Evidence: pdf (p.27 8 Inch Touchscreen for Raspberry Pi), QAS-6
+  - Evidence: pdf (p.27 8 Inch Touchscreen for Raspberry Pi), QAS-5
   - Probability / Impact: Medium / Medium
   - Mitigation: Key-readings-first layout, tab-based split, ≤ 2-tap navigation
   - Comment: Run size-adjustment tests
@@ -240,7 +240,7 @@
   - 발생 확률 / 영향: High / High
   - 완화 방향: 1주차 spike로 RPi 처리 한계 측정 후 샘플레이트 목표 확정(192k는 stretch로 격하)
   - 코멘트: 실험 진행 후 스펙 결정
-  - Tradeoff point: 샘플레이트는 Accuracy(QAS-2 — 0.1 ms당 샘플 수 증가)↔Performance(본 리스크)의 tradeoff point — 1주차 실험으로 균형점 결정
+  - Tradeoff point: 샘플레이트는 측정 정밀도(0.1 ms당 샘플 수 증가)↔Performance(본 리스크)의 tradeoff point — 1주차 실험으로 균형점 결정
 
 - **R-A2 — 필터 4개(F0→F3) + 그래프 여러 개를 동시에 그리면 화면이 버벅인다(<20 FPS·UI freeze)**
   - 품질요소: Performance
@@ -248,7 +248,7 @@
   - 발생 확률 / 영향: Medium~High / High
   - 완화 방향: 공유 입력버퍼 재사용, 비활성 뷰 렌더 중단, FPS 예산 측정
   - 코멘트: 4개 동시 뷰 / 1개씩 뷰는 성능 확인 후 결정
-  - Tradeoff point: 동시 4뷰 표시는 Usability(QAS-6)↔Performance의 tradeoff point — 성능 확인 후 결정
+  - Tradeoff point: 동시 4뷰 표시는 Usability(QAS-5)↔Performance의 tradeoff point — 성능 확인 후 결정
 
 - **R-A3 — 소리→화면 0.5초(p99 ≤ 500 ms) 목표를 못 지킨다**
   - 품질요소: Performance (Latency)
@@ -268,14 +268,14 @@
 
 - **R-B1 — 틱/톡 위치를 0.1 ms 정밀도로 못 찾으면 rate·beat error·amplitude 전부가 오염된다**
   - 품질요소: Dependability (Reliability)
-  - 근거: QAS-2
+  - 근거: FR-08-04…06, FR-06-01…04
   - 발생 확률 / 영향: High / High
   - 완화 방향: 합성신호(정답 known) 벤치로 검출 알고리즘 조기 검증
   - 코멘트: 현 로직 기준으로 정상동작 확인 및 필요 시 로직 개선 필요
 
 - **R-B2 — 시끄럽거나 신호가 약한 환경(SNR≥14dB, 검출률≥95%)에서 잘못 검출·측정한다**
   - 품질요소: Dependability (Reliability)
-  - 근거: QAS-3
+  - 근거: QAS-2
   - 발생 확률 / 영향: Medium~High / High
   - 완화 방향: 필터링·신호품질 판정, bad-data는 "signal weak" 표시로 격리
   - 코멘트: 노이즈 레벨 별 테스트 및 필요 시 로직 개선
@@ -289,7 +289,7 @@
 
 - **R-B4 — 0.1 ms급 정답(ground truth)을 실제 하드웨어로 못 얻어 "정확하다"를 입증하기 어렵다**
   - 품질요소: Modifiability (Testability)
-  - 근거: QAS-2
+  - 근거: FR-05-05, FR-12-16
   - 발생 확률 / 영향: Medium / Medium
   - 완화 방향: Sim/Playback 재현 테스트, 검증 시나리오 사전 정의
   - 코멘트: 패스
@@ -305,7 +305,7 @@
 
 - **R-C3 — 필터/마커 확장 구조(예: F4 추가)를 미리 설계하지 않으면 후반 비용이 급증한다**
   - 품질요소: Modifiability (Extensibility)
-  - 근거: FR-12-01, QAS-5
+  - 근거: FR-12-01, QAS-4
   - 발생 확률 / 영향: Medium / Medium
   - 완화 방향: Filter 인터페이스(strategy)·plug-in 등록 방식 선설계
   - 코멘트: 모듈화를 더 잘 하면 될 듯함
@@ -337,7 +337,7 @@
 
 - **R-E1 — 작은 화면에 요약바 + 그래프 + 스코프를 가독성(글자 ≥2.9mm·터치 ≥9mm) 있게 다 못 담는다**
   - 품질요소: Usability
-  - 근거: pdf (p.27 8 Inch Touchscreen for Raspberry Pi), QAS-6
+  - 근거: pdf (p.27 8 Inch Touchscreen for Raspberry Pi), QAS-5
   - 발생 확률 / 영향: Medium / Medium
   - 완화 방향: 핵심 측정값 우선 레이아웃, 탭 기반 분할, ≤2탭 내비
   - 코멘트: 크기 조절 테스트 진행
