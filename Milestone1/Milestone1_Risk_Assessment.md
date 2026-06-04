@@ -35,6 +35,7 @@
   - Probability / Impact: High / High
   - Mitigation: Week-1 spike to measure the RPi's processing limit, then fix the sample-rate target (192k demoted to stretch)
   - Comment: Decide the spec after the experiment
+  - Tradeoff point: the sample rate trades Accuracy (QAS-2 — more samples per 0.1 ms) against Performance (this risk) — the week-1 experiment picks the balance
 
 - **R-A2 — Rendering four filters (F0→F3) plus multiple graphs at once makes the screen stutter (<20 FPS · UI freeze)**
   - Quality attribute: Performance
@@ -42,6 +43,7 @@
   - Probability / Impact: Medium~High / High
   - Mitigation: Reuse a shared input buffer, stop rendering inactive views, measure an FPS budget
   - Comment: 4 simultaneous views vs one-at-a-time decided after the performance check
+  - Tradeoff point: showing 4 views at once trades Usability (QAS-6) against Performance — decided after the performance check
 
 - **R-A3 — The sound-to-screen 0.5 s (p99 ≤ 500 ms) target is missed**
   - Quality attribute: Performance (Latency)
@@ -186,8 +188,10 @@
   - Comment: See mitigation (code review, whole team understands the algorithms)
 
 - **R-F6 — Only one test Pi5 — real-use verification doesn't fit the schedule**
+  - Quality attribute: Modifiability (Testability)
   - Evidence: pdf (p.26 System Hardware — Raspberry Pi)
   - Probability / Impact: High / High
+  - Mitigation: Design most verification to run Sim/Playback-based (no hardware required), minimizing Pi5 dependence; schedule the real device only for must-have items such as performance measurement
 
 ## G. Other / Uncategorized
 
@@ -236,6 +240,7 @@
   - 발생 확률 / 영향: High / High
   - 완화 방향: 1주차 spike로 RPi 처리 한계 측정 후 샘플레이트 목표 확정(192k는 stretch로 격하)
   - 코멘트: 실험 진행 후 스펙 결정
+  - Tradeoff point: 샘플레이트는 Accuracy(QAS-2 — 0.1 ms당 샘플 수 증가)↔Performance(본 리스크)의 tradeoff point — 1주차 실험으로 균형점 결정
 
 - **R-A2 — 필터 4개(F0→F3) + 그래프 여러 개를 동시에 그리면 화면이 버벅인다(<20 FPS·UI freeze)**
   - 품질요소: Performance
@@ -243,6 +248,7 @@
   - 발생 확률 / 영향: Medium~High / High
   - 완화 방향: 공유 입력버퍼 재사용, 비활성 뷰 렌더 중단, FPS 예산 측정
   - 코멘트: 4개 동시 뷰 / 1개씩 뷰는 성능 확인 후 결정
+  - Tradeoff point: 동시 4뷰 표시는 Usability(QAS-6)↔Performance의 tradeoff point — 성능 확인 후 결정
 
 - **R-A3 — 소리→화면 0.5초(p99 ≤ 500 ms) 목표를 못 지킨다**
   - 품질요소: Performance (Latency)
@@ -387,8 +393,10 @@
   - 코멘트: 완화 방향 참고 (코드리뷰, 우리 모두 알고리즘 이해 등)
 
 - **R-F6 — 테스트용 Pi5가 한 대뿐이라 실사용 검증 일정이 안 나온다**
+  - 품질요소: Modifiability (Testability)
   - 근거: pdf (p.26 System Hardware — Raspberry Pi)
   - 발생 확률 / 영향: High / High
+  - 완화 방향: 검증의 대부분을 Sim/Playback 기반(하드웨어 불요)으로 설계해 Pi5 의존 최소화; 실기기는 성능 측정 등 필수 항목에만 일정 배정
 
 ## G. 기타 또는 카테고리화 되지 않음
 
