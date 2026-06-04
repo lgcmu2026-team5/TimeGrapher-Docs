@@ -173,7 +173,7 @@ ATAM style: each scenario carries a (**B**usiness importance, technical **R**isk
 ### QAS-1 · Performance (Latency) — 소리 입력에서 화면 표시까지
 > **한 줄 요약: 소리가 마이크에 들어오면 0.5초 안에 화면에 나타난다.**
 >
-> 타깃 플랫폼에서 측정하는 동안 마이크로 소리가 들어오면, 시스템은 종단 p99 지연 ≤ 500 ms로 처리·표시한다. 지연은 세 경계에서 측정하여 (1) processing latency, (2) display latency, (3) processing+display latency로 보고한다. 입력 따라가기(블록 드롭 0·비트 누락 0)는 별도로 검증되는 전제 조건이다.
+> 측정하는 동안 마이크로 소리가 들어오면, 시스템은 p99 지연 ≤ 500 ms로 처리·표시한다. 지연은 세 곳에서 측정하여 (1) processing latency, (2) display latency, (3) processing+display latency로 보고한다.
 
 **왜 이 속성인가**
 - 플랜이 직접 요구하며, 3구간 분해까지 지정한다: *"Teams shall report capture-to-processing latency, processing-to-display latency, and total end-to-end latency in milliseconds."*
@@ -181,15 +181,15 @@ ATAM style: each scenario carries a (**B**usiness importance, technical **R**isk
 
 | 요소 | 내용 |
 |------|------|
-| 자극유발원 | 마이크 / 시계 (외부) |
+| 자극유발원 | 시계 소리 (외부) |
 | 자극 | 마이크로 소리가 들어옴 |
-| 대상 | 입력 → 분석 → 표시 흐름 — 캡처 · 분석 완료 · 화면 표시 시점에 타임스탬프 |
-| 환경 | Raspberry Pi 5(8 GB)에서 Live 측정, 96,000 SPS 목표(48,000 SPS 최소에서도 충족), GUI 활성 |
+| 대상 | 입력 → 분석 → 표시 - 해당 시점의 타임스탬프 |
+| 환경 | Raspberry Pi 5(8 GB)에서 Live 측정 |
 | 응답 | 처리하여 화면에 표시하고, 세 지연 구간을 보고함 |
-| 응답측정 | 10분 연속 실행 동안: (1) processing latency — p99 보고; (2) display latency — p99 보고; (3) 종단 — **p99 ≤ 500 ms** (pass/fail 게이트) |
+| 응답측정 | 10분 연속 실행 동안: (1) processing latency — p99 (2) display latency — p99 (3) processing + display latency — **p99 ≤ 500 ms** (pass/fail 게이트) |
 
 **측정값 근거**
-- **≤ 500 ms** — Google INP(Interaction to Next Paint) 기준에서 "poor"로 넘어가기 직전 값(good ≤ 200 ms · needs improvement ≤ 500 ms · poor > 500 ms); 최종 디스플레이 갱신의 최대 허용 한계값으로 채택.
+- **≤ 500 ms** — p99(하위 1% 느린 값)를 Google INP(Interaction to Next Paint) 기준에서 "poor"로 넘어가기 직전 값(good ≤ 200 ms · needs improvement ≤ 500 ms · poor > 500 ms).; 최종 디스플레이 갱신의 최대 허용 한계값으로 채택.
 
 **관련 FR** — FR-08-01, FR-12-04, FR-05-03, FR-12-14 (실시간/Live 표시 기능)
 
@@ -204,23 +204,22 @@ ATAM style: each scenario carries a (**B**usiness importance, technical **R**isk
 
 | 요소 | 내용 |
 |------|------|
-| 자극유발원 | 시계 비트 (외부 입력 스트림) |
+| 자극유발원 | 시계 소리 (외부) |
 | 자극 | 새 비트(틱/톡)가 도착함 |
 | 대상 | 비트 감지 / 시간 계산 부분 |
 | 환경 | 평소처럼 측정 중; 96,000과 48,000 SPS에서 검증 |
 | 응답 | onset/peak 위치를 정확히 찾고, 전 단계에서 시간 정밀도를 보존함 |
-| 응답측정 | 위치가 알려진 합성 비트 ≥ 1,000개에서 onset/peak 최대 오차 **≤ 0.1 ms**; 48,000 SPS에서는 4.8샘플 → 서브샘플 보간 필요 |
+| 응답측정 | 위치가 알려진 합성 비트 ≥ 1,000개에서 onset/peak 최대 오차 **≤ 0.1 ms** |
 
 **측정값 근거**
-- **0.1 ms** — Witschi X1의 beat error 스펙과 동일하고, 플랜의 0.6 ms "양호" 기준의 약 1/6 → 의미 있는 차이를 구분 가능.
-- 실현 가능: 베이스라인 검출기가 이미 서브샘플 보간을 수행.
+- **0.1 ms** — Witschi X1의 beat error 스펙과 동일.
 
 **관련 FR** — FR-08-04…06, FR-05-13, FR-06-01…04 (비트 마커와 거기서 파생되는 측정값)
 
 ### QAS-3 · Availability (Graceful Degradation) — 잡음·약신호 환경
 > **한 줄 요약: 시끄러우면 걸러서 정확히 재고, 한계 아래면 틀린 값 대신 "신호 약함"을 보여준다.**
 >
-> 잡음이 섞이거나 신호가 약한 환경에서, 시스템은 검출에 필요한 시계 신호 특징은 보존하면서 주변 대화 같은 불요 잡음을 줄인다. SNR ≥ 14 dB에서는 비트 감지율 ≥ 95%, 일오차 ≤ ±3 s/d를 유지하고; 임계 미만에서는 "신호 약함"만 표시한다 — 잘못된 값 0회, invalid 결과는 X/D summary에서 제외.
+> 잡음이 섞이거나 신호가 약한 환경에서, 시스템은 검출에 필요한 시계 신호 특징은 보존하면서 주변 대화 같은 잡음을 줄인다. SNR ≥ 14 dB에서는 비트 감지율 ≥ 95%, 일오차 ≤ ±3 s/d를 유지하고; 임계 미만에서는 "신호 약함"만 표시한다 — 잘못된 값 0회, invalid 결과는 X/D summary에서 제외.
 
 **왜 이 속성인가**
 - 플랜 원문: *"the system should degrade gracefully when the signal is weak, noisy, or partially missing, rather than producing unstable or misleading outputs."* — graceful degradation은 SAP에 수록된 **Availability 전술**.
@@ -228,10 +227,10 @@ ATAM style: each scenario carries a (**B**usiness importance, technical **R**isk
 
 | 요소 | 내용 |
 |------|------|
-| 자극유발원 | 주변 잡음 / 약한 신호 (외부) |
+| 자극유발원 | 주변 잡음이 포함된 시계 소리 / 약한 시계 소리 (외부) |
 | 자극 | 잡음이 섞이거나 신호가 약하게 들어옴 |
 | 대상 | 잡음 제거 / 비트 감지 부분과 신호 품질 표시 |
-| 환경 | 열악한 작업 환경 — Sim/Playback 입력에 보정된 잡음을 일정 SNR로 주입하여 재현 |
+| 환경 | 주변 잡음이 포함된 열악한 작업 환경 or Sim/Playback 입력에 보정된 잡음을 일정 SNR로 주입한 데이터 |
 | 응답 | 잡음 하에서 허용오차 내로 감지·측정; 품질 임계 미만이면 어떤 값도 아닌 "신호 약함"을 표시; invalid 결과는 X/D에서 제외 |
 | 응답측정 | 생성기의 기지 스케줄 대비, 1,000비트 이상: SNR ≥ 14 dB에서 감지율 ≥ 95%, 일오차 ≤ ±3 s/d; 임계 미만에서는 "신호 약함"만 표시, **잘못된 값 0회**; invalid 값의 X/D 포함 0건 |
 
@@ -269,7 +268,7 @@ ATAM style: each scenario carries a (**B**usiness importance, technical **R**isk
 ### QAS-5 · Modifiability (Extensibility) — 새 측정/필터/그래프 추가
 > **한 줄 요약: 새 그래프·필터·측정값 추가 = 등록 지점 한 곳만 고치고, 기존 기능은 깨지지 않는다.**
 >
-> 촉박한 일정에서 개발자가 새 그래프·필터 단계·파생 측정값을 추가할 때, 종류별 변경 예산 안에서 점진적으로 추가하며 회귀는 0건이다.
+> 촉박한 일정에서 개발자가 새 그래프, 필터, 측정값을 추가할 때, 종류별 변경 예산 안에서 점진적으로 추가하며 회귀는 0건이다.
 
 **왜 이 속성인가**
 - 플랜 원문(§Extensibility, Modifiability): *"support the addition of new measurements, filters, graphs, and display modes without major redesign of existing code."*
@@ -282,18 +281,18 @@ ATAM style: each scenario carries a (**B**usiness importance, technical **R**isk
 | 대상 | 측정·표시 기능을 담은 코드베이스 |
 | 환경 | 개발 중, 일정이 촉박함 |
 | 응답 | 기존 코드를 뜯어고치지 않고 점진적으로 추가함 |
-| 응답측정 | 새 그래프: 기존 모듈 변경 ≤ 1개(등록/배선부만). 새 필터: 파이프라인 등록 지점 ≤ 1개. 새 측정값: 계산 레지스트리 변경 ≤ 1개. 전 종류: **회귀 0건** — 회귀 테스트 셋이 변경 전후 모두 통과 |
+| 응답측정 | 새 그래프: 기존 모듈 변경 ≤ 1개(공통 부분만), 8 person-days |
 
 **측정값 근거**
 - 5주 일정에 필수 그래프 약 11종 — 좁은 변경 표면이어야만 가능한 일정.
-- "회귀 0건"은 구체적 검출 수단(테스트 셋)에 묶여 있음 — 선언만 하는 0이 아님.
+- 마일스톤2/3 일정 (16일) * 조 인원 (6명) / 기능 수 (12) = 8 person-days effort
 
-**관련 FR** — G01–G12 전체; 예: FR-05-01(새 탭), FR-12-01(새 필터), FR-04-06…07(새 측정값)
+**관련 FR** — 모든 요구사항
 
 ### QAS-6 · Usability — 저해상도 터치스크린에서 읽기·조작
 > **한 줄 요약: 작은 800×480 터치스크린에서도 핵심 값 3개를 한눈에 읽고 손가락으로 조작한다.**
 >
-> Raspberry Pi의 800×480 터치스크린에서 핵심 측정값(일오차·비트오차·진폭)은 스크롤/확대 없이 읽히고, 주요 기능은 터치만으로 동작한다. 물리 크기(mm)가 규범 기준이며, 픽셀 값은 패널 크기 확정 전까지 참고용.
+> HW 제약에 따라 Raspberry Pi의 800×480 터치스크린에서 핵심 측정값(일오차·비트오차·진폭)은 스크롤/확대 없이 읽히고, 주요 기능은 터치로 동작한다. 물리 크기(mm)가 규범 기준.
 
 **왜 이 속성인가**
 - 플랜 원문(§Usability and User Purpose): *"The GUI should support ease of use by clearly showing … the calculated values that matter most to the user, such as rate, beat error, amplitude."*
@@ -304,14 +303,13 @@ ATAM style: each scenario carries a (**B**usiness importance, technical **R**isk
 | 자극유발원 | 사용자 (시계공 / 측정자) |
 | 자극 | 터치스크린에서 측정값을 읽고 모드를 전환함 |
 | 대상 | GUI (그래프/수치 표시와 컨트롤) |
-| 환경 | Raspberry Pi 5 + 800×480 터치 디스플레이; 패널 물리 크기 미확정(플랜이 8인치와 5인치를 모두 기술); 베이스라인 GUI는 1280×750 고정이라 재레이아웃 필수 |
-| 응답 | 핵심 측정값을 가독성 있게 표시; 주요 기능을 터치만으로 조작; active position과 X/D를 관련 값 근처에 표시 |
-| 응답측정 | 일오차·비트오차·진폭을 스크롤/확대 없이 동시 표시; 글리프 높이 ≥ 1.9 mm, 대비 ≥ 4.5:1; 터치 타깃 ≥ 9 mm; 주요 모드 도달 ≤ 2 탭; 대표 사용자 ≥ 3명의 시간 측정 과업에서 시도의 ≥ 90%에서 active position 5초 이내, X/D 10초 이내 식별 |
+| 환경 | Raspberry Pi 5 + 800×480 터치 디스플레이; 패널 크기 8인치; |
+| 응답 | 핵심 측정값을 가독성 있게 표시; 주요 기능을 터치만으로 조작; |
+| 응답측정 | 일오차·비트오차·진폭을 스크롤/확대 없이 동시 표시; 영어 대문자 글자 높이 2.9mm, 터치 타깃 ≥ 9 mm; |
 
 **측정값 근거**
-- **px가 아닌 mm** — 플랜이 8인치와 5인치를 모두 기술하므로 픽셀 기준은 패널에 따라 합격/불합격이 뒤바뀜; 9 mm는 통용되는 터치 타깃 크기.
-- **글리프 1.9 mm + 대비 4.5:1** — 막연한 "읽기 좋게"를 피험자 없이 검증 가능한 지각 사양으로 교체.
-- **≤ 2 탭, 5초/10초 과업** — "쓰기 쉽다"를 측정 가능하게 만드는 팀 기준.
+- **px가 아닌 mm** — 픽셀 기준은 패널에 따라 합격/불합격이 뒤바뀜; 9 mm는 통용되는 터치 타깃 크기.
+- **영어 대문자 글자 높이 2.9mm** — SMPTE 권장(수평 시야각 ~30°)에 따른 화면 전체 가시성으로는 최소 ≈33cm, 글자 가독성(ISO 9241-303)으로는 ~40cm가 요구됨. 두 기준과 터치 조작 여유를 함께 고려해 설계 시야 거리를 35~50cm 범위로 두고, 보수적으로 50cm를 채택. 이 50cm 거리에서 본문 글리프의 적정 시각(ISO 9241-303)은 권장 20 arcmin 이상이며, 본 패널(8″ 800×480, 4.6 px/mm)에서 환산하면 영어 대문자 글자 높이 2.9mm에 해당.
 
 **관련 FR** — FR-06-06, FR-01-05, FR-04-03, FR-02-06, FR-06-11·13 (한눈에 읽기·포지션 표시·경보)
 
