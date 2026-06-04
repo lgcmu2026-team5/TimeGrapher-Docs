@@ -47,9 +47,9 @@
 **Related FRs** — FR-08-01, FR-12-04, FR-05-03, FR-12-14 (Live display and low-latency feedback features)
 
 ### QAS-2 · Availability (Graceful Degradation) — Under Noisy or Weak Signals
-> **In one line: in noise, filter and measure correctly — and below the limit, say "signal weak" rather than show a wrong number.**
+> **In one line: under noise, keep the measurement service usable only when the signal is good enough — and below the limit, say "signal weak" rather than show a wrong number.**
 >
-> In a noisy working environment, when watch sound mixed with ambient noise — or a weak signal — reaches the noise-removal / beat-detection part, the system detects and measures within tolerance and, below the quality threshold, shows "signal weak" instead of any value — detection **≥ 95 %** and rate error **≤ ±3 s/d** at SNR ≥ 14 dB.
+> In a noisy working environment, when watch sound mixed with ambient noise — or a weak signal — reaches the noise-removal / beat-detection part, the system either accepts the signal and produces a bounded measurement, or rejects it and shows "signal weak" instead of any value. At SNR ≥ 14 dB, accepted input must meet detection **≥ 95 %** and keep the displayed rate **within ±3 s/d of the Sim/Playback reference rate**.
 
 **Why this attribute**
 - Plan: *"the system should degrade gracefully when the signal is weak, noisy, or partially missing, rather than producing unstable or misleading outputs"* — and graceful degradation is a catalogued SAP **Availability** tactic.
@@ -61,12 +61,12 @@
 | Stimulus | Noise mixes in, or the signal arrives weak |
 | Artifact | The noise-removal / beat-detection part and the signal-quality indication |
 | Environment | A noisy working environment, or Sim/Playback input with calibrated noise injected at a held-constant SNR |
-| Response | Detect and measure within tolerance under noise; below the quality threshold show "signal weak" instead of any value |
-| Response Measure | Against the generator's known schedule, over ≥ 1,000 beats: at SNR ≥ 14 dB, detection ≥ 95 % and rate error ≤ ±3 s/d; below threshold, "signal weak" only |
+| Response | Accept usable noisy input and produce a bounded measurement; below the quality threshold show "signal weak" instead of any value |
+| Response Measure | Against the generator's known schedule and reference rate, over ≥ 1,000 beats: accepted input at SNR ≥ 14 dB has detection ≥ 95 % and absolute displayed-rate error ≤ 3 s/d; below threshold, "signal weak" only |
 
 **Why these numbers**
 - **14 dB** — ≥ 16 dB below the worst clean recording measured with the team's microphone (30–51 dB over 9 recordings): a severe condition reachable only by deliberate noise injection; provisional.
-- **±3 s/d** — half-width of the tightest Witschi grade band (Chronometer −2…+6 s/d); **95 %** is a team target to confirm by experiment.
+- **±3 s/d** — the allowed difference between the displayed rate and the Sim/Playback reference rate; the width is based on roughly half of the tightest Witschi grade band (Chronometer −2…+6 s/d). **95 %** is a team target to confirm by experiment.
 
 **Related FRs** — FR-12-08, FR-05-17…18 (noise filtering, averaging)
 
@@ -215,9 +215,9 @@ ATAM style: each scenario carries an (**I**mportance, **D**ifficulty) pair, H/M/
 **관련 FR** — FR-08-01, FR-12-04, FR-05-03, FR-12-14 (실시간/Live 표시 기능)
 
 ### QAS-2 · Availability (Graceful Degradation) — 잡음·약신호 환경
-> **한 줄 요약: 시끄러우면 걸러서 정확히 재고, 한계 아래면 틀린 값 대신 "신호 약함"을 보여준다.**
+> **한 줄 요약: 잡음 속에서도 신호가 충분할 때만 측정 서비스를 유지하고, 한계 아래면 틀린 값 대신 "신호 약함"을 보여준다.**
 >
-> 잡음이 포함된 열악한 작업 환경에서 잡음 섞인 시계 소리 또는 약한 시계 소리가 잡음 제거·비트 감지 부분에 들어오면, 시스템은 잡음 하에서 허용오차 내로 감지·측정하고 품질 임계 미만이면 잘못된 값 대신 "신호 약함"을 표시하며, SNR ≥ 14 dB에서 감지율 **≥ 95%** · 일오차 **≤ ±3 s/d**이어야 한다.
+> 잡음이 포함된 열악한 작업 환경에서 잡음 섞인 시계 소리 또는 약한 시계 소리가 잡음 제거·비트 감지 부분에 들어오면, 시스템은 신호를 수용해 제한된 오차 안의 측정값을 내거나, 품질 임계 미만이면 잘못된 값 대신 "신호 약함"을 표시한다. SNR ≥ 14 dB에서 수용된 입력은 감지율 **≥ 95%**이고, 표시 일오차가 **Sim/Playback 기준 일오차에서 ±3 s/d 이내**여야 한다.
 
 **왜 이 속성인가**
 - 플랜 원문: *"the system should degrade gracefully when the signal is weak, noisy, or partially missing, rather than producing unstable or misleading outputs."* — graceful degradation은 SAP에 수록된 **Availability 전술**.
@@ -229,12 +229,12 @@ ATAM style: each scenario carries an (**I**mportance, **D**ifficulty) pair, H/M/
 | 자극 | 잡음이 섞이거나 신호가 약하게 들어옴 |
 | 대상 | 잡음 제거 / 비트 감지 부분과 신호 품질 표시 |
 | 환경 | 주변 잡음이 포함된 열악한 작업 환경 or Sim/Playback 입력에 보정된 잡음을 일정 SNR로 주입한 데이터 |
-| 응답 | 잡음 하에서 허용오차 내로 감지·측정; 품질 임계 미만이면 어떤 값도 아닌 "신호 약함"을 표시 |
-| 응답측정 | 생성기의 알려진 스케줄 대비, 1,000비트 이상: SNR ≥ 14 dB에서 감지율 ≥ 95%, 일오차 ≤ ±3 s/d; 임계 미만에서는 "신호 약함"만 표시 |
+| 응답 | 사용 가능한 잡음 입력은 수용해 제한된 오차 안의 측정값을 내고, 품질 임계 미만이면 어떤 값도 아닌 "신호 약함"을 표시 |
+| 응답측정 | 생성기의 알려진 스케줄과 기준 일오차 대비, 1,000비트 이상: SNR ≥ 14 dB인 수용 입력은 감지율 ≥ 95%, 표시 일오차와 기준 일오차의 절대 차이 ≤ 3 s/d; 임계 미만에서는 "신호 약함"만 표시 |
 
 **측정값 근거**
 - **14 dB** — 팀 마이크로 실측한 최악 클린 녹음(9개, 30–51 dB)보다 ≥ 16 dB 낮은 심한 조건 — 의도적 잡음 주입으로만 도달; 잠정값.
-- **±3 s/d** — 가장 엄격한 Witschi 등급 대역(Chronometer −2…+6 s/d)의 반폭; **95%**는 실험으로 확정할 팀 목표.
+- **±3 s/d** — 표시된 일오차가 Sim/Playback의 기준 일오차에서 벗어날 수 있는 허용 폭. 폭은 가장 엄격한 Witschi 등급 대역(Chronometer −2…+6 s/d)의 약 절반을 기준으로 둔다. **95%**는 실험으로 확정할 팀 목표.
 
 **관련 FR** — FR-12-08, FR-05-17…18 (잡음 필터링·averaging)
 

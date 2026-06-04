@@ -27,143 +27,153 @@
 | regression | A code change breaking something that used to work |
 | QAS / FR | QAS = quality attribute scenario (QA Final doc); FR = functional requirement (Architectural Drivers doc) |
 
+## Risk Matrix
+
+> Range ratings are placed by the higher side: Medium~High → High, Low~Medium → Medium.
+
+| Probability / Impact | High | Medium | Low |
+|----------------------|------|--------|-----|
+| High | R-A1, R-A2, R-B1, R-B2, R-F1, R-F6 | - | - |
+| Medium | R-A3, R-D1 | R-A4, R-C1, R-D2, R-D3, R-E1, R-F3, R-F4, R-F5 | - |
+| Low | - | R-F2 | R-E2 |
+
 ## A. Real-Time Performance (RPi)
 
 - **R-A1 — The RPi5 fails to keep up with high sample rates (96k/192k) in real time and loses sound data (block drop / missed beat)**
-  - Quality attribute: Performance (Throughput)
-  - Evidence: pdf (p.25 Real Time Performance), QAS-1
-  - Probability / Impact: High / High
-  - Mitigation: Week-1 spike to measure the RPi's processing limit, then fix the sample-rate target (192k demoted to stretch)
-  - Tradeoff point: the sample rate trades measurement precision (more samples per 0.1 ms) against Performance (this risk)
-  - Comment: Use the week-1 spike result to set the final sample-rate target
+  - **Quality attribute**: Performance (Throughput)
+  - **Evidence**: pdf (p.25 Real Time Performance), QAS-1
+  - **Probability / Impact**: High / High
+  - **Mitigation**: Week-1 spike to measure the RPi's processing limit, then fix the sample-rate target (192k demoted to stretch)
+  - **Tradeoff point**: the sample rate trades measurement precision (more samples per 0.1 ms) against Performance (this risk)
+  - **Comment**: Use the week-1 spike result to set the final sample-rate target
 
 - **R-A2 — Rendering four filters (F0→F3) plus multiple graphs at once makes the screen stutter (<20 FPS · UI freeze)**
-  - Quality attribute: Performance
-  - Evidence: FR-12-01, FR-12-04, QAS-1
-  - Probability / Impact: Medium~High / High
-  - Mitigation: Reuse a shared input buffer, stop rendering inactive views, measure an FPS budget
-  - Tradeoff point: showing 4 views at once trades Usability (QAS-5) against Performance
-  - Comment: Decide 4 simultaneous views vs one-at-a-time after the performance check
+  - **Quality attribute**: Performance
+  - **Evidence**: FR-12-01, FR-12-04, QAS-1
+  - **Probability / Impact**: Medium~High / High
+  - **Mitigation**: Reuse a shared input buffer, stop rendering inactive views, measure an FPS budget
+  - **Tradeoff point**: showing 4 views at once trades Usability (QAS-5) against Performance
+  - **Comment**: Decide 4 simultaneous views vs one-at-a-time after the performance check
 
 - **R-A3 — The sound-to-screen 0.5 s (p99 ≤ 500 ms) target is missed**
-  - Quality attribute: Performance (Latency)
-  - Evidence: QAS-1
-  - Probability / Impact: Medium / High
-  - Mitigation: Instrument capture/processing/display latency per stage; monitor backlog
-  - Comment: For the worst case, optimize resources/processes or migrate to reduced features
+  - **Quality attribute**: Performance (Latency)
+  - **Evidence**: QAS-1
+  - **Probability / Impact**: Medium / High
+  - **Mitigation**: Instrument capture/processing/display latency per stage; monitor backlog
+  - **Comment**: For the worst case, optimize resources/processes or migrate to reduced features
 
 - **R-A4 — Long continuous runs (24h+) leak memory and degrade or crash**
-  - Quality attribute: Dependability (Reliability) (+Performance)
-  - Evidence: FR-07-10
-  - Probability / Impact: Medium / Medium
-  - Mitigation: Monitor the long-term RSS trend; design buffer caps and aggregation
-  - Comment: First verify memory leaks in the current code (experiment)
+  - **Quality attribute**: Dependability (Reliability) (+Performance)
+  - **Evidence**: FR-07-10
+  - **Probability / Impact**: Medium / Medium
+  - **Mitigation**: Monitor the long-term RSS trend; design buffer caps and aggregation
+  - **Comment**: First verify memory leaks in the current code (experiment)
 
-## B. Signal Processing / Measurement Accuracy
+## B. Signal Processing / Measurement Trustworthiness
 
 - **R-B1 — If tick/tock positions can't be found to 0.1 ms, rate, beat error, and amplitude are all contaminated**
-  - Quality attribute: Dependability (Reliability)
-  - Evidence: FR-08-04…06, FR-06-01…04
-  - Probability / Impact: High / High
-  - Mitigation: Early-verify the detection algorithm on a synthetic-signal bench (ground truth known)
-  - Comment: Confirm the current logic works; improve if needed
+  - **Quality attribute**: Dependability (Reliability)
+  - **Evidence**: FR-08-04…06, FR-06-01…04
+  - **Probability / Impact**: High / High
+  - **Mitigation**: Early-verify the detection algorithm on a synthetic-signal bench (ground truth known)
+  - **Comment**: Confirm the current logic works; improve if needed
 
-- **R-B2 — Mis-detection and mis-measurement in noisy or weak-signal environments (SNR ≥ 14 dB, detection ≥ 95 %)**
-  - Quality attribute: Dependability (Reliability)
-  - Evidence: QAS-2
-  - Probability / Impact: Medium~High / High
-  - Mitigation: Filtering and signal-quality judgment; isolate bad data behind a "signal weak" indication
-  - Comment: Test per noise level; improve the logic if needed
+- **R-B2 — Noisy or weak signals may produce misleading values instead of a graceful "signal weak" response**
+  - **Quality attribute**: Availability (Graceful Degradation)
+  - **Evidence**: QAS-2
+  - **Probability / Impact**: Medium~High / High
+  - **Mitigation**: Filtering and signal-quality judgment; isolate bad data behind a "signal weak" indication
+  - **Comment**: Test per noise level; improve the logic if needed
 
 ## C. Architecture / Extensibility
 
 - **R-C1 — Without up-front design of the filter/marker extension structure (e.g., adding F4), late-stage cost soars**
-  - Quality attribute: Modifiability (Extensibility)
-  - Evidence: FR-12-01, QAS-4
-  - Probability / Impact: Medium / Medium
-  - Mitigation: Pre-design a Filter interface (strategy) and a plug-in registration scheme
-  - Comment: Better modularization should cover it
+  - **Quality attribute**: Modifiability (Extensibility)
+  - **Evidence**: FR-12-01, QAS-4
+  - **Probability / Impact**: Medium / Medium
+  - **Mitigation**: Pre-design a Filter interface (strategy) and a plug-in registration scheme
+  - **Comment**: Better modularization should cover it
 
 ## D. Hardware / Platform
 
 - **R-D1 — If AGC stays on or the microphone couples poorly, the signal distorts and every measurement collapses**
-  - Quality attribute: Dependability (Reliability)
-  - Evidence: pdf (p.29 Raspberry Pi OS — Auto Gain Control)
-  - Probability / Impact: Medium / High
-  - Mitigation: From day one, make AGC-off and coupling verification an environment checklist
-  - Comment: Must be stated in the user guide
+  - **Quality attribute**: Dependability (Reliability)
+  - **Evidence**: pdf (p.29 Raspberry Pi OS — Auto Gain Control)
+  - **Probability / Impact**: Medium / High
+  - **Mitigation**: From day one, make AGC-off and coupling verification an environment checklist
+  - **Comment**: Must be stated in the user guide
 
 - **R-D2 — Developing on Windows, demoing on RPi — platform differences (WASAPI/ALSA audio backends) surface late**
-  - Quality attribute: Portability (+Performance)
-  - Evidence: pdf (p.29 System Software)
-  - Probability / Impact: Medium / Medium
-  - Mitigation: Isolate audio I/O behind a port-adapter; verify early and regularly on the RPi
-  - Comment: The RPi runs in parallel throughout the project, so risk is low
+  - **Quality attribute**: Portability (+Performance)
+  - **Evidence**: pdf (p.29 System Software)
+  - **Probability / Impact**: Medium / Medium
+  - **Mitigation**: Isolate audio I/O behind a port-adapter; verify early and regularly on the RPi
+  - **Comment**: The RPi runs in parallel throughout the project, so risk is low
 
 - **R-D3 — Supporting three sample rates (48/96/192k) adds timing complexity**
-  - Quality attribute: Portability (+Reliability)
-  - Evidence: pdf (p.25 Real Time Performance)
-  - Probability / Impact: Medium / Medium
-  - Mitigation: State the supported sample-rate range; normalize in the adapter
-  - Comment: State the feasible spec (microphone spec, etc.)
+  - **Quality attribute**: Portability (+Reliability)
+  - **Evidence**: pdf (p.25 Real Time Performance)
+  - **Probability / Impact**: Medium / Medium
+  - **Mitigation**: State the supported sample-rate range; normalize in the adapter
+  - **Comment**: State the feasible spec (microphone spec, etc.)
 
 ## E. Usability / UI (800×480)
 
 - **R-E1 — The small screen can't legibly hold the summary bar + multiple graphs + scope strip (letters ≥ 2.9 mm · touch ≥ 9 mm)**
-  - Quality attribute: Usability
-  - Evidence: pdf (p.27 8 Inch Touchscreen for Raspberry Pi), QAS-5
-  - Probability / Impact: Medium / Medium
-  - Mitigation: Key-readings-first layout, tab-based split, ≤ 2-tap navigation
-  - Comment: Run size-adjustment tests
+  - **Quality attribute**: Usability
+  - **Evidence**: pdf (p.27 8 Inch Touchscreen for Raspberry Pi), QAS-5
+  - **Probability / Impact**: Medium / Medium
+  - **Mitigation**: Key-readings-first layout, tab-based split, ≤ 2-tap navigation
+  - **Comment**: Run size-adjustment tests
 
 - **R-E2 — Touch accuracy or recognition may be poor**
-  - Quality attribute: Usability
-  - Probability / Impact: Low / Low
-  - Mitigation: Experimentally check touch sensitivity and touch-area recognition if possible
-  - Comment: If controllable at app level, experiment for optimal values; if defined at OS level, proceed as is
+  - **Quality attribute**: Usability
+  - **Probability / Impact**: Low / Low
+  - **Mitigation**: Experimentally check touch sensitivity and touch-area recognition if possible
+  - **Comment**: If controllable at app level, experiment for optimal values; if defined at OS level, proceed as is
 
 ## F. Project / Process
 
 - **R-F1 — Everything (12 features + AI) can't fit in 5 weeks — failing to prioritize drops the essentials**
-  - Quality attribute: All QAs (esp. Performance · Reliability)
-  - Evidence: pdf (p.5 Objective — "feasible, well-architected subset")
-  - Probability / Impact: Medium~High / High
-  - Mitigation: Freeze FR priorities, split AI off as optional, critical path first
-  - Comment: Plan well and drop what must be dropped
+  - **Quality attribute**: All QAs (esp. Performance · Reliability)
+  - **Evidence**: pdf (p.5 Objective — "feasible, well-architected subset")
+  - **Probability / Impact**: Medium~High / High
+  - **Mitigation**: Freeze FR priorities, split AI off as optional, critical path first
+  - **Comment**: Plan well and drop what must be dropped
 
 - **R-F2 — Understanding the provided baseline code (TimeGrapher_v10.4) takes time and delays the start**
-  - Quality attribute: Modifiability (onboarding · maintenance)
-  - Evidence: pdf (p.29 GUI Code)
-  - Probability / Impact: Low / Medium
-  - Mitigation: Make code-reading sessions and a module map a week-1 task
-  - Comment: Risk lowered by using AI
+  - **Quality attribute**: Modifiability (onboarding · maintenance)
+  - **Evidence**: pdf (p.29 GUI Code)
+  - **Probability / Impact**: Low / Medium
+  - **Mitigation**: Make code-reading sessions and a module map a week-1 task
+  - **Comment**: Risk lowered by using AI
 
 - **R-F3 — The Qt/C++ · DSP · RPi learning curve shakes implementation quality**
-  - Quality attribute: All QAs (overall implementation quality)
-  - Evidence: pdf (p.29 Qt and Qt Creator)
-  - Probability / Impact: Low~Medium / Medium
-  - Mitigation: Role split and pairing; early learning via small spikes
-  - Comment: Risk lowered by using AI
+  - **Quality attribute**: All QAs (overall implementation quality)
+  - **Evidence**: pdf (p.29 Qt and Qt Creator)
+  - **Probability / Impact**: Low~Medium / Medium
+  - **Mitigation**: Role split and pairing; early learning via small spikes
+  - **Comment**: Risk lowered by using AI
 
 - **R-F4 — Attempting the AI/TinyML feature raises on-device uncertainty**
-  - Quality attribute: Dependability (Reliability) — signal-quality classification
-  - Evidence: pdf (p.12 AI Feature)
-  - Probability / Impact: Medium (if attempted) / Medium
-  - Mitigation: Separate as optional scope; rule-based fallback if it falls short
-  - Comment: Windows first, then assess operability on the RPi 5 before adopting
+  - **Quality attribute**: Dependability (Reliability) — signal-quality classification
+  - **Evidence**: pdf (p.12 AI Feature)
+  - **Probability / Impact**: Medium (if attempted) / Medium
+  - **Mitigation**: Separate as optional scope; rule-based fallback if it falls short
+  - **Comment**: Windows first, then assess operability on the RPi 5 before adopting
 
 - **R-F5 — Accepting GenAI-generated code unverified lets in plausible-but-wrong code (esp. DSP / concurrency / real-time)**
-  - Quality attribute: Reliability · Performance · (Testability)
-  - Evidence: pdf (p.30 Project Deliverables)
-  - Probability / Impact: Medium / Medium
-  - Mitigation: Mandatory adversarial verification of generated code (unit tests, synthetic-signal bench); understand the core algorithms; confirm GenAI usage policy with mentors
-  - Comment: See mitigation (code review, whole team understands the algorithms)
+  - **Quality attribute**: Reliability · Performance · (Testability)
+  - **Evidence**: pdf (p.30 Project Deliverables)
+  - **Probability / Impact**: Medium / Medium
+  - **Mitigation**: Mandatory adversarial verification of generated code (unit tests, synthetic-signal bench); understand the core algorithms; confirm GenAI usage policy with mentors
+  - **Comment**: See mitigation (code review, whole team understands the algorithms)
 
 - **R-F6 — Only one test Pi5 — real-use verification doesn't fit the schedule**
-  - Quality attribute: Modifiability (Testability)
-  - Evidence: pdf (p.26 System Hardware — Raspberry Pi)
-  - Probability / Impact: High / High
-  - Mitigation: Design most verification to run Sim/Playback-based (no hardware required), minimizing Pi5 dependence; schedule the real device only for must-have items such as performance measurement
+  - **Quality attribute**: Modifiability (Testability)
+  - **Evidence**: pdf (p.26 System Hardware — Raspberry Pi)
+  - **Probability / Impact**: High / High
+  - **Mitigation**: Design most verification to run Sim/Playback-based (no hardware required), minimizing Pi5 dependence; schedule the real device only for must-have items such as performance measurement
 
 ## G. Other / Uncategorized
 
@@ -204,143 +214,153 @@
 | regression | 코드 수정으로 기존에 되던 기능이 깨지는 것 |
 | QAS / FR | QAS = 품질 속성 시나리오(QA Final 문서), FR = 기능 요구사항(Architectural Drivers 문서) |
 
+## 리스크 매트릭스
+
+> 범위형 등급은 높은 쪽 기준으로 배치했다: Medium~High → High, Low~Medium → Medium.
+
+| 발생 확률 / 영향 | High | Medium | Low |
+|------------------|------|--------|-----|
+| High | R-A1, R-A2, R-B1, R-B2, R-F1, R-F6 | - | - |
+| Medium | R-A3, R-D1 | R-A4, R-C1, R-D2, R-D3, R-E1, R-F3, R-F4, R-F5 | - |
+| Low | - | R-F2 | R-E2 |
+
 ## A. 실시간 성능 (RPi)
 
 - **R-A1 — RPi5가 고속 샘플레이트(96k/192k)를 실시간으로 따라가지 못해 소리 데이터를 놓친다 (block drop / missed beat)**
-  - 품질요소: Performance (Throughput)
-  - 근거: pdf (p.25 Real Time Performance), QAS-1
-  - 발생 확률 / 영향: High / High
-  - 완화 방향: 1주차 spike로 RPi 처리 한계 측정 후 샘플레이트 목표 확정(192k는 stretch로 격하)
-  - Tradeoff point: 샘플레이트는 측정 정밀도(0.1 ms당 샘플 수 증가)↔Performance(본 리스크)의 tradeoff point
-  - 코멘트: 1주차 spike 결과로 최종 샘플레이트 목표 결정
+  - **품질요소**: Performance (Throughput)
+  - **근거**: pdf (p.25 Real Time Performance), QAS-1
+  - **발생 확률 / 영향**: High / High
+  - **완화 방향**: 1주차 spike로 RPi 처리 한계 측정 후 샘플레이트 목표 확정(192k는 stretch로 격하)
+  - **Tradeoff point**: 샘플레이트는 측정 정밀도(0.1 ms당 샘플 수 증가)↔Performance(본 리스크)의 tradeoff point
+  - **코멘트**: 1주차 spike 결과로 최종 샘플레이트 목표 결정
 
 - **R-A2 — 필터 4개(F0→F3) + 그래프 여러 개를 동시에 그리면 화면이 버벅인다(<20 FPS·UI freeze)**
-  - 품질요소: Performance
-  - 근거: FR-12-01, FR-12-04, QAS-1
-  - 발생 확률 / 영향: Medium~High / High
-  - 완화 방향: 공유 입력버퍼 재사용, 비활성 뷰 렌더 중단, FPS 예산 측정
-  - Tradeoff point: 동시 4뷰 표시는 Usability(QAS-5)↔Performance의 tradeoff point
-  - 코멘트: 4개 동시 뷰 / 1개씩 뷰는 성능 확인 후 결정
+  - **품질요소**: Performance
+  - **근거**: FR-12-01, FR-12-04, QAS-1
+  - **발생 확률 / 영향**: Medium~High / High
+  - **완화 방향**: 공유 입력버퍼 재사용, 비활성 뷰 렌더 중단, FPS 예산 측정
+  - **Tradeoff point**: 동시 4뷰 표시는 Usability(QAS-5)↔Performance의 tradeoff point
+  - **코멘트**: 4개 동시 뷰 / 1개씩 뷰는 성능 확인 후 결정
 
 - **R-A3 — 소리→화면 0.5초(p99 ≤ 500 ms) 목표를 못 지킨다**
-  - 품질요소: Performance (Latency)
-  - 근거: QAS-1
-  - 발생 확률 / 영향: Medium / High
-  - 완화 방향: 캡처/처리/표시 단계별 지연 계측·백로그 모니터링
-  - 코멘트: 최악의 경우로 고려해서 리소스/프로세스 최적화 또는 기능 약화로 마이그레이션
+  - **품질요소**: Performance (Latency)
+  - **근거**: QAS-1
+  - **발생 확률 / 영향**: Medium / High
+  - **완화 방향**: 캡처/처리/표시 단계별 지연 계측·백로그 모니터링
+  - **코멘트**: 최악의 경우로 고려해서 리소스/프로세스 최적화 또는 기능 약화로 마이그레이션
 
 - **R-A4 — 장시간(24h+) 연속 실행 시 메모리가 새서 느려지거나 죽는다**
-  - 품질요소: Dependability (Reliability) (+Performance)
-  - 근거: FR-07-10
-  - 발생 확률 / 영향: Medium / Medium
-  - 완화 방향: 장기 RSS 추세 모니터, 버퍼 상한·집계(aggregation) 설계
-  - 코멘트: 현 코드 기준으로 메모리 릭 확인 (실험)
+  - **품질요소**: Dependability (Reliability) (+Performance)
+  - **근거**: FR-07-10
+  - **발생 확률 / 영향**: Medium / Medium
+  - **완화 방향**: 장기 RSS 추세 모니터, 버퍼 상한·집계(aggregation) 설계
+  - **코멘트**: 현 코드 기준으로 메모리 릭 확인 (실험)
 
-## B. 신호처리 / 측정 정확도
+## B. 신호처리 / 측정 신뢰성
 
 - **R-B1 — 틱/톡 위치를 0.1 ms 정밀도로 못 찾으면 rate·beat error·amplitude 전부가 오염된다**
-  - 품질요소: Dependability (Reliability)
-  - 근거: FR-08-04…06, FR-06-01…04
-  - 발생 확률 / 영향: High / High
-  - 완화 방향: 합성신호(정답 known) 벤치로 검출 알고리즘 조기 검증
-  - 코멘트: 현 로직 기준으로 정상동작 확인 및 필요 시 로직 개선 필요
+  - **품질요소**: Dependability (Reliability)
+  - **근거**: FR-08-04…06, FR-06-01…04
+  - **발생 확률 / 영향**: High / High
+  - **완화 방향**: 합성신호(정답 known) 벤치로 검출 알고리즘 조기 검증
+  - **코멘트**: 현 로직 기준으로 정상동작 확인 및 필요 시 로직 개선 필요
 
-- **R-B2 — 시끄럽거나 신호가 약한 환경(SNR≥14dB, 검출률≥95%)에서 잘못 검출·측정한다**
-  - 품질요소: Dependability (Reliability)
-  - 근거: QAS-2
-  - 발생 확률 / 영향: Medium~High / High
-  - 완화 방향: 필터링·신호품질 판정, bad-data는 "signal weak" 표시로 격리
-  - 코멘트: 노이즈 레벨 별 테스트 및 필요 시 로직 개선
+- **R-B2 — 시끄럽거나 신호가 약한 환경에서 "신호 약함" 대신 오해를 부르는 값을 표시할 수 있다**
+  - **품질요소**: Availability (Graceful Degradation)
+  - **근거**: QAS-2
+  - **발생 확률 / 영향**: Medium~High / High
+  - **완화 방향**: 필터링·신호품질 판정, bad-data는 "signal weak" 표시로 격리
+  - **코멘트**: 노이즈 레벨 별 테스트 및 필요 시 로직 개선
 
 ## C. 아키텍처 / 확장성
 
 - **R-C1 — 필터/마커 확장 구조(예: F4 추가)를 미리 설계하지 않으면 후반 비용이 급증한다**
-  - 품질요소: Modifiability (Extensibility)
-  - 근거: FR-12-01, QAS-4
-  - 발생 확률 / 영향: Medium / Medium
-  - 완화 방향: Filter 인터페이스(strategy)·plug-in 등록 방식 선설계
-  - 코멘트: 모듈화를 더 잘 하면 될 듯함
+  - **품질요소**: Modifiability (Extensibility)
+  - **근거**: FR-12-01, QAS-4
+  - **발생 확률 / 영향**: Medium / Medium
+  - **완화 방향**: Filter 인터페이스(strategy)·plug-in 등록 방식 선설계
+  - **코멘트**: 모듈화를 더 잘 하면 될 듯함
 
 ## D. 하드웨어 / 플랫폼
 
 - **R-D1 — AGC를 끄지 않거나 마이크 결합이 나쁘면 신호가 왜곡돼 모든 측정이 망가진다**
-  - 품질요소: Dependability (Reliability)
-  - 근거: pdf (p.29 Raspberry Pi OS — Auto Gain Control)
-  - 발생 확률 / 영향: Medium / High
-  - 완화 방향: 착수 즉시 AGC off·커플링 검증을 환경 체크리스트화
-  - 코멘트: 사용자 가이드 문서에 명시 필요
+  - **품질요소**: Dependability (Reliability)
+  - **근거**: pdf (p.29 Raspberry Pi OS — Auto Gain Control)
+  - **발생 확률 / 영향**: Medium / High
+  - **완화 방향**: 착수 즉시 AGC off·커플링 검증을 환경 체크리스트화
+  - **코멘트**: 사용자 가이드 문서에 명시 필요
 
 - **R-D2 — Windows에서 개발하고 RPi에서 데모 — 오디오 백엔드(WASAPI/ALSA) 등 플랫폼 차이가 늦게 드러난다**
-  - 품질요소: Portability (+Performance)
-  - 근거: pdf (p.29 System Software)
-  - 발생 확률 / 영향: Medium / Medium
-  - 완화 방향: 오디오 I/O를 포트-어댑터로 격리, RPi 조기·정기 검증
-  - 코멘트: 프로젝트 진행하면서 RPi에도 진행할 것이어서 리스크 낮음
+  - **품질요소**: Portability (+Performance)
+  - **근거**: pdf (p.29 System Software)
+  - **발생 확률 / 영향**: Medium / Medium
+  - **완화 방향**: 오디오 I/O를 포트-어댑터로 격리, RPi 조기·정기 검증
+  - **코멘트**: 프로젝트 진행하면서 RPi에도 진행할 것이어서 리스크 낮음
 
 - **R-D3 — 샘플레이트 3종(48/96/192k) 지원이 타이밍·복잡도를 키운다**
-  - 품질요소: Portability (+Reliability)
-  - 근거: pdf (p.25 Real Time Performance)
-  - 발생 확률 / 영향: Medium / Medium
-  - 완화 방향: 지원 샘플레이트 범위 명시, 어댑터에서 정규화
-  - 코멘트: 가능 스펙 명시 (마이크 스펙 등)
+  - **품질요소**: Portability (+Reliability)
+  - **근거**: pdf (p.25 Real Time Performance)
+  - **발생 확률 / 영향**: Medium / Medium
+  - **완화 방향**: 지원 샘플레이트 범위 명시, 어댑터에서 정규화
+  - **코멘트**: 가능 스펙 명시 (마이크 스펙 등)
 
 ## E. 사용성 / UI (800×480)
 
 - **R-E1 — 작은 화면에 요약바 + 그래프 + 스코프를 가독성(글자 ≥2.9mm·터치 ≥9mm) 있게 다 못 담는다**
-  - 품질요소: Usability
-  - 근거: pdf (p.27 8 Inch Touchscreen for Raspberry Pi), QAS-5
-  - 발생 확률 / 영향: Medium / Medium
-  - 완화 방향: 핵심 측정값 우선 레이아웃, 탭 기반 분할, ≤2탭 내비
-  - 코멘트: 크기 조절 테스트 진행
+  - **품질요소**: Usability
+  - **근거**: pdf (p.27 8 Inch Touchscreen for Raspberry Pi), QAS-5
+  - **발생 확률 / 영향**: Medium / Medium
+  - **완화 방향**: 핵심 측정값 우선 레이아웃, 탭 기반 분할, ≤2탭 내비
+  - **코멘트**: 크기 조절 테스트 진행
 
 - **R-E2 — 터치 정확도·인식률이 떨어질 수 있다**
-  - 품질요소: Usability
-  - 발생 확률 / 영향: Low / Low
-  - 완화 방향: 터치 민감도나 터치 범위인식을 실험적으로 가능하면 확인
-  - 코멘트: App 레벨에서 제어 가능하면 실험 후 최적의 값 확인, OS 레벨에서 정의되면 현 상태 진행
+  - **품질요소**: Usability
+  - **발생 확률 / 영향**: Low / Low
+  - **완화 방향**: 터치 민감도나 터치 범위인식을 실험적으로 가능하면 확인
+  - **코멘트**: App 레벨에서 제어 가능하면 실험 후 최적의 값 확인, OS 레벨에서 정의되면 현 상태 진행
 
 ## F. 프로젝트 / 프로세스
 
 - **R-F1 — 5주 안에 12개 기능 + AI 전부는 불가능 — 우선순위에 실패하면 핵심이 빠진다**
-  - 품질요소: 전 QA (특히 Performance·Reliability)
-  - 근거: pdf (p.5 Objective — "feasible, well-architected subset")
-  - 발생 확률 / 영향: Medium~High / High
-  - 완화 방향: FR 우선순위 동결, AI는 optional 분리, 핵심 경로 우선
-  - 코멘트: 프로젝트 플래닝 잘 해서 진행하고 버릴 건 버림
+  - **품질요소**: 전 QA (특히 Performance·Reliability)
+  - **근거**: pdf (p.5 Objective — "feasible, well-architected subset")
+  - **발생 확률 / 영향**: Medium~High / High
+  - **완화 방향**: FR 우선순위 동결, AI는 optional 분리, 핵심 경로 우선
+  - **코멘트**: 프로젝트 플래닝 잘 해서 진행하고 버릴 건 버림
 
 - **R-F2 — 제공 베이스라인 코드(TimeGrapher_v10.4) 이해에 시간이 걸려 착수가 늦어진다**
-  - 품질요소: Modifiability (착수·유지보수)
-  - 근거: pdf (p.29 GUI Code)
-  - 발생 확률 / 영향: Low / Medium
-  - 완화 방향: 코드 reading 세션·모듈 맵 작성을 1주차 태스크화
-  - 코멘트: AI 활용하기 때문에 Risk 낮아짐
+  - **품질요소**: Modifiability (착수·유지보수)
+  - **근거**: pdf (p.29 GUI Code)
+  - **발생 확률 / 영향**: Low / Medium
+  - **완화 방향**: 코드 reading 세션·모듈 맵 작성을 1주차 태스크화
+  - **코멘트**: AI 활용하기 때문에 Risk 낮아짐
 
 - **R-F3 — Qt/C++·DSP·RPi 학습곡선으로 구현 품질이 흔들린다**
-  - 품질요소: 전 QA (구현 품질 전반)
-  - 근거: pdf (p.29 Qt and Qt Creator)
-  - 발생 확률 / 영향: Low~Medium / Medium
-  - 완화 방향: 역할 분담·페어링, 작은 spike로 조기 학습
-  - 코멘트: AI 활용하기 때문에 Risk 낮아짐
+  - **품질요소**: 전 QA (구현 품질 전반)
+  - **근거**: pdf (p.29 Qt and Qt Creator)
+  - **발생 확률 / 영향**: Low~Medium / Medium
+  - **완화 방향**: 역할 분담·페어링, 작은 spike로 조기 학습
+  - **코멘트**: AI 활용하기 때문에 Risk 낮아짐
 
 - **R-F4 — AI/TinyML 기능을 시도하면 on-device 불확실성이 커진다**
-  - 품질요소: Dependability (Reliability) — 신호품질 분류
-  - 근거: pdf (p.12 AI Feature)
-  - 발생 확률 / 영향: Medium(시도 시) / Medium
-  - 완화 방향: optional 스코프로 분리, 미달 시 룰베이스 폴백
-  - 코멘트: 우선 Windows 진행 후 RPi 5에서 동작성 검토 후 반영 결정
+  - **품질요소**: Dependability (Reliability) — 신호품질 분류
+  - **근거**: pdf (p.12 AI Feature)
+  - **발생 확률 / 영향**: Medium(시도 시) / Medium
+  - **완화 방향**: optional 스코프로 분리, 미달 시 룰베이스 폴백
+  - **코멘트**: 우선 Windows 진행 후 RPi 5에서 동작성 검토 후 반영 결정
 
 - **R-F5 — GenAI 생성 코드를 검증 없이 수용하면 그럴듯하지만 틀린 코드가 들어온다 (특히 DSP/동시성/실시간 영역)**
-  - 품질요소: Reliability·Performance·(Testability)
-  - 근거: pdf (p.30 Project Deliverables)
-  - 발생 확률 / 영향: Medium / Medium
-  - 완화 방향: 생성코드 adversarial 검증(단위테스트·합성신호 벤치) 의무화, 핵심 알고리즘은 이해 동반, GenAI 사용 허용여부 멘토 확인
-  - 코멘트: 완화 방향 참고 (코드리뷰, 우리 모두 알고리즘 이해 등)
+  - **품질요소**: Reliability·Performance·(Testability)
+  - **근거**: pdf (p.30 Project Deliverables)
+  - **발생 확률 / 영향**: Medium / Medium
+  - **완화 방향**: 생성코드 adversarial 검증(단위테스트·합성신호 벤치) 의무화, 핵심 알고리즘은 이해 동반, GenAI 사용 허용여부 멘토 확인
+  - **코멘트**: 완화 방향 참고 (코드리뷰, 우리 모두 알고리즘 이해 등)
 
 - **R-F6 — 테스트용 Pi5가 한 대뿐이라 실사용 검증 일정이 안 나온다**
-  - 품질요소: Modifiability (Testability)
-  - 근거: pdf (p.26 System Hardware — Raspberry Pi)
-  - 발생 확률 / 영향: High / High
-  - 완화 방향: 검증의 대부분을 Sim/Playback 기반(하드웨어 불요)으로 설계해 Pi5 의존 최소화; 실기기는 성능 측정 등 필수 항목에만 일정 배정
+  - **품질요소**: Modifiability (Testability)
+  - **근거**: pdf (p.26 System Hardware — Raspberry Pi)
+  - **발생 확률 / 영향**: High / High
+  - **완화 방향**: 검증의 대부분을 Sim/Playback 기반(하드웨어 불요)으로 설계해 Pi5 의존 최소화; 실기기는 성능 측정 등 필수 항목에만 일정 배정
 
 ## G. 기타 또는 카테고리화 되지 않음
 
