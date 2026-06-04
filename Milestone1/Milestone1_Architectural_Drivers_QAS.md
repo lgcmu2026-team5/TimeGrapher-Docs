@@ -166,6 +166,15 @@
 
 **Related FRs** — FR-06-06, FR-01-05, FR-04-03, FR-02-06, FR-06-11·13 (at-a-glance readings, position indication, alerts)
 
+## Constraints
+
+| ID | Constraint |
+|----|------------|
+| C-1 | The system shall run on a Raspberry Pi 5 (8 GB RAM, 128 GB microSD) with a touchscreen attached. |
+| C-2 | The system shall render and operate the GUI correctly on the low-resolution (800×480) display connected to the Raspberry Pi 5. |
+| C-3 | The system shall run on both a Windows 11 (x64) PC and a Raspberry Pi 5 running Raspberry Pi OS (Debian-based, 64-bit/ARM64). |
+| C-4 | The system shall operate with Auto Gain Control turned off. |
+
 ## Priority
 
 ATAM style: each scenario carries a (**B**usiness importance, technical **R**isk) pair, H/M/L. The H/H scenarios shape the architecture most.
@@ -348,6 +357,15 @@ ATAM style: each scenario carries a (**B**usiness importance, technical **R**isk
   - 계산: 20 arcmin = 20/60° = 0.333° ≈ 0.00582 rad → 글자 높이 = 시야 거리 × 시각 = 500 mm × 0.00582 ≈ **2.9 mm**
 
 **관련 FR** — FR-06-06, FR-01-05, FR-04-03, FR-02-06, FR-06-11·13 (한눈에 읽기·포지션 표시·경보)
+
+## 제약사항
+
+| ID | 제약사항 |
+|----|----------|
+| C-1 | 시스템은 터치스크린이 연결된 Raspberry Pi 5(8 GB RAM, 128 GB microSD)에서 실행되어야 한다. |
+| C-2 | 시스템은 Raspberry Pi 5에 연결된 저해상도(800×480) 디스플레이에서 GUI를 올바르게 렌더링하고 동작해야 한다. |
+| C-3 | 시스템은 Windows 11 (x64) PC와 Raspberry Pi OS(Debian 기반, 64-bit/ARM64)를 실행하는 Raspberry Pi 5 모두에서 실행되어야 한다. |
+| C-4 | 시스템은 Auto Gain Control이 꺼진 상태에서 동작해야 한다. |
 
 ## 우선순위
 
