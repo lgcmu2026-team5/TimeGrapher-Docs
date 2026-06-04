@@ -4,6 +4,23 @@
 
 ## Quality Attribute Scenarios
 
+### Terminology
+
+| Term | Meaning |
+|------|---------|
+| p99 | The 99th-percentile value — everything except the slowest 1 % falls within this value |
+| Google INP | Interaction to Next Paint — Google's web metric for the time from user input to the next screen update (good ≤ 200 ms / poor > 500 ms) |
+| SPS | Samples Per Second — the audio sampling rate |
+| SNR | Signal-to-Noise Ratio (dB) — higher means a cleaner signal |
+| person-days | The amount of work one person completes in one day |
+| Rate | Seconds the watch gains or loses per day (s/d) |
+| Beat error | Asymmetry between the tick and tock intervals (ms) |
+| Amplitude | Swing angle of the balance wheel (°) — a key indicator of watch health |
+| SMPTE | Society of Motion Picture and Television Engineers — source of the viewing-distance / viewing-angle guideline |
+| ISO 9241-303 | International ergonomics standard for electronic displays — source of the character-size guideline |
+| Glyph | The visual shape of a single character on screen |
+| arcmin | Minute of arc (1° = 60 arcmin) — unit for how large something appears to the eye |
+
 ### QAS-1 · Performance (Latency) — From Sound Input to Screen Display
 > **In one line: sound reaches the microphone → the result is on screen within 0.5 s.**
 >
@@ -53,7 +70,7 @@
 ### QAS-3 · Availability (Graceful Degradation) — Under Noisy or Weak Signals
 > **In one line: in noise, filter and measure correctly — and below the limit, say "signal weak" rather than show a wrong number.**
 >
-> In a noisy working environment, when watch sound mixed with ambient noise — or a weak signal — reaches the noise-removal / beat-detection part, the system detects and measures within tolerance and, below the quality threshold, shows "signal weak" instead of any value — detection ≥ 95 % and rate error ≤ ±3 s/d at SNR ≥ 14 dB, and **0 wrong values** below the threshold.
+> In a noisy working environment, when watch sound mixed with ambient noise — or a weak signal — reaches the noise-removal / beat-detection part, the system detects and measures within tolerance and, below the quality threshold, shows "signal weak" instead of any value — detection **≥ 95 %** and rate error **≤ ±3 s/d** at SNR ≥ 14 dB.
 
 **Why this attribute**
 - Plan: *"the system should degrade gracefully when the signal is weak, noisy, or partially missing, rather than producing unstable or misleading outputs"* — and graceful degradation is a catalogued SAP **Availability** tactic.
@@ -65,15 +82,14 @@
 | Stimulus | Noise mixes in, or the signal arrives weak |
 | Artifact | The noise-removal / beat-detection part and the signal-quality indication |
 | Environment | A noisy working environment, or Sim/Playback input with calibrated noise injected at a held-constant SNR |
-| Response | Detect and measure within tolerance under noise; below the quality threshold show "signal weak" instead of any value; exclude invalid results from X/D |
-| Response Measure | Against the generator's known schedule, over ≥ 1,000 beats: at SNR ≥ 14 dB, detection ≥ 95 % and rate error ≤ ±3 s/d; below threshold, "signal weak" only and **0 wrong values**; invalid values included in X/D = 0 |
+| Response | Detect and measure within tolerance under noise; below the quality threshold show "signal weak" instead of any value |
+| Response Measure | Against the generator's known schedule, over ≥ 1,000 beats: at SNR ≥ 14 dB, detection ≥ 95 % and rate error ≤ ±3 s/d; below threshold, "signal weak" only |
 
 **Why these numbers**
 - **14 dB** — ≥ 16 dB below the worst clean recording measured with the team's microphone (30–51 dB over 9 recordings): a severe condition reachable only by deliberate noise injection; provisional.
 - **±3 s/d** — half-width of the tightest Witschi grade band (Chronometer −2…+6 s/d); **95 %** is a team target to confirm by experiment.
-- Ground truth = synthetic beats + injected noise — a reference instrument hears the same noise, so it cannot serve as the truth.
 
-**Related FRs** — FR-12-08, FR-05-17…18, FR-04-06 (noise filtering, averaging, excluding invalid results)
+**Related FRs** — FR-12-08, FR-05-17…18 (noise filtering, averaging)
 
 ### QAS-4 · Consistency — Consistent Values Across Displays
 > **In one line: every number and graph on screen comes from the same measurement result.**
@@ -82,7 +98,7 @@
 
 **Why this attribute**
 - Plan §Correctness: *"remaining internally consistent across the GUI, derived measurements, and longer-term summaries"* — *"calculations and visualizations are based on the same underlying data."*
-- That Plan section bundles three demands: compute correctly (→ QAS-2), stay internally consistent (→ **this scenario**), stay usable under noise (→ QAS-3). This scenario measures only consistency, so that is its name — "Correctness" would overclaim the other two.
+- That Plan section bundles three demands: event-position accuracy (→ QAS-2), stay internally consistent (→ **this scenario**), stay usable under noise (→ QAS-3). This scenario measures only consistency, so that is its name — "Correctness" would overclaim the other two.
 
 | Element | Content |
 |---------|---------|
@@ -90,14 +106,14 @@
 | Stimulus | One measurement result fans out to multiple displays (graphs/numbers) |
 | Artifact | Numeric readouts and graph displays |
 | Environment | Measuring as usual (verified via Sim/Playback) |
-| Response | Everything shown in one frame derives from one result and agrees; X/D summaries derive from the displayed per-position results |
-| Response Measure | Over a 10-min run on known input: **0 mismatches** across all simultaneously shown displays (within display rounding); each display exposes its source-result identity, so the check is observable; X/D source mismatch = 0 |
+| Response | Everything shown in one frame derives from one result and agrees |
+| Response Measure | Over a 10-min run on known input: **0 mismatches** across all simultaneously shown displays (within display rounding); each display exposes its source-result identity, so the check is observable |
 
 **Why these numbers**
 - **0** is the only sensible target — consistency is a correctness-class property, not a tunable number.
 - The check is genuinely verifiable because each display exposes which result it came from.
 
-**Related FRs** — FR-12-05, FR-06-06, FR-04-05…07, FR-02-07…08 (views and summaries showing the same data)
+**Related FRs** — FR-12-05, FR-06-06, FR-02-07…08 (views and summaries showing the same data)
 
 ### QAS-5 · Modifiability (Extensibility) — Adding a New Measurement/Filter/Graph
 > **In one line: adding a new graph, filter, or measurement touches one place — 8 person-days per feature.**
@@ -115,10 +131,10 @@
 | Artifact | The codebase holding the measurement/display features |
 | Environment | During development, tight schedule |
 | Response | Add incrementally without tearing into existing code |
-| Response Measure | New graph: ≤ 1 existing module changed (common parts only), 8 person-days |
+| Response Measure | New graph / filter / measurement, each: ≤ 1 existing module changed (common parts only), 8 person-days per feature |
 
 **Why these numbers**
-- ~11 mandatory graphs in a 5-week schedule — only a bounded touch surface makes that feasible.
+- 12 mandatory features in a 3-week schedule — only a bounded touch surface makes that feasible.
 - Milestone 2/3 schedule (16 days) × 6 team members / 12 features = 8 person-days per feature.
 
 **Related FRs** — all requirements
@@ -126,7 +142,7 @@
 ### QAS-6 · Usability — Reading and Operating on the Low-Resolution Touchscreen
 > **In one line: on the small 800×480 touchscreen, the three key readings are readable at a glance and operable by finger.**
 >
-> On the Raspberry Pi 5's 800×480 (8-inch) touchscreen, when the user reads measurement values and switches modes in the GUI, key readings are shown legibly and primary functions operate by touch alone — rate / beat error / amplitude visible simultaneously, uppercase letter height 2.9 mm, touch targets ≥ 9 mm. Physical sizes (mm) are normative.
+> On the Raspberry Pi 5's 800×480 (8-inch) touchscreen, when the user reads measurement values and switches modes in the GUI, key readings are shown legibly and primary functions operate by touch alone — rate / beat error / amplitude visible simultaneously, uppercase letter height ≥ 2.9 mm, touch targets ≥ 9 mm. Physical sizes (mm) are normative.
 
 **Why this attribute**
 - Plan §Usability and User Purpose: *"The GUI should support ease of use by clearly showing … the calculated values that matter most to the user, such as rate, beat error, amplitude."*
@@ -139,11 +155,11 @@
 | Artifact | The GUI (graph/numeric displays and controls) |
 | Environment | Raspberry Pi 5 + 800×480 touch display; 8-inch panel |
 | Response | Show key readings legibly; make primary functions operable by touch |
-| Response Measure | Rate / beat error / amplitude visible simultaneously without scroll/zoom; uppercase letter height 2.9 mm; touch targets ≥ 9 mm |
+| Response Measure | Rate / beat error / amplitude visible simultaneously without scroll/zoom; uppercase letter height ≥ 2.9 mm; touch targets ≥ 9 mm |
 
 **Why these numbers**
 - **mm, not px** — a pixel criterion flips pass/fail with the panel; 9 mm is the standard touch-target size.
-- **Uppercase letter height 2.9 mm** — SMPTE full-screen visibility (horizontal viewing angle about 30°) requires at least ≈ 33 cm, and character legibility (ISO 9241-303) about 40 cm; considering both plus room for touch operation, the design viewing distance is set to 35-50 cm, conservatively 50 cm. At 50 cm the recommended glyph size (ISO 9241-303) is ≥ 20 arcmin, which on this panel (8″ 800×480, 4.6 px/mm) converts to an uppercase letter height of 2.9 mm.
+- **Uppercase letter height ≥ 2.9 mm** — considering full-screen visibility (SMPTE), character legibility (ISO 9241-303), and room for touch operation, the design viewing distance is conservatively set to 50 cm. At 50 cm, ISO 9241-303's recommended glyph size of ≥ 20 arcmin converts to 2.9 mm on this panel (8″ 800×480).
 
 **Related FRs** — FR-06-06, FR-01-05, FR-04-03, FR-02-06, FR-06-11·13 (at-a-glance readings, position indication, alerts)
 
@@ -157,7 +173,7 @@ ATAM style: each scenario carries a (**B**usiness importance, technical **R**isk
 | 2 | QAS-2 | Accuracy | H | H | Every derived measure depends on event-position accuracy — the foundation |
 | 3 | QAS-3 | Availability | H | H | Usable measurement in real environments; noise robustness builds on QAS-2 |
 | 4 | QAS-4 | Consistency | H | M | Explicit Plan driver; the design solution (single source of truth) is well understood |
-| 5 | QAS-5 | Modifiability | H | M | 11 graphs in 5 weeks demand cheap, incremental addition |
+| 5 | QAS-5 | Modifiability | H | M | 12 features in 3 weeks demand cheap, incremental addition |
 | 6 | QAS-6 | Usability | M | M | Fixed small panel; mostly layout discipline once sizes are pinned |
 
 **Ordering:** the H/H group (QAS-1 · 2 · 3) leads — QAS-1 is the headline driver, and QAS-2 precedes QAS-3 because position accuracy is the foundation noise robustness builds on. Then QAS-4 (explicit Plan driver) over QAS-5; QAS-6 is the only B = M.
@@ -167,6 +183,23 @@ ATAM style: each scenario carries a (**B**usiness importance, technical **R**isk
 # Milestone1 — QA Final 1 (한국어)
 
 ## Quality Attribute Scenarios
+
+### 용어 설명
+
+| 용어 | 설명 |
+|------|------|
+| p99 | 측정값을 작은 순으로 정렬했을 때 99% 지점의 값 — 가장 느린 1%를 제외한 전부가 이 값 이내 |
+| Google INP | Interaction to Next Paint — 사용자 입력 후 다음 화면 갱신까지의 시간에 대한 Google 웹 지표 (good ≤ 200 ms / poor > 500 ms) |
+| SPS | Samples Per Second — 초당 오디오 샘플 수(샘플링 레이트) |
+| SNR | Signal-to-Noise Ratio — 신호 대 잡음 비(dB). 클수록 신호가 깨끗함 |
+| person-days | 1명이 1일에 처리하는 작업량 단위 |
+| 일오차 (rate) | 시계가 하루에 빨라지거나 느려지는 초 수 (s/d) |
+| 비트오차 (beat error) | 틱과 톡 사이 간격의 비대칭 정도 (ms) |
+| 진폭 (amplitude) | 밸런스 휠이 흔들리는 회전 각도 (°) — 시계 건강 상태의 핵심 지표 |
+| SMPTE | 미국 영화·TV 기술자 협회 — 화면 시청 거리·시야각 권고 기준의 출처 |
+| ISO 9241-303 | 전자 디스플레이 인간공학 국제 표준 — 글자 크기 권고 기준의 출처 |
+| 글리프 (glyph) | 화면에 표시되는 글자 한 개의 모양 |
+| arcmin | 각도의 분 단위(1° = 60 arcmin) — 눈에 보이는 크기를 재는 단위 |
 
 ### QAS-1 · Performance (Latency) — 소리 입력에서 화면 표시까지
 > **한 줄 요약: 소리가 마이크에 들어오면 0.5초 안에 화면에 나타난다.**
@@ -217,7 +250,7 @@ ATAM style: each scenario carries a (**B**usiness importance, technical **R**isk
 ### QAS-3 · Availability (Graceful Degradation) — 잡음·약신호 환경
 > **한 줄 요약: 시끄러우면 걸러서 정확히 재고, 한계 아래면 틀린 값 대신 "신호 약함"을 보여준다.**
 >
-> 잡음이 포함된 열악한 작업 환경에서 잡음 섞인 시계 소리 또는 약한 시계 소리가 잡음 제거·비트 감지 부분에 들어오면, 시스템은 잡음 하에서 허용오차 내로 감지·측정하고 품질 임계 미만이면 잘못된 값 대신 "신호 약함"을 표시하며, SNR ≥ 14 dB에서 감지율 ≥ 95% · 일오차 ≤ ±3 s/d, 임계 미만에서는 **잘못된 값 0회**이어야 한다.
+> 잡음이 포함된 열악한 작업 환경에서 잡음 섞인 시계 소리 또는 약한 시계 소리가 잡음 제거·비트 감지 부분에 들어오면, 시스템은 잡음 하에서 허용오차 내로 감지·측정하고 품질 임계 미만이면 잘못된 값 대신 "신호 약함"을 표시하며, SNR ≥ 14 dB에서 감지율 **≥ 95%** · 일오차 **≤ ±3 s/d**이어야 한다.
 
 **왜 이 속성인가**
 - 플랜 원문: *"the system should degrade gracefully when the signal is weak, noisy, or partially missing, rather than producing unstable or misleading outputs."* — graceful degradation은 SAP에 수록된 **Availability 전술**.
@@ -229,15 +262,14 @@ ATAM style: each scenario carries a (**B**usiness importance, technical **R**isk
 | 자극 | 잡음이 섞이거나 신호가 약하게 들어옴 |
 | 대상 | 잡음 제거 / 비트 감지 부분과 신호 품질 표시 |
 | 환경 | 주변 잡음이 포함된 열악한 작업 환경 or Sim/Playback 입력에 보정된 잡음을 일정 SNR로 주입한 데이터 |
-| 응답 | 잡음 하에서 허용오차 내로 감지·측정; 품질 임계 미만이면 어떤 값도 아닌 "신호 약함"을 표시; invalid 결과는 X/D에서 제외 |
-| 응답측정 | 생성기의 기지 스케줄 대비, 1,000비트 이상: SNR ≥ 14 dB에서 감지율 ≥ 95%, 일오차 ≤ ±3 s/d; 임계 미만에서는 "신호 약함"만 표시, **잘못된 값 0회**; invalid 값의 X/D 포함 0건 |
+| 응답 | 잡음 하에서 허용오차 내로 감지·측정; 품질 임계 미만이면 어떤 값도 아닌 "신호 약함"을 표시 |
+| 응답측정 | 생성기의 기지 스케줄 대비, 1,000비트 이상: SNR ≥ 14 dB에서 감지율 ≥ 95%, 일오차 ≤ ±3 s/d; 임계 미만에서는 "신호 약함"만 표시 |
 
 **측정값 근거**
 - **14 dB** — 팀 마이크로 실측한 최악 클린 녹음(9개, 30–51 dB)보다 ≥ 16 dB 낮은 심한 조건 — 의도적 잡음 주입으로만 도달; 잠정값.
 - **±3 s/d** — 가장 엄격한 Witschi 등급 대역(Chronometer −2…+6 s/d)의 반폭; **95%**는 실험으로 확정할 팀 목표.
-- 정답 = 합성 신호 + 주입 잡음 — 기준 장비도 같은 잡음을 듣기 때문에 정답이 될 수 없음.
 
-**관련 FR** — FR-12-08, FR-05-17…18, FR-04-06 (잡음 필터링·averaging·invalid 제외)
+**관련 FR** — FR-12-08, FR-05-17…18 (잡음 필터링·averaging)
 
 ### QAS-4 · Consistency — 표시 간 값 일치
 > **한 줄 요약: 화면의 모든 숫자와 그래프는 같은 측정 결과에서 나온다.**
@@ -246,7 +278,7 @@ ATAM style: each scenario carries a (**B**usiness importance, technical **R**isk
 
 **왜 이 속성인가**
 - 플랜 §Correctness 원문: *"remaining internally consistent across the GUI, derived measurements, and longer-term summaries"* / *"calculations and visualizations are based on the same underlying data."*
-- 그 절은 세 요구의 묶음: 올바른 계산(→ QAS-2), 내부 일관성(→ **본 시나리오**), 잡음 하 사용 가능(→ QAS-3). 본 시나리오는 일관성만 측정하므로 이름도 Consistency — Correctness라 부르면 나머지 둘까지 커버하는 듯한 과대 표기.
+- 그 절은 세 요구의 묶음: 이벤트 위치 정확도(→ QAS-2), 내부 일관성(→ **본 시나리오**), 잡음 하 사용 가능(→ QAS-3). 본 시나리오는 일관성만 측정하므로 이름도 Consistency — Correctness라 부르면 나머지 둘까지 커버하는 듯한 과대 표기.
 
 | 요소 | 내용 |
 |------|------|
@@ -254,14 +286,14 @@ ATAM style: each scenario carries a (**B**usiness importance, technical **R**isk
 | 자극 | 하나의 측정 결과가 여러 표시(그래프/숫자)로 전달됨 |
 | 대상 | 수치 표시값과 그래프 표시 |
 | 환경 | 평소처럼 측정 중 (검증은 Sim/Playback) |
-| 응답 | 한 프레임에 함께 표시되는 모든 것이 하나의 결과에서 파생되어 일치; X/D summary도 표시된 position별 결과에서 산출 |
-| 응답측정 | 기지 입력의 10분 실행 동안: 동시에 표시되는 모든 표시에서 **불일치 0회**(표시 반올림 이내); 각 표시는 소스 결과 식별자를 노출하여 검사 가능; X/D source mismatch 0건 |
+| 응답 | 한 프레임에 함께 표시되는 모든 것이 하나의 결과에서 파생되어 일치 |
+| 응답측정 | 기지 입력의 10분 실행 동안: 동시에 표시되는 모든 표시에서 **불일치 0회**(표시 반올림 이내); 각 표시는 소스 결과 식별자를 노출하여 검사 가능 |
 
 **측정값 근거**
 - **0** 이 유일하게 말이 되는 목표 — 일관성은 정합성 계열 속성이지 조정 가능한 수치가 아님.
 - 각 표시가 어느 결과에서 왔는지 노출하므로 "0"을 실제로 검증 가능.
 
-**관련 FR** — FR-12-05, FR-06-06, FR-04-05…07, FR-02-07…08 (여러 뷰·요약이 같은 데이터를 표시)
+**관련 FR** — FR-12-05, FR-06-06, FR-02-07…08 (여러 뷰·요약이 같은 데이터를 표시)
 
 ### QAS-5 · Modifiability (Extensibility) — 새 측정/필터/그래프 추가
 > **한 줄 요약: 새 그래프·필터·측정값 추가 = 한 곳만 고친다 — 기능당 8 person-days.**
@@ -279,10 +311,10 @@ ATAM style: each scenario carries a (**B**usiness importance, technical **R**isk
 | 대상 | 측정·표시 기능을 담은 코드베이스 |
 | 환경 | 개발 중, 일정이 촉박함 |
 | 응답 | 기존 코드를 뜯어고치지 않고 점진적으로 추가함 |
-| 응답측정 | 새 그래프: 기존 모듈 변경 ≤ 1개(공통 부분만), 8 person-days |
+| 응답측정 | 새 그래프/필터/측정값 각각: 기존 모듈 변경 ≤ 1개(공통 부분만), 기능당 8 person-days |
 
 **측정값 근거**
-- 5주 일정에 필수 그래프 약 11종 — 좁은 변경 표면이어야만 가능한 일정.
+- 3주 일정에 필수 기능 12종 — 좁은 변경 표면이어야만 가능한 일정.
 - 마일스톤2/3 일정 (16일) * 조 인원 (6명) / 기능 수 (12) = 8 person-days effort
 
 **관련 FR** — 모든 요구사항
@@ -290,7 +322,7 @@ ATAM style: each scenario carries a (**B**usiness importance, technical **R**isk
 ### QAS-6 · Usability — 저해상도 터치스크린에서 읽기·조작
 > **한 줄 요약: 작은 800×480 터치스크린에서도 핵심 값 3개를 한눈에 읽고 손가락으로 조작한다.**
 >
-> Raspberry Pi 5의 800×480(8인치) 터치스크린에서 사용자가 GUI의 측정값을 읽고 모드를 전환할 때, 핵심 측정값을 가독성 있게 표시하고 주요 기능을 터치만으로 조작할 수 있으며, 일오차·비트오차·진폭 동시 표시 · 영어 대문자 글자 높이 2.9 mm · 터치 타깃 ≥ 9 mm를 만족해야 한다. 물리 크기(mm)가 규범 기준.
+> Raspberry Pi 5의 800×480(8인치) 터치스크린에서 사용자가 GUI의 측정값을 읽고 모드를 전환할 때, 핵심 측정값을 가독성 있게 표시하고 주요 기능을 터치만으로 조작할 수 있으며, 일오차·비트오차·진폭 동시 표시 · 영어 대문자 글자 높이 ≥ 2.9 mm · 터치 타깃 ≥ 9 mm를 만족해야 한다. 물리 크기(mm)가 규범 기준.
 
 **왜 이 속성인가**
 - 플랜 원문(§Usability and User Purpose): *"The GUI should support ease of use by clearly showing … the calculated values that matter most to the user, such as rate, beat error, amplitude."*
@@ -301,13 +333,13 @@ ATAM style: each scenario carries a (**B**usiness importance, technical **R**isk
 | 자극유발원 | 사용자 (시계공 / 측정자) |
 | 자극 | 터치스크린에서 측정값을 읽고 모드를 전환함 |
 | 대상 | GUI (그래프/수치 표시와 컨트롤) |
-| 환경 | Raspberry Pi 5 + 800×480 터치 디스플레이; 패널 크기 8인치; |
-| 응답 | 핵심 측정값을 가독성 있게 표시; 주요 기능을 터치만으로 조작; |
-| 응답측정 | 일오차·비트오차·진폭을 스크롤/확대 없이 동시 표시; 영어 대문자 글자 높이 2.9mm, 터치 타깃 ≥ 9 mm; |
+| 환경 | Raspberry Pi 5 + 800×480 터치 디스플레이; 패널 크기 8인치 |
+| 응답 | 핵심 측정값을 가독성 있게 표시; 주요 기능을 터치만으로 조작 |
+| 응답측정 | 일오차·비트오차·진폭을 스크롤/확대 없이 동시 표시; 영어 대문자 글자 높이 ≥ 2.9 mm, 터치 타깃 ≥ 9 mm |
 
 **측정값 근거**
 - **px가 아닌 mm** — 픽셀 기준은 패널에 따라 합격/불합격이 뒤바뀜; 9 mm는 통용되는 터치 타깃 크기.
-- **영어 대문자 글자 높이 2.9mm** — SMPTE 권장(수평 시야각 약 30°)에 따른 화면 전체 가시성으로는 최소 ≈33cm, 글자 가독성(ISO 9241-303)으로는 약 40cm가 요구됨. 두 기준과 터치 조작 여유를 함께 고려해 설계 시야 거리를 35-50cm 범위로 두고, 보수적으로 50cm를 채택. 이 50cm 거리에서 본문 글리프의 적정 시각(ISO 9241-303)은 권장 20 arcmin 이상이며, 본 패널(8″ 800×480, 4.6 px/mm)에서 환산하면 영어 대문자 글자 높이 2.9mm에 해당.
+- **영어 대문자 글자 높이 ≥ 2.9mm** — 화면 전체 가시성(SMPTE)·글자 가독성(ISO 9241-303)·터치 조작 여유를 고려해 설계 시야 거리를 보수적으로 50cm로 채택. 50cm에서 ISO 9241-303 권장 글자 크기 ≥ 20 arcmin을 본 패널(8″ 800×480)로 환산하면 2.9mm.
 
 **관련 FR** — FR-06-06, FR-01-05, FR-04-03, FR-02-06, FR-06-11·13 (한눈에 읽기·포지션 표시·경보)
 
@@ -321,7 +353,7 @@ ATAM 방식: 각 시나리오에 (**B**비즈니스 중요도, 기술 리스크 
 | 2 | QAS-2 | Accuracy | H | H | 모든 파생 측정값이 이벤트 위치 정확도에 의존 — 토대 |
 | 3 | QAS-3 | Availability | H | H | 실제 환경에서 쓸 수 있는 측정; QAS-2 위에 쌓이는 잡음 강건성 |
 | 4 | QAS-4 | Consistency | H | M | 플랜 명시 드라이버; 해법(single source of truth)은 잘 알려짐 |
-| 5 | QAS-5 | Modifiability | H | M | 5주에 그래프 11종 — 저비용·점진적 추가가 필수 |
+| 5 | QAS-5 | Modifiability | H | M | 3주에 기능 12종 — 저비용·점진적 추가가 필수 |
 | 6 | QAS-6 | Usability | M | M | 고정 소형 패널; 크기 확정 후엔 주로 레이아웃 규율 문제 |
 
 **정렬:** H/H 그룹(QAS-1 · 2 · 3)이 선두 — QAS-1은 헤드라인 드라이버, QAS-2가 QAS-3보다 앞서는 이유는 위치 정확도가 잡음 강건성의 토대이기 때문. 그다음 플랜 명시 드라이버인 QAS-4가 QAS-5보다 앞; QAS-6은 유일한 B = M.
