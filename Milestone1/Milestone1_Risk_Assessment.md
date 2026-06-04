@@ -27,12 +27,6 @@
 | regression | A code change breaking something that used to work |
 | QAS / FR | QAS = quality attribute scenario (QA Final doc); FR = functional requirement (Architectural Drivers doc) |
 
-## At a Glance — Top Risks (Probability High · Impact High)
-
-1. **R-A1** — The RPi5 may fail to keep up with the sound in real time and lose data
-2. **R-B1** — If tick/tock positions can't be located to 0.1 ms, every measurement is contaminated
-3. **R-F6** — Only one test Pi5 — real-use verification may not fit the schedule
-
 ## A. Real-Time Performance (RPi)
 
 - **R-A1 — The RPi5 fails to keep up with high sample rates (96k/192k) in real time and loses sound data (block drop / missed beat)**
@@ -195,11 +189,7 @@
   - Evidence: pdf (p.26 System Hardware — Raspberry Pi)
   - Probability / Impact: High / High
 
-## G. Requirements / Verification
-
-- (None identified)
-
-## H. Other / Uncategorized
+## G. Other / Uncategorized
 
 - **Communication** — meaning may be lost between stakeholders when conversing in English
 - **Insufficient test environment** — one device, no test room, no unit tests → regressions may slip through logic changes
@@ -237,12 +227,6 @@
 | TinyML | 소형 기기(RPi 등)에서 직접 돌리는 경량 AI 모델 |
 | regression | 코드 수정으로 기존에 되던 기능이 깨지는 것 |
 | QAS / FR | QAS = 품질 속성 시나리오(QA Final 문서), FR = 기능 요구사항(Architectural Drivers 문서) |
-
-## 한눈에 보기 — 최우선 리스크 (발생 High · 영향 High)
-
-1. **R-A1** — RPi5가 소리를 실시간으로 따라가지 못해 데이터를 놓칠 수 있다
-2. **R-B1** — 틱/톡 위치를 0.1 ms 정밀도로 못 찾으면 모든 측정값이 오염된다
-3. **R-F6** — 테스트용 Pi5가 한 대뿐이라 실사용 검증 일정이 안 나올 수 있다
 
 ## A. 실시간 성능 (RPi)
 
@@ -406,11 +390,7 @@
   - 근거: pdf (p.26 System Hardware — Raspberry Pi)
   - 발생 확률 / 영향: High / High
 
-## G. 요구사항 / 검증
-
-- (식별된 항목 없음)
-
-## H. 기타 또는 카테고리화 되지 않음
+## G. 기타 또는 카테고리화 되지 않음
 
 - **의사소통** — 영어 대화 시 이해관계자 간 정확한 의사전달이 안 될 수 있다
 - **테스트 환경 부족** — 장비 1대, 테스트룸·unit test 없음 → 로직 변경 시 regression을 놓칠 수 있다
