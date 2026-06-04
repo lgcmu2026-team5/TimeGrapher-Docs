@@ -75,30 +75,9 @@
   - Mitigation: Filtering and signal-quality judgment; isolate bad data behind a "signal weak" indication
   - Comment: Test per noise level; improve the logic if needed
 
-- **R-B3 — A wrong lift-angle setting yields a wrong amplitude**
-  - Quality attribute: Dependability (Reliability)
-  - Evidence: pdf (p.8-9 Lift Angle), FR-05-14
-  - Probability / Impact: Medium / Medium
-  - Mitigation: Validate the lift-angle input, provide a default-value guide, unit-test the formula
-  - Comment: Pass
-
-- **R-B4 — 0.1 ms-level ground truth can't be obtained from real hardware, making "it's accurate" hard to prove**
-  - Quality attribute: Modifiability (Testability)
-  - Evidence: FR-05-05, FR-12-16
-  - Probability / Impact: Medium / Medium
-  - Mitigation: Sim/Playback reproducible tests; predefine verification scenarios
-  - Comment: Pass
-
-- **R-B5 — Domain-specific logic such as Scope2's tic/tac axis non-guarantee (50/50 averaging cycle) gets implemented wrong**
-  - Quality attribute: Dependability (Reliability)
-  - Evidence: FR-05-15, FR-05-17, FR-05-21
-  - Probability / Impact: Low~Medium / Medium
-  - Mitigation: State the axis non-guarantee assumption; unit-test cycle boundaries
-  - Comment: FR-05-specific — pass
-
 ## C. Architecture / Extensibility
 
-- **R-C3 — Without up-front design of the filter/marker extension structure (e.g., adding F4), late-stage cost soars**
+- **R-C1 — Without up-front design of the filter/marker extension structure (e.g., adding F4), late-stage cost soars**
   - Quality attribute: Modifiability (Extensibility)
   - Evidence: FR-12-01, QAS-4
   - Probability / Impact: Medium / Medium
@@ -280,30 +259,9 @@
   - 완화 방향: 필터링·신호품질 판정, bad-data는 "signal weak" 표시로 격리
   - 코멘트: 노이즈 레벨 별 테스트 및 필요 시 로직 개선
 
-- **R-B3 — lift angle 설정이 틀리면 진폭이 틀리게 나온다**
-  - 품질요소: Dependability (Reliability)
-  - 근거: pdf (p.8-9 Lift Angle), FR-05-14
-  - 발생 확률 / 영향: Medium / Medium
-  - 완화 방향: lift angle 입력 검증·기본값 가이드, 산식 단위 테스트
-  - 코멘트: 패스
-
-- **R-B4 — 0.1 ms급 정답(ground truth)을 실제 하드웨어로 못 얻어 "정확하다"를 입증하기 어렵다**
-  - 품질요소: Modifiability (Testability)
-  - 근거: FR-05-05, FR-12-16
-  - 발생 확률 / 영향: Medium / Medium
-  - 완화 방향: Sim/Playback 재현 테스트, 검증 시나리오 사전 정의
-  - 코멘트: 패스
-
-- **R-B5 — Scope2 tic/tac 축 비보장(50/50 평균 사이클) 같은 도메인 특수 로직을 잘못 구현한다**
-  - 품질요소: Dependability (Reliability)
-  - 근거: FR-05-15, FR-05-17, FR-05-21
-  - 발생 확률 / 영향: Low~Medium / Medium
-  - 완화 방향: 축 비보장 전제 명시, 사이클 경계 단위 테스트
-  - 코멘트: FR-05 전용이어서 패스
-
 ## C. 아키텍처 / 확장성
 
-- **R-C3 — 필터/마커 확장 구조(예: F4 추가)를 미리 설계하지 않으면 후반 비용이 급증한다**
+- **R-C1 — 필터/마커 확장 구조(예: F4 추가)를 미리 설계하지 않으면 후반 비용이 급증한다**
   - 품질요소: Modifiability (Extensibility)
   - 근거: FR-12-01, QAS-4
   - 발생 확률 / 영향: Medium / Medium
