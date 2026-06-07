@@ -1,7 +1,7 @@
 # 실험 1: RPi5 렌더링 백엔드 성능 A/B 측정 (GPU 가속 vs 소프트웨어)
 
 [technical-experiment-template](https://github.com/pmerson/technical-experiment-template/blob/master/technical-experiment-template_ko-KR.md) 기반.
-리스크 R-A2(Avalonia 사용 시 RPi5에서 GPU 가속 렌더링이 SW 렌더링보다 느려 그래프 갱신이 끊길 수 있다)를 검증하기 위한 실험이다.
+리스크 R-A5(Avalonia 사용 시 RPi5에서 GPU 가속 렌더링이 SW 렌더링보다 느려 그래프 갱신이 끊길 수 있다)를 검증하기 위한 실험이다.
 
 ## 결과 및 권장 사항
 
@@ -54,7 +54,7 @@ TO-DO: 실험 완료 후 기록. (수행 결과는 EXPERIMENT_RESULTS.md에 정�
    DISPLAY=:0 ./TimeGrapher.App --render-bench --render-mode=glx --bench-label=pi5-glx
    ```
 
-5. 결과 비교 → 백엔드 권장안 도출 → 본 문서와 Risk Assessment(R-A2)에 기록
+5. 결과 비교 → 백엔드 권장안 도출 → 본 문서와 Risk Assessment(R-A5)에 기록
 
 **완료 기준**: ① 3개 백엔드 모두 30초 측정 완료, ② GL 렌더러 문자열로 하드웨어 가속 여부 확인,
 ③ 백엔드 선택 권장안 도출 — 세 가지가 모두 충족되면 실험 종료.
