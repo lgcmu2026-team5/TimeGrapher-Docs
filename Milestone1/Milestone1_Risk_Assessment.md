@@ -29,29 +29,36 @@
 
 ## Risk Summary
 
-> Type: **T** = Technical, **NT** = Non-technical · **P** = Probability, **I** = Impact (🔴 = High, 🟡 = Medium, 🟢 = Low)
+> Type: **T** = Technical, **NT** = Non-technical · **P** = Probability, **I** = Impact (**H** = High, M = Medium, L = Low)
 
 Risk ID | Risk Title | Type | QAS | P | I
 --------|-----------|------|-----|---|---
-R-A1 | RPi5 fails to keep up with high sample rates (96k/192k) and loses sound data | T | QAS-1 | 🔴 | 🔴
-R-A2 | Rendering four filters + multiple graphs at once makes the screen stutter | T | QAS-1<br>QAS-5 | 🟡 | 🔴
-R-A3 | Sound-to-screen 0.5 s (p99 ≤ 500 ms) target is missed | T | QAS-1 | 🟡 | 🔴
-R-A4 | Long continuous runs (24h+) leak memory and degrade or crash | T | QAS-1 | 🟡 | 🟡
-R-A5 | Avalonia GPU-accelerated rendering on RPi5 slower than SW rendering, stuttering real-time graphs | T | QAS-1 | 🟡 | 🔴
-R-B1 | Tick/tock positions not found to 0.1 ms — rate, beat error, amplitude all contaminated | T | QAS-2<br>QAS-3 | 🔴 | 🔴
-R-B2 | Noisy/weak signals produce misleading values instead of a graceful "signal weak" | T | QAS-2 | 🟡 | 🔴
-R-C1 | No up-front filter/marker extension design — late-stage cost soars | T | QAS-4 | 🟡 | 🟡
-R-D1 | AGC left on or poor microphone coupling distorts the signal | T | QAS-2 | 🟡 | 🔴
-R-D2 | Platform differences (WASAPI/ALSA) between Windows dev and RPi demo surface late | T | QAS-1 | 🟡 | 🟡
-R-D3 | Supporting three sample rates (48/96/192k) adds timing complexity | T | QAS-1 | 🟡 | 🟡
-R-E1 | Small screen can't legibly hold summary bar + graphs + scope strip | T | QAS-5 | 🟡 | 🟡
-R-E2 | Touch accuracy or recognition may be poor | T | QAS-5 | 🟢 | 🟢
-R-F1 | Everything (12 features + AI) can't fit in 5 weeks — prioritization failure drops essentials | NT | QAS-ALL | 🟡 | 🔴
-R-F2 | Understanding the baseline code takes time and delays the start | NT | QAS-4 | 🟢 | 🟡
-R-F3 | Qt/C++ · DSP · RPi learning curve shakes implementation quality | NT | QAS-1<br>QAS-2 | 🟢 | 🟡
-R-F4 | Attempting the AI/TinyML feature raises on-device uncertainty | T | QAS-1<br>QAS-2 | 🟡 | 🟡
-R-F5 | Accepting GenAI-generated code unverified lets in plausible-but-wrong code | NT | QAS-1<br>QAS-2<br>QAS-3 | 🟡 | 🟡
-R-F6 | Only one test Pi5 — real-use verification doesn't fit the schedule | NT | QAS-1 | 🔴 | 🔴
+R-A1 | RPi5 fails to keep up with high sample rates (96k/192k) and loses sound data | T | QAS-1 | **H** | **H**
+R-A2 | Rendering four filters + multiple graphs at once makes the screen stutter | T | QAS-1<br>QAS-5 | M | **H**
+R-A3 | Sound-to-screen 0.5 s (p99 ≤ 500 ms) target is missed | T | QAS-1 | M | **H**
+R-A4 | Long continuous runs (24h+) leak memory and degrade or crash | T | QAS-1 | M | M
+R-A5 | Avalonia GPU-accelerated rendering on RPi5 slower than SW rendering, stuttering real-time graphs | T | QAS-1 | M | **H**
+R-B1 | Tick/tock positions not found to 0.1 ms — rate, beat error, amplitude all contaminated | T | QAS-2<br>QAS-3 | **H** | **H**
+R-B2 | Noisy/weak signals produce misleading values instead of a graceful "signal weak" | T | QAS-2 | M | **H**
+R-C1 | No up-front filter/marker extension design — late-stage cost soars | T | QAS-4 | M | M
+R-D1 | AGC left on or poor microphone coupling distorts the signal | T | QAS-2 | M | **H**
+R-D2 | Platform differences (WASAPI/ALSA) between Windows dev and RPi demo surface late | T | QAS-1 | M | M
+R-D3 | Supporting three sample rates (48/96/192k) adds timing complexity | T | QAS-1 | M | M
+R-E1 | Small screen can't legibly hold summary bar + graphs + scope strip | T | QAS-5 | M | M
+R-E2 | Touch accuracy or recognition may be poor | T | QAS-5 | L | L
+R-F1 | Everything (12 features + AI) can't fit in 5 weeks — prioritization failure drops essentials | NT | QAS-ALL | M | **H**
+R-F2 | Understanding the baseline code takes time and delays the start | NT | QAS-4 | L | M
+R-F3 | Qt/C++ · DSP · RPi learning curve shakes implementation quality | NT | QAS-1<br>QAS-2 | L | M
+R-F4 | Attempting the AI/TinyML feature raises on-device uncertainty | T | QAS-1<br>QAS-2 | M | M
+R-F5 | Accepting GenAI-generated code unverified lets in plausible-but-wrong code | NT | QAS-1<br>QAS-2<br>QAS-3 | M | M
+R-F6 | Only one test Pi5 — real-use verification doesn't fit the schedule | NT | QAS-1 | **H** | **H**
+- | Communication — meaning may be lost between stakeholders when conversing in English | NT | - | L | L
+- | Insufficient test environment — one device, no test room, no unit tests; regressions may slip through | NT | - | L | L
+- | Long-run verification difficulty — items like 24-hour continuous runs are hard to actually verify | NT | - | L | L
+- | Growing storage — long recordings make files large | T | - | L | L
+- | RPi5 debugging difficulty — hard to inspect state or debug | T | - | L | L
+- | Uncertain data structures — audio buffer and measurement-data storage structures are undecided | T | - | L | L
+- | Storage-speed bottleneck — SD-card writes may be slower than recording generation | T | - | L | L
 
 ## A. Real-Time Performance (RPi)
 
@@ -241,29 +248,36 @@ R-F6 | Only one test Pi5 — real-use verification doesn't fit the schedule | NT
 
 ## 리스크 요약
 
-> 구분: **T** = 기술(Technical), **NT** = 비기술(Non-technical) · **P** = 발생 확률(Probability), **I** = 영향(Impact) — 🔴 = High, 🟡 = Medium, 🟢 = Low
+> 구분: **T** = 기술(Technical), **NT** = 비기술(Non-technical) · **P** = 발생 확률(Probability), **I** = 영향(Impact) — **H** = High, M = Medium, L = Low
 
 Risk ID | 리스크 타이틀 | 구분 | QAS | P | I
 --------|--------------|------|-----|---|---
-R-A1 | RPi5가 고속 샘플레이트(96k/192k)를 실시간으로 못 따라가 소리 데이터를 놓친다 | T | QAS-1 | 🔴 | 🔴
-R-A2 | 필터 4개 + 그래프 여러 개 동시 렌더링으로 화면이 버벅인다 | T | QAS-1<br>QAS-5 | 🟡 | 🔴
-R-A3 | 소리→화면 0.5초(p99 ≤ 500 ms) 목표를 못 지킨다 | T | QAS-1 | 🟡 | 🔴
-R-A4 | 장시간(24h+) 연속 실행 시 메모리가 새서 느려지거나 죽는다 | T | QAS-1 | 🟡 | 🟡
-R-A5 | Avalonia GPU 가속 렌더링이 RPi5에서 SW 렌더링보다 느려 실시간 그래프가 끊긴다 | T | QAS-1 | 🟡 | 🔴
-R-B1 | 틱/톡 위치를 0.1 ms 정밀도로 못 찾아 rate·beat error·amplitude 전부 오염된다 | T | QAS-2<br>QAS-3 | 🔴 | 🔴
-R-B2 | 시끄럽거나 약한 신호에서 "신호 약함" 대신 오해를 부르는 값을 표시한다 | T | QAS-2 | 🟡 | 🔴
-R-C1 | 필터/마커 확장 구조를 미리 설계하지 않아 후반 비용이 급증한다 | T | QAS-4 | 🟡 | 🟡
-R-D1 | AGC를 끄지 않거나 마이크 결합이 나빠 신호가 왜곡된다 | T | QAS-2 | 🟡 | 🔴
-R-D2 | Windows 개발–RPi 데모 간 플랫폼 차이(WASAPI/ALSA)가 늦게 드러난다 | T | QAS-1 | 🟡 | 🟡
-R-D3 | 샘플레이트 3종(48/96/192k) 지원이 타이밍·복잡도를 키운다 | T | QAS-1 | 🟡 | 🟡
-R-E1 | 작은 화면에 요약바 + 그래프 + 스코프를 가독성 있게 다 못 담는다 | T | QAS-5 | 🟡 | 🟡
-R-E2 | 터치 정확도·인식률이 떨어질 수 있다 | T | QAS-5 | 🟢 | 🟢
-R-F1 | 5주 안에 12개 기능 + AI 전부 불가능 — 우선순위 실패 시 핵심이 빠진다 | NT | QAS-ALL | 🟡 | 🔴
-R-F2 | 베이스라인 코드 이해에 시간이 걸려 착수가 늦어진다 | NT | QAS-4 | 🟢 | 🟡
-R-F3 | Qt/C++·DSP·RPi 학습곡선으로 구현 품질이 흔들린다 | NT | QAS-1<br>QAS-2 | 🟢 | 🟡
-R-F4 | AI/TinyML 기능 시도 시 on-device 불확실성이 커진다 | T | QAS-1<br>QAS-2 | 🟡 | 🟡
-R-F5 | GenAI 생성 코드를 검증 없이 수용하면 그럴듯하지만 틀린 코드가 들어온다 | NT | QAS-1<br>QAS-2<br>QAS-3 | 🟡 | 🟡
-R-F6 | 테스트용 Pi5가 한 대뿐이라 실사용 검증 일정이 안 나온다 | NT | QAS-1 | 🔴 | 🔴
+R-A1 | RPi5가 고속 샘플레이트(96k/192k)를 실시간으로 못 따라가 소리 데이터를 놓친다 | T | QAS-1 | **H** | **H**
+R-A2 | 필터 4개 + 그래프 여러 개 동시 렌더링으로 화면이 버벅인다 | T | QAS-1<br>QAS-5 | M | **H**
+R-A3 | 소리→화면 0.5초(p99 ≤ 500 ms) 목표를 못 지킨다 | T | QAS-1 | M | **H**
+R-A4 | 장시간(24h+) 연속 실행 시 메모리가 새서 느려지거나 죽는다 | T | QAS-1 | M | M
+R-A5 | Avalonia GPU 가속 렌더링이 RPi5에서 SW 렌더링보다 느려 실시간 그래프가 끊긴다 | T | QAS-1 | M | **H**
+R-B1 | 틱/톡 위치를 0.1 ms 정밀도로 못 찾아 rate·beat error·amplitude 전부 오염된다 | T | QAS-2<br>QAS-3 | **H** | **H**
+R-B2 | 시끄럽거나 약한 신호에서 "신호 약함" 대신 오해를 부르는 값을 표시한다 | T | QAS-2 | M | **H**
+R-C1 | 필터/마커 확장 구조를 미리 설계하지 않아 후반 비용이 급증한다 | T | QAS-4 | M | M
+R-D1 | AGC를 끄지 않거나 마이크 결합이 나빠 신호가 왜곡된다 | T | QAS-2 | M | **H**
+R-D2 | Windows 개발–RPi 데모 간 플랫폼 차이(WASAPI/ALSA)가 늦게 드러난다 | T | QAS-1 | M | M
+R-D3 | 샘플레이트 3종(48/96/192k) 지원이 타이밍·복잡도를 키운다 | T | QAS-1 | M | M
+R-E1 | 작은 화면에 요약바 + 그래프 + 스코프를 가독성 있게 다 못 담는다 | T | QAS-5 | M | M
+R-E2 | 터치 정확도·인식률이 떨어질 수 있다 | T | QAS-5 | L | L
+R-F1 | 5주 안에 12개 기능 + AI 전부 불가능 — 우선순위 실패 시 핵심이 빠진다 | NT | QAS-ALL | M | **H**
+R-F2 | 베이스라인 코드 이해에 시간이 걸려 착수가 늦어진다 | NT | QAS-4 | L | M
+R-F3 | Qt/C++·DSP·RPi 학습곡선으로 구현 품질이 흔들린다 | NT | QAS-1<br>QAS-2 | L | M
+R-F4 | AI/TinyML 기능 시도 시 on-device 불확실성이 커진다 | T | QAS-1<br>QAS-2 | M | M
+R-F5 | GenAI 생성 코드를 검증 없이 수용하면 그럴듯하지만 틀린 코드가 들어온다 | NT | QAS-1<br>QAS-2<br>QAS-3 | M | M
+R-F6 | 테스트용 Pi5가 한 대뿐이라 실사용 검증 일정이 안 나온다 | NT | QAS-1 | **H** | **H**
+- | 의사소통 — 영어 대화 시 이해관계자 간 정확한 의사전달이 안 될 수 있다 | NT | - | L | L
+- | 테스트 환경 부족 — 장비 1대, 테스트룸·unit test 없음으로 로직 변경 시 regression을 놓칠 수 있다 | NT | - | L | L
+- | 장시간 검증 곤란 — 24시간 연속 같은 항목은 실제 검증·평가가 어렵다 | NT | - | L | L
+- | 저장량 증가 — 장시간 녹음 시 파일 크기가 커진다 | T | - | L | L
+- | RPi5 디버깅 곤란 — 상태 파악·디버깅이 어렵다 | T | - | L | L
+- | 데이터 구조 불확실 — 음성 버퍼·측정 데이터 저장 구조가 미정이다 | T | - | L | L
+- | 저장 속도 병목 — SD 카드 쓰기가 녹음 생성 속도보다 느릴 수 있다 | T | - | L | L
 
 ## A. 실시간 성능 (RPi)
 
