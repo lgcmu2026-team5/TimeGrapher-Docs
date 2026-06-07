@@ -29,7 +29,7 @@
 
 ## Risk Matrix
 
-> Range ratings are placed by the higher side: Medium~High → High, Low~Medium → Medium.
+> Range ratings are placed by the higher side: Medium\~High → High, Low\~Medium → Medium.
 
 | Probability / Impact | High | Medium | Low |
 |----------------------|------|--------|-----|
@@ -50,7 +50,7 @@
 - **R-A2 — Rendering four filters (F0→F3) plus multiple graphs at once makes the screen stutter (<20 FPS · UI freeze)**
   - **Quality attribute**: Performance
   - **Evidence**: FR-12-01, FR-12-04, QAS-1
-  - **Probability / Impact**: Medium~High / High
+  - **Probability / Impact**: Medium\~High / High
   - **Mitigation**: Reuse a shared input buffer, stop rendering inactive views, measure an FPS budget
   - **Tradeoff point**: showing 4 views at once trades Usability (QAS-5) against Performance
   - **Comment**: Decide 4 simultaneous views vs one-at-a-time after the performance check
@@ -89,7 +89,7 @@
 - **R-B2 — Noisy or weak signals may produce misleading values instead of a graceful "signal weak" response**
   - **Quality attribute**: Availability (Graceful Degradation)
   - **Evidence**: QAS-2
-  - **Probability / Impact**: Medium~High / High
+  - **Probability / Impact**: Medium\~High / High
   - **Mitigation**: Filtering and signal-quality judgment; isolate bad data behind a "signal weak" indication
   - **Comment**: Test per noise level; improve the logic if needed
 
@@ -145,7 +145,7 @@
 - **R-F1 — Everything (12 features + AI) can't fit in 5 weeks — failing to prioritize drops the essentials**
   - **Quality attribute**: All QAs (esp. Performance · Reliability)
   - **Evidence**: pdf (p.5 Objective — "feasible, well-architected subset")
-  - **Probability / Impact**: Medium~High / High
+  - **Probability / Impact**: Medium\~High / High
   - **Mitigation**: Freeze FR priorities, split AI off as optional, critical path first
   - **Comment**: Plan well and drop what must be dropped
 
@@ -159,7 +159,7 @@
 - **R-F3 — The Qt/C++ · DSP · RPi learning curve shakes implementation quality**
   - **Quality attribute**: All QAs (overall implementation quality)
   - **Evidence**: pdf (p.29 Qt and Qt Creator)
-  - **Probability / Impact**: Low~Medium / Medium
+  - **Probability / Impact**: Low\~Medium / Medium
   - **Mitigation**: Role split and pairing; early learning via small spikes
   - **Comment**: Risk lowered by using AI
 
@@ -224,7 +224,7 @@
 
 ## 리스크 매트릭스
 
-> 범위형 등급은 높은 쪽 기준으로 배치했다: Medium~High → High, Low~Medium → Medium.
+> 범위형 등급은 높은 쪽 기준으로 배치했다: Medium\~High → High, Low\~Medium → Medium.
 
 | 발생 확률 / 영향 | High | Medium | Low |
 |------------------|------|--------|-----|
@@ -245,7 +245,7 @@
 - **R-A2 — 필터 4개(F0→F3) + 그래프 여러 개를 동시에 그리면 화면이 버벅인다(<20 FPS·UI freeze)**
   - **품질요소**: Performance
   - **근거**: FR-12-01, FR-12-04, QAS-1
-  - **발생 확률 / 영향**: Medium~High / High
+  - **발생 확률 / 영향**: Medium\~High / High
   - **완화 방향**: 공유 입력버퍼 재사용, 비활성 뷰 렌더 중단, FPS 예산 측정
   - **Tradeoff point**: 동시 4뷰 표시는 Usability(QAS-5)↔Performance의 tradeoff point
   - **코멘트**: 4개 동시 뷰 / 1개씩 뷰는 성능 확인 후 결정
@@ -284,7 +284,7 @@
 - **R-B2 — 시끄럽거나 신호가 약한 환경에서 "신호 약함" 대신 오해를 부르는 값을 표시할 수 있다**
   - **품질요소**: Availability (Graceful Degradation)
   - **근거**: QAS-2
-  - **발생 확률 / 영향**: Medium~High / High
+  - **발생 확률 / 영향**: Medium\~High / High
   - **완화 방향**: 필터링·신호품질 판정, bad-data는 "signal weak" 표시로 격리
   - **코멘트**: 노이즈 레벨 별 테스트 및 필요 시 로직 개선
 
@@ -340,7 +340,7 @@
 - **R-F1 — 5주 안에 12개 기능 + AI 전부는 불가능 — 우선순위에 실패하면 핵심이 빠진다**
   - **품질요소**: 전 QA (특히 Performance·Reliability)
   - **근거**: pdf (p.5 Objective — "feasible, well-architected subset")
-  - **발생 확률 / 영향**: Medium~High / High
+  - **발생 확률 / 영향**: Medium\~High / High
   - **완화 방향**: FR 우선순위 동결, AI는 optional 분리, 핵심 경로 우선
   - **코멘트**: 프로젝트 플래닝 잘 해서 진행하고 버릴 건 버림
 
@@ -354,7 +354,7 @@
 - **R-F3 — Qt/C++·DSP·RPi 학습곡선으로 구현 품질이 흔들린다**
   - **품질요소**: 전 QA (구현 품질 전반)
   - **근거**: pdf (p.29 Qt and Qt Creator)
-  - **발생 확률 / 영향**: Low~Medium / Medium
+  - **발생 확률 / 영향**: Low\~Medium / Medium
   - **완화 방향**: 역할 분담·페어링, 작은 spike로 조기 학습
   - **코멘트**: AI 활용하기 때문에 Risk 낮아짐
 
