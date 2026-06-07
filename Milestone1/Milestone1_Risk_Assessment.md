@@ -59,6 +59,9 @@ R-F6 | Only one test Pi5 — real-use verification doesn't fit the schedule | NT
   - **Quality attribute**: Performance (Throughput)
   - **Evidence**: pdf (p.25 Real Time Performance), QAS-1
   - **Probability / Impact**: High / High
+  - **Grading rationale**
+    - P-High: 96k/192k real-time load pushes the RPi5 to its hardware limit, so hitting it is likely.
+    - I-High: lost audio data breaks the core measurement outright.
   - **Mitigation**: Week-1 spike to measure the RPi's processing limit, then fix the sample-rate target (192k demoted to stretch)
   - **Tradeoff point**: the sample rate trades measurement precision (more samples per 0.1 ms) against Performance (this risk)
   - **Comment**: Use the week-1 spike result to set the final sample-rate target
@@ -67,6 +70,9 @@ R-F6 | Only one test Pi5 — real-use verification doesn't fit the schedule | NT
   - **Quality attribute**: Performance
   - **Evidence**: FR-12-01, FR-12-04, QAS-1, QAS-5
   - **Probability / Impact**: Medium / High
+  - **Grading rationale**
+    - P-Medium: stutter depends on rendering load and is reducible by culling inactive views.
+    - I-High: a frozen/stuttering UI directly violates the top driver QAS-1.
   - **Mitigation**: Reuse a shared input buffer, stop rendering inactive views, measure an FPS budget
   - **Tradeoff point**: showing 4 views at once trades Usability (QAS-5) against Performance
   - **Comment**: Decide 4 simultaneous views vs one-at-a-time after the performance check
@@ -75,6 +81,9 @@ R-F6 | Only one test Pi5 — real-use verification doesn't fit the schedule | NT
   - **Quality attribute**: Performance (Latency)
   - **Evidence**: QAS-1
   - **Probability / Impact**: Medium / High
+  - **Grading rationale**
+    - P-Medium: the 500 ms budget has headroom but the RPi may exceed it under load.
+    - I-High: missing it fails the QAS-1 pass/fail gate.
   - **Mitigation**: Instrument capture/processing/display latency per stage; monitor backlog
   - **Comment**: For the worst case, optimize resources/processes or migrate to reduced features
 
@@ -82,6 +91,9 @@ R-F6 | Only one test Pi5 — real-use verification doesn't fit the schedule | NT
   - **Quality attribute**: Dependability (Reliability) (+Performance)
   - **Evidence**: FR-07-10, QAS-1
   - **Probability / Impact**: Medium / Medium
+  - **Grading rationale**
+    - P-Medium: leaks are plausible but only accumulate over long runs.
+    - I-Medium: hits only the optional 24h+ feature, is gradual, and is restart-recoverable with values staying correct.
   - **Mitigation**: Monitor the long-term RSS trend; design buffer caps and aggregation
   - **Comment**: First verify memory leaks in the current code (experiment)
 
@@ -89,6 +101,9 @@ R-F6 | Only one test Pi5 — real-use verification doesn't fit the schedule | NT
   - **Quality attribute**: Performance (Latency)
   - **Evidence**: Multiple reports of GPU-acceleration slowdowns on RPi/embedded in Avalonia GitHub — #18807, #18942, #19288, #18127. pdf (p.25 Real Time Performance), QAS-1
   - **Probability / Impact**: Medium / High
+  - **Grading rationale**
+    - P-Medium: GPU-accel slowdowns are widely reported but causes vary, so our workload may be unaffected.
+    - I-High: stuttering real-time graphs violate QAS-1 (a one-line SW-render switch fully mitigates).
   - **Mitigation**: Week-1 spike to A/B-measure rendering backends (GLX/EGL/Software) on a real RPi5, then fix the backend. If the accelerated path is slow, switch to Software rendering (a one-line setting, no feature loss)
   - **Tradeoff point**: the rendering backend trades UI frame stability against CPU usage (Software rendering competes with the audio-analysis threads for CPU)
   - **Comment**: Similar reports are widespread but the causes vary (app-side bugs, resolution, driver path), so measurement on our workload is needed. Decide keep/change of the rendering-backend default from the week-1 spike (Planned Experiments, Experiment 1)
@@ -99,6 +114,9 @@ R-F6 | Only one test Pi5 — real-use verification doesn't fit the schedule | NT
   - **Quality attribute**: Dependability (Reliability)
   - **Evidence**: FR-08-04…06, FR-06-01…04, QAS-2, QAS-3
   - **Probability / Impact**: High / High
+  - **Grading rationale**
+    - P-High: sub-0.1 ms tick/tock detection on real noisy signals is genuinely hard.
+    - I-High: it contaminates all three core metrics (rate, beat error, amplitude).
   - **Mitigation**: Early-verify the detection algorithm on a synthetic-signal bench (ground truth known)
   - **Comment**: Confirm the current logic works; improve if needed
 
@@ -106,6 +124,9 @@ R-F6 | Only one test Pi5 — real-use verification doesn't fit the schedule | NT
   - **Quality attribute**: Availability (Graceful Degradation)
   - **Evidence**: QAS-2
   - **Probability / Impact**: Medium / High
+  - **Grading rationale**
+    - P-Medium: weak/noisy-signal handling is uncertain but testable per noise level.
+    - I-High: showing wrong values instead of "signal weak" actively misleads the user.
   - **Mitigation**: Filtering and signal-quality judgment; isolate bad data behind a "signal weak" indication
   - **Comment**: Test per noise level; improve the logic if needed
 
@@ -115,6 +136,9 @@ R-F6 | Only one test Pi5 — real-use verification doesn't fit the schedule | NT
   - **Quality attribute**: Modifiability (Extensibility)
   - **Evidence**: FR-12-01, QAS-4
   - **Probability / Impact**: Medium / Medium
+  - **Grading rationale**
+    - P-Medium: without up-front design the extension structure can be missed.
+    - I-Medium: it raises later cost but is contained by refactoring and breaks no function.
   - **Mitigation**: Pre-design a Filter interface (strategy) and a plug-in registration scheme
   - **Comment**: Better modularization should cover it
 
@@ -124,6 +148,9 @@ R-F6 | Only one test Pi5 — real-use verification doesn't fit the schedule | NT
   - **Quality attribute**: Dependability (Reliability)
   - **Evidence**: pdf (p.29 Raspberry Pi OS — Auto Gain Control), QAS-2
   - **Probability / Impact**: Medium / High
+  - **Grading rationale**
+    - P-Medium: AGC defaults on and is an easily-forgotten manual step, yet fully preventable by checklist.
+    - I-High: a distorted signal collapses every measurement.
   - **Mitigation**: From day one, make AGC-off and coupling verification an environment checklist
   - **Comment**: Must be stated in the user guide
 
@@ -131,6 +158,9 @@ R-F6 | Only one test Pi5 — real-use verification doesn't fit the schedule | NT
   - **Quality attribute**: Portability (+Performance)
   - **Evidence**: pdf (p.29 System Software), QAS-1
   - **Probability / Impact**: Medium / Medium
+  - **Grading rationale**
+    - P-Medium: WASAPI/ALSA divergence is likely but caught early by running the RPi in parallel.
+    - I-Medium: it causes rework, not a permanent failure.
   - **Mitigation**: Isolate audio I/O behind a port-adapter; verify early and regularly on the RPi
   - **Comment**: The RPi runs in parallel throughout the project, so risk is low
 
@@ -138,6 +168,9 @@ R-F6 | Only one test Pi5 — real-use verification doesn't fit the schedule | NT
   - **Quality attribute**: Portability (+Reliability)
   - **Evidence**: pdf (p.25 Real Time Performance), QAS-1
   - **Probability / Impact**: Medium / Medium
+  - **Grading rationale**
+    - P-Medium: three sample rates add timing complexity where subtle errors are plausible.
+    - I-Medium: the issue is confined to normalization handled in the adapter.
   - **Mitigation**: State the supported sample-rate range; normalize in the adapter
   - **Comment**: State the feasible spec (microphone spec, etc.)
 
@@ -147,6 +180,9 @@ R-F6 | Only one test Pi5 — real-use verification doesn't fit the schedule | NT
   - **Quality attribute**: Usability
   - **Evidence**: pdf (p.27 8 Inch Touchscreen for Raspberry Pi), QAS-5
   - **Probability / Impact**: Medium / Medium
+  - **Grading rationale**
+    - P-Medium: fitting all panels legibly on the small screen is tight.
+    - I-Medium: it affects only readability, is mitigable by layout, and loses no data.
   - **Mitigation**: Key-readings-first layout, tab-based split, ≤ 2-tap navigation
   - **Comment**: Run size-adjustment tests
 
@@ -154,6 +190,9 @@ R-F6 | Only one test Pi5 — real-use verification doesn't fit the schedule | NT
   - **Quality attribute**: Usability
   - **Evidence**: QAS-5
   - **Probability / Impact**: Low / Low
+  - **Grading rationale**
+    - P-Low: touch is largely OS-handled and generally reliable.
+    - I-Low: at worst a minor operability annoyance, easily worked around.
   - **Mitigation**: Experimentally check touch sensitivity and touch-area recognition if possible
   - **Comment**: If controllable at app level, experiment for optimal values; if defined at OS level, proceed as is
 
@@ -163,6 +202,9 @@ R-F6 | Only one test Pi5 — real-use verification doesn't fit the schedule | NT
   - **Quality attribute**: All QAs (esp. Performance · Reliability)
   - **Evidence**: pdf (p.5 Objective — "feasible, well-architected subset"), QAS-ALL
   - **Probability / Impact**: Medium / High
+  - **Grading rationale**
+    - P-Medium: scope overrun is real but manageable by freezing priorities.
+    - I-High: dropping essential features would gut the product.
   - **Mitigation**: Freeze FR priorities, split AI off as optional, critical path first
   - **Comment**: Plan well and drop what must be dropped
 
@@ -170,6 +212,9 @@ R-F6 | Only one test Pi5 — real-use verification doesn't fit the schedule | NT
   - **Quality attribute**: Modifiability (onboarding · maintenance)
   - **Evidence**: pdf (p.29 GUI Code), QAS-4
   - **Probability / Impact**: Low / Medium
+  - **Grading rationale**
+    - P-Low: AI-assisted code reading lowers the chance of getting stuck.
+    - I-Medium: a slow start delays but does not break the project.
   - **Mitigation**: Make code-reading sessions and a module map a week-1 task
   - **Comment**: Risk lowered by using AI
 
@@ -177,6 +222,9 @@ R-F6 | Only one test Pi5 — real-use verification doesn't fit the schedule | NT
   - **Quality attribute**: All QAs (overall implementation quality)
   - **Evidence**: pdf (p.29 Qt and Qt Creator), QAS-1, QAS-2
   - **Probability / Impact**: Low / Medium
+  - **Grading rationale**
+    - P-Low: AI assistance and pairing ease the learning curve.
+    - I-Medium: quality wobble affects implementation broadly but not fatally.
   - **Mitigation**: Role split and pairing; early learning via small spikes
   - **Comment**: Risk lowered by using AI
 
@@ -184,6 +232,9 @@ R-F6 | Only one test Pi5 — real-use verification doesn't fit the schedule | NT
   - **Quality attribute**: Dependability (Reliability) — signal-quality classification
   - **Evidence**: pdf (p.12 AI Feature), QAS-1, QAS-2
   - **Probability / Impact**: Medium / Medium
+  - **Grading rationale**
+    - P-Medium: on-device AI uncertainty is real if the feature is attempted.
+    - I-Medium: it is optional scope with a rule-based fallback.
   - **Mitigation**: Separate as optional scope; rule-based fallback if it falls short
   - **Comment**: Windows first, then assess operability on the RPi 5 before adopting
 
@@ -191,6 +242,9 @@ R-F6 | Only one test Pi5 — real-use verification doesn't fit the schedule | NT
   - **Quality attribute**: Reliability · Performance · (Testability)
   - **Evidence**: pdf (p.30 Project Deliverables), QAS-1, QAS-2, QAS-3
   - **Probability / Impact**: Medium / Medium
+  - **Grading rationale**
+    - P-Medium: plausible-but-wrong GenAI code is common in DSP/concurrency.
+    - I-Medium: caught by mandatory verification before it ships.
   - **Mitigation**: Mandatory adversarial verification of generated code (unit tests, synthetic-signal bench); understand the core algorithms; confirm GenAI usage policy with mentors
   - **Comment**: See mitigation (code review, whole team understands the algorithms)
 
@@ -198,6 +252,9 @@ R-F6 | Only one test Pi5 — real-use verification doesn't fit the schedule | NT
   - **Quality attribute**: Modifiability (Testability)
   - **Evidence**: pdf (p.26 System Hardware — Raspberry Pi), QAS-1
   - **Probability / Impact**: High / High
+  - **Grading rationale**
+    - P-High: one shared Pi5 makes a scheduling clash near-certain.
+    - I-High: missing real-device verification undermines every RPi-dependent claim.
   - **Mitigation**: Design most verification to run Sim/Playback-based (no hardware required), minimizing Pi5 dependence; schedule the real device only for must-have items such as performance measurement
 
 ## G. Other / Uncategorized
@@ -271,6 +328,9 @@ R-F6 | 테스트용 Pi5가 한 대뿐이라 실사용 검증 일정이 안 나�
   - **품질요소**: Performance (Throughput)
   - **근거**: pdf (p.25 Real Time Performance), QAS-1
   - **발생 확률 / 영향**: High / High
+  - **등급 근거**
+    - P-High: 96k/192k 실시간 부하가 RPi5 하드웨어 한계에 근접해 도달 가능성 큼.
+    - I-High: 소리 데이터 손실은 핵심 측정 자체를 망가뜨림.
   - **완화 방향**: 1주차 spike로 RPi 처리 한계 측정 후 샘플레이트 목표 확정(192k는 stretch로 격하)
   - **Tradeoff point**: 샘플레이트는 측정 정밀도(0.1 ms당 샘플 수 증가)↔Performance(본 리스크)의 tradeoff point
   - **코멘트**: 1주차 spike 결과로 최종 샘플레이트 목표 결정
@@ -279,6 +339,9 @@ R-F6 | 테스트용 Pi5가 한 대뿐이라 실사용 검증 일정이 안 나�
   - **품질요소**: Performance
   - **근거**: FR-12-01, FR-12-04, QAS-1, QAS-5
   - **발생 확률 / 영향**: Medium / High
+  - **등급 근거**
+    - P-Medium: 끊김은 렌더링 부하에 좌우되고 비활성 뷰 컬링으로 줄일 수 있음.
+    - I-High: UI 멈춤·버벅임은 최우선 드라이버 QAS-1을 직접 위반.
   - **완화 방향**: 공유 입력버퍼 재사용, 비활성 뷰 렌더 중단, FPS 예산 측정
   - **Tradeoff point**: 동시 4뷰 표시는 Usability(QAS-5)↔Performance의 tradeoff point
   - **코멘트**: 4개 동시 뷰 / 1개씩 뷰는 성능 확인 후 결정
@@ -287,6 +350,9 @@ R-F6 | 테스트용 Pi5가 한 대뿐이라 실사용 검증 일정이 안 나�
   - **품질요소**: Performance (Latency)
   - **근거**: QAS-1
   - **발생 확률 / 영향**: Medium / High
+  - **등급 근거**
+    - P-Medium: 500 ms 예산에 여유는 있으나 부하 시 RPi가 초과할 수 있음.
+    - I-High: 미달 시 QAS-1 합격/불합격 게이트를 통과 못 함.
   - **완화 방향**: 캡처/처리/표시 단계별 지연 계측·백로그 모니터링
   - **코멘트**: 최악의 경우로 고려해서 리소스/프로세스 최적화 또는 기능 약화로 마이그레이션
 
@@ -294,6 +360,9 @@ R-F6 | 테스트용 Pi5가 한 대뿐이라 실사용 검증 일정이 안 나�
   - **품질요소**: Dependability (Reliability) (+Performance)
   - **근거**: FR-07-10, QAS-1
   - **발생 확률 / 영향**: Medium / Medium
+  - **등급 근거**
+    - P-Medium: 누수는 가능하나 장시간 실행에서만 누적됨.
+    - I-Medium: 선택적 24h+ 기능에만 영향, 점진적이며 재시작으로 복구 가능하고 값은 정확.
   - **완화 방향**: 장기 RSS 추세 모니터, 버퍼 상한·집계(aggregation) 설계
   - **코멘트**: 현 코드 기준으로 메모리 릭 확인 (실험)
 
@@ -301,6 +370,9 @@ R-F6 | 테스트용 Pi5가 한 대뿐이라 실사용 검증 일정이 안 나�
   - **품질요소**: Performance (Latency)
   - **근거**: Avalonia GitHub에 RPi/임베디드의 GPU 가속 성능 저하 보고 다수 — #18807, #18942, #19288, #18127. pdf (p.25 Real Time Performance), QAS-1
   - **발생 확률 / 영향**: Medium / High
+  - **등급 근거**
+    - P-Medium: GPU 가속 저하 보고는 많으나 원인이 제각각이라 우리 워크로드엔 안 나타날 수 있음.
+    - I-High: 실시간 그래프 끊김은 QAS-1 위반(SW 렌더 1줄 전환으로 완전 완화).
   - **완화 방향**: 1주차 spike로 RPi5 실기기에서 렌더링 백엔드(GLX/EGL/Software) A/B 측정 후 백엔드 확정. 가속 경로가 느리면 Software 렌더링으로 전환(설정 1줄, 기능 손실 없음)
   - **Tradeoff point**: 렌더링 백엔드는 UI 프레임 안정성↔CPU 점유(Software 렌더링은 오디오 분석 스레드와 CPU 경쟁)의 tradeoff point
   - **코멘트**: 유사 보고가 여러 건 퍼져 있으나 원인이 제각각(앱 측 버그, 해상도, 드라이버 경로)이라 우리 워크로드에서의 실측 확인 필요. 1주차 spike(Planned Experiments 실험 1) 결과로 렌더링 백엔드 기본값 유지/변경 결정
@@ -311,6 +383,9 @@ R-F6 | 테스트용 Pi5가 한 대뿐이라 실사용 검증 일정이 안 나�
   - **품질요소**: Dependability (Reliability)
   - **근거**: FR-08-04…06, FR-06-01…04, QAS-2, QAS-3
   - **발생 확률 / 영향**: High / High
+  - **등급 근거**
+    - P-High: 실제 잡음 신호에서 0.1 ms 정밀 틱/톡 검출은 본질적으로 어려움.
+    - I-High: rate·beat error·amplitude 세 핵심 지표를 전부 오염.
   - **완화 방향**: 합성신호(정답 known) 벤치로 검출 알고리즘 조기 검증
   - **코멘트**: 현 로직 기준으로 정상동작 확인 및 필요 시 로직 개선 필요
 
@@ -318,6 +393,9 @@ R-F6 | 테스트용 Pi5가 한 대뿐이라 실사용 검증 일정이 안 나�
   - **품질요소**: Availability (Graceful Degradation)
   - **근거**: QAS-2
   - **발생 확률 / 영향**: Medium / High
+  - **등급 근거**
+    - P-Medium: 약/잡음 신호 처리는 불확실하나 노이즈 레벨별 테스트로 확인 가능.
+    - I-High: "신호 약함" 대신 틀린 값을 보이면 사용자를 적극 오도.
   - **완화 방향**: 필터링·신호품질 판정, bad-data는 "signal weak" 표시로 격리
   - **코멘트**: 노이즈 레벨 별 테스트 및 필요 시 로직 개선
 
@@ -327,6 +405,9 @@ R-F6 | 테스트용 Pi5가 한 대뿐이라 실사용 검증 일정이 안 나�
   - **품질요소**: Modifiability (Extensibility)
   - **근거**: FR-12-01, QAS-4
   - **발생 확률 / 영향**: Medium / Medium
+  - **등급 근거**
+    - P-Medium: 선설계가 없으면 확장 구조를 놓칠 수 있음.
+    - I-Medium: 후반 비용은 늘지만 리팩터링으로 한정되고 기능 실패는 없음.
   - **완화 방향**: Filter 인터페이스(strategy)·plug-in 등록 방식 선설계
   - **코멘트**: 모듈화를 더 잘 하면 될 듯함
 
@@ -336,6 +417,9 @@ R-F6 | 테스트용 Pi5가 한 대뿐이라 실사용 검증 일정이 안 나�
   - **품질요소**: Dependability (Reliability)
   - **근거**: pdf (p.29 Raspberry Pi OS — Auto Gain Control), QAS-2
   - **발생 확률 / 영향**: Medium / High
+  - **등급 근거**
+    - P-Medium: AGC는 기본값 켜짐+잊기 쉬운 수동 단계지만 체크리스트로 충분히 예방 가능.
+    - I-High: 신호 왜곡 시 모든 측정이 무너짐.
   - **완화 방향**: 착수 즉시 AGC off·커플링 검증을 환경 체크리스트화
   - **코멘트**: 사용자 가이드 문서에 명시 필요
 
@@ -343,6 +427,9 @@ R-F6 | 테스트용 Pi5가 한 대뿐이라 실사용 검증 일정이 안 나�
   - **품질요소**: Portability (+Performance)
   - **근거**: pdf (p.29 System Software), QAS-1
   - **발생 확률 / 영향**: Medium / Medium
+  - **등급 근거**
+    - P-Medium: WASAPI/ALSA 차이는 가능성 있으나 RPi 병행 구동으로 조기 발견.
+    - I-Medium: 재작업을 유발할 뿐 영구 실패는 아님.
   - **완화 방향**: 오디오 I/O를 포트-어댑터로 격리, RPi 조기·정기 검증
   - **코멘트**: 프로젝트 진행하면서 RPi에도 진행할 것이어서 리스크 낮음
 
@@ -350,6 +437,9 @@ R-F6 | 테스트용 Pi5가 한 대뿐이라 실사용 검증 일정이 안 나�
   - **품질요소**: Portability (+Reliability)
   - **근거**: pdf (p.25 Real Time Performance), QAS-1
   - **발생 확률 / 영향**: Medium / Medium
+  - **등급 근거**
+    - P-Medium: 샘플레이트 3종은 타이밍 복잡도를 키워 미세 오류 가능성 있음.
+    - I-Medium: 어댑터 정규화로 한정되는 문제.
   - **완화 방향**: 지원 샘플레이트 범위 명시, 어댑터에서 정규화
   - **코멘트**: 가능 스펙 명시 (마이크 스펙 등)
 
@@ -359,6 +449,9 @@ R-F6 | 테스트용 Pi5가 한 대뿐이라 실사용 검증 일정이 안 나�
   - **품질요소**: Usability
   - **근거**: pdf (p.27 8 Inch Touchscreen for Raspberry Pi), QAS-5
   - **발생 확률 / 영향**: Medium / Medium
+  - **등급 근거**
+    - P-Medium: 작은 화면에 모든 패널을 가독성 있게 담기는 빠듯함.
+    - I-Medium: 가독성에만 영향, 레이아웃으로 완화 가능하고 데이터 손실 없음.
   - **완화 방향**: 핵심 측정값 우선 레이아웃, 탭 기반 분할, ≤2탭 내비
   - **코멘트**: 크기 조절 테스트 진행
 
@@ -366,6 +459,9 @@ R-F6 | 테스트용 Pi5가 한 대뿐이라 실사용 검증 일정이 안 나�
   - **품질요소**: Usability
   - **근거**: QAS-5
   - **발생 확률 / 영향**: Low / Low
+  - **등급 근거**
+    - P-Low: 터치는 대부분 OS가 처리하고 일반적으로 안정적.
+    - I-Low: 최악이라도 경미한 조작 불편으로 우회 쉬움.
   - **완화 방향**: 터치 민감도나 터치 범위인식을 실험적으로 가능하면 확인
   - **코멘트**: App 레벨에서 제어 가능하면 실험 후 최적의 값 확인, OS 레벨에서 정의되면 현 상태 진행
 
@@ -375,6 +471,9 @@ R-F6 | 테스트용 Pi5가 한 대뿐이라 실사용 검증 일정이 안 나�
   - **품질요소**: 전 QA (특히 Performance·Reliability)
   - **근거**: pdf (p.5 Objective — "feasible, well-architected subset"), QAS-ALL
   - **발생 확률 / 영향**: Medium / High
+  - **등급 근거**
+    - P-Medium: 범위 초과는 실재하나 우선순위 동결로 관리 가능.
+    - I-High: 핵심 기능이 빠지면 제품 본질이 무너짐.
   - **완화 방향**: FR 우선순위 동결, AI는 optional 분리, 핵심 경로 우선
   - **코멘트**: 프로젝트 플래닝 잘 해서 진행하고 버릴 건 버림
 
@@ -382,6 +481,9 @@ R-F6 | 테스트용 Pi5가 한 대뿐이라 실사용 검증 일정이 안 나�
   - **품질요소**: Modifiability (착수·유지보수)
   - **근거**: pdf (p.29 GUI Code), QAS-4
   - **발생 확률 / 영향**: Low / Medium
+  - **등급 근거**
+    - P-Low: AI 보조 코드 분석으로 막힐 확률 낮음.
+    - I-Medium: 착수 지연은 일정에 영향이나 프로젝트를 깨지는 않음.
   - **완화 방향**: 코드 reading 세션·모듈 맵 작성을 1주차 태스크화
   - **코멘트**: AI 활용하기 때문에 Risk 낮아짐
 
@@ -389,6 +491,9 @@ R-F6 | 테스트용 Pi5가 한 대뿐이라 실사용 검증 일정이 안 나�
   - **품질요소**: 전 QA (구현 품질 전반)
   - **근거**: pdf (p.29 Qt and Qt Creator), QAS-1, QAS-2
   - **발생 확률 / 영향**: Low / Medium
+  - **등급 근거**
+    - P-Low: AI 활용·페어링으로 학습곡선 완화.
+    - I-Medium: 품질 흔들림은 구현 전반에 영향이나 치명적이지 않음.
   - **완화 방향**: 역할 분담·페어링, 작은 spike로 조기 학습
   - **코멘트**: AI 활용하기 때문에 Risk 낮아짐
 
@@ -396,6 +501,9 @@ R-F6 | 테스트용 Pi5가 한 대뿐이라 실사용 검증 일정이 안 나�
   - **품질요소**: Dependability (Reliability) — 신호품질 분류
   - **근거**: pdf (p.12 AI Feature), QAS-1, QAS-2
   - **발생 확률 / 영향**: Medium / Medium
+  - **등급 근거**
+    - P-Medium: 시도 시 on-device AI 불확실성이 실재.
+    - I-Medium: 선택 스코프이며 룰베이스 폴백이 있음.
   - **완화 방향**: optional 스코프로 분리, 미달 시 룰베이스 폴백
   - **코멘트**: 우선 Windows 진행 후 RPi 5에서 동작성 검토 후 반영 결정
 
@@ -403,6 +511,9 @@ R-F6 | 테스트용 Pi5가 한 대뿐이라 실사용 검증 일정이 안 나�
   - **품질요소**: Reliability·Performance·(Testability)
   - **근거**: pdf (p.30 Project Deliverables), QAS-1, QAS-2, QAS-3
   - **발생 확률 / 영향**: Medium / Medium
+  - **등급 근거**
+    - P-Medium: DSP/동시성에서 그럴듯하지만 틀린 GenAI 코드는 흔함.
+    - I-Medium: 의무 검증으로 반영 전 차단.
   - **완화 방향**: 생성코드 adversarial 검증(단위테스트·합성신호 벤치) 의무화, 핵심 알고리즘은 이해 동반, GenAI 사용 허용여부 멘토 확인
   - **코멘트**: 완화 방향 참고 (코드리뷰, 우리 모두 알고리즘 이해 등)
 
@@ -410,6 +521,9 @@ R-F6 | 테스트용 Pi5가 한 대뿐이라 실사용 검증 일정이 안 나�
   - **품질요소**: Modifiability (Testability)
   - **근거**: pdf (p.26 System Hardware — Raspberry Pi), QAS-1
   - **발생 확률 / 영향**: High / High
+  - **등급 근거**
+    - P-High: Pi5 한 대를 팀이 공유해 일정 충돌이 거의 확실.
+    - I-High: 실기기 검증 부재는 RPi 의존 주장 전체의 신뢰를 떨어뜨림.
   - **완화 방향**: 검증의 대부분을 Sim/Playback 기반(하드웨어 불요)으로 설계해 Pi5 의존 최소화; 실기기는 성능 측정 등 필수 항목에만 일정 배정
 
 ## G. 기타 또는 카테고리화 되지 않음
