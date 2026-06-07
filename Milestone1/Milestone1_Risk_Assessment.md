@@ -34,7 +34,7 @@
 | Probability / Impact | High | Medium | Low |
 |----------------------|------|--------|-----|
 | High | R-A1, R-A2, R-B1, R-B2, R-F1, R-F6 | - | - |
-| Medium | R-A3, R-D1 | R-A4, R-C1, R-D2, R-D3, R-E1, R-F3, R-F4, R-F5 | - |
+| Medium | R-A3, R-A5, R-D1 | R-A4, R-C1, R-D2, R-D3, R-E1, R-F3, R-F4, R-F5 | - |
 | Low | - | R-F2 | R-E2 |
 
 ## A. Real-Time Performance (RPi)
@@ -68,6 +68,14 @@
   - **Probability / Impact**: Medium / Medium
   - **Mitigation**: Monitor the long-term RSS trend; design buffer caps and aggregation
   - **Comment**: First verify memory leaks in the current code (experiment)
+
+- **R-A5 — With the Avalonia framework, a bug may make GPU-accelerated rendering on the RPi5 slower than SW rendering, causing real-time graph (Rate/Scope) updates to stutter**
+  - **Quality attribute**: Performance (Latency)
+  - **Evidence**: Multiple reports of GPU-acceleration slowdowns on RPi/embedded in Avalonia GitHub — #18807, #18942, #19288, #18127. pdf (p.25 Real Time Performance)
+  - **Probability / Impact**: Medium / High
+  - **Mitigation**: Week-1 spike to A/B-measure rendering backends (GLX/EGL/Software) on a real RPi5, then fix the backend. If the accelerated path is slow, switch to Software rendering (a one-line setting, no feature loss)
+  - **Tradeoff point**: the rendering backend trades UI frame stability against CPU usage (Software rendering competes with the audio-analysis threads for CPU)
+  - **Comment**: Similar reports are widespread but the causes vary (app-side bugs, resolution, driver path), so measurement on our workload is needed. Decide keep/change of the rendering-backend default from the week-1 spike (Planned Experiments, Experiment 1)
 
 ## B. Signal Processing / Measurement Trustworthiness
 
@@ -221,7 +229,7 @@
 | 발생 확률 / 영향 | High | Medium | Low |
 |------------------|------|--------|-----|
 | High | R-A1, R-A2, R-B1, R-B2, R-F1, R-F6 | - | - |
-| Medium | R-A3, R-D1 | R-A4, R-C1, R-D2, R-D3, R-E1, R-F3, R-F4, R-F5 | - |
+| Medium | R-A3, R-A5, R-D1 | R-A4, R-C1, R-D2, R-D3, R-E1, R-F3, R-F4, R-F5 | - |
 | Low | - | R-F2 | R-E2 |
 
 ## A. 실시간 성능 (RPi)
@@ -255,6 +263,14 @@
   - **발생 확률 / 영향**: Medium / Medium
   - **완화 방향**: 장기 RSS 추세 모니터, 버퍼 상한·집계(aggregation) 설계
   - **코멘트**: 현 코드 기준으로 메모리 릭 확인 (실험)
+
+- **R-A5 — Avalonia 프레임워크 사용 시 RPi5에서 GPU 가속 렌더링이 버그로 SW 렌더링보다 느려 실시간 그래프(Rate/Scope) 갱신이 끊길 수 있다**
+  - **품질요소**: Performance (Latency)
+  - **근거**: Avalonia GitHub에 RPi/임베디드의 GPU 가속 성능 저하 보고 다수 — #18807, #18942, #19288, #18127. pdf (p.25 Real Time Performance)
+  - **발생 확률 / 영향**: Medium / High
+  - **완화 방향**: 1주차 spike로 RPi5 실기기에서 렌더링 백엔드(GLX/EGL/Software) A/B 측정 후 백엔드 확정. 가속 경로가 느리면 Software 렌더링으로 전환(설정 1줄, 기능 손실 없음)
+  - **Tradeoff point**: 렌더링 백엔드는 UI 프레임 안정성↔CPU 점유(Software 렌더링은 오디오 분석 스레드와 CPU 경쟁)의 tradeoff point
+  - **코멘트**: 유사 보고가 여러 건 퍼져 있으나 원인이 제각각(앱 측 버그, 해상도, 드라이버 경로)이라 우리 워크로드에서의 실측 확인 필요. 1주차 spike(Planned Experiments 실험 1) 결과로 렌더링 백엔드 기본값 유지/변경 결정
 
 ## B. 신호처리 / 측정 신뢰성
 
