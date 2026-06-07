@@ -49,7 +49,7 @@ R-E2 | Touch accuracy or recognition may be poor | T | QAS-5 | L | L
 R-F1 | Everything (12 features + AI) can't fit in 5 weeks — prioritization failure drops essentials | NT | QAS-ALL | M | H
 R-F2 | Understanding the baseline code takes time and delays the start | NT | QAS-4 | L | M
 R-F3 | Qt/C++ · DSP · RPi learning curve shakes implementation quality | NT | QAS-1<br>QAS-2 | L | M
-R-F4 | Attempting the AI/TinyML feature raises on-device uncertainty | T | QAS-1<br>QAS-2 | M (if attempted) | M
+R-F4 | Attempting the AI/TinyML feature raises on-device uncertainty | T | QAS-1<br>QAS-2 | M | M
 R-F5 | Accepting GenAI-generated code unverified lets in plausible-but-wrong code | NT | QAS-1<br>QAS-2<br>QAS-3 | M | M
 R-F6 | Only one test Pi5 — real-use verification doesn't fit the schedule | NT | QAS-1 | H | H
 
@@ -183,7 +183,7 @@ R-F6 | Only one test Pi5 — real-use verification doesn't fit the schedule | NT
 - **R-F4 — Attempting the AI/TinyML feature raises on-device uncertainty**
   - **Quality attribute**: Dependability (Reliability) — signal-quality classification
   - **Evidence**: pdf (p.12 AI Feature), QAS-1, QAS-2
-  - **Probability / Impact**: Medium (if attempted) / Medium
+  - **Probability / Impact**: Medium / Medium
   - **Mitigation**: Separate as optional scope; rule-based fallback if it falls short
   - **Comment**: Windows first, then assess operability on the RPi 5 before adopting
 
@@ -261,7 +261,7 @@ R-E2 | 터치 정확도·인식률이 떨어질 수 있다 | T | QAS-5 | L | L
 R-F1 | 5주 안에 12개 기능 + AI 전부 불가능 — 우선순위 실패 시 핵심이 빠진다 | NT | QAS-ALL | M | H
 R-F2 | 베이스라인 코드 이해에 시간이 걸려 착수가 늦어진다 | NT | QAS-4 | L | M
 R-F3 | Qt/C++·DSP·RPi 학습곡선으로 구현 품질이 흔들린다 | NT | QAS-1<br>QAS-2 | L | M
-R-F4 | AI/TinyML 기능 시도 시 on-device 불확실성이 커진다 | T | QAS-1<br>QAS-2 | M(시도 시) | M
+R-F4 | AI/TinyML 기능 시도 시 on-device 불확실성이 커진다 | T | QAS-1<br>QAS-2 | M | M
 R-F5 | GenAI 생성 코드를 검증 없이 수용하면 그럴듯하지만 틀린 코드가 들어온다 | NT | QAS-1<br>QAS-2<br>QAS-3 | M | M
 R-F6 | 테스트용 Pi5가 한 대뿐이라 실사용 검증 일정이 안 나온다 | NT | QAS-1 | H | H
 
@@ -395,7 +395,7 @@ R-F6 | 테스트용 Pi5가 한 대뿐이라 실사용 검증 일정이 안 나�
 - **R-F4 — AI/TinyML 기능을 시도하면 on-device 불확실성이 커진다**
   - **품질요소**: Dependability (Reliability) — 신호품질 분류
   - **근거**: pdf (p.12 AI Feature), QAS-1, QAS-2
-  - **발생 확률 / 영향**: Medium(시도 시) / Medium
+  - **발생 확률 / 영향**: Medium / Medium
   - **완화 방향**: optional 스코프로 분리, 미달 시 룰베이스 폴백
   - **코멘트**: 우선 Windows 진행 후 RPi 5에서 동작성 검토 후 반영 결정
 
