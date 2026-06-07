@@ -4,6 +4,8 @@
 
 > Risks threatening the project, grouped by area and rated by probability and impact (High/Medium/Low).
 
+**Contents** — [Terminology](#terminology) · [Risk Summary](#risk-summary) · [A. Real-Time Performance](#a-real-time-performance-rpi) · [B. Signal Processing](#b-signal-processing--measurement-trustworthiness) · [C. Architecture](#c-architecture--extensibility) · [D. Hardware/Platform](#d-hardware--platform) · [E. Usability/UI](#e-usability--ui-1280800) · [F. Project/Process](#f-project--process) · [G. Other](#g-other--uncategorized) · [한국어 버전 ↓](#milestone1--risk-assessment-한국어)
+
 ## Terminology
 
 | Term | Meaning |
@@ -108,7 +110,7 @@ R-F6 | Only one test Pi5 — real-use verification doesn't fit the schedule | NT
 
 - **R-A5 — With the Avalonia framework, a bug may make GPU-accelerated rendering on the RPi5 slower than SW rendering, causing real-time graph (Rate/Scope) updates to stutter**
   - **Quality attribute**: Performance (Latency)
-  - **Evidence**: Multiple reports of GPU-acceleration slowdowns on RPi/embedded in Avalonia GitHub — #18807, #18942, #19288, #18127. pdf (p.25 Real Time Performance), QAS-1
+  - **Evidence**: Multiple reports of GPU-acceleration slowdowns on RPi/embedded in Avalonia GitHub — `#18807, #18942, #19288, #18127`. pdf (p.25 Real Time Performance), QAS-1
   - **Probability / Impact**: Medium / High
   - **Grading rationale**
     - P-Medium: GPU-accel slowdowns are widely reported but causes vary, so our workload may be unaffected.
@@ -208,7 +210,7 @@ R-F6 | Only one test Pi5 — real-use verification doesn't fit the schedule | NT
 ## F. Project / Process
 
 - **R-F1 — Everything (12 features + AI) can't fit in 5 weeks — failing to prioritize drops the essentials**
-  - **Quality attribute**: All QAs (esp. Performance · Reliability)
+  - **Quality attribute**: QAS-ALL (esp. Performance · Reliability)
   - **Evidence**: pdf (p.5 Objective — "feasible, well-architected subset"), QAS-ALL
   - **Probability / Impact**: Medium / High
   - **Grading rationale**
@@ -228,7 +230,7 @@ R-F6 | Only one test Pi5 — real-use verification doesn't fit the schedule | NT
   - **Comment**: Risk lowered by using AI
 
 - **R-F3 — The Qt/C++ · DSP · RPi learning curve shakes implementation quality**
-  - **Quality attribute**: All QAs (overall implementation quality)
+  - **Quality attribute**: QAS-ALL (overall implementation quality)
   - **Evidence**: pdf (p.29 Qt and Qt Creator), QAS-1, QAS-2
   - **Probability / Impact**: Low / Medium
   - **Grading rationale**
@@ -281,6 +283,8 @@ R-F6 | Only one test Pi5 — real-use verification doesn't fit the schedule | NT
 # Milestone1 — Risk Assessment (한국어)
 
 > 프로젝트를 위협하는 리스크를 영역별로 정리하고, 발생 확률과 영향(High/Medium/Low)으로 등급화했다.
+
+**목차** — [용어 설명](#용어-설명) · [리스크 요약](#리스크-요약) · [A. 실시간 성능](#a-실시간-성능-rpi) · [B. 신호처리](#b-신호처리--측정-신뢰성) · [C. 아키텍처](#c-아키텍처--확장성) · [D. 하드웨어/플랫폼](#d-하드웨어--플랫폼) · [E. 사용성/UI](#e-사용성--ui-1280800) · [F. 프로젝트/프로세스](#f-프로젝트--프로세스) · [G. 기타](#g-기타-또는-카테고리화-되지-않음) · [English version ↑](#milestone1--risk-assessment)
 
 ## 용어 설명
 
@@ -386,7 +390,7 @@ R-F6 | 테스트용 Pi5가 한 대뿐이라 실사용 검증 일정이 안 나�
 
 - **R-A5 — Avalonia 프레임워크 사용 시 RPi5에서 GPU 가속 렌더링이 버그로 SW 렌더링보다 느려 실시간 그래프(Rate/Scope) 갱신이 끊길 수 있다**
   - **품질요소**: Performance (Latency)
-  - **근거**: Avalonia GitHub에 RPi/임베디드의 GPU 가속 성능 저하 보고 다수 — #18807, #18942, #19288, #18127. pdf (p.25 Real Time Performance), QAS-1
+  - **근거**: Avalonia GitHub에 RPi/임베디드의 GPU 가속 성능 저하 보고 다수 — `#18807, #18942, #19288, #18127`. pdf (p.25 Real Time Performance), QAS-1
   - **발생 확률 / 영향**: Medium / High
   - **등급 근거**
     - P-Medium: GPU 가속 저하 보고는 많으나 원인이 제각각이라 우리 워크로드엔 안 나타날 수 있음.
@@ -486,7 +490,7 @@ R-F6 | 테스트용 Pi5가 한 대뿐이라 실사용 검증 일정이 안 나�
 ## F. 프로젝트 / 프로세스
 
 - **R-F1 — 5주 안에 12개 기능 + AI 전부는 불가능 — 우선순위에 실패하면 핵심이 빠진다**
-  - **품질요소**: 전 QA (특히 Performance·Reliability)
+  - **품질요소**: QAS-ALL (특히 Performance·Reliability)
   - **근거**: pdf (p.5 Objective — "feasible, well-architected subset"), QAS-ALL
   - **발생 확률 / 영향**: Medium / High
   - **등급 근거**
@@ -506,7 +510,7 @@ R-F6 | 테스트용 Pi5가 한 대뿐이라 실사용 검증 일정이 안 나�
   - **코멘트**: AI 활용하기 때문에 Risk 낮아짐
 
 - **R-F3 — Qt/C++·DSP·RPi 학습곡선으로 구현 품질이 흔들린다**
-  - **품질요소**: 전 QA (구현 품질 전반)
+  - **품질요소**: QAS-ALL (구현 품질 전반)
   - **근거**: pdf (p.29 Qt and Qt Creator), QAS-1, QAS-2
   - **발생 확률 / 영향**: Low / Medium
   - **등급 근거**
