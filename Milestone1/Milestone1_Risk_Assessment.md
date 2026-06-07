@@ -27,15 +27,29 @@
 | regression | A code change breaking something that used to work |
 | QAS / FR | QAS = quality attribute scenario (QA Final doc); FR = functional requirement (Architectural Drivers doc) |
 
-## Risk Matrix
+## Risk Summary
 
-> Range ratings are placed by the higher side: Medium\~High → High, Low\~Medium → Medium.
-
-| Probability / Impact | High | Medium | Low |
-|----------------------|------|--------|-----|
-| High | R-A1, R-A2, R-B1, R-B2, R-F1, R-F6 | - | - |
-| Medium | R-A3, R-A5, R-D1 | R-A4, R-C1, R-D2, R-D3, R-E1, R-F3, R-F4, R-F5 | - |
-| Low | - | R-F2 | R-E2 |
+Risk ID | Risk Title | Probability | Impact
+--------|-----------|-------------|-------
+R-A1 | RPi5 fails to keep up with high sample rates (96k/192k) and loses sound data | High | High
+R-A2 | Rendering four filters + multiple graphs at once makes the screen stutter | Medium\~High | High
+R-A3 | Sound-to-screen 0.5 s (p99 ≤ 500 ms) target is missed | Medium | High
+R-A4 | Long continuous runs (24h+) leak memory and degrade or crash | Medium | Medium
+R-A5 | Avalonia GPU-accelerated rendering on RPi5 slower than SW rendering, stuttering real-time graphs | Medium | High
+R-B1 | Tick/tock positions not found to 0.1 ms — rate, beat error, amplitude all contaminated | High | High
+R-B2 | Noisy/weak signals produce misleading values instead of a graceful "signal weak" | Medium\~High | High
+R-C1 | No up-front filter/marker extension design — late-stage cost soars | Medium | Medium
+R-D1 | AGC left on or poor microphone coupling distorts the signal | Medium | High
+R-D2 | Platform differences (WASAPI/ALSA) between Windows dev and RPi demo surface late | Medium | Medium
+R-D3 | Supporting three sample rates (48/96/192k) adds timing complexity | Medium | Medium
+R-E1 | Small screen can't legibly hold summary bar + graphs + scope strip | Medium | Medium
+R-E2 | Touch accuracy or recognition may be poor | Low | Low
+R-F1 | Everything (12 features + AI) can't fit in 5 weeks — prioritization failure drops essentials | Medium\~High | High
+R-F2 | Understanding the baseline code takes time and delays the start | Low | Medium
+R-F3 | Qt/C++ · DSP · RPi learning curve shakes implementation quality | Low\~Medium | Medium
+R-F4 | Attempting the AI/TinyML feature raises on-device uncertainty | Medium (if attempted) | Medium
+R-F5 | Accepting GenAI-generated code unverified lets in plausible-but-wrong code | Medium | Medium
+R-F6 | Only one test Pi5 — real-use verification doesn't fit the schedule | High | High
 
 ## A. Real-Time Performance (RPi)
 
@@ -222,15 +236,29 @@
 | regression | 코드 수정으로 기존에 되던 기능이 깨지는 것 |
 | QAS / FR | QAS = 품질 속성 시나리오(QA Final 문서), FR = 기능 요구사항(Architectural Drivers 문서) |
 
-## 리스크 매트릭스
+## 리스크 요약
 
-> 범위형 등급은 높은 쪽 기준으로 배치했다: Medium\~High → High, Low\~Medium → Medium.
-
-| 발생 확률 / 영향 | High | Medium | Low |
-|------------------|------|--------|-----|
-| High | R-A1, R-A2, R-B1, R-B2, R-F1, R-F6 | - | - |
-| Medium | R-A3, R-A5, R-D1 | R-A4, R-C1, R-D2, R-D3, R-E1, R-F3, R-F4, R-F5 | - |
-| Low | - | R-F2 | R-E2 |
+Risk ID | 리스크 타이틀 | Probability | Impact
+--------|--------------|-------------|-------
+R-A1 | RPi5가 고속 샘플레이트(96k/192k)를 실시간으로 못 따라가 소리 데이터를 놓친다 | High | High
+R-A2 | 필터 4개 + 그래프 여러 개 동시 렌더링으로 화면이 버벅인다 | Medium\~High | High
+R-A3 | 소리→화면 0.5초(p99 ≤ 500 ms) 목표를 못 지킨다 | Medium | High
+R-A4 | 장시간(24h+) 연속 실행 시 메모리가 새서 느려지거나 죽는다 | Medium | Medium
+R-A5 | Avalonia GPU 가속 렌더링이 RPi5에서 SW 렌더링보다 느려 실시간 그래프가 끊긴다 | Medium | High
+R-B1 | 틱/톡 위치를 0.1 ms 정밀도로 못 찾아 rate·beat error·amplitude 전부 오염된다 | High | High
+R-B2 | 시끄럽거나 약한 신호에서 "신호 약함" 대신 오해를 부르는 값을 표시한다 | Medium\~High | High
+R-C1 | 필터/마커 확장 구조를 미리 설계하지 않아 후반 비용이 급증한다 | Medium | Medium
+R-D1 | AGC를 끄지 않거나 마이크 결합이 나빠 신호가 왜곡된다 | Medium | High
+R-D2 | Windows 개발–RPi 데모 간 플랫폼 차이(WASAPI/ALSA)가 늦게 드러난다 | Medium | Medium
+R-D3 | 샘플레이트 3종(48/96/192k) 지원이 타이밍·복잡도를 키운다 | Medium | Medium
+R-E1 | 작은 화면에 요약바 + 그래프 + 스코프를 가독성 있게 다 못 담는다 | Medium | Medium
+R-E2 | 터치 정확도·인식률이 떨어질 수 있다 | Low | Low
+R-F1 | 5주 안에 12개 기능 + AI 전부 불가능 — 우선순위 실패 시 핵심이 빠진다 | Medium\~High | High
+R-F2 | 베이스라인 코드 이해에 시간이 걸려 착수가 늦어진다 | Low | Medium
+R-F3 | Qt/C++·DSP·RPi 학습곡선으로 구현 품질이 흔들린다 | Low\~Medium | Medium
+R-F4 | AI/TinyML 기능 시도 시 on-device 불확실성이 커진다 | Medium(시도 시) | Medium
+R-F5 | GenAI 생성 코드를 검증 없이 수용하면 그럴듯하지만 틀린 코드가 들어온다 | Medium | Medium
+R-F6 | 테스트용 Pi5가 한 대뿐이라 실사용 검증 일정이 안 나온다 | High | High
 
 ## A. 실시간 성능 (RPi)
 
