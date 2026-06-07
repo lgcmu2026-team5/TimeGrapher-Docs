@@ -29,27 +29,27 @@
 
 ## Risk Summary
 
-Risk ID | Risk Title | Probability | Impact
---------|-----------|-------------|-------
-R-A1 | RPi5 fails to keep up with high sample rates (96k/192k) and loses sound data | High | High
-R-A2 | Rendering four filters + multiple graphs at once makes the screen stutter | Medium\~High | High
-R-A3 | Sound-to-screen 0.5 s (p99 ≤ 500 ms) target is missed | Medium | High
-R-A4 | Long continuous runs (24h+) leak memory and degrade or crash | Medium | Medium
-R-A5 | Avalonia GPU-accelerated rendering on RPi5 slower than SW rendering, stuttering real-time graphs | Medium | High
-R-B1 | Tick/tock positions not found to 0.1 ms — rate, beat error, amplitude all contaminated | High | High
-R-B2 | Noisy/weak signals produce misleading values instead of a graceful "signal weak" | Medium\~High | High
-R-C1 | No up-front filter/marker extension design — late-stage cost soars | Medium | Medium
-R-D1 | AGC left on or poor microphone coupling distorts the signal | Medium | High
-R-D2 | Platform differences (WASAPI/ALSA) between Windows dev and RPi demo surface late | Medium | Medium
-R-D3 | Supporting three sample rates (48/96/192k) adds timing complexity | Medium | Medium
-R-E1 | Small screen can't legibly hold summary bar + graphs + scope strip | Medium | Medium
-R-E2 | Touch accuracy or recognition may be poor | Low | Low
-R-F1 | Everything (12 features + AI) can't fit in 5 weeks — prioritization failure drops essentials | Medium\~High | High
-R-F2 | Understanding the baseline code takes time and delays the start | Low | Medium
-R-F3 | Qt/C++ · DSP · RPi learning curve shakes implementation quality | Low\~Medium | Medium
-R-F4 | Attempting the AI/TinyML feature raises on-device uncertainty | Medium (if attempted) | Medium
-R-F5 | Accepting GenAI-generated code unverified lets in plausible-but-wrong code | Medium | Medium
-R-F6 | Only one test Pi5 — real-use verification doesn't fit the schedule | High | High
+Risk ID | Risk Title | QAS | Probability | Impact
+--------|-----------|-----|-------------|-------
+R-A1 | RPi5 fails to keep up with high sample rates (96k/192k) and loses sound data | QAS-1 | High | High
+R-A2 | Rendering four filters + multiple graphs at once makes the screen stutter | QAS-1, QAS-5 | Medium | High
+R-A3 | Sound-to-screen 0.5 s (p99 ≤ 500 ms) target is missed | QAS-1 | Medium | High
+R-A4 | Long continuous runs (24h+) leak memory and degrade or crash | QAS-1 | Medium | Medium
+R-A5 | Avalonia GPU-accelerated rendering on RPi5 slower than SW rendering, stuttering real-time graphs | QAS-1 | Medium | High
+R-B1 | Tick/tock positions not found to 0.1 ms — rate, beat error, amplitude all contaminated | QAS-2, QAS-3 | High | High
+R-B2 | Noisy/weak signals produce misleading values instead of a graceful "signal weak" | QAS-2 | Medium | High
+R-C1 | No up-front filter/marker extension design — late-stage cost soars | QAS-4 | Medium | Medium
+R-D1 | AGC left on or poor microphone coupling distorts the signal | QAS-2 | Medium | High
+R-D2 | Platform differences (WASAPI/ALSA) between Windows dev and RPi demo surface late | QAS-1 | Medium | Medium
+R-D3 | Supporting three sample rates (48/96/192k) adds timing complexity | QAS-1 | Medium | Medium
+R-E1 | Small screen can't legibly hold summary bar + graphs + scope strip | QAS-5 | Medium | Medium
+R-E2 | Touch accuracy or recognition may be poor | QAS-5 | Low | Low
+R-F1 | Everything (12 features + AI) can't fit in 5 weeks — prioritization failure drops essentials | QAS-ALL | Medium | High
+R-F2 | Understanding the baseline code takes time and delays the start | QAS-4 | Low | Medium
+R-F3 | Qt/C++ · DSP · RPi learning curve shakes implementation quality | QAS-1, QAS-2 | Low | Medium
+R-F4 | Attempting the AI/TinyML feature raises on-device uncertainty | QAS-1, QAS-2 | Medium (if attempted) | Medium
+R-F5 | Accepting GenAI-generated code unverified lets in plausible-but-wrong code | QAS-1, QAS-2, QAS-3 | Medium | Medium
+R-F6 | Only one test Pi5 — real-use verification doesn't fit the schedule | QAS-1 | High | High
 
 ## A. Real-Time Performance (RPi)
 
@@ -63,8 +63,8 @@ R-F6 | Only one test Pi5 — real-use verification doesn't fit the schedule | Hi
 
 - **R-A2 — Rendering four filters (F0→F3) plus multiple graphs at once makes the screen stutter (<20 FPS · UI freeze)**
   - **Quality attribute**: Performance
-  - **Evidence**: FR-12-01, FR-12-04, QAS-1
-  - **Probability / Impact**: Medium\~High / High
+  - **Evidence**: FR-12-01, FR-12-04, QAS-1, QAS-5
+  - **Probability / Impact**: Medium / High
   - **Mitigation**: Reuse a shared input buffer, stop rendering inactive views, measure an FPS budget
   - **Tradeoff point**: showing 4 views at once trades Usability (QAS-5) against Performance
   - **Comment**: Decide 4 simultaneous views vs one-at-a-time after the performance check
@@ -78,14 +78,14 @@ R-F6 | Only one test Pi5 — real-use verification doesn't fit the schedule | Hi
 
 - **R-A4 — Long continuous runs (24h+) leak memory and degrade or crash**
   - **Quality attribute**: Dependability (Reliability) (+Performance)
-  - **Evidence**: FR-07-10
+  - **Evidence**: FR-07-10, QAS-1
   - **Probability / Impact**: Medium / Medium
   - **Mitigation**: Monitor the long-term RSS trend; design buffer caps and aggregation
   - **Comment**: First verify memory leaks in the current code (experiment)
 
 - **R-A5 — With the Avalonia framework, a bug may make GPU-accelerated rendering on the RPi5 slower than SW rendering, causing real-time graph (Rate/Scope) updates to stutter**
   - **Quality attribute**: Performance (Latency)
-  - **Evidence**: Multiple reports of GPU-acceleration slowdowns on RPi/embedded in Avalonia GitHub — #18807, #18942, #19288, #18127. pdf (p.25 Real Time Performance)
+  - **Evidence**: Multiple reports of GPU-acceleration slowdowns on RPi/embedded in Avalonia GitHub — #18807, #18942, #19288, #18127. pdf (p.25 Real Time Performance), QAS-1
   - **Probability / Impact**: Medium / High
   - **Mitigation**: Week-1 spike to A/B-measure rendering backends (GLX/EGL/Software) on a real RPi5, then fix the backend. If the accelerated path is slow, switch to Software rendering (a one-line setting, no feature loss)
   - **Tradeoff point**: the rendering backend trades UI frame stability against CPU usage (Software rendering competes with the audio-analysis threads for CPU)
@@ -95,7 +95,7 @@ R-F6 | Only one test Pi5 — real-use verification doesn't fit the schedule | Hi
 
 - **R-B1 — If tick/tock positions can't be found to 0.1 ms, rate, beat error, and amplitude are all contaminated**
   - **Quality attribute**: Dependability (Reliability)
-  - **Evidence**: FR-08-04…06, FR-06-01…04
+  - **Evidence**: FR-08-04…06, FR-06-01…04, QAS-2, QAS-3
   - **Probability / Impact**: High / High
   - **Mitigation**: Early-verify the detection algorithm on a synthetic-signal bench (ground truth known)
   - **Comment**: Confirm the current logic works; improve if needed
@@ -103,7 +103,7 @@ R-F6 | Only one test Pi5 — real-use verification doesn't fit the schedule | Hi
 - **R-B2 — Noisy or weak signals may produce misleading values instead of a graceful "signal weak" response**
   - **Quality attribute**: Availability (Graceful Degradation)
   - **Evidence**: QAS-2
-  - **Probability / Impact**: Medium\~High / High
+  - **Probability / Impact**: Medium / High
   - **Mitigation**: Filtering and signal-quality judgment; isolate bad data behind a "signal weak" indication
   - **Comment**: Test per noise level; improve the logic if needed
 
@@ -120,21 +120,21 @@ R-F6 | Only one test Pi5 — real-use verification doesn't fit the schedule | Hi
 
 - **R-D1 — If AGC stays on or the microphone couples poorly, the signal distorts and every measurement collapses**
   - **Quality attribute**: Dependability (Reliability)
-  - **Evidence**: pdf (p.29 Raspberry Pi OS — Auto Gain Control)
+  - **Evidence**: pdf (p.29 Raspberry Pi OS — Auto Gain Control), QAS-2
   - **Probability / Impact**: Medium / High
   - **Mitigation**: From day one, make AGC-off and coupling verification an environment checklist
   - **Comment**: Must be stated in the user guide
 
 - **R-D2 — Developing on Windows, demoing on RPi — platform differences (WASAPI/ALSA audio backends) surface late**
   - **Quality attribute**: Portability (+Performance)
-  - **Evidence**: pdf (p.29 System Software)
+  - **Evidence**: pdf (p.29 System Software), QAS-1
   - **Probability / Impact**: Medium / Medium
   - **Mitigation**: Isolate audio I/O behind a port-adapter; verify early and regularly on the RPi
   - **Comment**: The RPi runs in parallel throughout the project, so risk is low
 
 - **R-D3 — Supporting three sample rates (48/96/192k) adds timing complexity**
   - **Quality attribute**: Portability (+Reliability)
-  - **Evidence**: pdf (p.25 Real Time Performance)
+  - **Evidence**: pdf (p.25 Real Time Performance), QAS-1
   - **Probability / Impact**: Medium / Medium
   - **Mitigation**: State the supported sample-rate range; normalize in the adapter
   - **Comment**: State the feasible spec (microphone spec, etc.)
@@ -150,6 +150,7 @@ R-F6 | Only one test Pi5 — real-use verification doesn't fit the schedule | Hi
 
 - **R-E2 — Touch accuracy or recognition may be poor**
   - **Quality attribute**: Usability
+  - **Evidence**: QAS-5
   - **Probability / Impact**: Low / Low
   - **Mitigation**: Experimentally check touch sensitivity and touch-area recognition if possible
   - **Comment**: If controllable at app level, experiment for optimal values; if defined at OS level, proceed as is
@@ -158,42 +159,42 @@ R-F6 | Only one test Pi5 — real-use verification doesn't fit the schedule | Hi
 
 - **R-F1 — Everything (12 features + AI) can't fit in 5 weeks — failing to prioritize drops the essentials**
   - **Quality attribute**: All QAs (esp. Performance · Reliability)
-  - **Evidence**: pdf (p.5 Objective — "feasible, well-architected subset")
-  - **Probability / Impact**: Medium\~High / High
+  - **Evidence**: pdf (p.5 Objective — "feasible, well-architected subset"), QAS-ALL
+  - **Probability / Impact**: Medium / High
   - **Mitigation**: Freeze FR priorities, split AI off as optional, critical path first
   - **Comment**: Plan well and drop what must be dropped
 
 - **R-F2 — Understanding the provided baseline code (TimeGrapher_v10.4) takes time and delays the start**
   - **Quality attribute**: Modifiability (onboarding · maintenance)
-  - **Evidence**: pdf (p.29 GUI Code)
+  - **Evidence**: pdf (p.29 GUI Code), QAS-4
   - **Probability / Impact**: Low / Medium
   - **Mitigation**: Make code-reading sessions and a module map a week-1 task
   - **Comment**: Risk lowered by using AI
 
 - **R-F3 — The Qt/C++ · DSP · RPi learning curve shakes implementation quality**
   - **Quality attribute**: All QAs (overall implementation quality)
-  - **Evidence**: pdf (p.29 Qt and Qt Creator)
-  - **Probability / Impact**: Low\~Medium / Medium
+  - **Evidence**: pdf (p.29 Qt and Qt Creator), QAS-1, QAS-2
+  - **Probability / Impact**: Low / Medium
   - **Mitigation**: Role split and pairing; early learning via small spikes
   - **Comment**: Risk lowered by using AI
 
 - **R-F4 — Attempting the AI/TinyML feature raises on-device uncertainty**
   - **Quality attribute**: Dependability (Reliability) — signal-quality classification
-  - **Evidence**: pdf (p.12 AI Feature)
+  - **Evidence**: pdf (p.12 AI Feature), QAS-1, QAS-2
   - **Probability / Impact**: Medium (if attempted) / Medium
   - **Mitigation**: Separate as optional scope; rule-based fallback if it falls short
   - **Comment**: Windows first, then assess operability on the RPi 5 before adopting
 
 - **R-F5 — Accepting GenAI-generated code unverified lets in plausible-but-wrong code (esp. DSP / concurrency / real-time)**
   - **Quality attribute**: Reliability · Performance · (Testability)
-  - **Evidence**: pdf (p.30 Project Deliverables)
+  - **Evidence**: pdf (p.30 Project Deliverables), QAS-1, QAS-2, QAS-3
   - **Probability / Impact**: Medium / Medium
   - **Mitigation**: Mandatory adversarial verification of generated code (unit tests, synthetic-signal bench); understand the core algorithms; confirm GenAI usage policy with mentors
   - **Comment**: See mitigation (code review, whole team understands the algorithms)
 
 - **R-F6 — Only one test Pi5 — real-use verification doesn't fit the schedule**
   - **Quality attribute**: Modifiability (Testability)
-  - **Evidence**: pdf (p.26 System Hardware — Raspberry Pi)
+  - **Evidence**: pdf (p.26 System Hardware — Raspberry Pi), QAS-1
   - **Probability / Impact**: High / High
   - **Mitigation**: Design most verification to run Sim/Playback-based (no hardware required), minimizing Pi5 dependence; schedule the real device only for must-have items such as performance measurement
 
@@ -238,27 +239,27 @@ R-F6 | Only one test Pi5 — real-use verification doesn't fit the schedule | Hi
 
 ## 리스크 요약
 
-Risk ID | 리스크 타이틀 | Probability | Impact
---------|--------------|-------------|-------
-R-A1 | RPi5가 고속 샘플레이트(96k/192k)를 실시간으로 못 따라가 소리 데이터를 놓친다 | High | High
-R-A2 | 필터 4개 + 그래프 여러 개 동시 렌더링으로 화면이 버벅인다 | Medium\~High | High
-R-A3 | 소리→화면 0.5초(p99 ≤ 500 ms) 목표를 못 지킨다 | Medium | High
-R-A4 | 장시간(24h+) 연속 실행 시 메모리가 새서 느려지거나 죽는다 | Medium | Medium
-R-A5 | Avalonia GPU 가속 렌더링이 RPi5에서 SW 렌더링보다 느려 실시간 그래프가 끊긴다 | Medium | High
-R-B1 | 틱/톡 위치를 0.1 ms 정밀도로 못 찾아 rate·beat error·amplitude 전부 오염된다 | High | High
-R-B2 | 시끄럽거나 약한 신호에서 "신호 약함" 대신 오해를 부르는 값을 표시한다 | Medium\~High | High
-R-C1 | 필터/마커 확장 구조를 미리 설계하지 않아 후반 비용이 급증한다 | Medium | Medium
-R-D1 | AGC를 끄지 않거나 마이크 결합이 나빠 신호가 왜곡된다 | Medium | High
-R-D2 | Windows 개발–RPi 데모 간 플랫폼 차이(WASAPI/ALSA)가 늦게 드러난다 | Medium | Medium
-R-D3 | 샘플레이트 3종(48/96/192k) 지원이 타이밍·복잡도를 키운다 | Medium | Medium
-R-E1 | 작은 화면에 요약바 + 그래프 + 스코프를 가독성 있게 다 못 담는다 | Medium | Medium
-R-E2 | 터치 정확도·인식률이 떨어질 수 있다 | Low | Low
-R-F1 | 5주 안에 12개 기능 + AI 전부 불가능 — 우선순위 실패 시 핵심이 빠진다 | Medium\~High | High
-R-F2 | 베이스라인 코드 이해에 시간이 걸려 착수가 늦어진다 | Low | Medium
-R-F3 | Qt/C++·DSP·RPi 학습곡선으로 구현 품질이 흔들린다 | Low\~Medium | Medium
-R-F4 | AI/TinyML 기능 시도 시 on-device 불확실성이 커진다 | Medium(시도 시) | Medium
-R-F5 | GenAI 생성 코드를 검증 없이 수용하면 그럴듯하지만 틀린 코드가 들어온다 | Medium | Medium
-R-F6 | 테스트용 Pi5가 한 대뿐이라 실사용 검증 일정이 안 나온다 | High | High
+Risk ID | 리스크 타이틀 | QAS | Probability | Impact
+--------|--------------|-----|-------------|-------
+R-A1 | RPi5가 고속 샘플레이트(96k/192k)를 실시간으로 못 따라가 소리 데이터를 놓친다 | QAS-1 | High | High
+R-A2 | 필터 4개 + 그래프 여러 개 동시 렌더링으로 화면이 버벅인다 | QAS-1, QAS-5 | Medium | High
+R-A3 | 소리→화면 0.5초(p99 ≤ 500 ms) 목표를 못 지킨다 | QAS-1 | Medium | High
+R-A4 | 장시간(24h+) 연속 실행 시 메모리가 새서 느려지거나 죽는다 | QAS-1 | Medium | Medium
+R-A5 | Avalonia GPU 가속 렌더링이 RPi5에서 SW 렌더링보다 느려 실시간 그래프가 끊긴다 | QAS-1 | Medium | High
+R-B1 | 틱/톡 위치를 0.1 ms 정밀도로 못 찾아 rate·beat error·amplitude 전부 오염된다 | QAS-2, QAS-3 | High | High
+R-B2 | 시끄럽거나 약한 신호에서 "신호 약함" 대신 오해를 부르는 값을 표시한다 | QAS-2 | Medium | High
+R-C1 | 필터/마커 확장 구조를 미리 설계하지 않아 후반 비용이 급증한다 | QAS-4 | Medium | Medium
+R-D1 | AGC를 끄지 않거나 마이크 결합이 나빠 신호가 왜곡된다 | QAS-2 | Medium | High
+R-D2 | Windows 개발–RPi 데모 간 플랫폼 차이(WASAPI/ALSA)가 늦게 드러난다 | QAS-1 | Medium | Medium
+R-D3 | 샘플레이트 3종(48/96/192k) 지원이 타이밍·복잡도를 키운다 | QAS-1 | Medium | Medium
+R-E1 | 작은 화면에 요약바 + 그래프 + 스코프를 가독성 있게 다 못 담는다 | QAS-5 | Medium | Medium
+R-E2 | 터치 정확도·인식률이 떨어질 수 있다 | QAS-5 | Low | Low
+R-F1 | 5주 안에 12개 기능 + AI 전부 불가능 — 우선순위 실패 시 핵심이 빠진다 | QAS-ALL | Medium | High
+R-F2 | 베이스라인 코드 이해에 시간이 걸려 착수가 늦어진다 | QAS-4 | Low | Medium
+R-F3 | Qt/C++·DSP·RPi 학습곡선으로 구현 품질이 흔들린다 | QAS-1, QAS-2 | Low | Medium
+R-F4 | AI/TinyML 기능 시도 시 on-device 불확실성이 커진다 | QAS-1, QAS-2 | Medium(시도 시) | Medium
+R-F5 | GenAI 생성 코드를 검증 없이 수용하면 그럴듯하지만 틀린 코드가 들어온다 | QAS-1, QAS-2, QAS-3 | Medium | Medium
+R-F6 | 테스트용 Pi5가 한 대뿐이라 실사용 검증 일정이 안 나온다 | QAS-1 | High | High
 
 ## A. 실시간 성능 (RPi)
 
@@ -272,8 +273,8 @@ R-F6 | 테스트용 Pi5가 한 대뿐이라 실사용 검증 일정이 안 나�
 
 - **R-A2 — 필터 4개(F0→F3) + 그래프 여러 개를 동시에 그리면 화면이 버벅인다(<20 FPS·UI freeze)**
   - **품질요소**: Performance
-  - **근거**: FR-12-01, FR-12-04, QAS-1
-  - **발생 확률 / 영향**: Medium\~High / High
+  - **근거**: FR-12-01, FR-12-04, QAS-1, QAS-5
+  - **발생 확률 / 영향**: Medium / High
   - **완화 방향**: 공유 입력버퍼 재사용, 비활성 뷰 렌더 중단, FPS 예산 측정
   - **Tradeoff point**: 동시 4뷰 표시는 Usability(QAS-5)↔Performance의 tradeoff point
   - **코멘트**: 4개 동시 뷰 / 1개씩 뷰는 성능 확인 후 결정
@@ -287,14 +288,14 @@ R-F6 | 테스트용 Pi5가 한 대뿐이라 실사용 검증 일정이 안 나�
 
 - **R-A4 — 장시간(24h+) 연속 실행 시 메모리가 새서 느려지거나 죽는다**
   - **품질요소**: Dependability (Reliability) (+Performance)
-  - **근거**: FR-07-10
+  - **근거**: FR-07-10, QAS-1
   - **발생 확률 / 영향**: Medium / Medium
   - **완화 방향**: 장기 RSS 추세 모니터, 버퍼 상한·집계(aggregation) 설계
   - **코멘트**: 현 코드 기준으로 메모리 릭 확인 (실험)
 
 - **R-A5 — Avalonia 프레임워크 사용 시 RPi5에서 GPU 가속 렌더링이 버그로 SW 렌더링보다 느려 실시간 그래프(Rate/Scope) 갱신이 끊길 수 있다**
   - **품질요소**: Performance (Latency)
-  - **근거**: Avalonia GitHub에 RPi/임베디드의 GPU 가속 성능 저하 보고 다수 — #18807, #18942, #19288, #18127. pdf (p.25 Real Time Performance)
+  - **근거**: Avalonia GitHub에 RPi/임베디드의 GPU 가속 성능 저하 보고 다수 — #18807, #18942, #19288, #18127. pdf (p.25 Real Time Performance), QAS-1
   - **발생 확률 / 영향**: Medium / High
   - **완화 방향**: 1주차 spike로 RPi5 실기기에서 렌더링 백엔드(GLX/EGL/Software) A/B 측정 후 백엔드 확정. 가속 경로가 느리면 Software 렌더링으로 전환(설정 1줄, 기능 손실 없음)
   - **Tradeoff point**: 렌더링 백엔드는 UI 프레임 안정성↔CPU 점유(Software 렌더링은 오디오 분석 스레드와 CPU 경쟁)의 tradeoff point
@@ -304,7 +305,7 @@ R-F6 | 테스트용 Pi5가 한 대뿐이라 실사용 검증 일정이 안 나�
 
 - **R-B1 — 틱/톡 위치를 0.1 ms 정밀도로 못 찾으면 rate·beat error·amplitude 전부가 오염된다**
   - **품질요소**: Dependability (Reliability)
-  - **근거**: FR-08-04…06, FR-06-01…04
+  - **근거**: FR-08-04…06, FR-06-01…04, QAS-2, QAS-3
   - **발생 확률 / 영향**: High / High
   - **완화 방향**: 합성신호(정답 known) 벤치로 검출 알고리즘 조기 검증
   - **코멘트**: 현 로직 기준으로 정상동작 확인 및 필요 시 로직 개선 필요
@@ -312,7 +313,7 @@ R-F6 | 테스트용 Pi5가 한 대뿐이라 실사용 검증 일정이 안 나�
 - **R-B2 — 시끄럽거나 신호가 약한 환경에서 "신호 약함" 대신 오해를 부르는 값을 표시할 수 있다**
   - **품질요소**: Availability (Graceful Degradation)
   - **근거**: QAS-2
-  - **발생 확률 / 영향**: Medium\~High / High
+  - **발생 확률 / 영향**: Medium / High
   - **완화 방향**: 필터링·신호품질 판정, bad-data는 "signal weak" 표시로 격리
   - **코멘트**: 노이즈 레벨 별 테스트 및 필요 시 로직 개선
 
@@ -329,21 +330,21 @@ R-F6 | 테스트용 Pi5가 한 대뿐이라 실사용 검증 일정이 안 나�
 
 - **R-D1 — AGC를 끄지 않거나 마이크 결합이 나쁘면 신호가 왜곡돼 모든 측정이 망가진다**
   - **품질요소**: Dependability (Reliability)
-  - **근거**: pdf (p.29 Raspberry Pi OS — Auto Gain Control)
+  - **근거**: pdf (p.29 Raspberry Pi OS — Auto Gain Control), QAS-2
   - **발생 확률 / 영향**: Medium / High
   - **완화 방향**: 착수 즉시 AGC off·커플링 검증을 환경 체크리스트화
   - **코멘트**: 사용자 가이드 문서에 명시 필요
 
 - **R-D2 — Windows에서 개발하고 RPi에서 데모 — 오디오 백엔드(WASAPI/ALSA) 등 플랫폼 차이가 늦게 드러난다**
   - **품질요소**: Portability (+Performance)
-  - **근거**: pdf (p.29 System Software)
+  - **근거**: pdf (p.29 System Software), QAS-1
   - **발생 확률 / 영향**: Medium / Medium
   - **완화 방향**: 오디오 I/O를 포트-어댑터로 격리, RPi 조기·정기 검증
   - **코멘트**: 프로젝트 진행하면서 RPi에도 진행할 것이어서 리스크 낮음
 
 - **R-D3 — 샘플레이트 3종(48/96/192k) 지원이 타이밍·복잡도를 키운다**
   - **품질요소**: Portability (+Reliability)
-  - **근거**: pdf (p.25 Real Time Performance)
+  - **근거**: pdf (p.25 Real Time Performance), QAS-1
   - **발생 확률 / 영향**: Medium / Medium
   - **완화 방향**: 지원 샘플레이트 범위 명시, 어댑터에서 정규화
   - **코멘트**: 가능 스펙 명시 (마이크 스펙 등)
@@ -359,6 +360,7 @@ R-F6 | 테스트용 Pi5가 한 대뿐이라 실사용 검증 일정이 안 나�
 
 - **R-E2 — 터치 정확도·인식률이 떨어질 수 있다**
   - **품질요소**: Usability
+  - **근거**: QAS-5
   - **발생 확률 / 영향**: Low / Low
   - **완화 방향**: 터치 민감도나 터치 범위인식을 실험적으로 가능하면 확인
   - **코멘트**: App 레벨에서 제어 가능하면 실험 후 최적의 값 확인, OS 레벨에서 정의되면 현 상태 진행
@@ -367,42 +369,42 @@ R-F6 | 테스트용 Pi5가 한 대뿐이라 실사용 검증 일정이 안 나�
 
 - **R-F1 — 5주 안에 12개 기능 + AI 전부는 불가능 — 우선순위에 실패하면 핵심이 빠진다**
   - **품질요소**: 전 QA (특히 Performance·Reliability)
-  - **근거**: pdf (p.5 Objective — "feasible, well-architected subset")
-  - **발생 확률 / 영향**: Medium\~High / High
+  - **근거**: pdf (p.5 Objective — "feasible, well-architected subset"), QAS-ALL
+  - **발생 확률 / 영향**: Medium / High
   - **완화 방향**: FR 우선순위 동결, AI는 optional 분리, 핵심 경로 우선
   - **코멘트**: 프로젝트 플래닝 잘 해서 진행하고 버릴 건 버림
 
 - **R-F2 — 제공 베이스라인 코드(TimeGrapher_v10.4) 이해에 시간이 걸려 착수가 늦어진다**
   - **품질요소**: Modifiability (착수·유지보수)
-  - **근거**: pdf (p.29 GUI Code)
+  - **근거**: pdf (p.29 GUI Code), QAS-4
   - **발생 확률 / 영향**: Low / Medium
   - **완화 방향**: 코드 reading 세션·모듈 맵 작성을 1주차 태스크화
   - **코멘트**: AI 활용하기 때문에 Risk 낮아짐
 
 - **R-F3 — Qt/C++·DSP·RPi 학습곡선으로 구현 품질이 흔들린다**
   - **품질요소**: 전 QA (구현 품질 전반)
-  - **근거**: pdf (p.29 Qt and Qt Creator)
-  - **발생 확률 / 영향**: Low\~Medium / Medium
+  - **근거**: pdf (p.29 Qt and Qt Creator), QAS-1, QAS-2
+  - **발생 확률 / 영향**: Low / Medium
   - **완화 방향**: 역할 분담·페어링, 작은 spike로 조기 학습
   - **코멘트**: AI 활용하기 때문에 Risk 낮아짐
 
 - **R-F4 — AI/TinyML 기능을 시도하면 on-device 불확실성이 커진다**
   - **품질요소**: Dependability (Reliability) — 신호품질 분류
-  - **근거**: pdf (p.12 AI Feature)
+  - **근거**: pdf (p.12 AI Feature), QAS-1, QAS-2
   - **발생 확률 / 영향**: Medium(시도 시) / Medium
   - **완화 방향**: optional 스코프로 분리, 미달 시 룰베이스 폴백
   - **코멘트**: 우선 Windows 진행 후 RPi 5에서 동작성 검토 후 반영 결정
 
 - **R-F5 — GenAI 생성 코드를 검증 없이 수용하면 그럴듯하지만 틀린 코드가 들어온다 (특히 DSP/동시성/실시간 영역)**
   - **품질요소**: Reliability·Performance·(Testability)
-  - **근거**: pdf (p.30 Project Deliverables)
+  - **근거**: pdf (p.30 Project Deliverables), QAS-1, QAS-2, QAS-3
   - **발생 확률 / 영향**: Medium / Medium
   - **완화 방향**: 생성코드 adversarial 검증(단위테스트·합성신호 벤치) 의무화, 핵심 알고리즘은 이해 동반, GenAI 사용 허용여부 멘토 확인
   - **코멘트**: 완화 방향 참고 (코드리뷰, 우리 모두 알고리즘 이해 등)
 
 - **R-F6 — 테스트용 Pi5가 한 대뿐이라 실사용 검증 일정이 안 나온다**
   - **품질요소**: Modifiability (Testability)
-  - **근거**: pdf (p.26 System Hardware — Raspberry Pi)
+  - **근거**: pdf (p.26 System Hardware — Raspberry Pi), QAS-1
   - **발생 확률 / 영향**: High / High
   - **완화 방향**: 검증의 대부분을 Sim/Playback 기반(하드웨어 불요)으로 설계해 Pi5 의존 최소화; 실기기는 성능 측정 등 필수 항목에만 일정 배정
 
