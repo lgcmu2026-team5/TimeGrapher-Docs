@@ -139,7 +139,7 @@ R-F6 | Only one test Pi5 — real-use verification doesn't fit the schedule | Hi
   - **Mitigation**: State the supported sample-rate range; normalize in the adapter
   - **Comment**: State the feasible spec (microphone spec, etc.)
 
-## E. Usability / UI (800×480)
+## E. Usability / UI (1280×800)
 
 - **R-E1 — The small screen can't legibly hold the summary bar + multiple graphs + scope strip (letters ≥ 2.9 mm · touch ≥ 9 mm)**
   - **Quality attribute**: Usability
@@ -348,7 +348,7 @@ R-F6 | 테스트용 Pi5가 한 대뿐이라 실사용 검증 일정이 안 나�
   - **완화 방향**: 지원 샘플레이트 범위 명시, 어댑터에서 정규화
   - **코멘트**: 가능 스펙 명시 (마이크 스펙 등)
 
-## E. 사용성 / UI (800×480)
+## E. 사용성 / UI (1280×800)
 
 - **R-E1 — 작은 화면에 요약바 + 그래프 + 스코프를 가독성(글자 ≥2.9mm·터치 ≥9mm) 있게 다 못 담는다**
   - **품질요소**: Usability

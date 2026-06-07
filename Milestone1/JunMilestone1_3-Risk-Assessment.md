@@ -10,14 +10,14 @@
 | RISK-04 | Noisy, weak, or corrupted acoustic input produces misleading measurement values instead of triggering a graceful "signal weak" indication. | QAS-2 | High | High |
 | RISK-05 | The same measurement result is displayed differently across simultaneous views (e.g., Trace, Beat Error display, and Scope show conflicting derived values in the same frame). | QAS-3 | Medium | High |
 | RISK-06 | Rendering F0–F3 filter views (G12, all mandatory) plus multiple graph panels simultaneously drops the frame rate below acceptable levels on the RPi. | QAS-1<br>QAS-5 | Medium | High |
-| RISK-07 | The 800×480 touchscreen cannot legibly display the summary bar, graph panels, and scope strips simultaneously while meeting the ≥ 2.9 mm character height and ≥ 9 mm touch-target constraints. | QAS-5 | Medium | Medium |
+| RISK-07 | The 1280×800 touchscreen cannot legibly display the summary bar, graph panels, and scope strips simultaneously while meeting the ≥ 2.9 mm character height and ≥ 9 mm touch-target constraints. | QAS-5 | Medium | Medium |
 | RISK-08 | Long-duration measurements (24 h+, desired in FR-07-10) grow memory and disk usage without bound, eventually degrading performance or causing a crash. | QAS-1 | Medium | Medium |
 | RISK-09 | Without an up-front extensibility structure (e.g., strategy interface for filters and graphs), adding a new feature — F4, a new marker type, or a new graph — requires changes spread across multiple existing modules. | QAS-4 | Medium | Medium |
 | RISK-10 | Audio I/O differences between Windows (WASAPI) and Raspberry Pi (ALSA) cause timing or behavior divergence, and the gap is not discovered until late in the schedule. | QAS-1 | Medium | Medium |
 | RISK-11 | AGC is left enabled on the microphone or the microphone coupling is poor; the input signal is distorted and all measurements become unreliable from the start. | QAS-2 | Medium | High |
 | RISK-12 | The optional TinyML / AI scope adds on-device inference overhead and implementation uncertainty that may conflict with the real-time latency target or undermine measurement reliability. | QAS-1<br>QAS-2 | Low | Medium |
 | RISK-13 | Supporting three sample rates (48k / 96k / 192k) simultaneously adds timing and normalization complexity that can introduce subtle measurement errors. | QAS-1 | Medium | Medium |
-| RISK-14 | Touch accuracy or recognition on the 800×480 panel may be poor, making controls difficult to operate reliably. | QAS-5 | Low | Low |
+| RISK-14 | Touch accuracy or recognition on the 1280×800 panel may be poor, making controls difficult to operate reliably. | QAS-5 | Low | Low |
 
 ## Non-Technical Risks
 

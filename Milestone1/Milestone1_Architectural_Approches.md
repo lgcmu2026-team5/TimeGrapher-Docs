@@ -117,7 +117,7 @@ One decision per remaining driver, plus the shared input abstraction — what we
 > **In one line: uppercase letters ≥ 2.9 mm and touch targets ≥ 9 mm are shared constants in one renderer.**
 
 - **Decision** — `GraphFrameRenderer` is the only place a frame is mapped onto graphs and labels; QAS-5's mm rules (and "rate / beat error / amplitude always visible") are shared constants there.
-- **Why** — On a fixed 800×480 panel, sizes are global rules; kept in one file, compliance is checked in one look. And since analysis never touches the UI thread (AP-1), touch stays responsive while measuring.
+- **Why** — On a fixed 1280×800 panel, sizes are global rules; kept in one file, compliance is checked in one look. And since analysis never touches the UI thread (AP-1), touch stays responsive while measuring.
 
 ### AP-6 · Three swappable input sources — Verification & Portability (C-3·4)
 > **In one line: the system cannot tell whether it is hearing a mic, a file, or a simulator.**
@@ -172,7 +172,7 @@ sequenceDiagram
 | QAS-4 Modifiability | AP-4 | Every addition = new code + 1 registration |
 | QAS-5 Usability | AP-5 (+AP-1) | mm rules in one place; touch never blocked |
 | C-1 Raspberry Pi 5 | AP-1 | Bounded buffers; the budget is measured on the target early |
-| C-2 800×480 | AP-5 | Layout rules centralized in one renderer |
+| C-2 1280×800 | AP-5 | Layout rules centralized in one renderer |
 | C-3 Windows + RPi OS | AP-6 | Platform code confined to one module |
 | C-4 AGC off | AP-6 | Checked once at capture start |
 
@@ -200,7 +200,7 @@ A few numbers in this design are still assertions, not measurements — so they 
 
 1. **The 500 ms budget on the Pi 5** — build a thin skeleton of the pipeline first and measure T0→T2 on the target.
 2. **The gate threshold** — 14 dB / 95 % are provisional; calibrate on the noise bench.
-3. **The 800×480 layout** — check the mm rules with a paper mock before writing widget code.
+3. **The 1280×800 layout** — check the mm rules with a paper mock before writing widget code.
 4. **The capture chain** — confirm 96k/48k capture with AGC off on both platforms (fallback: 48k only).
 
 ---
@@ -322,7 +322,7 @@ flowchart LR
 > **한 줄 요약: 대문자 ≥ 2.9 mm, 터치 ≥ 9 mm는 렌더러 한 곳의 공유 상수다.**
 
 - **결정** — 프레임을 그래프와 라벨로 매핑하는 곳은 `GraphFrameRenderer` 하나뿐이고, QAS-5의 mm 규칙("일오차·비트오차·진폭 상시 표시" 포함)은 그곳의 공유 상수다.
-- **이유** — 고정된 800×480 패널에서 크기는 전역 규칙이다. 한 파일에 모이면 준수 여부를 한눈에 검사할 수 있다. 그리고 분석이 UI 스레드를 건드리지 않으므로(AP-1) 측정 중에도 터치가 계속 반응한다.
+- **이유** — 고정된 1280×800 패널에서 크기는 전역 규칙이다. 한 파일에 모이면 준수 여부를 한눈에 검사할 수 있다. 그리고 분석이 UI 스레드를 건드리지 않으므로(AP-1) 측정 중에도 터치가 계속 반응한다.
 
 ### AP-6 · 갈아 끼우는 입력 소스 3종 — 검증과 이식성 (C-3·4)
 > **한 줄 요약: 시스템은 자기가 듣는 것이 마이크인지, 파일인지, 시뮬레이터인지 모른다.**
@@ -377,7 +377,7 @@ sequenceDiagram
 | QAS-4 Modifiability | AP-4 | 모든 추가 = 새 코드 + 등록 1곳 |
 | QAS-5 Usability | AP-5 (+AP-1) | mm 규칙은 한 곳에; 터치는 멈추지 않음 |
 | C-1 Raspberry Pi 5 | AP-1 | 유한 버퍼; 예산은 타깃에서 조기 측정 |
-| C-2 800×480 | AP-5 | 레이아웃 규칙을 렌더러 하나에 중앙화 |
+| C-2 1280×800 | AP-5 | 레이아웃 규칙을 렌더러 하나에 중앙화 |
 | C-3 Windows + RPi OS | AP-6 | 플랫폼 코드를 모듈 하나에 격리 |
 | C-4 AGC off | AP-6 | 캡처 시작 시 한 번 확인 |
 
@@ -405,5 +405,5 @@ sequenceDiagram
 
 1. **Pi 5에서의 500 ms 예산** — 파이프라인의 얇은 뼈대를 먼저 만들어 타깃에서 T0→T2를 측정한다.
 2. **게이트 임계값** — 14 dB / 95 %는 잠정값; 잡음 벤치로 보정한다.
-3. **800×480 레이아웃** — 위젯 코드 전에 페이퍼 목업으로 mm 규칙을 확인한다.
+3. **1280×800 레이아웃** — 위젯 코드 전에 페이퍼 목업으로 mm 규칙을 확인한다.
 4. **캡처 체인** — 두 플랫폼에서 AGC를 끈 채 96k/48k 캡처가 되는지 확인한다 (대비책: 48k 전용).

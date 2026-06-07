@@ -92,11 +92,11 @@ Each experiment below addresses a specific open question or risk that will affec
 
 ## EXP-06 — Small-Screen Legibility and Touch Validation
 
-**Key Question** Does the GUI layout on the 800×480 touchscreen simultaneously show rate, beat error, and amplitude at ≥ 2.9 mm character height with primary controls at ≥ 9 mm touch targets?
+**Key Question** Does the GUI layout on the 1280×800 touchscreen simultaneously show rate, beat error, and amplitude at ≥ 2.9 mm character height with primary controls at ≥ 9 mm touch targets?
 
 **Approach**
-- Build the candidate layout and display it on the actual RPi5 panel (or accurate 116 PPI emulation).
-- Measure uppercase letter height in the summary bar using a physical ruler or pixel-scale conversion (1 px ≈ 0.219 mm at 116 PPI on an 8-inch 800×480 panel).
+- Build the candidate layout and display it on the actual RPi5 panel (or accurate 189 PPI emulation).
+- Measure uppercase letter height in the summary bar using a physical ruler or pixel-scale conversion (1 px ≈ 0.135 mm at 189 PPI on an 8-inch 1280×800 panel).
 - Measure the physical size of every primary touch control.
 - Verify rate / beat error / amplitude are visible simultaneously without scroll or zoom.
 

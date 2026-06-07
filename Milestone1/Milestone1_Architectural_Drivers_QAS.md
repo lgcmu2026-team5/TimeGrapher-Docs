@@ -118,28 +118,29 @@
 
 **Related FRs** — all requirements
 
-### QAS-5 · Usability — Reading and Operating on the Low-Resolution Touchscreen
-> **In one line: on the small 800×480 touchscreen, the three key readings are readable at a glance and operable by finger.**
+### QAS-5 · Usability — Reading and Operating on the Touchscreen
+> **In one line: on the small 1280×800 touchscreen, the three key readings are readable at a glance and operable by finger.**
 >
-> On the Raspberry Pi 5's 800×480 (8-inch) touchscreen, when the user reads measurement values and switches modes in the GUI, key readings are shown legibly and primary functions operate by touch alone — rate / beat error / amplitude visible simultaneously, uppercase letter height ≥ 2.9 mm, touch targets ≥ 9 mm. Physical sizes (mm) are normative.
+> On the Raspberry Pi 5's 1280×800 (8-inch) touchscreen, when the user reads measurement values and switches modes in the GUI, key readings are shown legibly and primary functions operate by touch alone — rate / beat error / amplitude visible simultaneously, uppercase letter height ≥ 2.9 mm, touch targets ≥ 9 mm. Physical sizes (mm) are normative.
 
 **Why this attribute**
 - Plan §Usability and User Purpose: *"The GUI should support ease of use by clearly showing … the calculated values that matter most to the user, such as rate, beat error, amplitude."*
-- A **user** stimulus measured by **legibility and task time** → SAP's Usability general scenario. The low-res touch panel is given hardware, not a choice.
+- A **user** stimulus measured by **legibility and task time** → SAP's Usability general scenario. The touch panel is given hardware, not a choice.
 
 | Element | Content |
 |---------|---------|
 | Source | User (watchmaker / operator) |
 | Stimulus | Reads measurement values and switches modes on the touchscreen |
 | Artifact | The GUI (graph/numeric displays and controls) |
-| Environment | Raspberry Pi 5 + 800×480 touch display; 8-inch panel |
+| Environment | Raspberry Pi 5 + 1280×800 touch display; 8-inch panel |
 | Response | Show key readings legibly; make primary functions operable by touch |
 | Response Measure | Rate / beat error / amplitude visible simultaneously without scroll/zoom; uppercase letter height ≥ 2.9 mm; touch targets ≥ 9 mm |
 
 **Why these numbers**
 - **mm, not px** — a pixel criterion flips pass/fail with the panel; 9 mm is the standard touch-target size.
-- **Uppercase letter height ≥ 2.9 mm** — considering full-screen visibility (SMPTE), character legibility (ISO 9241-303), and room for touch operation, the design viewing distance is conservatively set to 50 cm. At 50 cm, ISO 9241-303's recommended glyph size of ≥ 20 arcmin converts to 2.9 mm on this panel (8″ 800×480).
+- **Uppercase letter height ≥ 2.9 mm** — considering full-screen visibility (SMPTE), character legibility (ISO 9241-303), and room for touch operation, the design viewing distance is conservatively set to 50 cm. At 50 cm, ISO 9241-303's recommended glyph size of ≥ 20 arcmin converts to 2.9 mm — a viewing-distance-based physical size, independent of panel resolution.
   - Calculation: 20 arcmin = 20/60° = 0.333° ≈ 0.00582 rad → letter height = viewing distance × visual angle = 500 mm × 0.00582 ≈ **2.9 mm**
+  - Pixel equivalents on this panel (8″ 1280×800 → √(1280²+800²)/8 ≈ 189 PPI, 1 px ≈ 0.135 mm): letter height 2.9 mm ≈ **22 px**, touch target 9 mm ≈ **67 px** (advisory — mm is normative)
 
 **Related FRs** — FR-06-06, FR-01-05, FR-04-03, FR-02-06, FR-06-11·13 (at-a-glance readings, position indication, alerts)
 
@@ -148,7 +149,7 @@
 | ID | Constraint |
 |----|------------|
 | C-1 | The system shall run on a Raspberry Pi 5 (8 GB RAM, 128 GB microSD) with a touchscreen attached. |
-| C-2 | The system shall render and operate the GUI correctly on the low-resolution (800×480) display connected to the Raspberry Pi 5. |
+| C-2 | The system shall render and operate the GUI correctly on the 1280×800 display connected to the Raspberry Pi 5. |
 | C-3 | The system shall run on both a Windows 11 (x64) PC and a Raspberry Pi 5 running Raspberry Pi OS (Debian-based, 64-bit/ARM64). |
 | C-4 | The system shall operate with Auto Gain Control turned off. |
 
@@ -286,28 +287,29 @@ ATAM style: each scenario carries an (**I**mportance, **D**ifficulty) pair, H/M/
 
 **관련 FR** — 모든 요구사항
 
-### QAS-5 · Usability — 저해상도 터치스크린에서 읽기·조작
-> **한 줄 요약: 작은 800×480 터치스크린에서도 핵심 값 3개를 한눈에 읽고 손가락으로 조작한다.**
+### QAS-5 · Usability — 터치스크린에서 읽기·조작
+> **한 줄 요약: 작은 1280×800 터치스크린에서도 핵심 값 3개를 한눈에 읽고 손가락으로 조작한다.**
 >
-> Raspberry Pi 5의 800×480(8인치) 터치스크린에서 사용자가 GUI의 측정값을 읽고 모드를 전환할 때, 핵심 측정값을 가독성 있게 표시하고 주요 기능을 터치만으로 조작할 수 있으며, 일오차·비트오차·진폭 동시 표시 · 영어 대문자 글자 높이 ≥ 2.9 mm · 터치 타깃 ≥ 9 mm를 만족해야 한다. 물리 크기(mm)가 규범 기준.
+> Raspberry Pi 5의 1280×800(8인치) 터치스크린에서 사용자가 GUI의 측정값을 읽고 모드를 전환할 때, 핵심 측정값을 가독성 있게 표시하고 주요 기능을 터치만으로 조작할 수 있으며, 일오차·비트오차·진폭 동시 표시 · 영어 대문자 글자 높이 ≥ 2.9 mm · 터치 타깃 ≥ 9 mm를 만족해야 한다. 물리 크기(mm)가 규범 기준.
 
 **왜 이 속성인가**
 - 플랜 원문(§Usability and User Purpose): *"The GUI should support ease of use by clearly showing … the calculated values that matter most to the user, such as rate, beat error, amplitude."*
-- **사용자** 자극을 **가독성과 과업 시간**으로 측정 → SAP의 Usability 일반 시나리오. 저해상도 터치 패널은 선택이 아니라 주어진 하드웨어.
+- **사용자** 자극을 **가독성과 과업 시간**으로 측정 → SAP의 Usability 일반 시나리오. 터치 패널은 선택이 아니라 주어진 하드웨어.
 
 | 요소 | 내용 |
 |------|------|
 | 자극유발원 | 사용자 (시계공 / 측정자) |
 | 자극 | 터치스크린에서 측정값을 읽고 모드를 전환함 |
 | 대상 | GUI (그래프/수치 표시와 컨트롤) |
-| 환경 | Raspberry Pi 5 + 800×480 터치 디스플레이; 패널 크기 8인치 |
+| 환경 | Raspberry Pi 5 + 1280×800 터치 디스플레이; 패널 크기 8인치 |
 | 응답 | 핵심 측정값을 가독성 있게 표시; 주요 기능을 터치만으로 조작 |
 | 응답측정 | 일오차·비트오차·진폭을 스크롤/확대 없이 동시 표시; 영어 대문자 글자 높이 ≥ 2.9 mm, 터치 타깃 ≥ 9 mm |
 
 **측정값 근거**
 - **px가 아닌 mm** — 픽셀 기준은 패널에 따라 합격/불합격이 뒤바뀜; 9 mm는 통용되는 터치 타깃 크기.
-- **영어 대문자 글자 높이 ≥ 2.9mm** — 화면 전체 가시성(SMPTE)·글자 가독성(ISO 9241-303)·터치 조작 여유를 고려해 설계 시야 거리를 보수적으로 50cm로 채택. 50cm에서 ISO 9241-303 권장 글자 크기 ≥ 20 arcmin을 본 패널(8″ 800×480)로 환산하면 2.9mm.
+- **영어 대문자 글자 높이 ≥ 2.9mm** — 화면 전체 가시성(SMPTE)·글자 가독성(ISO 9241-303)·터치 조작 여유를 고려해 설계 시야 거리를 보수적으로 50cm로 채택. 50cm에서 ISO 9241-303 권장 글자 크기 ≥ 20 arcmin을 환산하면 2.9mm — 시야 거리 기반 물리 크기로, 패널 해상도와 무관.
   - 계산: 20 arcmin = 20/60° = 0.333° ≈ 0.00582 rad → 글자 높이 = 시야 거리 × 시각 = 500 mm × 0.00582 ≈ **2.9 mm**
+  - 본 패널 기준 px 환산 (8″ 1280×800 → √(1280²+800²)/8 ≈ 189 PPI, 1 px ≈ 0.135 mm): 글자 높이 2.9 mm ≈ **22 px**, 터치 타깃 9 mm ≈ **67 px** (참고용 — 규범 기준은 mm)
 
 **관련 FR** — FR-06-06, FR-01-05, FR-04-03, FR-02-06, FR-06-11·13 (한눈에 읽기·포지션 표시·경보)
 
@@ -316,7 +318,7 @@ ATAM style: each scenario carries an (**I**mportance, **D**ifficulty) pair, H/M/
 | ID | 제약사항 |
 |----|----------|
 | C-1 | 시스템은 터치스크린이 연결된 Raspberry Pi 5(8 GB RAM, 128 GB microSD)에서 실행되어야 한다. |
-| C-2 | 시스템은 Raspberry Pi 5에 연결된 저해상도(800×480) 디스플레이에서 GUI를 올바르게 렌더링하고 동작해야 한다. |
+| C-2 | 시스템은 Raspberry Pi 5에 연결된 1280×800 디스플레이에서 GUI를 올바르게 렌더링하고 동작해야 한다. |
 | C-3 | 시스템은 Windows 11 (x64) PC와 Raspberry Pi OS(Debian 기반, 64-bit/ARM64)를 실행하는 Raspberry Pi 5 모두에서 실행되어야 한다. |
 | C-4 | 시스템은 Auto Gain Control이 꺼진 상태에서 동작해야 한다. |
 
