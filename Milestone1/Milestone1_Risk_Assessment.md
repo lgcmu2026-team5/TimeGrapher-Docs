@@ -29,7 +29,9 @@
 
 ## Risk Summary
 
-> Type: **T** = Technical, **NT** = Non-technical · **P** = Probability, **I** = Impact (**H** = High, M = Medium, L = Low)
+> Type: **T** = Technical, **NT** = Non-technical
+>
+> **P** = Probability, **I** = Impact (**H** = High, M = Medium, L = Low)
 
 Risk ID | Risk Title | Type | QAS | P | I
 --------|-----------|------|-----|---|---
@@ -52,13 +54,13 @@ R-F3 | Qt/C++ · DSP · RPi learning curve shakes implementation quality | NT | 
 R-F4 | Attempting the AI/TinyML feature raises on-device uncertainty | T | QAS-1<br>QAS-2 | M | M
 R-F5 | Accepting GenAI-generated code unverified lets in plausible-but-wrong code | NT | QAS-1<br>QAS-2<br>QAS-3 | M | M
 R-F6 | Only one test Pi5 — real-use verification doesn't fit the schedule | NT | QAS-1 | **H** | **H**
-- | Communication — meaning may be lost between stakeholders when conversing in English | NT | - | L | L
-- | Insufficient test environment — one device, no test room, no unit tests; regressions may slip through | NT | - | L | L
-- | Long-run verification difficulty — items like 24-hour continuous runs are hard to actually verify | NT | - | L | L
-- | Growing storage — long recordings make files large | T | - | L | L
-- | RPi5 debugging difficulty — hard to inspect state or debug | T | - | L | L
-- | Uncertain data structures — audio buffer and measurement-data storage structures are undecided | T | - | L | L
-- | Storage-speed bottleneck — SD-card writes may be slower than recording generation | T | - | L | L
+| - | Communication — meaning may be lost between stakeholders when conversing in English | NT | - | L | L
+| - | Insufficient test environment — one device, no test room, no unit tests; regressions may slip through | NT | - | L | L
+| - | Long-run verification difficulty — items like 24-hour continuous runs are hard to actually verify | NT | - | L | L
+| - | Growing storage — long recordings make files large | T | - | L | L
+| - | RPi5 debugging difficulty — hard to inspect state or debug | T | - | L | L
+| - | Uncertain data structures — audio buffer and measurement-data storage structures are undecided | T | - | L | L
+| - | Storage-speed bottleneck — SD-card writes may be slower than recording generation | T | - | L | L
 
 ## A. Real-Time Performance (RPi)
 
@@ -248,7 +250,9 @@ R-F6 | Only one test Pi5 — real-use verification doesn't fit the schedule | NT
 
 ## 리스크 요약
 
-> 구분: **T** = 기술(Technical), **NT** = 비기술(Non-technical) · **P** = 발생 확률(Probability), **I** = 영향(Impact) — **H** = High, M = Medium, L = Low
+> 구분: **T** = 기술(Technical), **NT** = 비기술(Non-technical)
+>
+> **P** = 발생 확률(Probability), **I** = 영향(Impact) — **H** = High, M = Medium, L = Low
 
 Risk ID | 리스크 타이틀 | 구분 | QAS | P | I
 --------|--------------|------|-----|---|---
@@ -271,13 +275,13 @@ R-F3 | Qt/C++·DSP·RPi 학습곡선으로 구현 품질이 흔들린다 | NT | 
 R-F4 | AI/TinyML 기능 시도 시 on-device 불확실성이 커진다 | T | QAS-1<br>QAS-2 | M | M
 R-F5 | GenAI 생성 코드를 검증 없이 수용하면 그럴듯하지만 틀린 코드가 들어온다 | NT | QAS-1<br>QAS-2<br>QAS-3 | M | M
 R-F6 | 테스트용 Pi5가 한 대뿐이라 실사용 검증 일정이 안 나온다 | NT | QAS-1 | **H** | **H**
-- | 의사소통 — 영어 대화 시 이해관계자 간 정확한 의사전달이 안 될 수 있다 | NT | - | L | L
-- | 테스트 환경 부족 — 장비 1대, 테스트룸·unit test 없음으로 로직 변경 시 regression을 놓칠 수 있다 | NT | - | L | L
-- | 장시간 검증 곤란 — 24시간 연속 같은 항목은 실제 검증·평가가 어렵다 | NT | - | L | L
-- | 저장량 증가 — 장시간 녹음 시 파일 크기가 커진다 | T | - | L | L
-- | RPi5 디버깅 곤란 — 상태 파악·디버깅이 어렵다 | T | - | L | L
-- | 데이터 구조 불확실 — 음성 버퍼·측정 데이터 저장 구조가 미정이다 | T | - | L | L
-- | 저장 속도 병목 — SD 카드 쓰기가 녹음 생성 속도보다 느릴 수 있다 | T | - | L | L
+| - | 의사소통 — 영어 대화 시 이해관계자 간 정확한 의사전달이 안 될 수 있다 | NT | - | L | L
+| - | 테스트 환경 부족 — 장비 1대, 테스트룸·unit test 없음으로 로직 변경 시 regression을 놓칠 수 있다 | NT | - | L | L
+| - | 장시간 검증 곤란 — 24시간 연속 같은 항목은 실제 검증·평가가 어렵다 | NT | - | L | L
+| - | 저장량 증가 — 장시간 녹음 시 파일 크기가 커진다 | T | - | L | L
+| - | RPi5 디버깅 곤란 — 상태 파악·디버깅이 어렵다 | T | - | L | L
+| - | 데이터 구조 불확실 — 음성 버퍼·측정 데이터 저장 구조가 미정이다 | T | - | L | L
+| - | 저장 속도 병목 — SD 카드 쓰기가 녹음 생성 속도보다 느릴 수 있다 | T | - | L | L
 
 ## A. 실시간 성능 (RPi)
 
