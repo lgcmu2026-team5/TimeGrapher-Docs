@@ -8,6 +8,7 @@
 - **GUI**: Jaehong Oh, Sungjun Yoon
 
 # ARCHI-265 Schedule
+🔗 [Quire URL](https://quire.io/w/SUNYOUNG_OH/40?filter=all&share=ud59lcpw1fx35wkwjcub6tdurt5iyg&view=timeline)
 
 ## Legend
 
