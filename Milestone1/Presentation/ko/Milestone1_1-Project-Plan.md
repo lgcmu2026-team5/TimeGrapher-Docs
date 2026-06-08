@@ -1,6 +1,6 @@
-![프로젝트 계획](../res/projectplan.png)
-
 # ARCHI-265 일정
+
+![프로젝트 계획](../res/projectplan.png)
 
 ## 범례
 
