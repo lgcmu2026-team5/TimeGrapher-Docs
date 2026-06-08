@@ -335,8 +335,6 @@ ATAM style: each scenario carries an (**I**mportance, **D**ifficulty) pair, H/M/
 | 4 | [QAS-4](#qas-4--modifiability-extensibility--adding-a-new-measurementfiltergraph) | Modifiability | H | M | Many required features still need to be added |
 | 5 | [QAS-5](#qas-5--usability--reading-and-operating-on-the-touchscreen) | Usability | M | M | The small touchscreen limits layout choices |
 
-**Ordering:** [QAS-1](#qas-1--performance-latency--from-sound-input-to-screen-display) and [QAS-2](#qas-2--availability-graceful-degradation--under-noisy-or-weak-signals) come first because they affect whether the device is usable at all. [QAS-3](#qas-3--consistency--consistent-values-across-displays) and [QAS-4](#qas-4--modifiability-extensibility--adding-a-new-measurementfiltergraph) follow because they keep the results trustworthy and the project manageable. [QAS-5](#qas-5--usability--reading-and-operating-on-the-touchscreen) is still important, but its risk is more contained.
-
 ## Constraints
 
 | ID | Constraint |

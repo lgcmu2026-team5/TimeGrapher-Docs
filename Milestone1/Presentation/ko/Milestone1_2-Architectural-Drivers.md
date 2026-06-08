@@ -335,8 +335,6 @@ ATAM 방식: 각 시나리오에 (**I**중요도, **D**난이도) 쌍을 부여(
 | 4 | [QAS-4](#qas-4--modifiability-extensibility--새-측정필터그래프-추가) | Modifiability | H | M | 아직 추가해야 할 기능이 많음 |
 | 5 | [QAS-5](#qas-5--usability--터치스크린에서-읽기조작) | Usability | M | M | 작은 터치스크린이라 화면 배치가 제한됨 |
 
-**정렬:** [QAS-1](#qas-1--performance-latency--소리-입력에서-화면-표시까지)과 [QAS-2](#qas-2--availability-graceful-degradation--잡음약신호-환경)는 장치가 실제로 쓸 만한지에 직접 연결되므로 앞에 둔다. [QAS-3](#qas-3--consistency--표시-간-값-일치)과 [QAS-4](#qas-4--modifiability-extensibility--새-측정필터그래프-추가)는 결과 신뢰성과 개발 진행을 지키는 항목이라 그다음이다. [QAS-5](#qas-5--usability--터치스크린에서-읽기조작)도 중요하지만 위험은 비교적 제한적이다.
-
 ## 제약사항
 
 | ID | 제약사항 |
