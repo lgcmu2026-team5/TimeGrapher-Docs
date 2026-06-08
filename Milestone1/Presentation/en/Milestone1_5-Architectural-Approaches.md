@@ -49,6 +49,12 @@ flowchart TB
     Detector --> Frame
 
     Frame --> UiThread
+
+    classDef runtimeBox fill:#FFFFFF,stroke:#455A64,stroke-width:1.5px,color:#111111
+    class Live,Playback,Sim,Buffer,Detector,Metrics,SoundImage,Recorder,Frame,UiThread runtimeBox
+
+    style Sources fill:#E3F2FD,stroke:#1E88E5,stroke-width:2px
+    style Worker fill:#E3F2FD,stroke:#1E88E5,stroke-width:2px
 ```
 
 **Legend**
@@ -58,7 +64,6 @@ flowchart TB
 | Box | Runtime element or data artifact |
 | Group box | Related runtime elements grouped by role |
 | Arrow | One-way data flow |
-| `AnalysisFrame` | Single result bundle passed to the UI |
 
 - **A one-way flow** — sound in, numbers out — so a pipeline is the natural shape.
 - **Heavy analysis on a worker thread; the UI only draws** → the screen never freezes while measuring. (Performance)

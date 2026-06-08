@@ -49,6 +49,12 @@ flowchart TB
     Detector --> Frame
 
     Frame --> UiThread
+
+    classDef runtimeBox fill:#FFFFFF,stroke:#455A64,stroke-width:1.5px,color:#111111
+    class Live,Playback,Sim,Buffer,Detector,Metrics,SoundImage,Recorder,Frame,UiThread runtimeBox
+
+    style Sources fill:#E3F2FD,stroke:#1E88E5,stroke-width:2px
+    style Worker fill:#E3F2FD,stroke:#1E88E5,stroke-width:2px
 ```
 
 **범례**
@@ -58,7 +64,6 @@ flowchart TB
 | 상자 | 런타임 요소 또는 데이터 산출물 |
 | 그룹 상자 | 역할별로 묶은 관련 런타임 요소 |
 | 화살표 | 단방향 데이터 흐름 |
-| `AnalysisFrame` | UI로 전달되는 단일 결과 묶음 |
 
 - **소리가 들어와 숫자로 나가는 한 방향 흐름** — 그래서 파이프라인이 가장 자연스럽다.
 - **무거운 분석은 워커 스레드, UI는 그리기만** → 측정 중에도 화면이 멈추지 않는다. (성능)
