@@ -1,4 +1,6 @@
-![Project plan](../res/projectplan.png)
+﻿[![Project plan](../res/projectplan.png)](https://quire.io/u/Jongdaeb?view=timeline&filter=all)
+
+[Open live Quire timeline](https://quire.io/u/Jongdaeb?view=timeline&filter=all)
 
 # ARCHI-265 Schedule
 
