@@ -7,7 +7,7 @@
 - **Algorithm (functionality, calculation)**: Sunyoung Oh, Junyoung Park
 - **GUI**: Jaehong Oh, Sungjun Yoon
 
-# ARCHI-265 Schedule — Hierarchical List Version
+# ARCHI-265 Schedule
 
 ## Legend
 
