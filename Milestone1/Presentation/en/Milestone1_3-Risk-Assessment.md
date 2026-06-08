@@ -21,19 +21,19 @@ Risk ID | Risk Title | Type | QAS | P | I
 [R-03](#a-real-time-performance-rpi) | Sound-to-screen 0.5 s (p99 ≤ 500 ms) target is missed | T | [QAS-1](Milestone1_2-Architectural-Drivers.md#qas-1--performance-latency--from-sound-input-to-screen-display) | M | **H**
 [R-04](#a-real-time-performance-rpi) | Long continuous runs (24h+) leak memory and degrade or crash | T | [QAS-1](Milestone1_2-Architectural-Drivers.md#qas-1--performance-latency--from-sound-input-to-screen-display) | M | M
 [R-05](#a-real-time-performance-rpi) | Avalonia GPU-accelerated rendering on RPi5 slower than SW rendering, stuttering real-time graphs | T | [QAS-1](Milestone1_2-Architectural-Drivers.md#qas-1--performance-latency--from-sound-input-to-screen-display) | M | **H**
-[R-06](#b-signal-processing--measurement-trustworthiness) | A/C event positions not found to 0.1 ms — rate, beat error, amplitude all contaminated | T | [QAS-2](Milestone1_2-Architectural-Drivers.md#qas-2--availability-graceful-degradation--under-noisy-or-weak-signals)<br>[QAS-3](Milestone1_2-Architectural-Drivers.md#qas-3--consistency--consistent-values-across-displays) | **H** | **H**
-[R-07](#b-signal-processing--measurement-trustworthiness) | Noisy/weak signals produce misleading values instead of a graceful "signal weak" | T | [QAS-2](Milestone1_2-Architectural-Drivers.md#qas-2--availability-graceful-degradation--under-noisy-or-weak-signals) | M | **H**
+[R-06](#b-signal-processing--measurement-trustworthiness) | A/C event positions not found to 0.1 ms — rate, beat error, amplitude all contaminated | T | [QAS-2](Milestone1_2-Architectural-Drivers.md#qas-2)<br>[QAS-3](Milestone1_2-Architectural-Drivers.md#qas-3--consistency--consistent-values-across-displays) | **H** | **H**
+[R-07](#b-signal-processing--measurement-trustworthiness) | Noisy/weak signals produce misleading values instead of a graceful "signal weak" | T | [QAS-2](Milestone1_2-Architectural-Drivers.md#qas-2) | M | **H**
 [R-08](#c-architecture--extensibility) | No up-front filter/marker extension design — late-stage cost soars | T | [QAS-4](Milestone1_2-Architectural-Drivers.md#qas-4--modifiability-extensibility--adding-a-new-measurementfiltergraph) | M | M
-[R-09](#d-hardware--platform) | AGC left on or poor microphone coupling distorts the signal | T | [QAS-2](Milestone1_2-Architectural-Drivers.md#qas-2--availability-graceful-degradation--under-noisy-or-weak-signals) | M | **H**
+[R-09](#d-hardware--platform) | AGC left on or poor microphone coupling distorts the signal | T | [QAS-2](Milestone1_2-Architectural-Drivers.md#qas-2) | M | **H**
 [R-10](#d-hardware--platform) | Platform differences (WASAPI/ALSA) between Windows dev and RPi demo surface late | T | [QAS-1](Milestone1_2-Architectural-Drivers.md#qas-1--performance-latency--from-sound-input-to-screen-display) | M | M
 [R-11](#d-hardware--platform) | Supporting three sample rates (48/96/192k) adds timing complexity | T | [QAS-1](Milestone1_2-Architectural-Drivers.md#qas-1--performance-latency--from-sound-input-to-screen-display) | M | M
 [R-12](#e-usability--ui-1280800) | Small screen can't legibly hold summary bar + graphs + scope strip | T | [QAS-5](Milestone1_2-Architectural-Drivers.md#qas-5--usability--reading-and-operating-on-the-touchscreen) | M | M
 [R-13](#e-usability--ui-1280800) | Touch accuracy or recognition may be poor | T | [QAS-5](Milestone1_2-Architectural-Drivers.md#qas-5--usability--reading-and-operating-on-the-touchscreen) | L | L
 [R-14](#f-project--process) | Everything (12 features + AI) can't fit in 3 weeks — prioritization failure drops essentials | NT | QAS-ALL | M | **H**
 [R-15](#f-project--process) | Understanding the baseline code takes time and delays the start | NT | [QAS-4](Milestone1_2-Architectural-Drivers.md#qas-4--modifiability-extensibility--adding-a-new-measurementfiltergraph) | L | M
-[R-16](#f-project--process) | Qt/C++·DSP·RPi learning curve shakes implementation quality | NT | [QAS-1](Milestone1_2-Architectural-Drivers.md#qas-1--performance-latency--from-sound-input-to-screen-display)<br>[QAS-2](Milestone1_2-Architectural-Drivers.md#qas-2--availability-graceful-degradation--under-noisy-or-weak-signals) | L | M
-[R-17](#f-project--process) | Attempting the AI/TinyML feature raises on-device uncertainty | T | [QAS-1](Milestone1_2-Architectural-Drivers.md#qas-1--performance-latency--from-sound-input-to-screen-display)<br>[QAS-2](Milestone1_2-Architectural-Drivers.md#qas-2--availability-graceful-degradation--under-noisy-or-weak-signals) | M | M
-[R-18](#f-project--process) | Accepting GenAI-generated code unverified lets in plausible-but-wrong code | NT | [QAS-1](Milestone1_2-Architectural-Drivers.md#qas-1--performance-latency--from-sound-input-to-screen-display)<br>[QAS-2](Milestone1_2-Architectural-Drivers.md#qas-2--availability-graceful-degradation--under-noisy-or-weak-signals)<br>[QAS-3](Milestone1_2-Architectural-Drivers.md#qas-3--consistency--consistent-values-across-displays) | M | M
+[R-16](#f-project--process) | Qt/C++·DSP·RPi learning curve shakes implementation quality | NT | [QAS-1](Milestone1_2-Architectural-Drivers.md#qas-1--performance-latency--from-sound-input-to-screen-display)<br>[QAS-2](Milestone1_2-Architectural-Drivers.md#qas-2) | L | M
+[R-17](#f-project--process) | Attempting the AI/TinyML feature raises on-device uncertainty | T | [QAS-1](Milestone1_2-Architectural-Drivers.md#qas-1--performance-latency--from-sound-input-to-screen-display)<br>[QAS-2](Milestone1_2-Architectural-Drivers.md#qas-2) | M | M
+[R-18](#f-project--process) | Accepting GenAI-generated code unverified lets in plausible-but-wrong code | NT | [QAS-1](Milestone1_2-Architectural-Drivers.md#qas-1--performance-latency--from-sound-input-to-screen-display)<br>[QAS-2](Milestone1_2-Architectural-Drivers.md#qas-2)<br>[QAS-3](Milestone1_2-Architectural-Drivers.md#qas-3--consistency--consistent-values-across-displays) | M | M
 [R-19](#f-project--process) | Only one test Pi5 — real-use verification doesn't fit the schedule | NT | [QAS-1](Milestone1_2-Architectural-Drivers.md#qas-1--performance-latency--from-sound-input-to-screen-display) | **H** | **H**
 [R-20](#g-other--uncategorized) | Communication — meaning may be lost between stakeholders when conversing in English | NT | - | L | L
 [R-21](#g-other--uncategorized) | Insufficient test environment — one device, no test room, no unit tests; regressions may slip through | NT | - | L | L
@@ -96,7 +96,7 @@ Risk ID | Risk Title | Type | QAS | P | I
 ## B. Signal Processing / Measurement Trustworthiness
 
 - **R-06 — If A/C event positions can't be found to 0.1 ms, rate, beat error, and amplitude are all contaminated**
-  - **Evidence**: [FR-08-04…06](Milestone1_2-Architectural-Drivers.md#g08--escapement-analyzer-and-marker-line-display), [FR-06-01…04](Milestone1_2-Architectural-Drivers.md#g06--beat-error-display-and-diagnostic-trace), [QAS-2](Milestone1_2-Architectural-Drivers.md#qas-2--availability-graceful-degradation--under-noisy-or-weak-signals), [QAS-3](Milestone1_2-Architectural-Drivers.md#qas-3--consistency--consistent-values-across-displays)
+  - **Evidence**: [FR-08-04…06](Milestone1_2-Architectural-Drivers.md#g08--escapement-analyzer-and-marker-line-display), [FR-06-01…04](Milestone1_2-Architectural-Drivers.md#g06--beat-error-display-and-diagnostic-trace), [QAS-2](Milestone1_2-Architectural-Drivers.md#qas-2), [QAS-3](Milestone1_2-Architectural-Drivers.md#qas-3--consistency--consistent-values-across-displays)
   - **Probability / Impact**: High / High
   - **Grading rationale**
     - P-High: sub-0.1 ms A/C event detection on real noisy signals is genuinely hard.
@@ -105,7 +105,7 @@ Risk ID | Risk Title | Type | QAS | P | I
   - **Comment**: Confirm the current logic works; improve if needed
 
 - **R-07 — Noisy or weak signals may produce misleading values instead of a graceful "signal weak" response**
-  - **Evidence**: [QAS-2](Milestone1_2-Architectural-Drivers.md#qas-2--availability-graceful-degradation--under-noisy-or-weak-signals)
+  - **Evidence**: [QAS-2](Milestone1_2-Architectural-Drivers.md#qas-2)
   - **Probability / Impact**: Medium / High
   - **Grading rationale**
     - P-Medium: weak/noisy-signal handling is uncertain but testable per noise level.
@@ -127,7 +127,7 @@ Risk ID | Risk Title | Type | QAS | P | I
 ## D. Hardware / Platform
 
 - **R-09 — If AGC stays on or the microphone couples poorly, the signal distorts and every measurement collapses**
-  - **Evidence**: pdf (p.29 Raspberry Pi OS — Auto Gain Control), [QAS-2](Milestone1_2-Architectural-Drivers.md#qas-2--availability-graceful-degradation--under-noisy-or-weak-signals), [C-4](Milestone1_2-Architectural-Drivers.md#design-constraints)
+  - **Evidence**: pdf (p.29 Raspberry Pi OS — Auto Gain Control), [QAS-2](Milestone1_2-Architectural-Drivers.md#qas-2), [C-4](Milestone1_2-Architectural-Drivers.md#design-constraints)
   - **Probability / Impact**: Medium / High
   - **Grading rationale**
     - P-Medium: AGC defaults on and is an easily-forgotten manual step, yet fully preventable by checklist.
@@ -194,7 +194,7 @@ Risk ID | Risk Title | Type | QAS | P | I
   - **Comment**: Risk lowered by using AI
 
 - **R-16 — The Qt/C++·DSP·RPi learning curve shakes implementation quality**
-  - **Evidence**: pdf (p.29 Qt and Qt Creator), [QAS-1](Milestone1_2-Architectural-Drivers.md#qas-1--performance-latency--from-sound-input-to-screen-display), [QAS-2](Milestone1_2-Architectural-Drivers.md#qas-2--availability-graceful-degradation--under-noisy-or-weak-signals)
+  - **Evidence**: pdf (p.29 Qt and Qt Creator), [QAS-1](Milestone1_2-Architectural-Drivers.md#qas-1--performance-latency--from-sound-input-to-screen-display), [QAS-2](Milestone1_2-Architectural-Drivers.md#qas-2)
   - **Probability / Impact**: Low / Medium
   - **Grading rationale**
     - P-Low: AI assistance and pairing ease the learning curve.
@@ -203,7 +203,7 @@ Risk ID | Risk Title | Type | QAS | P | I
   - **Comment**: Risk lowered by using AI
 
 - **R-17 — Attempting the AI/TinyML feature raises on-device uncertainty**
-  - **Evidence**: pdf (p.12 AI Feature), [QAS-1](Milestone1_2-Architectural-Drivers.md#qas-1--performance-latency--from-sound-input-to-screen-display), [QAS-2](Milestone1_2-Architectural-Drivers.md#qas-2--availability-graceful-degradation--under-noisy-or-weak-signals)
+  - **Evidence**: pdf (p.12 AI Feature), [QAS-1](Milestone1_2-Architectural-Drivers.md#qas-1--performance-latency--from-sound-input-to-screen-display), [QAS-2](Milestone1_2-Architectural-Drivers.md#qas-2)
   - **Probability / Impact**: Medium / Medium
   - **Grading rationale**
     - P-Medium: on-device AI uncertainty is real if the feature is attempted.
@@ -212,7 +212,7 @@ Risk ID | Risk Title | Type | QAS | P | I
   - **Comment**: Windows first, then assess operability on the RPi 5 before adopting
 
 - **R-18 — Accepting GenAI-generated code unverified lets in plausible-but-wrong code (esp. DSP / concurrency / real-time)**
-  - **Evidence**: pdf (p.30 Project Deliverables), [QAS-1](Milestone1_2-Architectural-Drivers.md#qas-1--performance-latency--from-sound-input-to-screen-display), [QAS-2](Milestone1_2-Architectural-Drivers.md#qas-2--availability-graceful-degradation--under-noisy-or-weak-signals), [QAS-3](Milestone1_2-Architectural-Drivers.md#qas-3--consistency--consistent-values-across-displays)
+  - **Evidence**: pdf (p.30 Project Deliverables), [QAS-1](Milestone1_2-Architectural-Drivers.md#qas-1--performance-latency--from-sound-input-to-screen-display), [QAS-2](Milestone1_2-Architectural-Drivers.md#qas-2), [QAS-3](Milestone1_2-Architectural-Drivers.md#qas-3--consistency--consistent-values-across-displays)
   - **Probability / Impact**: Medium / Medium
   - **Grading rationale**
     - P-Medium: plausible-but-wrong GenAI code is common in DSP/concurrency.

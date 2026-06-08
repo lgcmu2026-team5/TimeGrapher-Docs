@@ -68,7 +68,7 @@ flowchart TB
 - **소리가 들어와 숫자로 나가는 한 방향 흐름** — 그래서 파이프라인이 가장 자연스럽다.
 - **무거운 분석은 워커 스레드, UI는 그리기만** → 측정 중에도 화면이 멈추지 않는다. (성능)
 - **모든 값은 한 번만 계산해 한 묶음으로 전달** → 화면마다 값이 어긋나지 않는다. (일관성)
-- **잡음이 있어도 신호가 충분하면 측정을 유지하고, 임계 미만이면 "신호 약함"을 표시하고 적절히 처리한다** → 틀린 숫자가 화면에 나오지 않는다. (가용성)
+- **잡음이 있어도 신호가 충분하면 측정을 유지하고, 임계 미만이면 "신호 약함"을 표시하고 적절히 처리한다** → 틀린 숫자가 화면에 나오지 않는다. (신뢰성)
 
 > **왜 이렇게?** 레거시 코드는 입력·분석·그리기를 한 덩어리에 몰아넣어, 빠른 응답(0.5초)과 기능 추가를 감당하기 어렵다. 그래서 목적별로 분리했다.
 
@@ -79,7 +79,7 @@ flowchart TB
 | QAS | 품질 목표 | 택틱 |
 |:---:|-----------|------|
 | [QAS-1](./Milestone1_2-Architectural-Drivers.md#qas-1) | 성능 (Performance) |  |
-| [QAS-2](./Milestone1_2-Architectural-Drivers.md#qas-2) | 가용성 (Availability) |  |
+| [QAS-2](./Milestone1_2-Architectural-Drivers.md#qas-2) | 신뢰성 (Reliability) |  |
 | [QAS-3](./Milestone1_2-Architectural-Drivers.md#qas-3)| 일관성 (Consistency) |  |
 | [QAS-4](./Milestone1_2-Architectural-Drivers.md#qas-4)| 변경 용이성 (Modifiability) |  |
 | [QAS-5](./Milestone1_2-Architectural-Drivers.md#qas-5)| 사용성 (Usability) | pause/resume |

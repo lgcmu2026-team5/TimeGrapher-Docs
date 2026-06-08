@@ -225,14 +225,16 @@
 
 **관련 FR** — [FR-08-01](#g08--escapement-analyzer-and-marker-line-display), [FR-12-04](#g12--scope-function-with-multiple-filter-views), [FR-05-03](#g05--beat-noise-scope-display), [FR-12-14](#g12--scope-function-with-multiple-filter-views) (실시간/Live 표시 기능)
 
-### QAS-2 · Availability (Graceful Degradation) — 잡음·약신호 환경
-> **한 줄 요약: 잡음 속에서도 신호가 충분할 때는 측정 서비스를 유지하고, 부족하면 "신호 약함"을 표시한 뒤 적절하게 처리한다.**
+<a id="qas-2"></a>
+
+### QAS-2 · Reliability — 잡음·약신호 환경
+> **한 줄 요약: 잡음 속에서도 신호가 충분할 때는 측정 서비스를 신뢰 가능하게 유지하고, 부족하면 "신호 약함"을 표시한 뒤 적절하게 처리한다.**
 >
 > 잡음이 포함된 열악한 작업 환경에서 잡음 섞인 시계 소리 또는 약한 시계 소리가 잡음 제거·비트 감지 부분에 들어오면, 시스템은 신호를 수용해 제한된 오차 안의 측정값을 내거나, 품질 임계 미만 입력에는 "신호 약함"을 표시하고 적절하게 처리한다. SNR ≥ 30 dB에서 수용된 입력은 감지율 **≥ 95%**이고, 표시 일오차가 **Sim/Playback 기준 일오차에서 ±3 s/d 이내**여야 한다.
 
 **왜 이 속성인가**
-- 플랜 원문: *"the system should degrade gracefully when the signal is weak, noisy, or partially missing, rather than producing unstable or misleading outputs."* — graceful degradation은 SAP에 수록된 **Availability 전술**.
-- 임계 이상에서는 허용오차 내 감지·측정을, 임계 미만에서는 "신호 약함" 상태로 낮추는 게이트 — 둘 다 **악조건에서도 올바른 서비스를 계속 제공하는 능력** → Availability.
+- 플랜 원문: *"the system should degrade gracefully when the signal is weak, noisy, or partially missing, rather than producing unstable or misleading outputs."* — 이 시나리오는 악조건 신호에서 불안정하거나 오해를 부르는 측정값을 피하는 데 초점을 둔다.
+- 임계 이상에서는 허용오차 내 감지·측정을, 임계 미만에서는 "신호 약함" 상태로 낮추는 게이트 — 둘 다 **악조건에서도 올바른 서비스를 계속 제공하는 능력** → Reliability.
 
 | 요소 | 내용 |
 |------|------|
@@ -256,7 +258,7 @@
 
 **왜 이 속성인가**
 - 플랜 §Correctness 원문: *"remaining internally consistent across the GUI, derived measurements, and longer-term summaries"* / *"calculations and visualizations are based on the same underlying data."*
-- 그 절은 여러 요구의 묶음: 내부 일관성(→ **본 시나리오**)과 잡음 하 사용 가능(→ [QAS-2](#qas-2--availability-graceful-degradation--잡음약신호-환경)). 본 시나리오는 일관성만 측정하므로 이름도 Consistency — Correctness라 부르면 나머지 부분까지 커버하는 듯한 과대 표기.
+- 그 절은 여러 요구의 묶음: 내부 일관성(→ **본 시나리오**)과 잡음 하 신뢰성 유지(→ [QAS-2](#qas-2)). 본 시나리오는 일관성만 측정하므로 이름도 Consistency — Correctness라 부르면 나머지 부분까지 커버하는 듯한 과대 표기.
 
 | 요소 | 내용 |
 |------|------|
@@ -330,7 +332,7 @@ ATAM 방식: 각 시나리오에 (**I**중요도, **D**난이도) 쌍을 부여(
 | 순위 | QAS | 품질 속성 | I | D | 근거 |
 |------|-----|----------|---|---|------|
 | 1 | [QAS-1](#qas-1--performance-latency--소리-입력에서-화면-표시까지) | Performance (Latency) | H | H | 결과가 빨리 떠야 하고, Pi 성능이 병목이 될 수 있음 |
-| 2 | [QAS-2](#qas-2--availability-graceful-degradation--잡음약신호-환경) | Availability | H | H | 실제 사용 환경에서는 잡음이나 약한 신호가 자주 생길 수 있음 |
+| 2 | [QAS-2](#qas-2) | Reliability | H | H | 실제 사용 환경에서는 잡음이나 약한 신호가 자주 생길 수 있음 |
 | 3 | [QAS-3](#qas-3--consistency--표시-간-값-일치) | Consistency | H | M | 같은 측정 결과가 화면마다 다르게 보이면 안 됨 |
 | 4 | [QAS-4](#qas-4--modifiability-extensibility--새-측정필터그래프-추가) | Modifiability | H | M | 아직 추가해야 할 기능이 많음 |
 | 5 | [QAS-5](#qas-5--usability--터치스크린에서-읽기조작) | Usability | M | M | 작은 터치스크린이라 화면 배치가 제한됨 |

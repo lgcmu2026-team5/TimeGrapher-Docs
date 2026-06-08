@@ -225,14 +225,16 @@ The metric, unit, and standard terms used in the scenarios below are defined in 
 
 **Related FRs** — [FR-08-01](#g08--escapement-analyzer-and-marker-line-display), [FR-12-04](#g12--scope-function-with-multiple-filter-views), [FR-05-03](#g05--beat-noise-scope-display), [FR-12-14](#g12--scope-function-with-multiple-filter-views) (Live display and low-latency feedback features)
 
-### QAS-2 · Availability (Graceful Degradation) — Under Noisy or Weak Signals
-> **In one line: under noise, keep the measurement service usable when the signal is good enough, and show the "signal weak" indication while handling weak input appropriately.**
+<a id="qas-2"></a>
+
+### QAS-2 · Reliability — Under Noisy or Weak Signals
+> **In one line: under noise, keep the measurement service reliable when the signal is good enough, and show the "signal weak" indication while handling weak input appropriately.**
 >
 > In a noisy working environment, when watch sound mixed with ambient noise — or a weak signal — reaches the noise-removal / beat-detection part, the system either accepts the signal and produces a bounded measurement, or shows the "signal weak" indication while handling weak input appropriately. At SNR ≥ 30 dB, accepted input must meet detection **≥ 95 %** and keep the displayed rate **within ±3 s/d of the Sim/Playback reference rate**.
 
 **Why this attribute**
-- Plan: *"the system should degrade gracefully when the signal is weak, noisy, or partially missing, rather than producing unstable or misleading outputs"* — and graceful degradation is a catalogued SAP **Availability** tactic.
-- Both halves are about **continuing to deliver correct service under adverse conditions**: within tolerance while signal quality allows, and a graceful "signal weak" state below the threshold. That is Availability.
+- Plan: *"the system should degrade gracefully when the signal is weak, noisy, or partially missing, rather than producing unstable or misleading outputs"* — this scenario is about avoiding unstable or misleading measurements under adverse signal conditions.
+- Both halves are about **continuing to deliver correct service under adverse conditions**: within tolerance while signal quality allows, and a graceful "signal weak" state below the threshold. That is Reliability.
 
 | Element | Content |
 |---------|---------|
@@ -256,7 +258,7 @@ The metric, unit, and standard terms used in the scenarios below are defined in 
 
 **Why this attribute**
 - Plan §Correctness: *"remaining internally consistent across the GUI, derived measurements, and longer-term summaries"* — *"calculations and visualizations are based on the same underlying data."*
-- That Plan section bundles multiple demands: stay internally consistent (→ **this scenario**) and stay usable under noise (→ [QAS-2](#qas-2--availability-graceful-degradation--under-noisy-or-weak-signals)). This scenario measures only consistency, so that is its name — "Correctness" would overclaim the other parts.
+- That Plan section bundles multiple demands: stay internally consistent (→ **this scenario**) and stay reliable under noise (→ [QAS-2](#qas-2)). This scenario measures only consistency, so that is its name — "Correctness" would overclaim the other parts.
 
 | Element | Content |
 |---------|---------|
@@ -330,7 +332,7 @@ ATAM style: each scenario carries an (**I**mportance, **D**ifficulty) pair, H/M/
 | Priority | QAS | Quality | I | D | Rationale |
 |----------|-----|---------|---|---|-----------|
 | 1 | [QAS-1](#qas-1--performance-latency--from-sound-input-to-screen-display) | Performance (Latency) | H | H | The result must appear quickly, and the Pi may be the bottleneck |
-| 2 | [QAS-2](#qas-2--availability-graceful-degradation--under-noisy-or-weak-signals) | Availability | H | H | Noisy or weak signals are likely in actual use |
+| 2 | [QAS-2](#qas-2) | Reliability | H | H | Noisy or weak signals are likely in actual use |
 | 3 | [QAS-3](#qas-3--consistency--consistent-values-across-displays) | Consistency | H | M | Users should not see different values for the same result |
 | 4 | [QAS-4](#qas-4--modifiability-extensibility--adding-a-new-measurementfiltergraph) | Modifiability | H | M | Many required features still need to be added |
 | 5 | [QAS-5](#qas-5--usability--reading-and-operating-on-the-touchscreen) | Usability | M | M | The small touchscreen limits layout choices |

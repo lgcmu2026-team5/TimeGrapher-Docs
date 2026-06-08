@@ -68,7 +68,7 @@ flowchart TB
 - **A one-way flow** — sound in, numbers out — so a pipeline is the natural shape.
 - **Heavy analysis on a worker thread; the UI only draws** → the screen never freezes while measuring. (Performance)
 - **Every value computed once, delivered as one bundle** → no display ever disagrees with another. (Consistency)
-- **Keep measuring while the signal is good enough; below the threshold, show "signal weak" and handle the input appropriately** → a wrong number never reaches the screen. (Availability)
+- **Keep measuring while the signal is good enough; below the threshold, show "signal weak" and handle the input appropriately** → a wrong number never reaches the screen. (Reliability)
 
 > **Why this shape?** The legacy code lumps capture, analysis, and drawing into one piece, which can't meet a 0.5 s response target or absorb new features. So we split it by purpose.
 
@@ -79,7 +79,7 @@ One tactic anchored to each quality goal.
 | QAS | Quality goal | Tactic |
 |:---:|--------------|--------|
 | [QAS-1](./Milestone1_2-Architectural-Drivers.md#qas-1) | Performance |  |
-| [QAS-2](./Milestone1_2-Architectural-Drivers.md#qas-2) | Availability |  |
+| [QAS-2](./Milestone1_2-Architectural-Drivers.md#qas-2) | Reliability |  |
 | [QAS-3](./Milestone1_2-Architectural-Drivers.md#qas-3) | Consistency |  |
 | [QAS-4](./Milestone1_2-Architectural-Drivers.md#qas-4) | Modifiability |  |
 | [QAS-5](./Milestone1_2-Architectural-Drivers.md#qas-5) | Usability | pause/resume |

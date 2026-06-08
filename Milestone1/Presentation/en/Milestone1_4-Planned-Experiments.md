@@ -15,7 +15,7 @@ The terms used in this document are defined in the consolidated [Glossary](Miles
 | [EXP-01](#exp-01-avalonia-rendering-backend-on-the-rpi5) | [R-05](Milestone1_3-Risk-Assessment.md#a-real-time-performance-rpi) | [QAS-1](Milestone1_2-Architectural-Drivers.md#qas-1--performance-latency--from-sound-input-to-screen-display) | **High** | If we choose C#, how do we remove the Avalonia-on-RPi5 rendering risk? |
 | [EXP-02](#exp-02-rpi5-real-time-sample-rate-ceiling) | [R-01](Milestone1_3-Risk-Assessment.md#a-real-time-performance-rpi), [R-03](Milestone1_3-Risk-Assessment.md#a-real-time-performance-rpi) | [QAS-1](Milestone1_2-Architectural-Drivers.md#qas-1--performance-latency--from-sound-input-to-screen-display) | **High** | What is the highest sample rate the RPi5 can process in real time? |
 | [EXP-03](#exp-03-gui-real-time-rendering-design-patterns) | [R-15](Milestone1_3-Risk-Assessment.md#f-project--process) | [QAS-1](Milestone1_2-Architectural-Drivers.md#qas-1--performance-latency--from-sound-input-to-screen-display), [QAS-4](Milestone1_2-Architectural-Drivers.md#qas-4--modifiability-extensibility--adding-a-new-measurementfiltergraph) | **High** | Which design patterns should we apply first to improve GUI real-time performance? |
-| [EXP-04](#exp-04-on-device-tinyml-inference-feasibility) | [R-17](Milestone1_3-Risk-Assessment.md#f-project--process) | [QAS-1](Milestone1_2-Architectural-Drivers.md#qas-1--performance-latency--from-sound-input-to-screen-display), [QAS-2](Milestone1_2-Architectural-Drivers.md#qas-2--availability-graceful-degradation--under-noisy-or-weak-signals) | Mid | Can we add TinyML inference and still hold real-time behavior and trustworthiness? |
+| [EXP-04](#exp-04-on-device-tinyml-inference-feasibility) | [R-17](Milestone1_3-Risk-Assessment.md#f-project--process) | [QAS-1](Milestone1_2-Architectural-Drivers.md#qas-1--performance-latency--from-sound-input-to-screen-display), [QAS-2](Milestone1_2-Architectural-Drivers.md#qas-2) | Mid | Can we add TinyML inference and still hold real-time behavior and trustworthiness? |
 | [EXP-05](#exp-05-long-run-stability-24h) | [R-04](Milestone1_3-Risk-Assessment.md#a-real-time-performance-rpi) | [QAS-1](Milestone1_2-Architectural-Drivers.md#qas-1--performance-latency--from-sound-input-to-screen-display) | Mid | Do memory/latency degrade over long runs? |
 | [EXP-06](#exp-06-readability-and-touch-target-ui-thresholds) | [R-12](Milestone1_3-Risk-Assessment.md#e-usability--ui-1280800), [R-13](Milestone1_3-Risk-Assessment.md#e-usability--ui-1280800) | [QAS-5](Milestone1_2-Architectural-Drivers.md#qas-5--usability--reading-and-operating-on-the-touchscreen) | Mid | What font-size / touch-target thresholds satisfy both readability and touch recognition? |
 
@@ -174,7 +174,7 @@ Planned
 
 ## EXP-04: On-device TinyML inference feasibility
 
-**Risks:** [R-17](Milestone1_3-Risk-Assessment.md#f-project--process) · **QAS:** [QAS-1](Milestone1_2-Architectural-Drivers.md#qas-1--performance-latency--from-sound-input-to-screen-display), [QAS-2](Milestone1_2-Architectural-Drivers.md#qas-2--availability-graceful-degradation--under-noisy-or-weak-signals) · **Priority:** Mid
+**Risks:** [R-17](Milestone1_3-Risk-Assessment.md#f-project--process) · **QAS:** [QAS-1](Milestone1_2-Architectural-Drivers.md#qas-1--performance-latency--from-sound-input-to-screen-display), [QAS-2](Milestone1_2-Architectural-Drivers.md#qas-2) · **Priority:** Mid
 
 ### Results & Recommendations
 

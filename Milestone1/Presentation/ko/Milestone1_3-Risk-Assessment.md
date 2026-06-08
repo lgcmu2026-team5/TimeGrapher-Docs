@@ -21,19 +21,19 @@ Risk ID | 리스크 타이틀 | 구분 | QAS | P | I
 [R-03](#a-실시간-성능-rpi) | 소리→화면 0.5초(p99 ≤ 500 ms) 목표를 못 지킨다 | T | [QAS-1](Milestone1_2-Architectural-Drivers.md#qas-1--performance-latency--소리-입력에서-화면-표시까지) | M | **H**
 [R-04](#a-실시간-성능-rpi) | 장시간(24h+) 연속 실행 시 메모리가 새서 느려지거나 죽는다 | T | [QAS-1](Milestone1_2-Architectural-Drivers.md#qas-1--performance-latency--소리-입력에서-화면-표시까지) | M | M
 [R-05](#a-실시간-성능-rpi) | Avalonia GPU 가속 렌더링이 RPi5에서 SW 렌더링보다 느려 실시간 그래프가 끊긴다 | T | [QAS-1](Milestone1_2-Architectural-Drivers.md#qas-1--performance-latency--소리-입력에서-화면-표시까지) | M | **H**
-[R-06](#b-신호처리--측정-신뢰성) | A·C 이벤트 위치를 0.1 ms 정밀도로 못 찾아 일오차·비트 에러·진폭 전부 오염된다 | T | [QAS-2](Milestone1_2-Architectural-Drivers.md#qas-2--availability-graceful-degradation--잡음약신호-환경)<br>[QAS-3](Milestone1_2-Architectural-Drivers.md#qas-3--consistency--표시-간-값-일치) | **H** | **H**
-[R-07](#b-신호처리--측정-신뢰성) | 시끄럽거나 약한 신호에서 "신호 약함" 대신 오해를 부르는 값을 표시한다 | T | [QAS-2](Milestone1_2-Architectural-Drivers.md#qas-2--availability-graceful-degradation--잡음약신호-환경) | M | **H**
+[R-06](#b-신호처리--측정-신뢰성) | A·C 이벤트 위치를 0.1 ms 정밀도로 못 찾아 일오차·비트 에러·진폭 전부 오염된다 | T | [QAS-2](Milestone1_2-Architectural-Drivers.md#qas-2)<br>[QAS-3](Milestone1_2-Architectural-Drivers.md#qas-3--consistency--표시-간-값-일치) | **H** | **H**
+[R-07](#b-신호처리--측정-신뢰성) | 시끄럽거나 약한 신호에서 "신호 약함" 대신 오해를 부르는 값을 표시한다 | T | [QAS-2](Milestone1_2-Architectural-Drivers.md#qas-2) | M | **H**
 [R-08](#c-아키텍처--확장성) | 필터/마커 확장 구조를 미리 설계하지 않아 후반 비용이 급증한다 | T | [QAS-4](Milestone1_2-Architectural-Drivers.md#qas-4--modifiability-extensibility--새-측정필터그래프-추가) | M | M
-[R-09](#d-하드웨어--플랫폼) | AGC를 끄지 않거나 마이크 결합이 나빠 신호가 왜곡된다 | T | [QAS-2](Milestone1_2-Architectural-Drivers.md#qas-2--availability-graceful-degradation--잡음약신호-환경) | M | **H**
+[R-09](#d-하드웨어--플랫폼) | AGC를 끄지 않거나 마이크 결합이 나빠 신호가 왜곡된다 | T | [QAS-2](Milestone1_2-Architectural-Drivers.md#qas-2) | M | **H**
 [R-10](#d-하드웨어--플랫폼) | Windows 개발–RPi 데모 간 플랫폼 차이(WASAPI/ALSA)가 늦게 드러난다 | T | [QAS-1](Milestone1_2-Architectural-Drivers.md#qas-1--performance-latency--소리-입력에서-화면-표시까지) | M | M
 [R-11](#d-하드웨어--플랫폼) | 샘플레이트 3종(48/96/192k) 지원이 타이밍·복잡도를 키운다 | T | [QAS-1](Milestone1_2-Architectural-Drivers.md#qas-1--performance-latency--소리-입력에서-화면-표시까지) | M | M
 [R-12](#e-사용성--ui-1280800) | 작은 화면에 요약바 + 그래프 + 스코프 스트립을 가독성 있게 다 못 담는다 | T | [QAS-5](Milestone1_2-Architectural-Drivers.md#qas-5--usability--터치스크린에서-읽기조작) | M | M
 [R-13](#e-사용성--ui-1280800) | 터치 정확도·인식률이 떨어질 수 있다 | T | [QAS-5](Milestone1_2-Architectural-Drivers.md#qas-5--usability--터치스크린에서-읽기조작) | L | L
 [R-14](#f-프로젝트--프로세스) | 3주 안에 12개 기능 + AI 전부 불가능 — 우선순위 실패 시 핵심이 빠진다 | NT | QAS-ALL | M | **H**
 [R-15](#f-프로젝트--프로세스) | 베이스라인 코드 이해에 시간이 걸려 착수가 늦어진다 | NT | [QAS-4](Milestone1_2-Architectural-Drivers.md#qas-4--modifiability-extensibility--새-측정필터그래프-추가) | L | M
-[R-16](#f-프로젝트--프로세스) | Qt/C++·DSP·RPi 학습곡선으로 구현 품질이 흔들린다 | NT | [QAS-1](Milestone1_2-Architectural-Drivers.md#qas-1--performance-latency--소리-입력에서-화면-표시까지)<br>[QAS-2](Milestone1_2-Architectural-Drivers.md#qas-2--availability-graceful-degradation--잡음약신호-환경) | L | M
-[R-17](#f-프로젝트--프로세스) | AI/TinyML 기능 시도 시 on-device 불확실성이 커진다 | T | [QAS-1](Milestone1_2-Architectural-Drivers.md#qas-1--performance-latency--소리-입력에서-화면-표시까지)<br>[QAS-2](Milestone1_2-Architectural-Drivers.md#qas-2--availability-graceful-degradation--잡음약신호-환경) | M | M
-[R-18](#f-프로젝트--프로세스) | GenAI 생성 코드를 검증 없이 수용하면 그럴듯하지만 틀린 코드가 들어온다 | NT | [QAS-1](Milestone1_2-Architectural-Drivers.md#qas-1--performance-latency--소리-입력에서-화면-표시까지)<br>[QAS-2](Milestone1_2-Architectural-Drivers.md#qas-2--availability-graceful-degradation--잡음약신호-환경)<br>[QAS-3](Milestone1_2-Architectural-Drivers.md#qas-3--consistency--표시-간-값-일치) | M | M
+[R-16](#f-프로젝트--프로세스) | Qt/C++·DSP·RPi 학습곡선으로 구현 품질이 흔들린다 | NT | [QAS-1](Milestone1_2-Architectural-Drivers.md#qas-1--performance-latency--소리-입력에서-화면-표시까지)<br>[QAS-2](Milestone1_2-Architectural-Drivers.md#qas-2) | L | M
+[R-17](#f-프로젝트--프로세스) | AI/TinyML 기능 시도 시 on-device 불확실성이 커진다 | T | [QAS-1](Milestone1_2-Architectural-Drivers.md#qas-1--performance-latency--소리-입력에서-화면-표시까지)<br>[QAS-2](Milestone1_2-Architectural-Drivers.md#qas-2) | M | M
+[R-18](#f-프로젝트--프로세스) | GenAI 생성 코드를 검증 없이 수용하면 그럴듯하지만 틀린 코드가 들어온다 | NT | [QAS-1](Milestone1_2-Architectural-Drivers.md#qas-1--performance-latency--소리-입력에서-화면-표시까지)<br>[QAS-2](Milestone1_2-Architectural-Drivers.md#qas-2)<br>[QAS-3](Milestone1_2-Architectural-Drivers.md#qas-3--consistency--표시-간-값-일치) | M | M
 [R-19](#f-프로젝트--프로세스) | 테스트용 Pi5가 한 대뿐이라 실사용 검증 일정이 안 나온다 | NT | [QAS-1](Milestone1_2-Architectural-Drivers.md#qas-1--performance-latency--소리-입력에서-화면-표시까지) | **H** | **H**
 [R-20](#g-기타-또는-카테고리화-되지-않음) | 의사소통 — 영어 대화 시 이해관계자 간 정확한 의사전달이 안 될 수 있다 | NT | - | L | L
 [R-21](#g-기타-또는-카테고리화-되지-않음) | 테스트 환경 부족 — 장비 1대, 테스트룸·unit test 없음으로 로직 변경 시 regression을 놓칠 수 있다 | NT | - | L | L
@@ -96,7 +96,7 @@ Risk ID | 리스크 타이틀 | 구분 | QAS | P | I
 ## B. 신호처리 / 측정 신뢰성
 
 - **R-06 — A·C 이벤트 위치를 0.1 ms 정밀도로 못 찾으면 일오차·비트 에러·진폭 전부가 오염된다**
-  - **근거**: [FR-08-04…06](Milestone1_2-Architectural-Drivers.md#g08--escapement-analyzer-and-marker-line-display), [FR-06-01…04](Milestone1_2-Architectural-Drivers.md#g06--beat-error-display-and-diagnostic-trace), [QAS-2](Milestone1_2-Architectural-Drivers.md#qas-2--availability-graceful-degradation--잡음약신호-환경), [QAS-3](Milestone1_2-Architectural-Drivers.md#qas-3--consistency--표시-간-값-일치)
+  - **근거**: [FR-08-04…06](Milestone1_2-Architectural-Drivers.md#g08--escapement-analyzer-and-marker-line-display), [FR-06-01…04](Milestone1_2-Architectural-Drivers.md#g06--beat-error-display-and-diagnostic-trace), [QAS-2](Milestone1_2-Architectural-Drivers.md#qas-2), [QAS-3](Milestone1_2-Architectural-Drivers.md#qas-3--consistency--표시-간-값-일치)
   - **발생 확률 / 영향**: High / High
   - **등급 근거**
     - P-High: 실제 잡음 신호에서 0.1 ms 정밀 A·C 이벤트 검출은 본질적으로 어려움.
@@ -105,7 +105,7 @@ Risk ID | 리스크 타이틀 | 구분 | QAS | P | I
   - **코멘트**: 현 로직 기준으로 정상동작 확인 및 필요 시 로직 개선 필요
 
 - **R-07 — 시끄럽거나 약한 신호에서 "신호 약함" 대신 오해를 부르는 값을 표시할 수 있다**
-  - **근거**: [QAS-2](Milestone1_2-Architectural-Drivers.md#qas-2--availability-graceful-degradation--잡음약신호-환경)
+  - **근거**: [QAS-2](Milestone1_2-Architectural-Drivers.md#qas-2)
   - **발생 확률 / 영향**: Medium / High
   - **등급 근거**
     - P-Medium: 약/잡음 신호 처리는 불확실하나 노이즈 레벨별 테스트로 확인 가능.
@@ -127,7 +127,7 @@ Risk ID | 리스크 타이틀 | 구분 | QAS | P | I
 ## D. 하드웨어 / 플랫폼
 
 - **R-09 — AGC를 끄지 않거나 마이크 결합이 나쁘면 신호가 왜곡돼 모든 측정이 망가진다**
-  - **근거**: pdf (p.29 Raspberry Pi OS — Auto Gain Control), [QAS-2](Milestone1_2-Architectural-Drivers.md#qas-2--availability-graceful-degradation--잡음약신호-환경), [C-4](Milestone1_2-Architectural-Drivers.md#설계-제약사항)
+  - **근거**: pdf (p.29 Raspberry Pi OS — Auto Gain Control), [QAS-2](Milestone1_2-Architectural-Drivers.md#qas-2), [C-4](Milestone1_2-Architectural-Drivers.md#설계-제약사항)
   - **발생 확률 / 영향**: Medium / High
   - **등급 근거**
     - P-Medium: AGC는 기본값 켜짐+잊기 쉬운 수동 단계지만 체크리스트로 충분히 예방 가능.
@@ -194,7 +194,7 @@ Risk ID | 리스크 타이틀 | 구분 | QAS | P | I
   - **코멘트**: AI 활용하기 때문에 Risk 낮아짐
 
 - **R-16 — Qt/C++·DSP·RPi 학습곡선으로 구현 품질이 흔들린다**
-  - **근거**: pdf (p.29 Qt and Qt Creator), [QAS-1](Milestone1_2-Architectural-Drivers.md#qas-1--performance-latency--소리-입력에서-화면-표시까지), [QAS-2](Milestone1_2-Architectural-Drivers.md#qas-2--availability-graceful-degradation--잡음약신호-환경)
+  - **근거**: pdf (p.29 Qt and Qt Creator), [QAS-1](Milestone1_2-Architectural-Drivers.md#qas-1--performance-latency--소리-입력에서-화면-표시까지), [QAS-2](Milestone1_2-Architectural-Drivers.md#qas-2)
   - **발생 확률 / 영향**: Low / Medium
   - **등급 근거**
     - P-Low: AI 활용·페어링으로 학습곡선 완화.
@@ -203,7 +203,7 @@ Risk ID | 리스크 타이틀 | 구분 | QAS | P | I
   - **코멘트**: AI 활용하기 때문에 Risk 낮아짐
 
 - **R-17 — AI/TinyML 기능을 시도하면 on-device 불확실성이 커진다**
-  - **근거**: pdf (p.12 AI Feature), [QAS-1](Milestone1_2-Architectural-Drivers.md#qas-1--performance-latency--소리-입력에서-화면-표시까지), [QAS-2](Milestone1_2-Architectural-Drivers.md#qas-2--availability-graceful-degradation--잡음약신호-환경)
+  - **근거**: pdf (p.12 AI Feature), [QAS-1](Milestone1_2-Architectural-Drivers.md#qas-1--performance-latency--소리-입력에서-화면-표시까지), [QAS-2](Milestone1_2-Architectural-Drivers.md#qas-2)
   - **발생 확률 / 영향**: Medium / Medium
   - **등급 근거**
     - P-Medium: 시도 시 on-device AI 불확실성이 실재.
@@ -212,7 +212,7 @@ Risk ID | 리스크 타이틀 | 구분 | QAS | P | I
   - **코멘트**: 우선 Windows 진행 후 RPi 5에서 동작성 검토 후 반영 결정
 
 - **R-18 — GenAI 생성 코드를 검증 없이 수용하면 그럴듯하지만 틀린 코드가 들어온다 (특히 DSP/동시성/실시간 영역)**
-  - **근거**: pdf (p.30 Project Deliverables), [QAS-1](Milestone1_2-Architectural-Drivers.md#qas-1--performance-latency--소리-입력에서-화면-표시까지), [QAS-2](Milestone1_2-Architectural-Drivers.md#qas-2--availability-graceful-degradation--잡음약신호-환경), [QAS-3](Milestone1_2-Architectural-Drivers.md#qas-3--consistency--표시-간-값-일치)
+  - **근거**: pdf (p.30 Project Deliverables), [QAS-1](Milestone1_2-Architectural-Drivers.md#qas-1--performance-latency--소리-입력에서-화면-표시까지), [QAS-2](Milestone1_2-Architectural-Drivers.md#qas-2), [QAS-3](Milestone1_2-Architectural-Drivers.md#qas-3--consistency--표시-간-값-일치)
   - **발생 확률 / 영향**: Medium / Medium
   - **등급 근거**
     - P-Medium: DSP/동시성에서 그럴듯하지만 틀린 GenAI 코드는 흔함.
