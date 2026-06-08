@@ -88,5 +88,5 @@ One tactic anchored to each quality goal.
 | State | Session control | Idle → Measuring ⇄ Paused transitions as state objects (no scattered flags) |
 | Observer | Qt signals/slots | Producers don't know consumers; displays subscribe to the result frame |
 | Facade | C detector-core wrapper | Hides the complex C detector core behind one clean call |
-
-- The backbone itself is patterns too: **Producer–Consumer** (input↔analysis) · **Pipe-and-Filter** (whole flow) · **immutable DTO** (AnalysisFrame).
+| Producer–Consumer | Input ↔ analysis (shared buffer) | Input writes, analysis reads — decoupled so neither waits on the other's pace |
+| Pipe-and-Filter | Whole flow | Input → analysis → rendering wired as one-way stages |
