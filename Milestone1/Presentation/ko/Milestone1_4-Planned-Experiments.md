@@ -1,12 +1,10 @@
 # Planned Experiments
 
-> SAP(Software Architecture Practice) 원칙에 따라 최우선 리스크를 줄이기 위한 기술 실험. 각 실험은 자신이 해소하는 리스크와 품질속성 시나리오(QAS)에 연결되며, 측정 결과를 근거로 한 합격/불합격(pass/fail) 판정으로 마무리한다.
-
 **목차** — [리스크-실험 매핑](#리스크-실험-매핑) · [EXP-01](#exp-01-rpi5-avalonia-렌더링-백엔드) · [EXP-02](#exp-02-rpi5-실시간-샘플레이트-상한) · [EXP-03](#exp-03-gui-실시간-렌더링-디자인-패턴) · [EXP-04](#exp-04-온디바이스-tinyml-추론-타당성) · [EXP-05](#exp-05-장시간-24h-실행-안정성) · [EXP-06](#exp-06-글자-가독성과-터치-타깃-ui-기준) · [통합 일정](#통합-일정) · [공통 승인 기준](#공통-승인-기준)
 
 ## 용어 설명
 
-이 문서에서 사용되는 용어는 통합 [Glossary](Milestone1_6-Glossary.md)에 정의되어 있다. 리스크(`R-*`)는 [Risk Assessment](Milestone1_3-Risk-Assessment.md), 품질속성 시나리오(`QAS-*`)는 [Architectural Drivers](Milestone1_2-Architectural-Drivers.md)에 정의되어 있다.
+이 문서에서 사용되는 용어는 통합 [Glossary](Milestone1_6-Glossary.md)에 정의되어 있다.
 
 ## 리스크-실험 매핑
 
@@ -31,7 +29,7 @@ TO-DO: RPi5 렌더링 백엔드 고정 정책 권장안(기본값 유지 또는 
 
 ### 목적
 
-C# 경로 채택 시 Avalonia UI가 RPi5에서 GPU 가속 렌더링이 SW 렌더링보다 *느려* 실시간 그래프가 끊길 수 있는 리스크를 기술실험으로 해소한다. 핵심 질문:
+C# 경로 채택 시 Avalonia Github의 다수 이슈처럼 GPU 가속 렌더링의 버그로 SW 방식보다도 *느려* 실시간 그래프가 끊길 수 있는 리스크를 기술실험으로 해소한다. 핵심 질문:
 
 - RPi5에서 GPU 가속 렌더링(GLX/EGL)이 소프트웨어 렌더링보다 느린가? (커뮤니티 보고: 가속 약 80 ms vs 소프트웨어 6–12 ms — 사실이면 실시간 그래프가 끊긴다.)
 

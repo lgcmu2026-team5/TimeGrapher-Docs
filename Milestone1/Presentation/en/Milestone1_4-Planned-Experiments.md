@@ -1,12 +1,10 @@
 # Planned Experiments
 
-> Technical experiments that buy down the highest-priority risks, organized along SAP (Software Architecture Practice) principles. Each experiment ties to the risks and quality-attribute scenarios (QAS) it de-risks and ends in a pass/fail decision recorded against measured results.
-
 **Contents** — [Risk-to-Experiment Map](#risk-to-experiment-map) · [EXP-01](#exp-01-avalonia-rendering-backend-on-the-rpi5) · [EXP-02](#exp-02-rpi5-real-time-sample-rate-ceiling) · [EXP-03](#exp-03-gui-real-time-rendering-design-patterns) · [EXP-04](#exp-04-on-device-tinyml-inference-feasibility) · [EXP-05](#exp-05-long-run-stability-24h) · [EXP-06](#exp-06-readability-and-touch-target-ui-thresholds) · [Integrated Schedule](#integrated-schedule) · [Common Approval Criteria](#common-approval-criteria)
 
 ## Terminology
 
-The terms used in this document are defined in the consolidated [Glossary](Milestone1_6-Glossary.md). Risks (`R-*`) are defined in [Risk Assessment](Milestone1_3-Risk-Assessment.md); quality-attribute scenarios (`QAS-*`) in [Architectural Drivers](Milestone1_2-Architectural-Drivers.md).
+The terms used in this document are defined in the consolidated [Glossary](Milestone1_6-Glossary.md).
 
 ## Risk-to-Experiment Map
 
@@ -31,7 +29,7 @@ TO-DO: Record the recommended RPi5 rendering-backend lock policy (keep the defau
 
 ### Objective
 
-When adopting the C# path, use a technical experiment to resolve the risk that Avalonia UI's GPU-accelerated rendering on the RPi5 may be *slower* than SW rendering and stutter the real-time graphs. Core question:
+When adopting the C# path, use a technical experiment to resolve the risk that — as in numerous Avalonia GitHub issues — a bug makes GPU-accelerated rendering on the RPi5 *slower* than even SW rendering, stuttering the real-time graphs. Core question:
 
 - On the RPi5, is GPU-accelerated rendering (GLX/EGL) actually slower than software rendering? (Community reports: ~80 ms accelerated vs 6–12 ms software — if true, the real-time graphs stutter.)
 
