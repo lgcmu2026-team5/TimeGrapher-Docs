@@ -29,9 +29,9 @@ R-D2 | Platform differences (WASAPI/ALSA) between Windows dev and RPi demo surfa
 R-D3 | Supporting three sample rates (48/96/192k) adds timing complexity | T | QAS-1 | M | M
 R-E1 | Small screen can't legibly hold summary bar + graphs + scope strip | T | QAS-5 | M | M
 R-E2 | Touch accuracy or recognition may be poor | T | QAS-5 | L | L
-R-F1 | Everything (12 features + AI) can't fit in 5 weeks — prioritization failure drops essentials | NT | QAS-ALL | M | **H**
+R-F1 | Everything (12 features + AI) can't fit in 3 weeks — prioritization failure drops essentials | NT | QAS-ALL | M | **H**
 R-F2 | Understanding the baseline code takes time and delays the start | NT | QAS-4 | L | M
-R-F3 | Qt/C++ · DSP · RPi learning curve shakes implementation quality | NT | QAS-1<br>QAS-2 | L | M
+R-F3 | Qt/C++·DSP·RPi learning curve shakes implementation quality | NT | QAS-1<br>QAS-2 | L | M
 R-F4 | Attempting the AI/TinyML feature raises on-device uncertainty | T | QAS-1<br>QAS-2 | M | M
 R-F5 | Accepting GenAI-generated code unverified lets in plausible-but-wrong code | NT | QAS-1<br>QAS-2<br>QAS-3 | M | M
 R-F6 | Only one test Pi5 — real-use verification doesn't fit the schedule | NT | QAS-1 | **H** | **H**
@@ -188,7 +188,7 @@ R-F6 | Only one test Pi5 — real-use verification doesn't fit the schedule | NT
 
 ## F. Project / Process
 
-- **R-F1 — Everything (12 features + AI) can't fit in 5 weeks — failing to prioritize drops the essentials**
+- **R-F1 — Everything (12 features + AI) can't fit in 3 weeks — failing to prioritize drops the essentials**
   - **Quality attribute**: QAS-ALL (esp. Performance · Reliability)
   - **Evidence**: pdf (p.5 Objective — "feasible, well-architected subset"), QAS-ALL
   - **Probability / Impact**: Medium / High
@@ -208,7 +208,7 @@ R-F6 | Only one test Pi5 — real-use verification doesn't fit the schedule | NT
   - **Mitigation**: Make code-reading sessions and a module map a week-1 task
   - **Comment**: Risk lowered by using AI
 
-- **R-F3 — The Qt/C++ · DSP · RPi learning curve shakes implementation quality**
+- **R-F3 — The Qt/C++·DSP·RPi learning curve shakes implementation quality**
   - **Quality attribute**: QAS-ALL (overall implementation quality)
   - **Evidence**: pdf (p.29 Qt and Qt Creator), QAS-1, QAS-2
   - **Probability / Impact**: Low / Medium
