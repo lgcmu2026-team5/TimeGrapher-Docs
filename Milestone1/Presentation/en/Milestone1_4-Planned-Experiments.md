@@ -25,7 +25,7 @@ The terms used in this document are defined in the consolidated [Glossary](Miles
 
 ### Results & Recommendations
 
-TO-DO: Record the recommended RPi5 rendering-backend lock policy (keep the default, or force Software) and the rationale. (Detailed run results go in EXPERIMENT_RESULTS.md.)
+TO-DO: Record the recommended RPi5 rendering-backend lock policy (keep the default, or force Software) and the rationale.
 
 ### Objective
 
@@ -33,7 +33,7 @@ When adopting the C# path, use a technical experiment to resolve the risk that �
 
 - On the RPi5, is GPU-accelerated rendering (GLX/EGL) actually slower than software rendering? (Community reports: ~80 ms accelerated vs 6–12 ms software — if true, the real-time graphs stutter.)
 
-The answer drives the design decision **"which Avalonia rendering backend to lock for RPi5 deployment."** Impact scope: app startup config (`Program.cs`) and the RPi deployment guide.
+The answer drives the design decision **"which Avalonia rendering backend to lock for RPi5 deployment."** Impact scope: app startup config and the RPi deployment guide.
 
 **Why this experiment:** multiple community reports flag slow GPU-accelerated rendering on RPi/embedded Linux (Avalonia GitHub `#18807, #18942, #19288, #18127`), but the causes differ across reports (app-side bugs, resolution, driver path) and none measure our workload's conditions. The backend can only be fixed by measuring on the real device.
 
@@ -43,34 +43,25 @@ Planned
 
 ### Expected Deliverables
 
-- A reusable benchmark harness built into the app (CLI run, JSON output)
+- A reusable benchmark harness
 - Per-backend (GLX / EGL / Software) frame-time comparison table (FPS, mean, p95, p99)
-- GL renderer-string log distinguishing true HW acceleration (V3D) from software fallback (llvmpipe)
-- Rendering-backend recommendation (keep the default, or force Software) for `Program.cs` + the deployment guide
+- Determination of HW acceleration vs software fallback, based on the actually-active renderer
+- Rendering-backend recommendation (keep the default, or force Software)
 
 ### Resources Needed
 
 - Raspberry Pi 5 (monitor connected, SSH access) — shared team device
-- Windows dev PC (.NET 8 SDK, linux-arm64 cross-publish)
+- Windows dev PC (cross-build for the RPi)
 - Effort: ~1.0 person-day
 
 ### Experiment Description
 
-1. **Build the bench harness** — add a diagnostic CLI mode to the app:
-   - `--render-mode=glx|egl|software`: lock the rendering backend with no fallback (so a failure fails loudly).
-   - `--render-bench`: auto-start a Sim run → force a full redraw of the real graph pipeline every composition frame (a harsher-than-normal load) → collect frame intervals for 30 s → emit stats as JSON → auto-exit.
-   - GL probe: record the renderer string of the actual GL context (to tell true HW acceleration (V3D) from software fallback (llvmpipe) — the RPi has no `glxinfo`).
+1. **Build the bench harness** — add a diagnostic measurement mode to the app: lock each rendering backend (GLX/EGL/Software) with no fallback, drive the real graph pipeline under a heavy per-frame redraw load (using a synthetic Sim signal), and collect frame intervals over a fixed window — while recording which GL renderer is actually active to tell HW acceleration from software fallback.
 2. **Verify the harness on Windows** with a short measurement (end-to-end sanity check).
-3. **Deploy to the RPi5**: linux-arm64 self-contained publish → transfer over SSH → `--smoke` boot check.
-4. **Measure all three backends**: 5 s warmup + 30 s measurement each.
+3. **Deploy to the RPi5 and measure** — run each of the three backends with a warmup followed by ~30 s of measurement.
+4. **Compare results → derive the backend recommendation** — record it here and in [Risk Assessment (R-A5)](Milestone1_3-Risk-Assessment.md#a-real-time-performance-rpi).
 
-   ```bash
-   DISPLAY=:0 ./TimeGrapher.App --render-bench --render-mode=glx --bench-label=pi5-glx
-   ```
-
-5. Compare results → derive the backend recommendation → record it here and in [Risk Assessment (R-A5)](Milestone1_3-Risk-Assessment.md#a-real-time-performance-rpi).
-
-**Completion criteria:** the experiment will be complete once ① all three backends are measured for 30 s, ② HW-acceleration status is confirmed via the GL renderer string, and ③ a backend recommendation is derived.
+**Completion criteria:** the experiment will be complete once ① all three backends are measured, ② the active-renderer (HW-acceleration) status is confirmed, and ③ a backend recommendation is derived.
 
 ### Duration
 
