@@ -1,6 +1,6 @@
 # Glossary
 
-> Team 5 · Milestone 1 발표 문서 전반의 통합 용어집. 모든 절이 일관되게 참조할 수 있도록 용어를 이곳에 한 번만 정의한다. 현재 모든 항목은 [Milestone 1-2 · Architectural Drivers](Milestone1_2-Architectural-Drivers.md)에서 비롯되며, 나머지 절이 채워지면 이 파일이 용어의 공용 보관처가 된다.
+> Team 5 · Milestone 1 발표 문서 전반의 통합 용어집 — 모든 절이 일관되게 참조하는 용어의 단일 원천이다. 아래 용어는 현재 [Milestone 1-2 · Architectural Drivers](Milestone1_2-Architectural-Drivers.md)에서 사용되는 것들이며(해당 문서는 이 파일을 참조), 나머지 절이 채워지면 더 추가된다.
 
 ## 도메인 용어
 

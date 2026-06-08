@@ -1,6 +1,6 @@
 # Glossary
 
-> Consolidated glossary for the Team 5 · Milestone 1 presentation documents. Terms are defined once here so every section can reference them consistently. At present all entries originate in [Milestone 1-2 · Architectural Drivers](Milestone1_2-Architectural-Drivers.md); this file is the shared home for terminology as the remaining sections are filled in.
+> Consolidated glossary for the Team 5 · Milestone 1 presentation documents — the single source of truth for terminology, so every section can reference it consistently. The terms below are currently those used in [Milestone 1-2 · Architectural Drivers](Milestone1_2-Architectural-Drivers.md), which links here; more will be added as the remaining sections are filled in.
 
 ## Domain Terms
 
