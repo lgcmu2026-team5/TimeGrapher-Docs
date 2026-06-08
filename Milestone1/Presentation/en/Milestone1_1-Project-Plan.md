@@ -32,11 +32,11 @@
     - ✅ Describe Overview-level architecture — `TBD` _(Assigned: YUN, JunSung, Junyoung Park, D, SUNYOUNG OH, Jaehong)_
   - ✅ **Etc** — `05.28 ~ 06.07`
     - ✅ **Milestone 1 Preview Action Items** — `TBD` _(Assigned: YUN, JunSung, Junyoung Park, D, SUNYOUNG OH, Jaehong)_
-- ⬜ **Milestone 2** — `06.08 ~ 06.22`
-  - ⬜ Project Plan — `06.15` _(Assigned: JunSung)_
-  - ⬜ **Experiments/Results** — `06.08 ~ 06.17`
-    - ⬜ Verify real-time processing sample rate capability on Pi5 — `06.09 ~ 06.12` _(Assigned: Junyoung Park)_
-    - ⬜ TinyML Inference — `06.09 ~ 06.15` _(Assigned: Jaehong)_
+- 🟡 **Milestone 2** — `06.08 ~ 06.22`
+  - 🟡 Project Plan — `06.15` _(Assigned: JunSung)_
+  - 🟡 **Experiments/Results** — `06.08 ~ 06.17`
+    - 🟡 Verify real-time processing sample rate capability on Pi5 — `06.08 ~ 06.12` _(Assigned: Junyoung Park)_
+    - 🟡 TinyML Inference — `06.08 ~ 06.15` _(Assigned: Jaehong)_
     - ⬜ Propose design patterns for real-time optimization (C++ vs C#) — `06.09 ~ 06.12` _(Assigned: JunSung, Jaehong)_
     - ⬜ Memory/latency degradation during long-term execution — `06.15 ~ 06.19` _(Assigned: D)_
     - ⬜ Touch recognition satisfaction — `06.09 ~ 06.10` _(Assigned: JunSung)_
