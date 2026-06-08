@@ -291,7 +291,7 @@ TO-DO: 글자 크기 기준안(최소/권장), 터치 타깃 기준안, 최종 U
 
 ### 필요한 자원
 
-- Raspberry Pi 5 + 1280×800 터치 디스플레이 ([C-2](Milestone1_2-Architectural-Drivers.md#제약사항))
+- Raspberry Pi 5 + 1280×800 터치 디스플레이 ([C-2](Milestone1_2-Architectural-Drivers.md#설계-제약사항))
 - UI 실험 빌드(글자 크기/터치 타깃 프리셋 전환 가능)
 - 실험 참가자 8–12명(팀원 + 외부 사용자 혼합 권장)
 - 설문 도구(구글폼 또는 동등 도구)

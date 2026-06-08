@@ -1,6 +1,6 @@
 # Architectural Drivers
 
-**목차** — [Functional Requirements (FR)](#functional-requirements) · [Quality Attribute Scenarios (QAS)](#quality-attribute-scenarios) · [우선순위 (Priority)](#우선순위) · [제약사항 (Constraints)](#제약사항)
+**목차** — [Functional Requirements (FR)](#functional-requirements) · [Quality Attribute Scenarios (QAS)](#quality-attribute-scenarios) · [우선순위 (Priority)](#우선순위) · [설계 제약사항 (Design COnstraints)](#설계-제약사항)
 
 ## Glossary
 
@@ -335,10 +335,10 @@ ATAM 방식: 각 시나리오에 (**I**중요도, **D**난이도) 쌍을 부여(
 | 4 | [QAS-4](#qas-4--modifiability-extensibility--새-측정필터그래프-추가) | Modifiability | H | M | 아직 추가해야 할 기능이 많음 |
 | 5 | [QAS-5](#qas-5--usability--터치스크린에서-읽기조작) | Usability | M | M | 작은 터치스크린이라 화면 배치가 제한됨 |
 
-## 제약사항
+## 설계 제약사항
 
-| ID | 제약사항 |
-|----|----------|
+| ID | 설계 제약사항 |
+|----|----------------|
 | C-1 | 시스템은 터치스크린이 연결된 Raspberry Pi 5(8 GB RAM, 128 GB microSD)에서 실행되어야 한다. |
 | C-2 | 시스템은 Raspberry Pi 5에 연결된 1280×800 디스플레이에서 GUI를 올바르게 렌더링하고 동작해야 한다. |
 | C-3 | 시스템은 Windows 11 (x64) PC와 Raspberry Pi OS(Debian 기반, 64-bit/ARM64)를 실행하는 Raspberry Pi 5 모두에서 실행되어야 한다. |

@@ -291,7 +291,7 @@ Planned
 
 ### Resources Needed
 
-- Raspberry Pi 5 + 1280×800 touch display ([C-2](Milestone1_2-Architectural-Drivers.md#constraints))
+- Raspberry Pi 5 + 1280×800 touch display ([C-2](Milestone1_2-Architectural-Drivers.md#design-constraints))
 - UI experiment build (switchable font-size / touch-target presets)
 - 8–12 participants (mix of team members + external users recommended)
 - Survey tool (Google Forms or equivalent)

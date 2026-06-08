@@ -46,8 +46,7 @@ Risk ID | Risk Title | Type | QAS | P | I
 ## A. Real-Time Performance (RPi)
 
 - **R-A1 — The RPi5 fails to keep up with high sample rates (96k/192k) in real time and loses sound data (block drop / missed beat)**
-  - **Quality attribute**: Performance (Throughput)
-  - **Evidence**: pdf (p.25 Real Time Performance), [QAS-1](Milestone1_2-Architectural-Drivers.md#qas-1--performance-latency--from-sound-input-to-screen-display), [C-1](Milestone1_2-Architectural-Drivers.md#constraints)
+  - **Evidence**: pdf (p.25 Real Time Performance), [QAS-1](Milestone1_2-Architectural-Drivers.md#qas-1--performance-latency--from-sound-input-to-screen-display), [C-1](Milestone1_2-Architectural-Drivers.md#design-constraints)
   - **Probability / Impact**: High / High
   - **Grading rationale**
     - P-High: 96k/192k real-time load pushes the RPi5 to its hardware limit, so hitting it is likely.
@@ -57,7 +56,6 @@ Risk ID | Risk Title | Type | QAS | P | I
   - **Comment**: Use the week-1 spike result to set the final sample-rate target
 
 - **R-A2 — Rendering four filters (F0→F3) plus multiple graphs at once makes the screen stutter (<20 FPS · UI freeze)**
-  - **Quality attribute**: Performance
   - **Evidence**: [FR-12-01](Milestone1_2-Architectural-Drivers.md#g12--scope-function-with-multiple-filter-views), [FR-12-04](Milestone1_2-Architectural-Drivers.md#g12--scope-function-with-multiple-filter-views), [QAS-1](Milestone1_2-Architectural-Drivers.md#qas-1--performance-latency--from-sound-input-to-screen-display), [QAS-5](Milestone1_2-Architectural-Drivers.md#qas-5--usability--reading-and-operating-on-the-touchscreen)
   - **Probability / Impact**: Medium / High
   - **Grading rationale**
@@ -68,7 +66,6 @@ Risk ID | Risk Title | Type | QAS | P | I
   - **Comment**: Decide 4 simultaneous views vs one-at-a-time after the performance check
 
 - **R-A3 — The sound-to-screen 0.5 s (p99 ≤ 500 ms) target is missed**
-  - **Quality attribute**: Performance (Latency)
   - **Evidence**: [QAS-1](Milestone1_2-Architectural-Drivers.md#qas-1--performance-latency--from-sound-input-to-screen-display)
   - **Probability / Impact**: Medium / High
   - **Grading rationale**
@@ -78,7 +75,6 @@ Risk ID | Risk Title | Type | QAS | P | I
   - **Comment**: For the worst case, optimize resources/processes or migrate to reduced features
 
 - **R-A4 — Long continuous runs (24h+) leak memory and degrade or crash**
-  - **Quality attribute**: Dependability (Reliability) (+Performance)
   - **Evidence**: [FR-07-10](Milestone1_2-Architectural-Drivers.md#g07--long-term-performance-graph), [QAS-1](Milestone1_2-Architectural-Drivers.md#qas-1--performance-latency--from-sound-input-to-screen-display)
   - **Probability / Impact**: Medium / Medium
   - **Grading rationale**
@@ -88,7 +84,6 @@ Risk ID | Risk Title | Type | QAS | P | I
   - **Comment**: First verify memory leaks in the current code (experiment)
 
 - **R-A5 — With the Avalonia framework, a bug may make GPU-accelerated rendering on the RPi5 slower than SW rendering, causing real-time graph (Rate/Scope) updates to stutter**
-  - **Quality attribute**: Performance (Latency)
   - **Evidence**: Multiple reports of GPU-acceleration slowdowns on RPi/embedded in Avalonia GitHub — `#18807, #18942, #19288, #18127`. pdf (p.25 Real Time Performance), [QAS-1](Milestone1_2-Architectural-Drivers.md#qas-1--performance-latency--from-sound-input-to-screen-display)
   - **Probability / Impact**: Medium / High
   - **Grading rationale**
@@ -101,7 +96,6 @@ Risk ID | Risk Title | Type | QAS | P | I
 ## B. Signal Processing / Measurement Trustworthiness
 
 - **R-B1 — If A/C event positions can't be found to 0.1 ms, rate, beat error, and amplitude are all contaminated**
-  - **Quality attribute**: Dependability (Reliability)
   - **Evidence**: [FR-08-04…06](Milestone1_2-Architectural-Drivers.md#g08--escapement-analyzer-and-marker-line-display), [FR-06-01…04](Milestone1_2-Architectural-Drivers.md#g06--beat-error-display-and-diagnostic-trace), [QAS-2](Milestone1_2-Architectural-Drivers.md#qas-2--availability-graceful-degradation--under-noisy-or-weak-signals), [QAS-3](Milestone1_2-Architectural-Drivers.md#qas-3--consistency--consistent-values-across-displays)
   - **Probability / Impact**: High / High
   - **Grading rationale**
@@ -111,7 +105,6 @@ Risk ID | Risk Title | Type | QAS | P | I
   - **Comment**: Confirm the current logic works; improve if needed
 
 - **R-B2 — Noisy or weak signals may produce misleading values instead of a graceful "signal weak" response**
-  - **Quality attribute**: Availability (Graceful Degradation)
   - **Evidence**: [QAS-2](Milestone1_2-Architectural-Drivers.md#qas-2--availability-graceful-degradation--under-noisy-or-weak-signals)
   - **Probability / Impact**: Medium / High
   - **Grading rationale**
@@ -123,7 +116,6 @@ Risk ID | Risk Title | Type | QAS | P | I
 ## C. Architecture / Extensibility
 
 - **R-C1 — Without up-front design of the filter/marker extension structure (e.g., adding F4), late-stage cost soars**
-  - **Quality attribute**: Modifiability (Extensibility)
   - **Evidence**: [FR-12-01](Milestone1_2-Architectural-Drivers.md#g12--scope-function-with-multiple-filter-views), [QAS-4](Milestone1_2-Architectural-Drivers.md#qas-4--modifiability-extensibility--adding-a-new-measurementfiltergraph)
   - **Probability / Impact**: Medium / Medium
   - **Grading rationale**
@@ -135,8 +127,7 @@ Risk ID | Risk Title | Type | QAS | P | I
 ## D. Hardware / Platform
 
 - **R-D1 — If AGC stays on or the microphone couples poorly, the signal distorts and every measurement collapses**
-  - **Quality attribute**: Dependability (Reliability)
-  - **Evidence**: pdf (p.29 Raspberry Pi OS — Auto Gain Control), [QAS-2](Milestone1_2-Architectural-Drivers.md#qas-2--availability-graceful-degradation--under-noisy-or-weak-signals), [C-4](Milestone1_2-Architectural-Drivers.md#constraints)
+  - **Evidence**: pdf (p.29 Raspberry Pi OS — Auto Gain Control), [QAS-2](Milestone1_2-Architectural-Drivers.md#qas-2--availability-graceful-degradation--under-noisy-or-weak-signals), [C-4](Milestone1_2-Architectural-Drivers.md#design-constraints)
   - **Probability / Impact**: Medium / High
   - **Grading rationale**
     - P-Medium: AGC defaults on and is an easily-forgotten manual step, yet fully preventable by checklist.
@@ -145,8 +136,7 @@ Risk ID | Risk Title | Type | QAS | P | I
   - **Comment**: Must be stated in the user guide
 
 - **R-D2 — Developing on Windows, demoing on RPi — platform differences (WASAPI/ALSA audio backends) surface late**
-  - **Quality attribute**: Portability (+Performance)
-  - **Evidence**: pdf (p.29 System Software), [QAS-1](Milestone1_2-Architectural-Drivers.md#qas-1--performance-latency--from-sound-input-to-screen-display), [C-3](Milestone1_2-Architectural-Drivers.md#constraints)
+  - **Evidence**: pdf (p.29 System Software), [QAS-1](Milestone1_2-Architectural-Drivers.md#qas-1--performance-latency--from-sound-input-to-screen-display), [C-3](Milestone1_2-Architectural-Drivers.md#design-constraints)
   - **Probability / Impact**: Medium / Medium
   - **Grading rationale**
     - P-Medium: WASAPI/ALSA divergence is likely but caught early by running the RPi in parallel.
@@ -155,7 +145,6 @@ Risk ID | Risk Title | Type | QAS | P | I
   - **Comment**: The RPi runs in parallel throughout the project, so risk is low
 
 - **R-D3 — Supporting three sample rates (48/96/192k) adds timing complexity**
-  - **Quality attribute**: Portability (+Reliability)
   - **Evidence**: pdf (p.25 Real Time Performance), [QAS-1](Milestone1_2-Architectural-Drivers.md#qas-1--performance-latency--from-sound-input-to-screen-display)
   - **Probability / Impact**: Medium / Medium
   - **Grading rationale**
@@ -167,8 +156,7 @@ Risk ID | Risk Title | Type | QAS | P | I
 ## E. Usability / UI (1280×800)
 
 - **R-E1 — The small screen can't legibly hold the summary bar + multiple graphs + scope strip (letters ≥ 2.9 mm · touch ≥ 9 mm)**
-  - **Quality attribute**: Usability
-  - **Evidence**: pdf (p.27 8 Inch Touchscreen for Raspberry Pi), [QAS-5](Milestone1_2-Architectural-Drivers.md#qas-5--usability--reading-and-operating-on-the-touchscreen), [C-2](Milestone1_2-Architectural-Drivers.md#constraints)
+  - **Evidence**: pdf (p.27 8 Inch Touchscreen for Raspberry Pi), [QAS-5](Milestone1_2-Architectural-Drivers.md#qas-5--usability--reading-and-operating-on-the-touchscreen), [C-2](Milestone1_2-Architectural-Drivers.md#design-constraints)
   - **Probability / Impact**: Medium / Medium
   - **Grading rationale**
     - P-Medium: fitting all panels legibly on the small screen is tight.
@@ -177,7 +165,6 @@ Risk ID | Risk Title | Type | QAS | P | I
   - **Comment**: Run size-adjustment tests
 
 - **R-E2 — Touch accuracy or recognition may be poor**
-  - **Quality attribute**: Usability
   - **Evidence**: [QAS-5](Milestone1_2-Architectural-Drivers.md#qas-5--usability--reading-and-operating-on-the-touchscreen)
   - **Probability / Impact**: Low / Low
   - **Grading rationale**
@@ -189,7 +176,6 @@ Risk ID | Risk Title | Type | QAS | P | I
 ## F. Project / Process
 
 - **R-F1 — Everything (12 features + AI) can't fit in 3 weeks — failing to prioritize drops the essentials**
-  - **Quality attribute**: QAS-ALL (esp. Performance · Reliability)
   - **Evidence**: pdf (p.5 Objective — "feasible, well-architected subset"), QAS-ALL
   - **Probability / Impact**: Medium / High
   - **Grading rationale**
@@ -199,7 +185,6 @@ Risk ID | Risk Title | Type | QAS | P | I
   - **Comment**: Plan well and drop what must be dropped
 
 - **R-F2 — Understanding the provided baseline code (TimeGrapher_v10.4) takes time and delays the start**
-  - **Quality attribute**: Modifiability (onboarding · maintenance)
   - **Evidence**: pdf (p.29 GUI Code), [QAS-4](Milestone1_2-Architectural-Drivers.md#qas-4--modifiability-extensibility--adding-a-new-measurementfiltergraph)
   - **Probability / Impact**: Low / Medium
   - **Grading rationale**
@@ -209,7 +194,6 @@ Risk ID | Risk Title | Type | QAS | P | I
   - **Comment**: Risk lowered by using AI
 
 - **R-F3 — The Qt/C++·DSP·RPi learning curve shakes implementation quality**
-  - **Quality attribute**: QAS-ALL (overall implementation quality)
   - **Evidence**: pdf (p.29 Qt and Qt Creator), [QAS-1](Milestone1_2-Architectural-Drivers.md#qas-1--performance-latency--from-sound-input-to-screen-display), [QAS-2](Milestone1_2-Architectural-Drivers.md#qas-2--availability-graceful-degradation--under-noisy-or-weak-signals)
   - **Probability / Impact**: Low / Medium
   - **Grading rationale**
@@ -219,7 +203,6 @@ Risk ID | Risk Title | Type | QAS | P | I
   - **Comment**: Risk lowered by using AI
 
 - **R-F4 — Attempting the AI/TinyML feature raises on-device uncertainty**
-  - **Quality attribute**: Dependability (Reliability) — signal-quality classification
   - **Evidence**: pdf (p.12 AI Feature), [QAS-1](Milestone1_2-Architectural-Drivers.md#qas-1--performance-latency--from-sound-input-to-screen-display), [QAS-2](Milestone1_2-Architectural-Drivers.md#qas-2--availability-graceful-degradation--under-noisy-or-weak-signals)
   - **Probability / Impact**: Medium / Medium
   - **Grading rationale**
@@ -229,7 +212,6 @@ Risk ID | Risk Title | Type | QAS | P | I
   - **Comment**: Windows first, then assess operability on the RPi 5 before adopting
 
 - **R-F5 — Accepting GenAI-generated code unverified lets in plausible-but-wrong code (esp. DSP / concurrency / real-time)**
-  - **Quality attribute**: Reliability · Performance · (Testability)
   - **Evidence**: pdf (p.30 Project Deliverables), [QAS-1](Milestone1_2-Architectural-Drivers.md#qas-1--performance-latency--from-sound-input-to-screen-display), [QAS-2](Milestone1_2-Architectural-Drivers.md#qas-2--availability-graceful-degradation--under-noisy-or-weak-signals), [QAS-3](Milestone1_2-Architectural-Drivers.md#qas-3--consistency--consistent-values-across-displays)
   - **Probability / Impact**: Medium / Medium
   - **Grading rationale**
@@ -239,7 +221,6 @@ Risk ID | Risk Title | Type | QAS | P | I
   - **Comment**: See mitigation (code review, whole team understands the algorithms)
 
 - **R-F6 — Only one test Pi5 — real-use verification doesn't fit the schedule**
-  - **Quality attribute**: Modifiability (Testability)
   - **Evidence**: pdf (p.26 System Hardware — Raspberry Pi), [QAS-1](Milestone1_2-Architectural-Drivers.md#qas-1--performance-latency--from-sound-input-to-screen-display)
   - **Probability / Impact**: High / High
   - **Grading rationale**

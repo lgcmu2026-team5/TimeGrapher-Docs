@@ -1,6 +1,6 @@
 # Architectural Drivers
 
-**Contents** — [Functional Requirements (FR)](#functional-requirements) · [Quality Attribute Scenarios (QAS)](#quality-attribute-scenarios) · [Priority](#priority) · [Constraints](#constraints)
+**Contents** — [Functional Requirements (FR)](#functional-requirements) · [Quality Attribute Scenarios (QAS)](#quality-attribute-scenarios) · [Priority](#priority) · [Design COnstraints](#design-constraints)
 
 ## Glossary
 
@@ -335,10 +335,10 @@ ATAM style: each scenario carries an (**I**mportance, **D**ifficulty) pair, H/M/
 | 4 | [QAS-4](#qas-4--modifiability-extensibility--adding-a-new-measurementfiltergraph) | Modifiability | H | M | Many required features still need to be added |
 | 5 | [QAS-5](#qas-5--usability--reading-and-operating-on-the-touchscreen) | Usability | M | M | The small touchscreen limits layout choices |
 
-## Constraints
+## Design COnstraints
 
-| ID | Constraint |
-|----|------------|
+| ID | Design Constraint |
+|----|-------------------|
 | C-1 | The system shall run on a Raspberry Pi 5 (8 GB RAM, 128 GB microSD) with a touchscreen attached. |
 | C-2 | The system shall render and operate the GUI correctly on the 1280×800 display connected to the Raspberry Pi 5. |
 | C-3 | The system shall run on both a Windows 11 (x64) PC and a Raspberry Pi 5 running Raspberry Pi OS (Debian-based, 64-bit/ARM64). |

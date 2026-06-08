@@ -62,7 +62,7 @@ flowchart TB
 | Symbol | Meaning |
 |---|---|
 | Box | Runtime element or data artifact |
-| Group box | Related runtime elements grouped by role |
+| Group box | Related runtime elements grouped by purpose |
 | Arrow | One-way data flow |
 
 - **A one-way flow** — sound in, numbers out — so a pipeline is the natural shape.
@@ -70,7 +70,7 @@ flowchart TB
 - **Every value computed once, delivered as one bundle** → no display ever disagrees with another. (Consistency)
 - **Keep measuring while the signal is good enough; below the threshold, show "signal weak" and handle the input appropriately** → a wrong number never reaches the screen. (Availability)
 
-> **Why this shape?** The legacy code lumps capture, analysis, and drawing into one piece, which can't meet a 0.5 s response target or absorb new features. So we split it by role.
+> **Why this shape?** The legacy code lumps capture, analysis, and drawing into one piece, which can't meet a 0.5 s response target or absorb new features. So we split it by purpose.
 
 ## Software Architecture Tactics to Apply
 
@@ -86,8 +86,8 @@ One tactic anchored to each quality goal.
 
 ## Software Design Patterns to Apply
 
-| Pattern | Where | Role |
-|---------|-------|------|
+| Pattern | Where | Purpose |
+|---------|-------|---------|
 | Strategy | Input sources · filter stages | Mic/playback/Sim and each filter plug in behind one interface, swappable |
 | Adapter | Platform audio | Windows (WASAPI) and RPi (ALSA) unified to one capture interface |
 | State | Session control | Idle → Measuring ⇄ Paused transitions as state objects (no scattered flags) |
