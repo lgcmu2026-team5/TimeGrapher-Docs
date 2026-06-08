@@ -8,10 +8,57 @@
 
 ```mermaid
 flowchart LR
-    IN[3 inputs<br/>mic · WAV · Sim] --> BUF[shared buffer]
-    BUF --> AN[analysis worker thread<br/>beat detect · measure · quality gate]
-    AN --> FR[AnalysisFrame<br/>values · status · timestamps]
-    FR --> UI[screen<br/>UI thread draws only]
+    MW[MainWindow<br/>UI coordinator]
+
+    subgraph Input["Input Sources (interchangeable)"]
+        AW[TAudioWorker<br/>live mic]
+        PW[TPlaybackWorker<br/>WAV playback]
+        SW[TSimWorker<br/>synthetic signal]
+    end
+
+    BUF[TMasterAudioDataRaw<br/>shared ring buffer]
+
+    subgraph Analysis["Analysis (worker thread)"]
+        AN[TAnalysisWorker]
+        TG[tg_process<br/>detector core]
+        WM[WatchMetrics<br/>rate · beat · amplitude]
+        QG[Signal-quality gate]
+        SR[SoundImageRenderer]
+        WAV[WavStreamWriter<br/>optional recording → disk]
+    end
+
+    DTO[AnalysisFrame<br/>frameId · values · sound image · status · timestamps]
+
+    subgraph Render["Rendering (UI thread)"]
+        GR[GraphFrameRenderer]
+        G1[Graph 1]
+        G2[Graph 2]
+        GN[Graph n]
+    end
+
+    AW --> BUF
+    PW --> BUF
+    SW --> BUF
+
+    MW --> AW
+    MW --> PW
+    MW --> SW
+    MW --> AN
+
+    BUF --> AN
+    AN --> TG
+    TG --> WM
+    WM --> QG
+    AN --> SR
+    SR --> DTO
+    AN --> WAV
+    QG --> DTO
+
+    DTO --> MW
+    MW --> GR
+    GR --> G1
+    GR --> G2
+    GR --> GN
 ```
 
 - **A one-way flow** — sound in, numbers out — so a pipeline is the natural shape.

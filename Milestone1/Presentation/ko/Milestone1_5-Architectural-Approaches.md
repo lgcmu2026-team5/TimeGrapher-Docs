@@ -8,10 +8,57 @@
 
 ```mermaid
 flowchart LR
-    IN[입력 3종<br/>마이크 · WAV · Sim] --> BUF[공유 버퍼]
-    BUF --> AN[분석 워커 스레드<br/>비트 검출 · 측정 · 품질 판정]
-    AN --> FR[AnalysisFrame<br/>측정값 · 상태 · 타임스탬프]
-    FR --> UI[화면<br/>UI 스레드는 그리기만]
+    MW[MainWindow<br/>UI coordinator]
+
+    subgraph Input["입력 소스 (상호 교체 가능)"]
+        AW[TAudioWorker<br/>라이브 마이크]
+        PW[TPlaybackWorker<br/>WAV 재생]
+        SW[TSimWorker<br/>합성 신호]
+    end
+
+    BUF[TMasterAudioDataRaw<br/>공유 링 버퍼]
+
+    subgraph Analysis["분석 (워커 스레드)"]
+        AN[TAnalysisWorker]
+        TG[tg_process<br/>검출 코어]
+        WM[WatchMetrics<br/>일오차 · 비트오차 · 진폭]
+        QG[신호 품질 게이트]
+        SR[SoundImageRenderer]
+        WAV[WavStreamWriter<br/>선택적 녹음 → 디스크]
+    end
+
+    DTO[AnalysisFrame<br/>frameId · 측정값 · 사운드 이미지 · 상태 · 타임스탬프]
+
+    subgraph Render["렌더링 (UI 스레드)"]
+        GR[GraphFrameRenderer]
+        G1[Graph 1]
+        G2[Graph 2]
+        GN[Graph n]
+    end
+
+    AW --> BUF
+    PW --> BUF
+    SW --> BUF
+
+    MW --> AW
+    MW --> PW
+    MW --> SW
+    MW --> AN
+
+    BUF --> AN
+    AN --> TG
+    TG --> WM
+    WM --> QG
+    AN --> SR
+    SR --> DTO
+    AN --> WAV
+    QG --> DTO
+
+    DTO --> MW
+    MW --> GR
+    GR --> G1
+    GR --> G2
+    GR --> GN
 ```
 
 - **소리가 들어와 숫자로 나가는 한 방향 흐름** — 그래서 파이프라인이 가장 자연스럽다.
