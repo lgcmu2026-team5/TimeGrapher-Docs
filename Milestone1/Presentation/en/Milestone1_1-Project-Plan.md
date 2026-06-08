@@ -2,10 +2,10 @@
 
 # Team Roles
 
-- **Team Lead**: Youngjun Yoon
+- **Team Lead**: Sungjun Yoon
 - **System (dataflow, pipeline)**: Junsung Kim, Jongdae Baek
 - **Algorithm (functionality, calculation)**: Sunyoung Oh, Junyoung Park
-- **GUI**: Jaehong Oh, Youngjun Yoon
+- **GUI**: Jaehong Oh, Sungjun Yoon
 
 # ARCHI-265 Schedule — Hierarchical List Version
 
