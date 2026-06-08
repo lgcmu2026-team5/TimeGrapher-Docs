@@ -76,14 +76,13 @@ flowchart TB
 
 One tactic anchored to each quality goal.
 
-| Quality goal | Tactic | In one line |
-|--------------|--------|-------------|
-| Performance | introduce concurrency · bound queue/buffer sizes | Analysis on a worker thread with bounded buffers |
-| Availability | graceful degradation | Accept noisy input and keep measuring while the signal is good enough; below the quality threshold, show "signal weak" and handle the input appropriately |
-| Consistency | single source of truth (compute once → immutable frame) | Every value computed once and delivered to all displays via one immutable frame — displays cannot disagree |
-| Modifiability | increase cohesion · encapsulate · restrict dependencies | Fixed extension points, so a new feature never spreads into existing code |
-| Usability | separate the UI (draw-only) · centralize size rules | The UI only draws the frame; letter/touch mm rules live in one renderer, securing legibility and touch use on the small screen |
-| Portability & verification | abstract data sources · defer binding | Three inputs unified to one format and swappable; platform-dependent code kept in one place |
+| QAS | Quality goal | Tactic | In one line |
+|:---:|--------------|--------|-------------|
+| [QAS-1](./Milestone1_2-Architectural-Drivers.md#qas-1) | Performance |  | Analysis on a worker thread with bounded buffers |
+| [QAS-2](./Milestone1_2-Architectural-Drivers.md#qas-2) | Availability |  | Accept noisy input and keep measuring while the signal is good enough; below the quality threshold, show "signal weak" and handle the input appropriately |
+| [QAS-3](./Milestone1_2-Architectural-Drivers.md#qas-3) | Consistency |  | Every value computed once and delivered to all displays via one immutable frame — displays cannot disagree |
+| [QAS-4](./Milestone1_2-Architectural-Drivers.md#qas-4) | Modifiability |  | Fixed extension points, so a new feature never spreads into existing code |
+| [QAS-5](./Milestone1_2-Architectural-Drivers.md#qas-5) | Usability | pause/resume | The UI only draws the frame; letter/touch mm rules live in one renderer, securing legibility and touch use on the small screen |
 
 ## Software Design Patterns to Apply
 
