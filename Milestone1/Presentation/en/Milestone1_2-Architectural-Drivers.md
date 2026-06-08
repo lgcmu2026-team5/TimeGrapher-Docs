@@ -278,7 +278,7 @@ The metric, unit, and standard terms used in the scenarios below are defined in 
 ### QAS-4 · Modifiability (Extensibility) — Adding a New Measurement/Filter/Graph
 > **In one line: adding a new graph, filter, or measurement touches one place.**
 >
-> During development under a tight schedule, when a developer adds a new graph, filter, or measurement to the codebase, the addition is incremental without tearing into existing code — **≤ 1 existing module changed** (common parts only), 8 person-days per feature.
+> During development under a tight schedule, when a developer adds a new graph, filter, or measurement to the codebase, the addition is incremental without changing codes for the existing graphs — **≤ 1 existing module changed** (common parts only), 8 person-days per feature.
 
 **Why this attribute**
 - Plan §Extensibility, Modifiability: *"support the addition of new measurements, filters, graphs, and display modes without major redesign of existing code."*
@@ -290,7 +290,7 @@ The metric, unit, and standard terms used in the scenarios below are defined in 
 | Stimulus | Wants to add a new graph, filter stage, or derived measurement |
 | Artifact | The codebase holding the measurement/display features |
 | Environment | During development, tight schedule |
-| Response | Add incrementally without tearing into existing code |
+| Response | Add incrementally without changing codes for the existing graphs |
 | Response Measure | New graph / filter / measurement, each: ≤ 1 existing module changed (common parts only), 8 person-days per feature |
 
 **Why these numbers**
