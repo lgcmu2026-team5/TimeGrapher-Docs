@@ -2,7 +2,7 @@
 
 > English version above, Korean version below. (위쪽은 영어 버전, 아래쪽은 한국어 버전입니다.)
 
-> **What this is.** Nothing is implemented yet. We studied the legacy baseline code and the drivers (QAS-1…5, C-1…4 — see *Milestone1_Architectural_Drivers_QAS.md*), and this is the structure we decided to build — and why.
+> **What this is.** Nothing is implemented yet. We studied the legacy baseline code and the drivers (QAS-1…5, C-1…4 — see *Deprecated/Milestone1_Architectural_Drivers_QAS.md*), and this is the structure we decided to build — and why.
 
 ## Terminology
 
@@ -207,7 +207,7 @@ A few numbers in this design are still assertions, not measurements — so they 
 
 # Milestone1 — Architectural Approaches (한국어)
 
-> **이 문서의 성격.** 아직 구현된 것은 없다. 레거시 베이스라인 코드와 드라이버(QAS-1…5, C-1…4 — *Milestone1_Architectural_Drivers_QAS.md* 참고)를 검토해서, 앞으로 구현할 구조를 결정했다 — 무엇을, 왜 그렇게 결정했는지를 담았다.
+> **이 문서의 성격.** 아직 구현된 것은 없다. 레거시 베이스라인 코드와 드라이버(QAS-1…5, C-1…4 — *Deprecated/Milestone1_Architectural_Drivers_QAS.md* 참고)를 검토해서, 앞으로 구현할 구조를 결정했다 — 무엇을, 왜 그렇게 결정했는지를 담았다.
 
 ## 용어 설명
 
