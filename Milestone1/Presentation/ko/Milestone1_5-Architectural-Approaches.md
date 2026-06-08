@@ -8,60 +8,57 @@
 
 **입력 → 공유 버퍼 → 분석(워커 스레드) → 결과 한 묶음(AnalysisFrame) → 화면(UI 스레드)**
 
+### 런타임 데이터 흐름 뷰 (Runtime Data Flow View)
+
+**요소**는 실행 중 동작하는 처리 요소와 데이터 산출물이다. **관계**는 입력에서 화면까지 이어지는 단방향 데이터 흐름이다.
+
 ```mermaid
-flowchart LR
-    MW[MainWindow<br/>UI coordinator]
-
-    subgraph Input["입력 소스 (상호 교체 가능)"]
-        AW[TAudioWorker<br/>라이브 마이크]
-        PW[TPlaybackWorker<br/>WAV 재생]
-        SW[TSimWorker<br/>합성 신호]
+flowchart TB
+    subgraph Sources["입력 소스"]
+        direction LR
+        Live["Live"]
+        Playback["Playback"]
+        Sim["Simulation"]
     end
 
-    BUF[TMasterAudioDataRaw<br/>공유 링 버퍼]
+    Buffer["공유 오디오 버퍼"]
 
-    subgraph Analysis["분석 (워커 스레드)"]
-        AN[TAnalysisWorker]
-        TG[tg_process<br/>검출 코어]
-        WM[WatchMetrics<br/>일오차 · 비트 에러 · 진폭]
-        QG[신호 품질 게이트]
-        SR[SoundImageRenderer]
-        WAV[WavStreamWriter<br/>선택적 녹음 → 디스크]
+    subgraph Worker["분석 워커"]
+        Detector["검출"]
+        Metrics["측정"]
+        SoundImage["사운드 이미지"]
+        Recorder["녹음"]
     end
 
-    DTO[AnalysisFrame<br/>frameId · 측정값 · 사운드 이미지 · 상태 · 타임스탬프]
+    Frame["AnalysisFrame"]
 
-    subgraph Render["렌더링 (UI 스레드)"]
-        GR[GraphFrameRenderer]
-        G1[Graph 1]
-        G2[Graph 2]
-        GN[Graph n]
-    end
+    UiThread["UI 스레드"]
 
-    AW --> BUF
-    PW --> BUF
-    SW --> BUF
+    Live --> Buffer
+    Playback --> Buffer
+    Sim --> Buffer
 
-    MW --> AW
-    MW --> PW
-    MW --> SW
-    MW --> AN
+    Buffer --> Detector
+    Buffer --> Recorder
 
-    BUF --> AN
-    AN --> TG
-    TG --> WM
-    WM --> QG
-    AN --> SR
-    SR --> DTO
-    AN --> WAV
-    QG --> DTO
+    Detector --> Metrics
+    Detector --> SoundImage
 
-    DTO --> MW
-    MW --> GR
-    GR --> G1
-    GR --> G2
-    GR --> GN
+    Metrics --> Frame
+    SoundImage --> Frame
+    Detector --> Frame
+
+    Frame --> UiThread
 ```
+
+**범례**
+
+| 기호 | 의미 |
+|---|---|
+| 상자 | 런타임 요소 또는 데이터 산출물 |
+| 그룹 상자 | 역할별로 묶은 관련 런타임 요소 |
+| 화살표 | 단방향 데이터 흐름 |
+| `AnalysisFrame` | UI로 전달되는 단일 결과 묶음 |
 
 - **소리가 들어와 숫자로 나가는 한 방향 흐름** — 그래서 파이프라인이 가장 자연스럽다.
 - **무거운 분석은 워커 스레드, UI는 그리기만** → 측정 중에도 화면이 멈추지 않는다. (성능)

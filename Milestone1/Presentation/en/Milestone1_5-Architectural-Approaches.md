@@ -8,60 +8,57 @@
 
 **input → shared buffer → analysis (worker thread) → one result bundle (AnalysisFrame) → screen (UI thread)**
 
+### Runtime Data Flow View
+
+**Elements** are runtime processing elements and data artifacts. **Relations** are one-way data-flow relations from input to screen.
+
 ```mermaid
-flowchart LR
-    MW[MainWindow<br/>UI coordinator]
-
-    subgraph Input["Input Sources (interchangeable)"]
-        AW[TAudioWorker<br/>live mic]
-        PW[TPlaybackWorker<br/>WAV playback]
-        SW[TSimWorker<br/>synthetic signal]
+flowchart TB
+    subgraph Sources["Input Sources"]
+        direction LR
+        Live["Live"]
+        Playback["Playback"]
+        Sim["Simulation"]
     end
 
-    BUF[TMasterAudioDataRaw<br/>shared ring buffer]
+    Buffer["Shared Audio Buffer"]
 
-    subgraph Analysis["Analysis (worker thread)"]
-        AN[TAnalysisWorker]
-        TG[tg_process<br/>detector core]
-        WM[WatchMetrics<br/>rate · beat error · amplitude]
-        QG[Signal-quality gate]
-        SR[SoundImageRenderer]
-        WAV[WavStreamWriter<br/>optional recording → disk]
+    subgraph Worker["Analysis Worker"]
+        Detector["Detector"]
+        Metrics["Metrics"]
+        SoundImage["Sound Image"]
+        Recorder["Recorder"]
     end
 
-    DTO[AnalysisFrame<br/>frameId · values · sound image · status · timestamps]
+    Frame["AnalysisFrame"]
 
-    subgraph Render["Rendering (UI thread)"]
-        GR[GraphFrameRenderer]
-        G1[Graph 1]
-        G2[Graph 2]
-        GN[Graph n]
-    end
+    UiThread["UI Thread"]
 
-    AW --> BUF
-    PW --> BUF
-    SW --> BUF
+    Live --> Buffer
+    Playback --> Buffer
+    Sim --> Buffer
 
-    MW --> AW
-    MW --> PW
-    MW --> SW
-    MW --> AN
+    Buffer --> Detector
+    Buffer --> Recorder
 
-    BUF --> AN
-    AN --> TG
-    TG --> WM
-    WM --> QG
-    AN --> SR
-    SR --> DTO
-    AN --> WAV
-    QG --> DTO
+    Detector --> Metrics
+    Detector --> SoundImage
 
-    DTO --> MW
-    MW --> GR
-    GR --> G1
-    GR --> G2
-    GR --> GN
+    Metrics --> Frame
+    SoundImage --> Frame
+    Detector --> Frame
+
+    Frame --> UiThread
 ```
+
+**Legend**
+
+| Symbol | Meaning |
+|---|---|
+| Box | Runtime element or data artifact |
+| Group box | Related runtime elements grouped by role |
+| Arrow | One-way data flow |
+| `AnalysisFrame` | Single result bundle passed to the UI |
 
 - **A one-way flow** — sound in, numbers out — so a pipeline is the natural shape.
 - **Heavy analysis on a worker thread; the UI only draws** → the screen never freezes while measuring. (Performance)
