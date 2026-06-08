@@ -17,47 +17,20 @@
 
 ## 일정
 
-- 🟡 **Milestone 1** — `05.29 ~ 06.07`
-  - ⬜ Project Plan — `05.29 ~ 06.07`
-  - ⬜ **Architecture Drivers** — `05.29 ~ 06.07`
+- ✅ **Milestone 1** — `05.29 ~ 06.07`
+  - ✅ Project Plan — `05.29 ~ 06.07`
+  - ✅ **Architecture Drivers** — `05.29 ~ 06.07`
     - ✅ **Requirements Analysis** — `06.01 ~ 06.02`
-      - ✅ Requirements Analysis 작성(FR-01) — `06.01 ~ 06.03` _(담당: YUN)_
-      - ✅ Requirements Analysis 작성(FR-02) — `06.01 ~ 06.03` _(담당: JunSung)_
-      - ✅ Requirements Analysis 작성(FR-03) — `06.01 ~ 06.03` _(담당: JunSung)_
-      - ✅ Requirements Analysis 작성(FR-04) — `06.01 ~ 06.03` _(담당: YUN)_
-      - ✅ Requirements Analysis 작성(FR-05) — `06.01 ~ 06.03` _(담당: Junyoung Park)_
-      - ✅ Requirements Analysis 작성(FR-06) — `06.01 ~ 06.03` _(담당: D)_
-      - ✅ Requirements Analysis 작성(FR-07) — `06.01 ~ 06.03` _(담당: SUNYOUNG OH)_
-      - ✅ Requirements Analysis 작성(FR-08) — `06.01 ~ 06.03` _(담당: D)_
-      - ✅ Requirements Analysis 작성(FR-09) — `06.01 ~ 06.03` _(담당: 재홍)_
-      - ✅ Requirements Analysis 작성(FR-10) — `06.01 ~ 06.03` _(담당: SUNYOUNG OH)_
-      - ✅ Requirements Analysis 작성(FR-11) — `06.01 ~ 06.03` _(담당: 재홍)_
-      - ✅ Requirements Analysis 작성(FR-12) — `06.01 ~ 06.03` _(담당: Junyoung Park)_
-    - ✅ QA Scenarios — `06.01 ~ 06.03`
-  - ⬜ **Risk Assessment** — `06.03 ~ 06.04`
-    - ✅ List up Technical Risks — `06.05 ~ 06.07`
-    - ✅ List up Non-Technical Risks — `06.05 ~ 06.07`
-  - ⬜ Planned Experiments — `06.06 ~ 06.07` _(담당: YUN, JunSung)_
-  - ⬜ **Architectural Approaches** — `06.07 ~ 06.08` _(담당: 재홍, D)_
-    - ⬜ Describe Overview-level architecture — `미정`
-  - ⬜ **Etc** — `05.28 ~ 06.07`
-    - ⬜ **Milestone 1 Preview Action Items** — `미정`
-      - ⬜ 프로젝트 맥락 설명에 기능뿐 아니라 성능, 수정 용이성 등 품질 요구사항을 포함하도록 조정하기 — `미정`
-      - ⬜ Write "Functional requirements" and "Quality attribute requirements" and confirm to customer — `미정`
-      - ⬜ Identify Risk Assessment, and define prototype or proof of concept experiment, for each risks — `미정`
-      - ⬜ Prepare Milestone 1 document, by introduction, requirements, risks and experiments, and architectural approaches — `미정`
-      - ⬜ Check configuration error of "Unable to find a VS installation" if use "Understand" tool — `미정`
-      - ⬜ Confirm meeting with Dan on Thursday via Email — `06.01 ~ 06.03`
-      - ⬜ Dan에게 이메일을 보낼 때 팀원 전체를 참조하기 — `미정`
-      - ⬜ Prioritize of QA Scenarios by "High, Medium, Low" — `미정`
-      - ⬜ 작성한 품질 속성 시나리오와 응답 측정값을 고객에게 확인받기 — `미정`
-      - ⬜ Prepare QA Scenario Document format — `05.28 ~ 06.07`
-    - ✅ **Prepare meeting to Prof. Paulo at 06-01** — `05.28 ~ 06.01` _(담당: SUNYOUNG OH)_
-      - ✅ Prepare questions — `미정` _(담당: JunSung, D, YUN)_
-      - ✅ (박준영) Prepare questions — `05.29 ~ 05.31` _(담당: Junyoung Park)_
-      - ✅ (백종대) Prepare questions — `05.29 ~ 05.31` _(담당: D)_
-      - ✅ (오재홍) Prepare questions — `05.29 ~ 05.31` _(담당: 재홍)_
-      - ✅ (오선영) Prepare questions — `05.29 ~ 05.31` _(담당: SUNYOUNG OH)_
+      - ✅ Requirements Analysis 작성 — `06.01 ~ 06.03` _(담당: YUN、JunSung、Junyoung Park、D、SUNYOUNG OH, 재홍)_
+    - ✅ QA Scenarios — `06.01 ~ 06.03` _(담당: YUN、JunSung、Junyoung Park、D、SUNYOUNG OH, 재홍)_
+  - ✅ **Risk Assessment** — `06.03 ~ 06.04`
+    - ✅ List up Technical Risks — `06.05 ~ 06.07` _(담당: YUN、JunSung、Junyoung Park、D、SUNYOUNG OH, 재홍)_
+    - ✅ List up Non-Technical Risks — `06.05 ~ 06.07` _(담당: YUN、JunSung、Junyoung Park、D、SUNYOUNG OH, 재홍)_
+  - ✅ Planned Experiments — `06.06 ~ 06.07` _(담당: YUN, JunSung)_
+  - ✅ **Architectural Approaches** — `06.07 ~ 06.08` _(담당: 재홍, D)_
+    - ✅ Describe Overview-level architecture _(담당: YUN、JunSung、Junyoung Park、D、SUNYOUNG OH, 재홍)_
+  - ✅ **Etc** — `05.28 ~ 06.07`
+    - ✅ **Milestone 1 Preview Action Items** _(담당: YUN、JunSung、Junyoung Park、D、SUNYOUNG OH, 재홍)_
 - ⬜ **Milestone 2** — `06.08 ~ 06.22`
   - ⬜ Project Plan — `06.15` _(담당: JunSung)_
   - ⬜ **Experiments/Results** — `06.08 ~ 06.17`
