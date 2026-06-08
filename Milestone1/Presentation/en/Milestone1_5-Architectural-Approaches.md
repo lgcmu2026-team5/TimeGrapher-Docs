@@ -76,13 +76,13 @@ flowchart TB
 
 One tactic anchored to each quality goal.
 
-| QAS | Quality goal | Tactic |
-|:---:|--------------|--------|
-| [QAS-1](./Milestone1_2-Architectural-Drivers.md#qas-1) | Performance |  |
-| [QAS-2](./Milestone1_2-Architectural-Drivers.md#qas-2) | Availability |  |
-| [QAS-3](./Milestone1_2-Architectural-Drivers.md#qas-3) | Consistency |  |
-| [QAS-4](./Milestone1_2-Architectural-Drivers.md#qas-4) | Modifiability |  |
-| [QAS-5](./Milestone1_2-Architectural-Drivers.md#qas-5) | Usability | pause/resume |
+| QAS | Quality goal | Tactic | In one line |
+|:---:|--------------|--------|-------------|
+| [QAS-1](./Milestone1_2-Architectural-Drivers.md#qas-1) | Performance |  | Analysis on a worker thread with bounded buffers |
+| [QAS-2](./Milestone1_2-Architectural-Drivers.md#qas-2) | Availability |  | Accept noisy input and keep measuring while the signal is good enough; below the quality threshold, show "signal weak" and handle the input appropriately |
+| [QAS-3](./Milestone1_2-Architectural-Drivers.md#qas-3) | Consistency |  | Every value computed once and delivered to all displays via one immutable frame — displays cannot disagree |
+| [QAS-4](./Milestone1_2-Architectural-Drivers.md#qas-4) | Modifiability |  | Fixed extension points, so a new feature never spreads into existing code |
+| [QAS-5](./Milestone1_2-Architectural-Drivers.md#qas-5) | Usability | pause/resume | The UI only draws the frame; letter/touch mm rules live in one renderer, securing legibility and touch use on the small screen |
 
 ## Software Design Patterns to Apply
 

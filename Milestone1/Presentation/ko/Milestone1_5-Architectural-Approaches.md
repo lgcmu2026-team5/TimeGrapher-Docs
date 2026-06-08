@@ -76,13 +76,13 @@ flowchart TB
 
 품질 목표마다 그것을 떠받치는 택틱을 하나씩 고정했다.
 
-| QAS | 품질 목표 | 택틱 |
-|:---:|-----------|------|
-| [QAS-1](./Milestone1_2-Architectural-Drivers.md#qas-1) | 성능 (Performance) |  |
-| [QAS-2](./Milestone1_2-Architectural-Drivers.md#qas-2) | 가용성 (Availability) |  |
-| [QAS-3](./Milestone1_2-Architectural-Drivers.md#qas-3)| 일관성 (Consistency) |  |
-| [QAS-4](./Milestone1_2-Architectural-Drivers.md#qas-4)| 변경 용이성 (Modifiability) |  |
-| [QAS-5](./Milestone1_2-Architectural-Drivers.md#qas-5)| 사용성 (Usability) | pause/resume |
+| QAS | 품질 목표 | 택틱 | 한 줄 설명 |
+|:---:|-----------|------|-----------|
+| [QAS-1](./Milestone1_2-Architectural-Drivers.md#qas-1) | 성능 (Performance) |  | 분석을 워커 스레드로 분리하고, 버퍼를 유한하게 둔다 |
+| [QAS-2](./Milestone1_2-Architectural-Drivers.md#qas-2) | 가용성 (Availability) |  | 신호가 충분하면 잡음이 있어도 수용해 측정을 유지하고, 품질 임계 미만이면 "신호 약함"을 표시하고 적절히 처리한다 |
+| [QAS-3](./Milestone1_2-Architectural-Drivers.md#qas-3)| 일관성 (Consistency) |  | 모든 값을 한 번만 계산해 불변 프레임 하나로 모든 표시에 공급 — 표시 간 값이 어긋날 수 없다 |
+| [QAS-4](./Milestone1_2-Architectural-Drivers.md#qas-4)| 변경 용이성 (Modifiability) |  | 확장 지점을 고정해, 기능 추가가 기존 코드로 번지지 않게 한다 |
+| [QAS-5](./Milestone1_2-Architectural-Drivers.md#qas-5)| 사용성 (Usability) | pause/resume | UI는 프레임을 그리기만 하고, 글자·터치 mm 규칙을 렌더러 한 곳에 모아 작은 화면 가독성·조작성을 확보한다 |
 
 ## 적용할 소프트웨어 디자인 패턴
 
