@@ -4,15 +4,16 @@
 
 | 실험 ID | 대응 리스크 | 관련 QAS | 우선순위 | 핵심 질문 |
 |---|---|---|---|---|
-| EXP-A1 | R-A1, R-A3 | QAS-1 | High | Pi5에서 실시간 처리 가능한 샘플레이트 상한은? |
-| EXP-F2S | R-F2 | QAS-1, QAS-4 | High | 실시간 성능 개선을 위해 C++ 경로와 C# 경로 중 무엇을 우선 채택해야 하는가? |
-| EXP-F4 | R-F4 | QAS-1, QAS-2 | Mid | TinyML 추론을 추가해도 실시간성과 신뢰성을 유지할 수 있는가? |
-| EXP-A4 | R-A4 | QAS-1 | Mid | 장시간 실행에서 메모리/지연 열화가 발생하는가? |
-| EXP-E1E3 | R-E1, R-E3 | QAS-5 | Mid | 글자 크기/터치 타깃 조합 중 가독성과 터치 인식 만족도를 동시에 만족하는 UI 기준은 무엇인가? |
+| EXP-01 | R-A1, R-A3 | QAS-1 | High | Pi5에서 실시간 처리 가능한 샘플레이트 상한은? |
+| EXP-02 | R-F2 | QAS-1, QAS-4 | High | GUI 실시간 성능 개선을 위해 어떤 디자인 패턴을 우선 적용할 것인가? |
+| EXP-03 | R-A5 | QAS-1, QAS-4 | High | C# 선택 시 Avalonia UI의 RPi5 렌더링 리스크를 어떻게 해소할 것인가? |
+| EXP-04 | R-F4 | QAS-1, QAS-2 | Mid | TinyML 추론을 추가해도 실시간성과 신뢰성을 유지할 수 있는가? |
+| EXP-05 | R-A4 | QAS-1 | Mid | 장시간 실행에서 메모리/지연 열화가 발생하는가? |
+| EXP-06 | R-E1, R-E3 | QAS-5 | Mid | 글자 크기/터치 타깃 조합 중 가독성과 터치 인식 만족도를 동시에 만족하는 UI 기준은 무엇인가? |
 
 현재 문서에서 Low 우선순위 실험은 없음.
 
-## 실험 1: EXP-A1 (R-A1, R-A3)
+## 실험 1: EXP-01 (R-A1, R-A3)
 
 ### 결과 및 권장 사항
 TO-DO: 측정 완료 후 최종 권장 샘플레이트(48k/96k/192k)와 채택 근거를 기록한다.
@@ -49,52 +50,85 @@ Pi5 Live 환경에서 입력-분석-표시 파이프라인이 실시간 요구�
 - D4: 결과 분석 및 권고안 도출
 
 ### 링크 및 참고 자료
-- Milestone1_Risk_Assessment.md
-- Milestone1_Architectural_Drivers_QAS.md
+- NA
 
-## 실험 2: EXP-F2S (R-F2)
+## 실험 2: EXP-02 (R-F2)
 
 ### 결과 및 권장 사항
-TO-DO: GUI 렌더링 속도 개선 관점의 C++ vs C# 비교 결과와 우선 채택 경로를 기록한다.
+TO-DO: GUI 성능 개선용 디자인 패턴 우선순위와 적용 범위를 기록한다.
 
 ### 목적
-RPi5 환경에서 GUI 렌더링 지연과 프레임 끊김을 줄이기 위해 C++ 경로와 C# 경로를 동일 기준으로 비교하고, Milestone 내 즉시 적용 가능한 개선 경로를 결정한다.
+GUI 실시간 성능 개선을 위해 렌더링/갱신 경로에 적용할 디자인 패턴을 기술속성 관점에서 비교하고, Milestone 내 우선 적용 패턴을 확정한다.
 핵심 질문은 다음과 같다.
-- Q1. C# 렌더링 백엔드(GLX/EGL/Software) 중 어떤 경로가 GUI 갱신율 10Hz 이상을 가장 안정적으로 만족하는가?
-- Q2. C++ 경로의 병목 개선 활동이 GUI 렌더링 체감 성능 개선에 기여할 수 있는가?
-- Q3. 두 경로를 SAP 기준(Response Measure)으로 비교해 1순위 실행안을 합의할 수 있는가?
+- Q1. 현재 GUI 병목에 대해 어떤 패턴(예: Producer-Consumer, Double Buffering, Object Pool)이 효과적인가?
+- Q2. 패턴 적용 시 프레임 안정성, 지연, 구현 난이도 관점에서 우선순위는 어떻게 되는가?
+- Q3. 팀이 단기 일정 내 적용 가능한 1순위 패턴 조합으로 합의할 수 있는가?
 
 ### 상태
 계획됨
 
 ### 예상 산출물
-- 백엔드별 측정 결과표(GLX/EGL/Software: FPS, p95/p99 프레임타임, 프리즈 횟수)
-- C++ vs C# 개선활동 비교표(효과, 구현 난이도, 일정 리스크)
-- 최종 권고안(1순위 즉시 적용안 + 2순위 후속 실험안)
+- GUI 성능 개선 패턴 비교표(효과, 적용 난이도, 일정 영향)
+- 우선 적용 패턴 세트(1순위/2순위)와 적용 대상 모듈 목록
+- 패턴 적용 PoC 범위 및 검증 체크리스트
 
 ### 필요한 자원
 - TimeGrapher_v10.4 소스코드
-- C++/Qt 레퍼런스 문서
-- Avalonia 앱 실행 환경 및 RPi5 장비
+- C++/Qt 및 동시성/렌더링 패턴 레퍼런스
 - 프로파일링/프레임타임 측정 도구
+- 코드 리뷰 세션 참여 인원(2-4명)
 - 작업 공수: 2.0 person-days
 
 ### 실험 설명
-1. C# 경로에서 GLX/EGL/Software를 동일 시나리오로 실행해 GUI 프레임타임, FPS, 프리즈 여부를 측정한다.
-2. C++ 경로에서 렌더링 영향 구간 병목을 관찰해 즉시 적용 가능한 개선 활동 후보를 정리한다.
-3. SAP 기준(Source/Stimulus/Artifact/Environment/Response Measure)으로 두 경로를 비교해 1순위 실행안을 확정한다.
+1. GUI 갱신 경로 병목을 식별하고 적용 가능한 디자인 패턴 후보를 추린다.
+2. 후보 패턴을 소규모 PoC로 비교해 지연, 프레임 안정성, 구현 난이도를 측정한다.
+3. SAP 기준으로 1순위 패턴 조합을 확정하고 Milestone 적용 범위를 결정한다.
 
 ### 기간
-- D1-D2: C# 렌더링 백엔드 측정 및 결과 정리
-- D3-D4: C++ 병목 개선 활동 정리
-- D5: SAP 기준 통합 판정 및 우선 경로 확정
+- D1-D2: 병목 분석 및 패턴 후보 도출
+- D3-D4: 패턴 PoC 및 비교 측정
+- D5: SAP 판정 및 적용 우선순위 확정
 
 ### 링크 및 참고 자료
-- Milestone1_Risk_Assessment.md
-- Milestone1_Architectural_Drivers_QAS.md
-- technical-experiment-template_ko-KR.md
+- NA
 
-## 실험 3: EXP-F4 (R-F4)
+## 실험 3: EXP-03 (R-A5)
+
+### 결과 및 권장 사항
+TO-DO: C# 선택 기준에서 Avalonia UI 렌더링 백엔드 고정 정책과 배포 기본값을 기록한다.
+
+### 목적
+개발 효율(C# 전문가 보유)을 위해 C# 경로를 채택할 때, Avalonia UI가 RPi5에서 GPU 가속 렌더링이 SW 렌더링보다 느려질 수 있는 리스크를 기술실험으로 해소한다.
+핵심 질문은 다음과 같다.
+- Q1. RPi5에서 GLX/EGL/Software 중 어떤 백엔드가 실제 워크로드에서 가장 안정적인 프레임 성능을 보이는가?
+- Q2. 10Hz 이상 그래프 갱신율과 UI freeze 최소화 기준을 만족하는 운영 기본값을 확정할 수 있는가?
+
+### 상태
+계획됨
+
+### 예상 산출물
+- Avalonia 백엔드별 성능 비교표(FPS, p95/p99 프레임타임, freeze 횟수)
+- 하드웨어/소프트웨어 렌더러 판별 로그(GL 컨텍스트 정보)
+- C# 배포 기본 정책(백엔드 고정값, 실패 시 폴백 규칙)
+
+### 필요한 자원
+- Raspberry Pi 5 실장비(모니터/SSH)
+- Avalonia 벤치 실행 빌드(CLI 측정 모드)
+- 프레임타임 수집 및 결과 로그 도구
+- 작업 공수: 1.0 person-days
+
+### 실험 설명
+1. Avalonia를 GLX/EGL/Software로 각각 실행해 동일 부하에서 프레임타임, FPS, freeze 지표를 수집한다.
+2. GPU 가속 대비 SW 렌더링 성능 역전 여부를 확인하고 실제 운영에 적합한 백엔드를 선정한다.
+3. SAP 기준으로 갱신율/안정성 충족 여부를 판정해 C# 배포 기본 백엔드 정책을 확정한다.
+
+### 기간
+- D6-D7
+
+### 링크 및 참고 자료
+- NA
+
+## 실험 4: EXP-04 (R-F4)
 
 ### 결과 및 권장 사항
 TO-DO: TinyML 기능 채택 여부(채택/조건부 채택/보류)와 채택 조건을 기록한다.
@@ -129,10 +163,9 @@ TinyML 기반 분류(예: signal-quality, bad-data-rejection)를 RPi 온디바�
 - D7-D8
 
 ### 링크 및 참고 자료
-- Milestone1_Risk_Assessment.md
-- Milestone1_Architectural_Drivers_QAS.md
+- NA
 
-## 실험 4: EXP-A4 (R-A4)
+## 실험 5: EXP-05 (R-A4)
 
 ### 결과 및 권장 사항
 TO-DO: 장시간 실행 안정성 결론과 버퍼/메모리 정책 권고안을 기록한다.
@@ -165,10 +198,9 @@ TO-DO: 장시간 실행 안정성 결론과 버퍼/메모리 정책 권고안을
 - D8-D10
 
 ### 링크 및 참고 자료
-- Milestone1_Risk_Assessment.md
-- Milestone1_Architectural_Drivers_QAS.md
+- NA
 
-## 실험 5: EXP-E1E3 (R-E1, R-E3)
+## 실험 6: EXP-06 (R-E1, R-E3)
 
 ### 결과 및 권장 사항
 TO-DO: 글자 크기 기준안(최소/권장), 터치 타깃 기준안, 최종 UI 레이아웃 권고안을 기록한다.
@@ -205,14 +237,12 @@ TO-DO: 글자 크기 기준안(최소/권장), 터치 타깃 기준안, 최종 U
 - D11-D12: 본 실험(8-12명) 수행 및 결과 분석
 
 ### 링크 및 참고 자료
-- Milestone1_Risk_Assessment.md
-- Milestone1_Architectural_Drivers_QAS.md
-- technical-experiment-template_ko-KR.md
+- NA
 
 ## 통합 일정
-- Week 1: EXP-F2S, EXP-A1
-- Week 2: EXP-F4, EXP-E1E3
-- Week 3: EXP-A4, EXP-E1E3(확장 검증) 및 미해결 항목 재실험
+- Week 1: EXP-01, EXP-02, EXP-03
+- Week 2: EXP-04, EXP-06
+- Week 3: EXP-05, EXP-06(확장 검증) 및 미해결 항목 재실험
 
 ## 공통 승인 기준
 - High 우선순위 실험(성능/강건성) pass/fail 판정 완료
