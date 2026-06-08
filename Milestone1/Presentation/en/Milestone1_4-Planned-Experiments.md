@@ -39,7 +39,7 @@ The answer drives the design decision **"which Avalonia rendering backend to loc
 
 ### Status
 
-Planned
+In progress
 
 ### Expected Deliverables
 
@@ -189,7 +189,7 @@ Verify whether adding TinyML-based classification (e.g., signal-quality, bad-dat
 
 ### Status
 
-Planned
+In progress
 
 ### Expected Deliverables
 
