@@ -12,16 +12,16 @@ The terms used in this document are defined in the consolidated [Glossary](Miles
 
 | Experiment | Risks Addressed | Related QAS | Priority | Core Question |
 |---|---|---|---|---|
-| [EXP-01](#exp-01-avalonia-rendering-backend-on-the-rpi5) | [R-A5](Milestone1_3-Risk-Assessment.md#a-real-time-performance-rpi) | [QAS-1](Milestone1_2-Architectural-Drivers.md#qas-1--performance-latency--from-sound-input-to-screen-display) | **High** | If we choose C#, how do we remove the Avalonia-on-RPi5 rendering risk? |
-| [EXP-02](#exp-02-rpi5-real-time-sample-rate-ceiling) | [R-A1](Milestone1_3-Risk-Assessment.md#a-real-time-performance-rpi), [R-A3](Milestone1_3-Risk-Assessment.md#a-real-time-performance-rpi) | [QAS-1](Milestone1_2-Architectural-Drivers.md#qas-1--performance-latency--from-sound-input-to-screen-display) | **High** | What is the highest sample rate the RPi5 can process in real time? |
-| [EXP-03](#exp-03-gui-real-time-rendering-design-patterns) | [R-F2](Milestone1_3-Risk-Assessment.md#f-project--process) | [QAS-1](Milestone1_2-Architectural-Drivers.md#qas-1--performance-latency--from-sound-input-to-screen-display), [QAS-4](Milestone1_2-Architectural-Drivers.md#qas-4--modifiability-extensibility--adding-a-new-measurementfiltergraph) | **High** | Which design patterns should we apply first to improve GUI real-time performance? |
-| [EXP-04](#exp-04-on-device-tinyml-inference-feasibility) | [R-F4](Milestone1_3-Risk-Assessment.md#f-project--process) | [QAS-1](Milestone1_2-Architectural-Drivers.md#qas-1--performance-latency--from-sound-input-to-screen-display), [QAS-2](Milestone1_2-Architectural-Drivers.md#qas-2--availability-graceful-degradation--under-noisy-or-weak-signals) | Mid | Can we add TinyML inference and still hold real-time behavior and trustworthiness? |
-| [EXP-05](#exp-05-long-run-stability-24h) | [R-A4](Milestone1_3-Risk-Assessment.md#a-real-time-performance-rpi) | [QAS-1](Milestone1_2-Architectural-Drivers.md#qas-1--performance-latency--from-sound-input-to-screen-display) | Mid | Do memory/latency degrade over long runs? |
-| [EXP-06](#exp-06-readability-and-touch-target-ui-thresholds) | [R-E1](Milestone1_3-Risk-Assessment.md#e-usability--ui-1280800), [R-E2](Milestone1_3-Risk-Assessment.md#e-usability--ui-1280800) | [QAS-5](Milestone1_2-Architectural-Drivers.md#qas-5--usability--reading-and-operating-on-the-touchscreen) | Mid | What font-size / touch-target thresholds satisfy both readability and touch recognition? |
+| [EXP-01](#exp-01-avalonia-rendering-backend-on-the-rpi5) | [R-05](Milestone1_3-Risk-Assessment.md#a-real-time-performance-rpi) | [QAS-1](Milestone1_2-Architectural-Drivers.md#qas-1--performance-latency--from-sound-input-to-screen-display) | **High** | If we choose C#, how do we remove the Avalonia-on-RPi5 rendering risk? |
+| [EXP-02](#exp-02-rpi5-real-time-sample-rate-ceiling) | [R-01](Milestone1_3-Risk-Assessment.md#a-real-time-performance-rpi), [R-03](Milestone1_3-Risk-Assessment.md#a-real-time-performance-rpi) | [QAS-1](Milestone1_2-Architectural-Drivers.md#qas-1--performance-latency--from-sound-input-to-screen-display) | **High** | What is the highest sample rate the RPi5 can process in real time? |
+| [EXP-03](#exp-03-gui-real-time-rendering-design-patterns) | [R-15](Milestone1_3-Risk-Assessment.md#f-project--process) | [QAS-1](Milestone1_2-Architectural-Drivers.md#qas-1--performance-latency--from-sound-input-to-screen-display), [QAS-4](Milestone1_2-Architectural-Drivers.md#qas-4--modifiability-extensibility--adding-a-new-measurementfiltergraph) | **High** | Which design patterns should we apply first to improve GUI real-time performance? |
+| [EXP-04](#exp-04-on-device-tinyml-inference-feasibility) | [R-17](Milestone1_3-Risk-Assessment.md#f-project--process) | [QAS-1](Milestone1_2-Architectural-Drivers.md#qas-1--performance-latency--from-sound-input-to-screen-display), [QAS-2](Milestone1_2-Architectural-Drivers.md#qas-2--availability-graceful-degradation--under-noisy-or-weak-signals) | Mid | Can we add TinyML inference and still hold real-time behavior and trustworthiness? |
+| [EXP-05](#exp-05-long-run-stability-24h) | [R-04](Milestone1_3-Risk-Assessment.md#a-real-time-performance-rpi) | [QAS-1](Milestone1_2-Architectural-Drivers.md#qas-1--performance-latency--from-sound-input-to-screen-display) | Mid | Do memory/latency degrade over long runs? |
+| [EXP-06](#exp-06-readability-and-touch-target-ui-thresholds) | [R-12](Milestone1_3-Risk-Assessment.md#e-usability--ui-1280800), [R-13](Milestone1_3-Risk-Assessment.md#e-usability--ui-1280800) | [QAS-5](Milestone1_2-Architectural-Drivers.md#qas-5--usability--reading-and-operating-on-the-touchscreen) | Mid | What font-size / touch-target thresholds satisfy both readability and touch recognition? |
 
 ## EXP-01: Avalonia rendering backend on the RPi5
 
-**Risks:** [R-A5](Milestone1_3-Risk-Assessment.md#a-real-time-performance-rpi) · **QAS:** [QAS-1](Milestone1_2-Architectural-Drivers.md#qas-1--performance-latency--from-sound-input-to-screen-display) · **Priority:** High
+**Risks:** [R-05](Milestone1_3-Risk-Assessment.md#a-real-time-performance-rpi) · **QAS:** [QAS-1](Milestone1_2-Architectural-Drivers.md#qas-1--performance-latency--from-sound-input-to-screen-display) · **Priority:** High
 
 ### Results & Recommendations
 
@@ -59,7 +59,7 @@ Planned
 1. **Build the benchmark test** — add a diagnostic measurement mode to the app: lock each rendering backend (GLX/EGL/Software) with no fallback, drive the real graph pipeline under a heavy per-frame redraw load (using a synthetic Sim signal), and collect frame intervals over a fixed window — while recording which GL renderer is actually active to tell HW acceleration from software fallback.
 2. **Verify the benchmark on Windows** with a short measurement (end-to-end sanity check).
 3. **Deploy to the RPi5 and measure** — run each of the three backends with a warmup followed by ~30 s of measurement.
-4. **Compare results → derive the backend recommendation** — record it here and in [Risk Assessment (R-A5)](Milestone1_3-Risk-Assessment.md#a-real-time-performance-rpi).
+4. **Compare results → derive the backend recommendation** — record it here and in [Risk Assessment (R-05)](Milestone1_3-Risk-Assessment.md#a-real-time-performance-rpi).
 
 **Completion criteria:** the experiment will be complete once ① all three backends are measured, ② the active-renderer (HW-acceleration) status is confirmed, and ③ a backend recommendation is derived.
 
@@ -75,7 +75,7 @@ Planned
 
 ## EXP-02: RPi5 real-time sample-rate ceiling
 
-**Risks:** [R-A1](Milestone1_3-Risk-Assessment.md#a-real-time-performance-rpi), [R-A3](Milestone1_3-Risk-Assessment.md#a-real-time-performance-rpi) · **QAS:** [QAS-1](Milestone1_2-Architectural-Drivers.md#qas-1--performance-latency--from-sound-input-to-screen-display) · **Priority:** High
+**Risks:** [R-01](Milestone1_3-Risk-Assessment.md#a-real-time-performance-rpi), [R-03](Milestone1_3-Risk-Assessment.md#a-real-time-performance-rpi) · **QAS:** [QAS-1](Milestone1_2-Architectural-Drivers.md#qas-1--performance-latency--from-sound-input-to-screen-display) · **Priority:** High
 
 ### Results & Recommendations
 
@@ -124,7 +124,7 @@ Planned
 
 ## EXP-03: GUI real-time rendering design patterns
 
-**Risks:** [R-F2](Milestone1_3-Risk-Assessment.md#f-project--process) · **QAS:** [QAS-1](Milestone1_2-Architectural-Drivers.md#qas-1--performance-latency--from-sound-input-to-screen-display), [QAS-4](Milestone1_2-Architectural-Drivers.md#qas-4--modifiability-extensibility--adding-a-new-measurementfiltergraph) · **Priority:** High
+**Risks:** [R-15](Milestone1_3-Risk-Assessment.md#f-project--process) · **QAS:** [QAS-1](Milestone1_2-Architectural-Drivers.md#qas-1--performance-latency--from-sound-input-to-screen-display), [QAS-4](Milestone1_2-Architectural-Drivers.md#qas-4--modifiability-extensibility--adding-a-new-measurementfiltergraph) · **Priority:** High
 
 ### Results & Recommendations
 
@@ -174,7 +174,7 @@ Planned
 
 ## EXP-04: On-device TinyML inference feasibility
 
-**Risks:** [R-F4](Milestone1_3-Risk-Assessment.md#f-project--process) · **QAS:** [QAS-1](Milestone1_2-Architectural-Drivers.md#qas-1--performance-latency--from-sound-input-to-screen-display), [QAS-2](Milestone1_2-Architectural-Drivers.md#qas-2--availability-graceful-degradation--under-noisy-or-weak-signals) · **Priority:** Mid
+**Risks:** [R-17](Milestone1_3-Risk-Assessment.md#f-project--process) · **QAS:** [QAS-1](Milestone1_2-Architectural-Drivers.md#qas-1--performance-latency--from-sound-input-to-screen-display), [QAS-2](Milestone1_2-Architectural-Drivers.md#qas-2--availability-graceful-degradation--under-noisy-or-weak-signals) · **Priority:** Mid
 
 ### Results & Recommendations
 
@@ -221,7 +221,7 @@ Planned
 
 ## EXP-05: Long-run stability (24h+)
 
-**Risks:** [R-A4](Milestone1_3-Risk-Assessment.md#a-real-time-performance-rpi) · **QAS:** [QAS-1](Milestone1_2-Architectural-Drivers.md#qas-1--performance-latency--from-sound-input-to-screen-display) · **Priority:** Mid
+**Risks:** [R-04](Milestone1_3-Risk-Assessment.md#a-real-time-performance-rpi) · **QAS:** [QAS-1](Milestone1_2-Architectural-Drivers.md#qas-1--performance-latency--from-sound-input-to-screen-display) · **Priority:** Mid
 
 ### Results & Recommendations
 
@@ -266,7 +266,7 @@ Planned
 
 ## EXP-06: Readability and touch-target UI thresholds
 
-**Risks:** [R-E1](Milestone1_3-Risk-Assessment.md#e-usability--ui-1280800), [R-E2](Milestone1_3-Risk-Assessment.md#e-usability--ui-1280800) · **QAS:** [QAS-5](Milestone1_2-Architectural-Drivers.md#qas-5--usability--reading-and-operating-on-the-touchscreen) · **Priority:** Mid
+**Risks:** [R-12](Milestone1_3-Risk-Assessment.md#e-usability--ui-1280800), [R-13](Milestone1_3-Risk-Assessment.md#e-usability--ui-1280800) · **QAS:** [QAS-5](Milestone1_2-Architectural-Drivers.md#qas-5--usability--reading-and-operating-on-the-touchscreen) · **Priority:** Mid
 
 ### Results & Recommendations
 

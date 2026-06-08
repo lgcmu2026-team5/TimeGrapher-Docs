@@ -12,16 +12,16 @@
 
 | 실험 | 대응 리스크 | 관련 QAS | 우선순위 | 핵심 질문 |
 |---|---|---|---|---|
-| [EXP-01](#exp-01-rpi5-avalonia-렌더링-백엔드) | [R-A5](Milestone1_3-Risk-Assessment.md#a-실시간-성능-rpi) | [QAS-1](Milestone1_2-Architectural-Drivers.md#qas-1--performance-latency--소리-입력에서-화면-표시까지) | **High** | C# 선택 시 Avalonia UI의 RPi5 렌더링 리스크를 어떻게 해소할 것인가? |
-| [EXP-02](#exp-02-rpi5-실시간-샘플레이트-상한) | [R-A1](Milestone1_3-Risk-Assessment.md#a-실시간-성능-rpi), [R-A3](Milestone1_3-Risk-Assessment.md#a-실시간-성능-rpi) | [QAS-1](Milestone1_2-Architectural-Drivers.md#qas-1--performance-latency--소리-입력에서-화면-표시까지) | **High** | Pi5에서 실시간 처리 가능한 샘플레이트 상한은? |
-| [EXP-03](#exp-03-gui-실시간-렌더링-디자인-패턴) | [R-F2](Milestone1_3-Risk-Assessment.md#f-프로젝트--프로세스) | [QAS-1](Milestone1_2-Architectural-Drivers.md#qas-1--performance-latency--소리-입력에서-화면-표시까지), [QAS-4](Milestone1_2-Architectural-Drivers.md#qas-4--modifiability-extensibility--새-측정필터그래프-추가) | **High** | GUI 실시간 성능 개선을 위해 어떤 디자인 패턴을 우선 적용할 것인가? |
-| [EXP-04](#exp-04-온디바이스-tinyml-추론-타당성) | [R-F4](Milestone1_3-Risk-Assessment.md#f-프로젝트--프로세스) | [QAS-1](Milestone1_2-Architectural-Drivers.md#qas-1--performance-latency--소리-입력에서-화면-표시까지), [QAS-2](Milestone1_2-Architectural-Drivers.md#qas-2--availability-graceful-degradation--잡음약신호-환경) | Mid | TinyML 추론을 추가해도 실시간성과 신뢰성을 유지할 수 있는가? |
-| [EXP-05](#exp-05-장시간-24h-실행-안정성) | [R-A4](Milestone1_3-Risk-Assessment.md#a-실시간-성능-rpi) | [QAS-1](Milestone1_2-Architectural-Drivers.md#qas-1--performance-latency--소리-입력에서-화면-표시까지) | Mid | 장시간 실행에서 메모리/지연 열화가 발생하는가? |
-| [EXP-06](#exp-06-글자-가독성과-터치-타깃-ui-기준) | [R-E1](Milestone1_3-Risk-Assessment.md#e-사용성--ui-1280800), [R-E2](Milestone1_3-Risk-Assessment.md#e-사용성--ui-1280800) | [QAS-5](Milestone1_2-Architectural-Drivers.md#qas-5--usability--터치스크린에서-읽기조작) | Mid | 가독성과 터치 인식을 동시에 만족하는 글자 크기/터치 타깃 기준은 무엇인가? |
+| [EXP-01](#exp-01-rpi5-avalonia-렌더링-백엔드) | [R-05](Milestone1_3-Risk-Assessment.md#a-실시간-성능-rpi) | [QAS-1](Milestone1_2-Architectural-Drivers.md#qas-1--performance-latency--소리-입력에서-화면-표시까지) | **High** | C# 선택 시 Avalonia UI의 RPi5 렌더링 리스크를 어떻게 해소할 것인가? |
+| [EXP-02](#exp-02-rpi5-실시간-샘플레이트-상한) | [R-01](Milestone1_3-Risk-Assessment.md#a-실시간-성능-rpi), [R-03](Milestone1_3-Risk-Assessment.md#a-실시간-성능-rpi) | [QAS-1](Milestone1_2-Architectural-Drivers.md#qas-1--performance-latency--소리-입력에서-화면-표시까지) | **High** | Pi5에서 실시간 처리 가능한 샘플레이트 상한은? |
+| [EXP-03](#exp-03-gui-실시간-렌더링-디자인-패턴) | [R-15](Milestone1_3-Risk-Assessment.md#f-프로젝트--프로세스) | [QAS-1](Milestone1_2-Architectural-Drivers.md#qas-1--performance-latency--소리-입력에서-화면-표시까지), [QAS-4](Milestone1_2-Architectural-Drivers.md#qas-4--modifiability-extensibility--새-측정필터그래프-추가) | **High** | GUI 실시간 성능 개선을 위해 어떤 디자인 패턴을 우선 적용할 것인가? |
+| [EXP-04](#exp-04-온디바이스-tinyml-추론-타당성) | [R-17](Milestone1_3-Risk-Assessment.md#f-프로젝트--프로세스) | [QAS-1](Milestone1_2-Architectural-Drivers.md#qas-1--performance-latency--소리-입력에서-화면-표시까지), [QAS-2](Milestone1_2-Architectural-Drivers.md#qas-2--availability-graceful-degradation--잡음약신호-환경) | Mid | TinyML 추론을 추가해도 실시간성과 신뢰성을 유지할 수 있는가? |
+| [EXP-05](#exp-05-장시간-24h-실행-안정성) | [R-04](Milestone1_3-Risk-Assessment.md#a-실시간-성능-rpi) | [QAS-1](Milestone1_2-Architectural-Drivers.md#qas-1--performance-latency--소리-입력에서-화면-표시까지) | Mid | 장시간 실행에서 메모리/지연 열화가 발생하는가? |
+| [EXP-06](#exp-06-글자-가독성과-터치-타깃-ui-기준) | [R-12](Milestone1_3-Risk-Assessment.md#e-사용성--ui-1280800), [R-13](Milestone1_3-Risk-Assessment.md#e-사용성--ui-1280800) | [QAS-5](Milestone1_2-Architectural-Drivers.md#qas-5--usability--터치스크린에서-읽기조작) | Mid | 가독성과 터치 인식을 동시에 만족하는 글자 크기/터치 타깃 기준은 무엇인가? |
 
 ## EXP-01: RPi5 Avalonia 렌더링 백엔드
 
-**리스크:** [R-A5](Milestone1_3-Risk-Assessment.md#a-실시간-성능-rpi) · **QAS:** [QAS-1](Milestone1_2-Architectural-Drivers.md#qas-1--performance-latency--소리-입력에서-화면-표시까지) · **우선순위:** High
+**리스크:** [R-05](Milestone1_3-Risk-Assessment.md#a-실시간-성능-rpi) · **QAS:** [QAS-1](Milestone1_2-Architectural-Drivers.md#qas-1--performance-latency--소리-입력에서-화면-표시까지) · **우선순위:** High
 
 ### 결과 및 권장 사항
 
@@ -59,7 +59,7 @@ C# 경로 채택 시 Avalonia Github의 다수 이슈처럼 GPU 가속 렌더링
 1. **벤치마크 테스트 구현** — 앱에 진단용 측정 모드를 추가한다. 렌더링 백엔드(GLX/EGL/Software)를 각각 폴백 없이 고정하고, 합성 신호(Sim) 부하로 실제 그래프 파이프라인을 매 프레임 강제 갱신하며(평상시보다 가혹한 부하) 프레임 간격을 일정 시간 수집한다. 동시에 실제 활성화된 GL 렌더러 정보를 기록해 HW 가속 여부를 판별한다.
 2. **Windows에서 벤치마크 동작 검증** — 짧은 측정으로 종단 확인.
 3. **RPi5 배포 및 측정** — 실기기에 배포해 3개 백엔드를 각각 워밍업 후 약 30초 측정한다.
-4. **결과 비교 → 백엔드 권장안 도출** — 본 문서와 [Risk Assessment(R-A5)](Milestone1_3-Risk-Assessment.md#a-실시간-성능-rpi)에 기록한다.
+4. **결과 비교 → 백엔드 권장안 도출** — 본 문서와 [Risk Assessment(R-05)](Milestone1_3-Risk-Assessment.md#a-실시간-성능-rpi)에 기록한다.
 
 **완료 기준:** ① 3개 백엔드 모두 측정, ② GL 렌더러 정보로 HW 가속 여부 확인, ③ 백엔드 선택 권장안 도출 — 세 조건이 모두 충족되면 실험을 완료한다.
 
@@ -75,7 +75,7 @@ C# 경로 채택 시 Avalonia Github의 다수 이슈처럼 GPU 가속 렌더링
 
 ## EXP-02: RPi5 실시간 샘플레이트 상한
 
-**리스크:** [R-A1](Milestone1_3-Risk-Assessment.md#a-실시간-성능-rpi), [R-A3](Milestone1_3-Risk-Assessment.md#a-실시간-성능-rpi) · **QAS:** [QAS-1](Milestone1_2-Architectural-Drivers.md#qas-1--performance-latency--소리-입력에서-화면-표시까지) · **우선순위:** High
+**리스크:** [R-01](Milestone1_3-Risk-Assessment.md#a-실시간-성능-rpi), [R-03](Milestone1_3-Risk-Assessment.md#a-실시간-성능-rpi) · **QAS:** [QAS-1](Milestone1_2-Architectural-Drivers.md#qas-1--performance-latency--소리-입력에서-화면-표시까지) · **우선순위:** High
 
 ### 결과 및 권장 사항
 
@@ -124,7 +124,7 @@ Pi5 Live 환경에서 입력 → 분석 → 표시 파이프라인이 실시간 
 
 ## EXP-03: GUI 실시간 렌더링 디자인 패턴
 
-**리스크:** [R-F2](Milestone1_3-Risk-Assessment.md#f-프로젝트--프로세스) · **QAS:** [QAS-1](Milestone1_2-Architectural-Drivers.md#qas-1--performance-latency--소리-입력에서-화면-표시까지), [QAS-4](Milestone1_2-Architectural-Drivers.md#qas-4--modifiability-extensibility--새-측정필터그래프-추가) · **우선순위:** High
+**리스크:** [R-15](Milestone1_3-Risk-Assessment.md#f-프로젝트--프로세스) · **QAS:** [QAS-1](Milestone1_2-Architectural-Drivers.md#qas-1--performance-latency--소리-입력에서-화면-표시까지), [QAS-4](Milestone1_2-Architectural-Drivers.md#qas-4--modifiability-extensibility--새-측정필터그래프-추가) · **우선순위:** High
 
 ### 결과 및 권장 사항
 
@@ -174,7 +174,7 @@ GUI 실시간 성능 개선을 위해 렌더링/갱신 경로에 적용할 디�
 
 ## EXP-04: 온디바이스 TinyML 추론 타당성
 
-**리스크:** [R-F4](Milestone1_3-Risk-Assessment.md#f-프로젝트--프로세스) · **QAS:** [QAS-1](Milestone1_2-Architectural-Drivers.md#qas-1--performance-latency--소리-입력에서-화면-표시까지), [QAS-2](Milestone1_2-Architectural-Drivers.md#qas-2--availability-graceful-degradation--잡음약신호-환경) · **우선순위:** Mid
+**리스크:** [R-17](Milestone1_3-Risk-Assessment.md#f-프로젝트--프로세스) · **QAS:** [QAS-1](Milestone1_2-Architectural-Drivers.md#qas-1--performance-latency--소리-입력에서-화면-표시까지), [QAS-2](Milestone1_2-Architectural-Drivers.md#qas-2--availability-graceful-degradation--잡음약신호-환경) · **우선순위:** Mid
 
 ### 결과 및 권장 사항
 
@@ -221,7 +221,7 @@ TinyML 기반 분류(예: signal-quality, bad-data-rejection)를 RPi 온디바�
 
 ## EXP-05: 장시간 24h+ 실행 안정성
 
-**리스크:** [R-A4](Milestone1_3-Risk-Assessment.md#a-실시간-성능-rpi) · **QAS:** [QAS-1](Milestone1_2-Architectural-Drivers.md#qas-1--performance-latency--소리-입력에서-화면-표시까지) · **우선순위:** Mid
+**리스크:** [R-04](Milestone1_3-Risk-Assessment.md#a-실시간-성능-rpi) · **QAS:** [QAS-1](Milestone1_2-Architectural-Drivers.md#qas-1--performance-latency--소리-입력에서-화면-표시까지) · **우선순위:** Mid
 
 ### 결과 및 권장 사항
 
@@ -266,7 +266,7 @@ TO-DO: 장시간 실행 안정성 결론과 버퍼/메모리 정책 권고안을
 
 ## EXP-06: 글자 가독성과 터치 타깃 UI 기준
 
-**리스크:** [R-E1](Milestone1_3-Risk-Assessment.md#e-사용성--ui-1280800), [R-E2](Milestone1_3-Risk-Assessment.md#e-사용성--ui-1280800) · **QAS:** [QAS-5](Milestone1_2-Architectural-Drivers.md#qas-5--usability--터치스크린에서-읽기조작) · **우선순위:** Mid
+**리스크:** [R-12](Milestone1_3-Risk-Assessment.md#e-사용성--ui-1280800), [R-13](Milestone1_3-Risk-Assessment.md#e-사용성--ui-1280800) · **QAS:** [QAS-5](Milestone1_2-Architectural-Drivers.md#qas-5--usability--터치스크린에서-읽기조작) · **우선순위:** Mid
 
 ### 결과 및 권장 사항
 
