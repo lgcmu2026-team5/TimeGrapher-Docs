@@ -43,7 +43,7 @@ Planned
 
 ### Expected Deliverables
 
-- A reusable benchmark harness
+- A reusable benchmark test
 - Per-backend (GLX / EGL / Software) frame-time comparison table (FPS, mean, p95, p99)
 - Determination of HW acceleration vs software fallback, based on the actually-active renderer
 - Rendering-backend recommendation (keep the default, or force Software)
@@ -56,8 +56,8 @@ Planned
 
 ### Experiment Description
 
-1. **Build the bench harness** — add a diagnostic measurement mode to the app: lock each rendering backend (GLX/EGL/Software) with no fallback, drive the real graph pipeline under a heavy per-frame redraw load (using a synthetic Sim signal), and collect frame intervals over a fixed window — while recording which GL renderer is actually active to tell HW acceleration from software fallback.
-2. **Verify the harness on Windows** with a short measurement (end-to-end sanity check).
+1. **Build the benchmark test** — add a diagnostic measurement mode to the app: lock each rendering backend (GLX/EGL/Software) with no fallback, drive the real graph pipeline under a heavy per-frame redraw load (using a synthetic Sim signal), and collect frame intervals over a fixed window — while recording which GL renderer is actually active to tell HW acceleration from software fallback.
+2. **Verify the benchmark on Windows** with a short measurement (end-to-end sanity check).
 3. **Deploy to the RPi5 and measure** — run each of the three backends with a warmup followed by ~30 s of measurement.
 4. **Compare results → derive the backend recommendation** — record it here and in [Risk Assessment (R-A5)](Milestone1_3-Risk-Assessment.md#a-real-time-performance-rpi).
 
