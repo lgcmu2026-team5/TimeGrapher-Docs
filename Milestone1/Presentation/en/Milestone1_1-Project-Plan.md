@@ -1,3 +1,5 @@
+![Project plan](../res/projectplan.png)
+
 # ARCHI-265 Schedule
 
 ## Legend

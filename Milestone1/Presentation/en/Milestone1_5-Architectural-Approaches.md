@@ -78,7 +78,7 @@ One tactic anchored to each quality goal.
 
 | Quality goal | Tactic | In one line |
 |--------------|--------|-------------|
-| Performance | introduce concurrency · bound queue/buffer sizes · limit event response | Analysis on a worker thread; bounded buffers; if drawing falls behind, skip stale frames and draw only the newest |
+| Performance | introduce concurrency · bound queue/buffer sizes | Analysis on a worker thread with bounded buffers |
 | Availability | graceful degradation | Accept noisy input and keep measuring while the signal is good enough; below the quality threshold, show "signal weak" and handle the input appropriately |
 | Consistency | single source of truth (compute once → immutable frame) | Every value computed once and delivered to all displays via one immutable frame — displays cannot disagree |
 | Modifiability | increase cohesion · encapsulate · restrict dependencies | Fixed extension points, so a new feature never spreads into existing code |

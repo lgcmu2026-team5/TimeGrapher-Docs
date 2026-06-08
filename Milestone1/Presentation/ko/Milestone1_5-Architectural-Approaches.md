@@ -78,7 +78,7 @@ flowchart TB
 
 | Refer | 품질 목표 | 택틱 | 한 줄 설명 |
 |:---:|-----------|------|-----------|
-| [QAS-1](./Milestone1_2-Architectural-Drivers.md#qas-1) | 성능 (Performance) | 동시성 도입 · 큐/버퍼 크기 제한 · 이벤트 응답 제한 | 분석을 워커 스레드로 분리하고, 버퍼를 유한하게 두며, 밀리면 오래된 프레임은 건너뛰고 최신 것만 그린다 |
+| [QAS-1](./Milestone1_2-Architectural-Drivers.md#qas-1) | 성능 (Performance) | 동시성 도입 · 큐/버퍼 크기 제한 | 분석을 워커 스레드로 분리하고, 버퍼를 유한하게 둔다 |
 | [QAS-2](./Milestone1_2-Architectural-Drivers.md#qas-2) | 가용성 (Availability) | 우아한 성능 저하 (graceful degradation) | 신호가 충분하면 잡음이 있어도 수용해 측정을 유지하고, 품질 임계 미만이면 "신호 약함"을 표시하고 적절히 처리한다 |
 | [QAS-3](./Milestone1_2-Architectural-Drivers.md#qas-3)| 일관성 (Consistency) | 단일 소스 원칙 (한 번 계산 → 불변 프레임) | 모든 값을 한 번만 계산해 불변 프레임 하나로 모든 표시에 공급 — 표시 간 값이 어긋날 수 없다 |
 | [QAS-4](./Milestone1_2-Architectural-Drivers.md#qas-4)| 변경 용이성 (Modifiability) | 응집도 증가 · 캡슐화 · 의존성 제한 | 확장 지점을 고정해, 기능 추가가 기존 코드로 번지지 않게 한다 |
