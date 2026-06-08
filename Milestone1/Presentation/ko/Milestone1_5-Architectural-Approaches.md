@@ -74,15 +74,15 @@ flowchart TB
 
 ## 적용할 소프트웨어 아키텍처 택틱
 
-품질 목표마다 참고 구현에서 확인된 핵심 SAP 택틱과 적용 목적을 연결했다.
+품질 목표마다 참고 구현의 SAP 택틱 또는 QAS에 맞춘 설계 선택과 적용 목적을 연결했다.
 
 | QAS | 품질 목표 | 택틱 | 목적 |
 |:---:|-----------|------|------|
-| [QAS-1](./Milestone1_2-Architectural-Drivers.md#qas-1) | 성능 (Performance) | introduce concurrency<br>limit event response<br>schedule resources<br>reduce overhead | 입력·분석·렌더링을 분리하고 최신 프레임/활성 화면만 무겁게 처리해 UI 정지 없이 0.5초 p99 목표를 지킨다. |
-| [QAS-2](./Milestone1_2-Architectural-Drivers.md#qas-2) | 신뢰성 (Reliability) | degradation<br>exception handling / detection | 잡음·약신호나 입력 오류 상황에서 틀린 수치를 내지 않고, "신호 약함" 또는 실패 상태로 격리해 신뢰 가능한 결과만 표시한다. |
-| [QAS-3](./Milestone1_2-Architectural-Drivers.md#qas-3)| 일관성 (Consistency) | maintain multiple copies of data | 분석 결과를 `AnalysisFrame` 같은 한 묶음의 스냅샷으로 전달해 여러 화면이 같은 계산 결과를 읽게 한다. |
-| [QAS-4](./Milestone1_2-Architectural-Drivers.md#qas-4)| 변경 용이성 (Modifiability) | restrict dependencies<br>encapsulate<br>use an intermediary<br>increase semantic coherence | Core·Platform·UI 책임을 분리하고 인터페이스 뒤에 구현을 숨겨 새 입력·필터·그래프를 국소 변경으로 추가한다. |
-| [QAS-5](./Milestone1_2-Architectural-Drivers.md#qas-5)| 사용성 (Usability) | pause/resume | 측정 중에도 사용자가 터치로 멈춤·재개를 예측 가능하게 수행하고, 정지 요청에는 빠르게 반응하게 한다. |
+| [QAS-1](./Milestone1_2-Architectural-Drivers.md#qas-1) | 성능 (Performance) | 동시성 도입<br>큐/버퍼 크기 제한<br>이벤트 응답 제한 | 분석을 워커 스레드로 분리하고, 버퍼를 유한하게 두며, 밀리면 오래된 프레임은 건너뛰고 최신 것만 그린다. |
+| [QAS-2](./Milestone1_2-Architectural-Drivers.md#qas-2) | 신뢰성 (Reliability) | 신호 품질 판정<br>품질 저하 처리<br>오류 감지와 예외 처리 | 신호가 충분하면 잡음이 있어도 수용해 측정을 유지하고, 품질 임계 미만이면 "신호 약함"을 표시하고 적절히 처리한다. |
+| [QAS-3](./Milestone1_2-Architectural-Drivers.md#qas-3)| 일관성 (Consistency) | 단일 소스 원칙<br>한 번 계산 -> 불변 프레임 | 모든 값을 한 번만 계산해 불변 프레임 하나로 모든 표시에 공급해 표시 간 값이 어긋나지 않게 한다. |
+| [QAS-4](./Milestone1_2-Architectural-Drivers.md#qas-4)| 변경 용이성 (Modifiability) | 응집도 증가<br>캡슐화<br>의존성 제한 | 확장 지점을 고정해 기능 추가가 기존 코드로 번지지 않게 한다. |
+| [QAS-5](./Milestone1_2-Architectural-Drivers.md#qas-5)| 사용성 (Usability) | 한눈에 읽는 레이아웃<br>물리 크기 규칙 중앙화<br>터치 타깃 크기 보장 | 작은 화면에서도 일오차·비트 에러·진폭을 스크롤/확대 없이 읽게 하고, 글자·터치 타깃 크기를 mm 기준으로 보장한다. |
 
 ## 적용할 소프트웨어 디자인 패턴
 

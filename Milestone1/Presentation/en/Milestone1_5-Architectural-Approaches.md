@@ -74,15 +74,15 @@ flowchart TB
 
 ## Software Architecture Tactics to Apply
 
-One tactic anchored to each quality goal.
+Each quality goal is linked to tactics from the reference implementation or QAS-specific design choices and their purpose.
 
-| QAS | Quality goal | Tactic |
-|:---:|--------------|--------|
-| [QAS-1](./Milestone1_2-Architectural-Drivers.md#qas-1) | Performance |  |
-| [QAS-2](./Milestone1_2-Architectural-Drivers.md#qas-2) | Reliability |  |
-| [QAS-3](./Milestone1_2-Architectural-Drivers.md#qas-3) | Consistency |  |
-| [QAS-4](./Milestone1_2-Architectural-Drivers.md#qas-4) | Modifiability |  |
-| [QAS-5](./Milestone1_2-Architectural-Drivers.md#qas-5) | Usability | pause/resume |
+| QAS | Quality goal | Tactic | Purpose |
+|:---:|--------------|--------|---------|
+| [QAS-1](./Milestone1_2-Architectural-Drivers.md#qas-1) | Performance | introduce concurrency<br>limit queue/buffer size<br>limit event response | Separate analysis into worker threads, keep buffers finite, and when overloaded, skip stale frames and render only the latest one. |
+| [QAS-2](./Milestone1_2-Architectural-Drivers.md#qas-2) | Reliability | signal-quality gating<br>quality-degradation handling<br>fault detection and exception handling | Keep measuring when the signal is good enough despite noise; below the quality threshold, show "signal weak" and handle the input appropriately. |
+| [QAS-3](./Milestone1_2-Architectural-Drivers.md#qas-3) | Consistency | single source principle<br>compute once -> immutable frame | Compute all values once and feed every display from one immutable frame so displayed values cannot diverge. |
+| [QAS-4](./Milestone1_2-Architectural-Drivers.md#qas-4) | Modifiability | increase cohesion<br>encapsulation<br>restrict dependencies | Fix extension points so new features do not spread changes across existing code. |
+| [QAS-5](./Milestone1_2-Architectural-Drivers.md#qas-5) | Usability | at-a-glance layout<br>centralize physical-size rules<br>touch-target sizing | Keep rate, beat error, and amplitude readable without scroll/zoom, and enforce text and touch-target sizes in physical millimeters for the small touchscreen. |
 
 ## Software Design Patterns to Apply
 

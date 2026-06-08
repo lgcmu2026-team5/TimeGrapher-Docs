@@ -16,11 +16,11 @@ The terms used in this document are defined in the consolidated [Glossary](Miles
 
 Risk ID | Risk Title | Type | QAS | P | I
 --------|-----------|------|-----|---|---
-[R-01](#a-real-time-performance-rpi) | RPi5 fails to keep up with high sample rates (96k/192k) and loses sound data | T | [QAS-1](Milestone1_2-Architectural-Drivers.md#qas-1--performance-latency--from-sound-input-to-screen-display) | **H** | **H**
+🔴 [R-01](#a-real-time-performance-rpi) | RPi5 fails to keep up with high sample rates (96k/192k) and loses sound data | T | [QAS-1](Milestone1_2-Architectural-Drivers.md#qas-1--performance-latency--from-sound-input-to-screen-display) | **H** | **H**
 [R-02](#a-real-time-performance-rpi) | Rendering four filters + multiple graphs at once makes the screen stutter | T | [QAS-1](Milestone1_2-Architectural-Drivers.md#qas-1--performance-latency--from-sound-input-to-screen-display)<br>[QAS-5](Milestone1_2-Architectural-Drivers.md#qas-5--usability--reading-and-operating-on-the-touchscreen) | M | **H**
-[R-03](#a-real-time-performance-rpi) | Sound-to-screen 0.5 s (p99 ≤ 500 ms) target is missed | T | [QAS-1](Milestone1_2-Architectural-Drivers.md#qas-1--performance-latency--from-sound-input-to-screen-display) | M | **H**
-[R-04](#a-real-time-performance-rpi) | Long continuous runs (24h+) leak memory and degrade or crash | T | [QAS-1](Milestone1_2-Architectural-Drivers.md#qas-1--performance-latency--from-sound-input-to-screen-display) | M | M
-[R-05](#a-real-time-performance-rpi) | Avalonia GPU-accelerated rendering on RPi5 slower than SW rendering, stuttering real-time graphs | T | [QAS-1](Milestone1_2-Architectural-Drivers.md#qas-1--performance-latency--from-sound-input-to-screen-display) | M | **H**
+🔴 [R-03](#a-real-time-performance-rpi) | Sound-to-screen 0.5 s (p99 ≤ 500 ms) target is missed | T | [QAS-1](Milestone1_2-Architectural-Drivers.md#qas-1--performance-latency--from-sound-input-to-screen-display) | M | **H**
+🔴 [R-04](#a-real-time-performance-rpi) | Long continuous runs (24h+) leak memory and degrade or crash | T | [QAS-1](Milestone1_2-Architectural-Drivers.md#qas-1--performance-latency--from-sound-input-to-screen-display) | M | M
+🔴 [R-05](#a-real-time-performance-rpi) | Avalonia GPU-accelerated rendering on RPi5 slower than SW rendering, stuttering real-time graphs | T | [QAS-1](Milestone1_2-Architectural-Drivers.md#qas-1--performance-latency--from-sound-input-to-screen-display) | M | **H**
 [R-06](#b-signal-processing--measurement-trustworthiness) | A/C event positions not found to 0.1 ms — rate, beat error, amplitude all contaminated | T | [QAS-2](Milestone1_2-Architectural-Drivers.md#qas-2)<br>[QAS-3](Milestone1_2-Architectural-Drivers.md#qas-3--consistency--consistent-values-across-displays) | **H** | **H**
 [R-07](#b-signal-processing--measurement-trustworthiness) | Noisy/weak signals produce misleading values instead of a graceful "signal weak" | T | [QAS-2](Milestone1_2-Architectural-Drivers.md#qas-2) | M | **H**
 [R-08](#c-architecture--extensibility) | No up-front filter/marker extension design — late-stage cost soars | T | [QAS-4](Milestone1_2-Architectural-Drivers.md#qas-4--modifiability-extensibility--adding-a-new-measurementfiltergraph) | M | M
@@ -30,9 +30,9 @@ Risk ID | Risk Title | Type | QAS | P | I
 [R-12](#e-usability--ui-1280800) | Small screen can't legibly hold summary bar + graphs + scope strip | T | [QAS-5](Milestone1_2-Architectural-Drivers.md#qas-5--usability--reading-and-operating-on-the-touchscreen) | M | M
 [R-13](#e-usability--ui-1280800) | Touch accuracy or recognition may be poor | T | [QAS-5](Milestone1_2-Architectural-Drivers.md#qas-5--usability--reading-and-operating-on-the-touchscreen) | L | L
 [R-14](#f-project--process) | Everything (12 features + AI) can't fit in 3 weeks — prioritization failure drops essentials | NT | QAS-ALL | M | **H**
-[R-15](#f-project--process) | Understanding the baseline code takes time and delays the start | NT | [QAS-4](Milestone1_2-Architectural-Drivers.md#qas-4--modifiability-extensibility--adding-a-new-measurementfiltergraph) | L | M
+🔴 [R-15](#f-project--process) | Understanding the baseline code takes time and delays the start | NT | [QAS-4](Milestone1_2-Architectural-Drivers.md#qas-4--modifiability-extensibility--adding-a-new-measurementfiltergraph) | L | M
 [R-16](#f-project--process) | Qt/C++·DSP·RPi learning curve shakes implementation quality | NT | [QAS-1](Milestone1_2-Architectural-Drivers.md#qas-1--performance-latency--from-sound-input-to-screen-display)<br>[QAS-2](Milestone1_2-Architectural-Drivers.md#qas-2) | L | M
-[R-17](#f-project--process) | Attempting the AI/TinyML feature raises on-device uncertainty | T | [QAS-1](Milestone1_2-Architectural-Drivers.md#qas-1--performance-latency--from-sound-input-to-screen-display)<br>[QAS-2](Milestone1_2-Architectural-Drivers.md#qas-2) | M | M
+🔴 [R-17](#f-project--process) | Attempting the AI/TinyML feature raises on-device uncertainty | T | [QAS-1](Milestone1_2-Architectural-Drivers.md#qas-1--performance-latency--from-sound-input-to-screen-display)<br>[QAS-2](Milestone1_2-Architectural-Drivers.md#qas-2) | M | M
 [R-18](#f-project--process) | Accepting GenAI-generated code unverified lets in plausible-but-wrong code | NT | [QAS-1](Milestone1_2-Architectural-Drivers.md#qas-1--performance-latency--from-sound-input-to-screen-display)<br>[QAS-2](Milestone1_2-Architectural-Drivers.md#qas-2)<br>[QAS-3](Milestone1_2-Architectural-Drivers.md#qas-3--consistency--consistent-values-across-displays) | M | M
 [R-19](#f-project--process) | Only one test Pi5 — real-use verification doesn't fit the schedule | NT | [QAS-1](Milestone1_2-Architectural-Drivers.md#qas-1--performance-latency--from-sound-input-to-screen-display) | **H** | **H**
 [R-20](#g-other--uncategorized) | Communication — meaning may be lost between stakeholders when conversing in English | NT | - | L | L
@@ -45,7 +45,7 @@ Risk ID | Risk Title | Type | QAS | P | I
 
 ## A. Real-Time Performance (RPi)
 
-- **R-01 — The RPi5 fails to keep up with high sample rates (96k/192k) in real time and loses sound data (block drop / missed beat)**
+- **🔴 R-01 — The RPi5 fails to keep up with high sample rates (96k/192k) in real time and loses sound data (block drop / missed beat)**
   - **Evidence**: pdf (p.25 Real Time Performance), [QAS-1](Milestone1_2-Architectural-Drivers.md#qas-1--performance-latency--from-sound-input-to-screen-display), [C-1](Milestone1_2-Architectural-Drivers.md#design-constraints)
   - **Probability / Impact**: High / High
   - **Grading rationale**
@@ -65,7 +65,7 @@ Risk ID | Risk Title | Type | QAS | P | I
   - **Tradeoff point**: showing 4 views at once trades Usability ([QAS-5](Milestone1_2-Architectural-Drivers.md#qas-5--usability--reading-and-operating-on-the-touchscreen)) against Performance
   - **Comment**: Decide 4 simultaneous views vs one-at-a-time after the performance check
 
-- **R-03 — The sound-to-screen 0.5 s (p99 ≤ 500 ms) target is missed**
+- **🔴 R-03 — The sound-to-screen 0.5 s (p99 ≤ 500 ms) target is missed**
   - **Evidence**: [QAS-1](Milestone1_2-Architectural-Drivers.md#qas-1--performance-latency--from-sound-input-to-screen-display)
   - **Probability / Impact**: Medium / High
   - **Grading rationale**
@@ -74,7 +74,7 @@ Risk ID | Risk Title | Type | QAS | P | I
   - **Mitigation**: Instrument capture/processing/display latency per stage; monitor backlog
   - **Comment**: For the worst case, optimize resources/processes or migrate to reduced features
 
-- **R-04 — Long continuous runs (24h+) leak memory and degrade or crash**
+- **🔴 R-04 — Long continuous runs (24h+) leak memory and degrade or crash**
   - **Evidence**: [FR-07-10](Milestone1_2-Architectural-Drivers.md#g07--long-term-performance-graph), [QAS-1](Milestone1_2-Architectural-Drivers.md#qas-1--performance-latency--from-sound-input-to-screen-display)
   - **Probability / Impact**: Medium / Medium
   - **Grading rationale**
@@ -83,7 +83,7 @@ Risk ID | Risk Title | Type | QAS | P | I
   - **Mitigation**: Monitor the long-term RSS trend; design buffer caps and aggregation
   - **Comment**: First verify memory leaks in the current code (experiment)
 
-- **R-05 — With the Avalonia framework, a bug may make GPU-accelerated rendering on the RPi5 slower than SW rendering, causing real-time graph (Rate/Scope) updates to stutter**
+- **🔴 R-05 — With the Avalonia framework, a bug may make GPU-accelerated rendering on the RPi5 slower than SW rendering, causing real-time graph (Rate/Scope) updates to stutter**
   - **Evidence**: Multiple reports of GPU-acceleration slowdowns on RPi/embedded in Avalonia GitHub — `#18807, #18942, #19288, #18127`. pdf (p.25 Real Time Performance), [QAS-1](Milestone1_2-Architectural-Drivers.md#qas-1--performance-latency--from-sound-input-to-screen-display)
   - **Probability / Impact**: Medium / High
   - **Grading rationale**
@@ -184,7 +184,7 @@ Risk ID | Risk Title | Type | QAS | P | I
   - **Mitigation**: Freeze FR priorities, split AI off as optional, critical path first
   - **Comment**: Plan well and drop what must be dropped
 
-- **R-15 — Understanding the provided baseline code (TimeGrapher_v10.4) takes time and delays the start**
+- **🔴 R-15 — Understanding the provided baseline code (TimeGrapher_v10.4) takes time and delays the start**
   - **Evidence**: pdf (p.29 GUI Code), [QAS-4](Milestone1_2-Architectural-Drivers.md#qas-4--modifiability-extensibility--adding-a-new-measurementfiltergraph)
   - **Probability / Impact**: Low / Medium
   - **Grading rationale**
@@ -202,7 +202,7 @@ Risk ID | Risk Title | Type | QAS | P | I
   - **Mitigation**: Role split and pairing; early learning via small spikes
   - **Comment**: Risk lowered by using AI
 
-- **R-17 — Attempting the AI/TinyML feature raises on-device uncertainty**
+- **🔴 R-17 — Attempting the AI/TinyML feature raises on-device uncertainty**
   - **Evidence**: pdf (p.12 AI Feature), [QAS-1](Milestone1_2-Architectural-Drivers.md#qas-1--performance-latency--from-sound-input-to-screen-display), [QAS-2](Milestone1_2-Architectural-Drivers.md#qas-2)
   - **Probability / Impact**: Medium / Medium
   - **Grading rationale**
