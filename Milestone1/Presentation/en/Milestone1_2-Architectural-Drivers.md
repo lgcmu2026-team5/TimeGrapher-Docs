@@ -78,15 +78,15 @@ The domain terms used throughout the functional requirements below are defined i
 | FR-05-10 | mandatory | Scope 1 shall provide the user with the most recent beat noises as small strips beneath the current waveform after sufficient measurement time. |
 | FR-05-11 | recommended | Scope 1 should provide the user with the ability to select one of the accumulated prior beat strips for enlarged viewing. |
 | FR-05-12 | optional | Scope 1 may provide the user with an option to display the signal as its absolute value (\|x\|) for improved readability. |
-| FR-05-13 | mandatory | Scope 1 shall provide the user with identification of the relevant A and C beats and a visual marker for the C beat. |
+| FR-05-13 | mandatory | Scope 1 shall provide the user with identification of the relevant A and C events and a visual marker for the C event. |
 | FR-05-14 | mandatory | Scope 1 shall provide the user with the lift angle associated with the displayed beat pattern. |
-| FR-05-15 | mandatory | Scope 2 shall provide the user with tic and tac beat noises displayed on two horizontal axes. |
+| FR-05-15 | mandatory | Scope 2 shall provide the user with tick and tock beat noises displayed on two horizontal axes. |
 | FR-05-16 | mandatory | Scope 2 shall provide the user with a fixed 20 ms time range. |
 | FR-05-17 | mandatory | Scope 2 shall provide the user with an averaging toggle (ON/OFF) via a Σ control. |
 | FR-05-18 | mandatory | Scope 2 shall provide the user with combined beat noises that reduce random noise and improve signal clarity when averaging is ON. |
-| FR-05-19 | mandatory | Scope 2 shall provide the user with a measurement cycle, determined by the watch's beat number and selected interval, that completes after 50 tic and 50 tac intervals. |
+| FR-05-19 | mandatory | Scope 2 shall provide the user with a measurement cycle, determined by the watch's beat number and selected interval, that completes after 50 tick and 50 tock intervals. |
 | FR-05-20 | mandatory | Scope 2 shall provide the user with the average amplitude on each horizontal axis using arrows at the end of the cycle. |
-| FR-05-21 | recommended | Scope 2 should provide the user with the two averaged beat-noise traces without assuming a fixed tic/tac axis assignment. |
+| FR-05-21 | recommended | Scope 2 should provide the user with the two averaged beat-noise traces without assuming a fixed tick/tock axis assignment. |
 | FR-05-22 | optional | Scope 2 may provide the user with intermediate averaging results, such as after 10 or 20 intervals. |
 
 ### G06 · Beat Error Display and Diagnostic Trace
@@ -127,7 +127,7 @@ The domain terms used throughout the functional requirements below are defined i
 | FR-08-01 | mandatory | The Escapement Analyzer and Marker-Line Display shall provide the user with a visualization of real-time microphone input. |
 | FR-08-02 | mandatory | The Escapement Analyzer and Marker-Line Display shall provide the user with a visualization of stored recording files. |
 | FR-08-03 | recommended | The Escapement Analyzer and Marker-Line Display should provide the user with a pause/capture mode for analysis. |
-| FR-08-04 | mandatory | The Escapement Analyzer and Marker-Line Display shall provide the user with markers at the tick (A) and tock (C) event points to be analyzed. |
+| FR-08-04 | mandatory | The Escapement Analyzer and Marker-Line Display shall provide the user with markers at the A and C event points to be analyzed. |
 | FR-08-05 | mandatory | The Escapement Analyzer and Marker-Line Display shall provide the user with the elapsed time between markers in milliseconds. |
 | FR-08-06 | recommended | The Escapement Analyzer and Marker-Line Display should provide the user with the ability to change the marker measurement reference based on signal feature points (Onset, Peak, etc.). |
 

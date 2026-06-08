@@ -21,7 +21,7 @@ R-A2 | Rendering four filters + multiple graphs at once makes the screen stutter
 R-A3 | Sound-to-screen 0.5 s (p99 ≤ 500 ms) target is missed | T | QAS-1 | M | **H**
 R-A4 | Long continuous runs (24h+) leak memory and degrade or crash | T | QAS-1 | M | M
 R-A5 | Avalonia GPU-accelerated rendering on RPi5 slower than SW rendering, stuttering real-time graphs | T | QAS-1 | M | **H**
-R-B1 | Tick/tock positions not found to 0.1 ms — rate, beat error, amplitude all contaminated | T | QAS-2<br>QAS-3 | **H** | **H**
+R-B1 | A/C event positions not found to 0.1 ms — rate, beat error, amplitude all contaminated | T | QAS-2<br>QAS-3 | **H** | **H**
 R-B2 | Noisy/weak signals produce misleading values instead of a graceful "signal weak" | T | QAS-2 | M | **H**
 R-C1 | No up-front filter/marker extension design — late-stage cost soars | T | QAS-4 | M | M
 R-D1 | AGC left on or poor microphone coupling distorts the signal | T | QAS-2 | M | **H**
@@ -100,12 +100,12 @@ R-F6 | Only one test Pi5 — real-use verification doesn't fit the schedule | NT
 
 ## B. Signal Processing / Measurement Trustworthiness
 
-- **R-B1 — If tick/tock positions can't be found to 0.1 ms, rate, beat error, and amplitude are all contaminated**
+- **R-B1 — If A/C event positions can't be found to 0.1 ms, rate, beat error, and amplitude are all contaminated**
   - **Quality attribute**: Dependability (Reliability)
   - **Evidence**: FR-08-04…06, FR-06-01…04, QAS-2, QAS-3
   - **Probability / Impact**: High / High
   - **Grading rationale**
-    - P-High: sub-0.1 ms tick/tock detection on real noisy signals is genuinely hard.
+    - P-High: sub-0.1 ms A/C event detection on real noisy signals is genuinely hard.
     - I-High: it contaminates all three core metrics (rate, beat error, amplitude).
   - **Mitigation**: Early-verify the detection algorithm on a synthetic-signal bench (ground truth known)
   - **Comment**: Confirm the current logic works; improve if needed
