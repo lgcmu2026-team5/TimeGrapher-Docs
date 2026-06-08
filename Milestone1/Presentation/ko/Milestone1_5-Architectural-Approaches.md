@@ -74,15 +74,15 @@ flowchart TB
 
 ## 적용할 소프트웨어 아키텍처 택틱
 
-품질 목표마다 그것을 떠받치는 택틱을 하나씩 고정했다.
+품질 목표마다 참고 구현에서 확인된 핵심 SAP 택틱과 적용 목적을 연결했다.
 
-| QAS | 품질 목표 | 택틱 |
-|:---:|-----------|------|
-| [QAS-1](./Milestone1_2-Architectural-Drivers.md#qas-1) | 성능 (Performance) |  |
-| [QAS-2](./Milestone1_2-Architectural-Drivers.md#qas-2) | 신뢰성 (Reliability) |  |
-| [QAS-3](./Milestone1_2-Architectural-Drivers.md#qas-3)| 일관성 (Consistency) |  |
-| [QAS-4](./Milestone1_2-Architectural-Drivers.md#qas-4)| 변경 용이성 (Modifiability) |  |
-| [QAS-5](./Milestone1_2-Architectural-Drivers.md#qas-5)| 사용성 (Usability) | pause/resume |
+| QAS | 품질 목표 | 택틱 | 목적 |
+|:---:|-----------|------|------|
+| [QAS-1](./Milestone1_2-Architectural-Drivers.md#qas-1) | 성능 (Performance) | introduce concurrency<br>limit event response<br>schedule resources<br>reduce overhead | 입력·분석·렌더링을 분리하고 최신 프레임/활성 화면만 무겁게 처리해 UI 정지 없이 0.5초 p99 목표를 지킨다. |
+| [QAS-2](./Milestone1_2-Architectural-Drivers.md#qas-2) | 신뢰성 (Reliability) | degradation<br>exception handling / detection | 잡음·약신호나 입력 오류 상황에서 틀린 수치를 내지 않고, "신호 약함" 또는 실패 상태로 격리해 신뢰 가능한 결과만 표시한다. |
+| [QAS-3](./Milestone1_2-Architectural-Drivers.md#qas-3)| 일관성 (Consistency) | maintain multiple copies of data | 분석 결과를 `AnalysisFrame` 같은 한 묶음의 스냅샷으로 전달해 여러 화면이 같은 계산 결과를 읽게 한다. |
+| [QAS-4](./Milestone1_2-Architectural-Drivers.md#qas-4)| 변경 용이성 (Modifiability) | restrict dependencies<br>encapsulate<br>use an intermediary<br>increase semantic coherence | Core·Platform·UI 책임을 분리하고 인터페이스 뒤에 구현을 숨겨 새 입력·필터·그래프를 국소 변경으로 추가한다. |
+| [QAS-5](./Milestone1_2-Architectural-Drivers.md#qas-5)| 사용성 (Usability) | pause/resume | 측정 중에도 사용자가 터치로 멈춤·재개를 예측 가능하게 수행하고, 정지 요청에는 빠르게 반응하게 한다. |
 
 ## 적용할 소프트웨어 디자인 패턴
 
