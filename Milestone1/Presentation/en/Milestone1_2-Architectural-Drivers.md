@@ -206,3 +206,167 @@ The following domain terms are used throughout the functional requirements below
 | FR-12-16 | mandatory | The filter views shall provide the user with a Sim mode. |
 | FR-12-17 | recommended | The filter views should provide the user with a pause control. |
 | FR-12-18 | recommended | The filter views should provide the user with navigation through captured data. |
+
+## Quality Attribute Scenarios
+
+### Terminology
+
+| Term | Meaning |
+|------|---------|
+| p99 | The 99th-percentile value — everything except the slowest 1 % falls within this value |
+| Google INP | Interaction to Next Paint — Google's web metric for the time from user input to the next screen update (good ≤ 200 ms / poor > 500 ms) |
+| SPS | Samples Per Second — the audio sampling rate |
+| SNR | Signal-to-Noise Ratio (dB) — higher means a cleaner signal |
+| person-days | The amount of work one person completes in one day |
+| Rate | Seconds the watch gains or loses per day (s/d) |
+| Beat error | Asymmetry between the tick and tock intervals (ms) |
+| Amplitude | Swing angle of the balance wheel (°) — a key indicator of watch health |
+| Sim / Playback | Sim = synthetic watch-signal generator mode (ground truth known in advance); Playback = replay of a recorded file |
+| SMPTE | Society of Motion Picture and Television Engineers — source of the viewing-distance / viewing-angle guideline |
+| ISO 9241-303 | International ergonomics standard for electronic displays — source of the character-size guideline |
+| Glyph | The visual shape of a single character on screen |
+| arcmin | Minute of arc (1° = 60 arcmin) — unit for how large something appears to the eye |
+
+### QAS-1 · Performance (Latency) — From Sound Input to Screen Display
+> **In one line: sound reaches the microphone → the result is on screen within 0.5 s.**
+>
+> While measuring live on the Raspberry Pi 5, when watch sound enters the input → analysis → display flow through the microphone, the system processes it, shows it on screen, and reports the three latency components — over a 10-min run, (1) processing latency p99 and (2) display latency p99 are reported, and (3) processing+display latency must be **p99 ≤ 500 ms**.
+
+**Why this attribute**
+- The Plan demands it — and even prescribes the three-part split: *"Teams shall report capture-to-processing latency, processing-to-display latency, and total end-to-end latency in milliseconds."*
+- An event arrives and the response is measured in **time** → that is Performance (Latency) by SAP's definition.
+
+| Element | Content |
+|---------|---------|
+| Source | Watch sound (external) |
+| Stimulus | Sound arrives at the microphone |
+| Artifact | The input → analysis → display flow — timestamped at each point |
+| Environment | Live measurement on the Raspberry Pi 5 (8 GB) |
+| Response | Process, show on screen, and report the three latency components |
+| Response Measure | Over a 10-min run: (1) processing latency — p99 (2) display latency — p99 (3) processing+display latency — **p99 ≤ 500 ms** (the pass/fail gate) |
+
+**Why these numbers**
+- **≤ 500 ms** — p99 (the slowest 1 %) sits at Google's INP (Interaction to Next Paint) boundary just before "poor" (good ≤ 200 ms · needs improvement ≤ 500 ms · poor > 500 ms); adopted as the maximum allowable limit for the final display update.
+
+**Related FRs** — FR-08-01, FR-12-04, FR-05-03, FR-12-14 (Live display and low-latency feedback features)
+
+### QAS-2 · Availability (Graceful Degradation) — Under Noisy or Weak Signals
+> **In one line: under noise, keep the measurement service usable when the signal is good enough, and show the "signal weak" indication while handling weak input appropriately.**
+>
+> In a noisy working environment, when watch sound mixed with ambient noise — or a weak signal — reaches the noise-removal / beat-detection part, the system either accepts the signal and produces a bounded measurement, or shows the "signal weak" indication while handling weak input appropriately. At SNR ≥ 30 dB, accepted input must meet detection **≥ 95 %** and keep the displayed rate **within ±3 s/d of the Sim/Playback reference rate**.
+
+**Why this attribute**
+- Plan: *"the system should degrade gracefully when the signal is weak, noisy, or partially missing, rather than producing unstable or misleading outputs"* — and graceful degradation is a catalogued SAP **Availability** tactic.
+- Both halves are about **continuing to deliver correct service under adverse conditions**: within tolerance while signal quality allows, and a graceful "signal weak" state below the threshold. That is Availability.
+
+| Element | Content |
+|---------|---------|
+| Source | Watch sound mixed with ambient noise / weak watch sound (external) |
+| Stimulus | Noise mixes in, or the signal arrives weak |
+| Artifact | The noise-removal / beat-detection part and the signal-quality indication |
+| Environment | A noisy working environment, or Sim/Playback input with calibrated noise injected at a held-constant SNR |
+| Response | Accept usable noisy input and produce a bounded measurement; below the quality threshold, show the "signal weak" indication and handle the input appropriately |
+| Response Measure | Against the generator's known schedule and reference rate, over ≥ 1,000 beats: accepted input at SNR ≥ 30 dB has detection ≥ 95 % and absolute displayed-rate error ≤ 3 s/d; below threshold, show the "signal weak" indication and handle the input appropriately |
+
+**Why these numbers**
+- **30 dB** — the worst clean recording measured with the team's microphone (30–51 dB over 9 recordings): a severe condition reachable only by deliberate noise injection; provisional.
+- **±3 s/d** — the allowed difference between the displayed rate and the Sim/Playback reference rate; the width is based on roughly half of the tightest Witschi grade band (Chronometer −2…+6 s/d). **95 %** is a team target to confirm by experiment.
+
+**Related FRs** — FR-12-08, FR-05-17…18 (noise filtering, averaging)
+
+### QAS-3 · Consistency — Consistent Values Across Displays
+> **In one line: every number and graph on screen comes from the same source data.**
+>
+> While measuring as usual, when the analysis/computation stage fans one set of source data out to multiple graph and numeric displays, everything rendered in the same frame derives from that same source data and agrees — **0 mismatches** over a 10-min run.
+
+**Why this attribute**
+- Plan §Correctness: *"remaining internally consistent across the GUI, derived measurements, and longer-term summaries"* — *"calculations and visualizations are based on the same underlying data."*
+- That Plan section bundles multiple demands: stay internally consistent (→ **this scenario**) and stay usable under noise (→ QAS-2). This scenario measures only consistency, so that is its name — "Correctness" would overclaim the other parts.
+
+| Element | Content |
+|---------|---------|
+| Source | The analysis/computation stage (internal) |
+| Stimulus | One set of source data fans out to multiple displays (graphs/numbers) |
+| Artifact | Numeric readouts and graph displays |
+| Environment | Measuring as usual (verified via Sim/Playback) |
+| Response | Everything shown in one frame derives from one set of source data and agrees |
+| Response Measure | Over a 10-min run on known input: **0 mismatches** across all simultaneously shown displays (within display rounding); each display exposes its source-data identity, so the check is observable |
+
+**Why these numbers**
+- **0** is the only sensible target — consistency is a correctness-class property, not a tunable number.
+- The check is genuinely verifiable because each display exposes which source data it came from.
+
+**Related FRs** — FR-12-05, FR-06-06, FR-02-07…08 (views and summaries showing the same data)
+
+### QAS-4 · Modifiability (Extensibility) — Adding a New Measurement/Filter/Graph
+> **In one line: adding a new graph, filter, or measurement touches one place — 8 person-days per feature.**
+>
+> During development under a tight schedule, when a developer adds a new graph, filter, or measurement to the codebase, the addition is incremental without tearing into existing code — **≤ 1 existing module changed** (common parts only), 8 person-days per feature.
+
+**Why this attribute**
+- Plan §Extensibility, Modifiability: *"support the addition of new measurements, filters, graphs, and display modes without major redesign of existing code."*
+- A **change request** measured by **how much code is touched** → SAP's Modifiability general scenario, using SAP's recommended measure (modules/locations affected).
+
+| Element | Content |
+|---------|---------|
+| Source | Developer |
+| Stimulus | Wants to add a new graph, filter stage, or derived measurement |
+| Artifact | The codebase holding the measurement/display features |
+| Environment | During development, tight schedule |
+| Response | Add incrementally without tearing into existing code |
+| Response Measure | New graph / filter / measurement, each: ≤ 1 existing module changed (common parts only), 8 person-days per feature |
+
+**Why these numbers**
+- 12 mandatory features in a 3-week schedule — only a bounded touch surface makes that feasible.
+- Milestone 2/3 schedule (16 days) × 6 team members / 12 features = 8 person-days per feature.
+
+**Related FRs** — all requirements
+
+### QAS-5 · Usability — Reading and Operating on the Touchscreen
+> **In one line: on the small 1280×800 touchscreen, the three key readings are readable at a glance and operable by finger.**
+>
+> On the Raspberry Pi 5's 1280×800 (8-inch) touchscreen, when the user reads measurement values and switches modes in the GUI, key readings are shown legibly and primary functions operate by touch alone — rate / beat error / amplitude visible simultaneously, uppercase letter height ≥ 2.9 mm, touch targets ≥ 9 mm. Physical sizes (mm) are normative.
+
+**Why this attribute**
+- Plan §Usability and User Purpose: *"The GUI should support ease of use by clearly showing … the calculated values that matter most to the user, such as rate, beat error, amplitude."*
+- A **user** stimulus measured by **legibility and task time** → SAP's Usability general scenario. The touch panel is given hardware, not a choice.
+
+| Element | Content |
+|---------|---------|
+| Source | User (watchmaker / operator) |
+| Stimulus | Reads measurement values and switches modes on the touchscreen |
+| Artifact | The GUI (graph/numeric displays and controls) |
+| Environment | Raspberry Pi 5 + 1280×800 touch display; 8-inch panel |
+| Response | Show key readings legibly; make primary functions operable by touch |
+| Response Measure | Rate / beat error / amplitude visible simultaneously without scroll/zoom; uppercase letter height ≥ 2.9 mm; touch targets ≥ 9 mm |
+
+**Why these numbers**
+- **mm, not px** — a pixel criterion flips pass/fail with the panel; 9 mm is the standard touch-target size.
+- **Uppercase letter height ≥ 2.9 mm** — considering full-screen visibility (SMPTE), character legibility (ISO 9241-303), and room for touch operation, the design viewing distance is conservatively set to 50 cm. At 50 cm, ISO 9241-303's recommended glyph size of ≥ 20 arcmin converts to 2.9 mm — a viewing-distance-based physical size, independent of panel resolution.
+  - Calculation: 20 arcmin = 20/60° = 0.333° ≈ 0.00582 rad → letter height = viewing distance × visual angle = 500 mm × 0.00582 ≈ **2.9 mm**
+  - Pixel equivalents on this panel (8″ 1280×800 → √(1280²+800²)/8 ≈ 189 PPI, 1 px ≈ 0.135 mm): letter height 2.9 mm ≈ **22 px**, touch target 9 mm ≈ **67 px** (advisory — mm is normative)
+
+**Related FRs** — FR-06-06, FR-01-05, FR-04-03, FR-02-06, FR-06-11·13 (at-a-glance readings, position indication, alerts)
+
+## Priority
+
+ATAM style: each scenario carries an (**I**mportance, **D**ifficulty) pair, H/M/L. The H/H scenarios shape the architecture most.
+
+| Priority | QAS | Quality | I | D | Rationale |
+|----------|-----|---------|---|---|-----------|
+| 1 | QAS-1 | Performance (Latency) | H | H | The result must appear quickly, and the Pi may be the bottleneck |
+| 2 | QAS-2 | Availability | H | H | Noisy or weak signals are likely in actual use |
+| 3 | QAS-3 | Consistency | H | M | Users should not see different values for the same result |
+| 4 | QAS-4 | Modifiability | H | M | Many required features still need to be added |
+| 5 | QAS-5 | Usability | M | M | The small touchscreen limits layout choices |
+
+**Ordering:** QAS-1 and QAS-2 come first because they affect whether the device is usable at all. QAS-3 and QAS-4 follow because they keep the results trustworthy and the project manageable. QAS-5 is still important, but its risk is more contained.
+
+## Constraints
+
+| ID | Constraint |
+|----|------------|
+| C-1 | The system shall run on a Raspberry Pi 5 (8 GB RAM, 128 GB microSD) with a touchscreen attached. |
+| C-2 | The system shall render and operate the GUI correctly on the 1280×800 display connected to the Raspberry Pi 5. |
+| C-3 | The system shall run on both a Windows 11 (x64) PC and a Raspberry Pi 5 running Raspberry Pi OS (Debian-based, 64-bit/ARM64). |
+| C-4 | The system shall operate with Auto Gain Control turned off. |

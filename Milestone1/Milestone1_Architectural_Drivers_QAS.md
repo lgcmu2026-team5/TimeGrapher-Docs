@@ -144,15 +144,6 @@
 
 **Related FRs** — FR-06-06, FR-01-05, FR-04-03, FR-02-06, FR-06-11·13 (at-a-glance readings, position indication, alerts)
 
-## Constraints
-
-| ID | Constraint |
-|----|------------|
-| C-1 | The system shall run on a Raspberry Pi 5 (8 GB RAM, 128 GB microSD) with a touchscreen attached. |
-| C-2 | The system shall render and operate the GUI correctly on the 1280×800 display connected to the Raspberry Pi 5. |
-| C-3 | The system shall run on both a Windows 11 (x64) PC and a Raspberry Pi 5 running Raspberry Pi OS (Debian-based, 64-bit/ARM64). |
-| C-4 | The system shall operate with Auto Gain Control turned off. |
-
 ## Priority
 
 ATAM style: each scenario carries an (**I**mportance, **D**ifficulty) pair, H/M/L. The H/H scenarios shape the architecture most.
@@ -166,6 +157,15 @@ ATAM style: each scenario carries an (**I**mportance, **D**ifficulty) pair, H/M/
 | 5 | QAS-5 | Usability | M | M | The small touchscreen limits layout choices |
 
 **Ordering:** QAS-1 and QAS-2 come first because they affect whether the device is usable at all. QAS-3 and QAS-4 follow because they keep the results trustworthy and the project manageable. QAS-5 is still important, but its risk is more contained.
+
+## Constraints
+
+| ID | Constraint |
+|----|------------|
+| C-1 | The system shall run on a Raspberry Pi 5 (8 GB RAM, 128 GB microSD) with a touchscreen attached. |
+| C-2 | The system shall render and operate the GUI correctly on the 1280×800 display connected to the Raspberry Pi 5. |
+| C-3 | The system shall run on both a Windows 11 (x64) PC and a Raspberry Pi 5 running Raspberry Pi OS (Debian-based, 64-bit/ARM64). |
+| C-4 | The system shall operate with Auto Gain Control turned off. |
 
 ---
 
@@ -313,15 +313,6 @@ ATAM style: each scenario carries an (**I**mportance, **D**ifficulty) pair, H/M/
 
 **관련 FR** — FR-06-06, FR-01-05, FR-04-03, FR-02-06, FR-06-11·13 (한눈에 읽기·포지션 표시·경보)
 
-## 제약사항
-
-| ID | 제약사항 |
-|----|----------|
-| C-1 | 시스템은 터치스크린이 연결된 Raspberry Pi 5(8 GB RAM, 128 GB microSD)에서 실행되어야 한다. |
-| C-2 | 시스템은 Raspberry Pi 5에 연결된 1280×800 디스플레이에서 GUI를 올바르게 렌더링하고 동작해야 한다. |
-| C-3 | 시스템은 Windows 11 (x64) PC와 Raspberry Pi OS(Debian 기반, 64-bit/ARM64)를 실행하는 Raspberry Pi 5 모두에서 실행되어야 한다. |
-| C-4 | 시스템은 Auto Gain Control이 꺼진 상태에서 동작해야 한다. |
-
 ## 우선순위
 
 ATAM 방식: 각 시나리오에 (**I**중요도, **D**난이도) 쌍을 부여(H/M/L). H/H 시나리오가 아키텍처를 가장 좌우한다.
@@ -335,3 +326,12 @@ ATAM 방식: 각 시나리오에 (**I**중요도, **D**난이도) 쌍을 부여(
 | 5 | QAS-5 | Usability | M | M | 작은 터치스크린이라 화면 배치가 제한됨 |
 
 **정렬:** QAS-1과 QAS-2는 장치가 실제로 쓸 만한지에 직접 연결되므로 앞에 둔다. QAS-3과 QAS-4는 결과 신뢰성과 개발 진행을 지키는 항목이라 그다음이다. QAS-5도 중요하지만 위험은 비교적 제한적이다.
+
+## 제약사항
+
+| ID | 제약사항 |
+|----|----------|
+| C-1 | 시스템은 터치스크린이 연결된 Raspberry Pi 5(8 GB RAM, 128 GB microSD)에서 실행되어야 한다. |
+| C-2 | 시스템은 Raspberry Pi 5에 연결된 1280×800 디스플레이에서 GUI를 올바르게 렌더링하고 동작해야 한다. |
+| C-3 | 시스템은 Windows 11 (x64) PC와 Raspberry Pi OS(Debian 기반, 64-bit/ARM64)를 실행하는 Raspberry Pi 5 모두에서 실행되어야 한다. |
+| C-4 | 시스템은 Auto Gain Control이 꺼진 상태에서 동작해야 한다. |
