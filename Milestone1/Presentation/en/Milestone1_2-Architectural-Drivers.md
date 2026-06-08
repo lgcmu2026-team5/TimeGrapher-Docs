@@ -207,7 +207,7 @@ The metric, unit, and standard terms used in the scenarios below are defined in 
 >
 > While measuring live on the Raspberry Pi 5, when watch sound enters the input → analysis → display flow through the microphone, the system processes data that must be rendered in real time, shows it on screen, and reports the three latency components — over a 10-min run, (1) capture-to-processing latency p99 and (2) processing-to-display latency p99 are reported, and (3) total end-to-end (capture-to-display) latency must be **p99 ≤ 500 ms**.
 
-**Why this attribute**
+**Related requirement**
 - *"Teams shall report capture-to-processing latency, processing-to-display latency, and total end-to-end latency in milliseconds."*
 
 | Element | Content |
@@ -231,7 +231,7 @@ The metric, unit, and standard terms used in the scenarios below are defined in 
 >
 > In a noisy working environment, when watch sound mixed with ambient noise — or a weak signal — reaches the noise-removal / beat-detection part, the system either accepts the signal and produces a bounded measurement, or shows the "signal weak" indication while handling weak input appropriately. At SNR ≥ 30 dB, accepted input must meet detection **≥ 95 %** and keep the displayed rate **within ±3 s/d of the Sim/Playback reference rate**.
 
-**Why this attribute**
+**Related requirement**
 - *"the system should degrade gracefully when the signal is weak, noisy, or partially missing, rather than producing unstable or misleading outputs"*
 
 | Element | Content |
@@ -254,7 +254,7 @@ The metric, unit, and standard terms used in the scenarios below are defined in 
 >
 > While measuring as usual, when the analysis/computation stage fans one set of source data out to multiple graph and numeric displays, everything rendered in the same frame derives from that same source data and agrees — **0 mismatches** over a 10-min run.
 
-**Why this attribute**
+**Related requirement**
 - *"remaining internally consistent across the GUI, derived measurements, and longer-term summaries"*
 - *"calculations and visualizations are based on the same underlying data."*
 
@@ -278,7 +278,7 @@ The metric, unit, and standard terms used in the scenarios below are defined in 
 >
 > During development under a tight schedule, when a developer adds a new graph, filter, or measurement to the codebase, the addition is incremental without changing codes for the existing graphs — **≤ 1 existing module changed** (common parts only), 8 person-days per feature.
 
-**Why this attribute**
+**Related requirement**
 - *"support the addition of new measurements, filters, graphs, and display modes without major redesign of existing code."*
 
 | Element | Content |
@@ -301,7 +301,7 @@ The metric, unit, and standard terms used in the scenarios below are defined in 
 >
 > On the Raspberry Pi 5's 1280×800 (8-inch) touchscreen, when the user reads measurement values and switches modes in the GUI, key readings are shown legibly and primary functions operate by touch alone — rate / beat error / amplitude visible simultaneously, uppercase letter height ≥ 2.9 mm, touch targets ≥ 9 mm. Physical sizes (mm) are normative.
 
-**Why this attribute**
+**Related requirement**
 - *"The GUI should support ease of use by clearly showing … the calculated values that matter most to the user, such as rate, beat error, amplitude."*
 
 | Element | Content |
