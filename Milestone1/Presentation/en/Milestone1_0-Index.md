@@ -12,7 +12,7 @@
 | **Milestone 1-2** | Architectural Drivers | [Milestone1_2-Architectural-Drivers.md](Milestone1_2-Architectural-Drivers.md) |
 | **Milestone 1-3** | Risk Assessment | [Milestone1_3-Risk-Assessment.md](Milestone1_3-Risk-Assessment.md) |
 | **Milestone 1-4** | Planned Experiments | [Milestone1_4-Planned-Experiments.md](Milestone1_4-Planned-Experiments.md) |
-| **Milestone 1-5** | Architectural Approaches | [Milestone1_5-Architectural%20Approaches.md](Milestone1_5-Architectural%20Approaches.md) |
+| **Milestone 1-5** | Architectural Approaches | [Milestone1_5-Architectural%20Approaches.md](Milestone1_5-Architectural-Approaches.md) |
 | **Glossary** | Terms & Definitions (all sections) | [Milestone1_6-Glossary.md](Milestone1_6-Glossary.md) |
 
 ---
