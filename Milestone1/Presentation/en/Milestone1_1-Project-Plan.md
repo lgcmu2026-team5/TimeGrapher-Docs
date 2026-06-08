@@ -10,10 +10,10 @@
 
 ## Schedule
 
-- 🟡 **Milestone 1** — `05.29 ~ 06.07`
+- 🟡 **Milestone 1** — `05.29 ~ 06.08`
   - ⬜ Project Plan — `05.29 ~ 06.07`
   - ⬜ **Architecture Drivers** — `05.29 ~ 06.07`
-    - ✅ **Requirements Analysis** — `06.01 ~ 06.02`
+    - ✅ **Requirements Analysis** — `06.01 ~ 06.03`
       - ✅ Requirements Analysis Writing (FR-01) — `06.01 ~ 06.03` _(Assigned: YUN)_
       - ✅ Requirements Analysis Writing (FR-02) — `06.01 ~ 06.03` _(Assigned: JunSung)_
       - ✅ Requirements Analysis Writing (FR-03) — `06.01 ~ 06.03` _(Assigned: JunSung)_
@@ -27,7 +27,7 @@
       - ✅ Requirements Analysis Writing (FR-11) — `06.01 ~ 06.03` _(Assigned: Jaehong)_
       - ✅ Requirements Analysis Writing (FR-12) — `06.01 ~ 06.03` _(Assigned: Junyoung Park)_
     - ✅ QA Scenarios — `06.01 ~ 06.03`
-  - ⬜ **Risk Assessment** — `06.03 ~ 06.04`
+  - ⬜ **Risk Assessment** — `06.03 ~ 06.07`
     - ✅ List up Technical Risks — `06.05 ~ 06.07`
     - ✅ List up Non-Technical Risks — `06.05 ~ 06.07`
   - ⬜ Planned Experiments — `06.06 ~ 06.07` _(Assigned: YUN, JunSung)_
