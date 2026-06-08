@@ -1,6 +1,6 @@
 # Planned Experiments
 
-**목차** — [리스크-실험 매핑](#리스크-실험-매핑) · [EXP-01](#exp-01-rpi5-avalonia-렌더링-백엔드) · [EXP-02](#exp-02-rpi5-실시간-샘플레이트-상한) · [EXP-03](#exp-03-gui-실시간-렌더링-디자인-패턴) · [EXP-04](#exp-04-온디바이스-tinyml-추론-타당성) · [EXP-05](#exp-05-장시간-24h-실행-안정성) · [EXP-06](#exp-06-글자-가독성과-터치-타깃-ui-기준) · [통합 일정](#통합-일정) · [공통 승인 기준](#공통-승인-기준)
+**목차** — [리스크-실험 매핑](#리스크-실험-매핑) · [EXP-01](#exp-01-rpi5-avalonia-렌더링-백엔드) · [EXP-02](#exp-02-rpi5-실시간-샘플레이트-상한) · [EXP-03](#exp-03-gui-실시간-렌더링-디자인-패턴) · [EXP-04](#exp-04-온디바이스-tinyml-추론-타당성) · [EXP-05](#exp-05-장시간-24h-실행-안정성) · [통합 일정](#통합-일정) · [공통 승인 기준](#공통-승인-기준)
 
 ## 용어 설명
 
@@ -17,7 +17,6 @@
 | [EXP-03](#exp-03-gui-실시간-렌더링-디자인-패턴) | [R-15](Milestone1_3-Risk-Assessment.md#f-프로젝트--프로세스) | [QAS-1](Milestone1_2-Architectural-Drivers.md#qas-1--performance-latency--소리-입력에서-화면-표시까지), [QAS-4](Milestone1_2-Architectural-Drivers.md#qas-4--modifiability-extensibility--새-측정필터그래프-추가) | **High** | GUI 실시간 성능 개선을 위해 어떤 디자인 패턴을 우선 적용할 것인가? |
 | [EXP-04](#exp-04-온디바이스-tinyml-추론-타당성) | [R-17](Milestone1_3-Risk-Assessment.md#f-프로젝트--프로세스) | [QAS-1](Milestone1_2-Architectural-Drivers.md#qas-1--performance-latency--소리-입력에서-화면-표시까지), [QAS-2](Milestone1_2-Architectural-Drivers.md#qas-2) | Mid | TinyML 추론을 추가해도 실시간성과 신뢰성을 유지할 수 있는가? |
 | [EXP-05](#exp-05-장시간-24h-실행-안정성) | [R-04](Milestone1_3-Risk-Assessment.md#a-실시간-성능-rpi) | [QAS-1](Milestone1_2-Architectural-Drivers.md#qas-1--performance-latency--소리-입력에서-화면-표시까지) | Mid | 장시간 실행에서 메모리/지연 열화가 발생하는가? |
-| [EXP-06](#exp-06-글자-가독성과-터치-타깃-ui-기준) | [R-12](Milestone1_3-Risk-Assessment.md#e-사용성--ui-1280800), [R-13](Milestone1_3-Risk-Assessment.md#e-사용성--ui-1280800) | [QAS-5](Milestone1_2-Architectural-Drivers.md#qas-5--usability--터치스크린에서-읽기조작) | Mid | 가독성과 터치 인식을 동시에 만족하는 글자 크기/터치 타깃 기준은 무엇인가? |
 
 ## EXP-01: RPi5 Avalonia 렌더링 백엔드
 
@@ -264,60 +263,11 @@ TO-DO: 장시간 실행 안정성 결론과 버퍼/메모리 정책 권고안을
 
 - NA
 
-## EXP-06: 글자 가독성과 터치 타깃 UI 기준
-
-**리스크:** [R-12](Milestone1_3-Risk-Assessment.md#e-사용성--ui-1280800), [R-13](Milestone1_3-Risk-Assessment.md#e-사용성--ui-1280800) · **QAS:** [QAS-5](Milestone1_2-Architectural-Drivers.md#qas-5--usability--터치스크린에서-읽기조작) · **우선순위:** Mid
-
-### 결과 및 권장 사항
-
-TO-DO: 글자 크기 기준안(최소/권장), 터치 타깃 기준안, 최종 UI 레이아웃 권고안을 기록한다.
-
-### 목적
-
-작은 화면에서 요약바 + 그래프 + 스코프 스트립을 동시에 표시할 때 가독성과 터치 조작성을 확보할 수 있는지 검증한다. 핵심 질문은 다음과 같다.
-
-- Q1. 글자 크기를 단계적으로 변경할 때 사용자 만족도는 어떻게 달라지는가?
-- Q2. 글자 가독성 만족도와 터치 인식률을 동시에 만족하는 최소 UI 기준은 무엇인가?
-
-### 상태
-
-계획됨
-
-### 예상 산출물
-
-- 글자 크기 단계별 사용자 만족도 설문 결과표
-- 글자 크기/터치 타깃 조합별 터치 성공률 및 오터치율 표
-- UI 기준안: 최소 글자 높이(mm), 권장 글자 높이(mm), 최소 터치 타깃(mm), 모드 전환 탭 구조
-
-### 필요한 자원
-
-- Raspberry Pi 5 + 1280×800 터치 디스플레이 ([C-2](Milestone1_2-Architectural-Drivers.md#설계-제약사항))
-- UI 실험 빌드(글자 크기/터치 타깃 프리셋 전환 가능)
-- 실험 참가자 8–12명(팀원 + 외부 사용자 혼합 권장)
-- 설문 도구(구글폼 또는 동등 도구)
-- 작업 공수: 1.5 person-days
-
-### 실험 설명
-
-1. 고정 레이아웃에서 글자 크기/터치 타깃 조합을 단계별로 바꿔 동일 태스크를 수행하고 읽기성과 조작성 데이터를 수집한다.
-2. 객관 지표(완료시간, 오류율, 터치 성공률, 오터치율)와 주관 지표(만족도 설문)를 함께 비교해 최소/권장 UI 기준을 도출한다.
-3. SAP 기준으로 가독성·터치성 합격 여부를 판정하고 최종 레이아웃 권고안을 확정한다.
-
-### 기간
-
-- D9: 실험 빌드 준비 및 설문 문항 확정
-- D10: 파일럿 2명으로 리허설
-- D11–D12: 본 실험(8–12명) 수행 및 결과 분석
-
-### 링크 및 참고 자료
-
-- NA
-
 ## 통합 일정
 
 - Week 1: EXP-01, EXP-02, EXP-03
-- Week 2: EXP-04, EXP-06
-- Week 3: EXP-05, EXP-06(확장 검증) 및 미해결 항목 재실험
+- Week 2: EXP-04
+- Week 3: EXP-05, 미해결 항목 재실험
 
 ## 공통 승인 기준
 
