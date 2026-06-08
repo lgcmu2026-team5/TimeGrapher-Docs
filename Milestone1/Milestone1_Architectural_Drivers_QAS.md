@@ -71,9 +71,9 @@
 **Related FRs** — FR-12-08, FR-05-17…18 (noise filtering, averaging)
 
 ### QAS-3 · Consistency — Consistent Values Across Displays
-> **In one line: every number and graph on screen comes from the same measurement result.**
+> **In one line: every number and graph on screen comes from the same source data.**
 >
-> While measuring as usual, when the analysis/computation stage fans a single measurement result out to multiple graph and numeric displays, everything rendered in the same frame derives from that one result and agrees — **0 mismatches** over a 10-min run.
+> While measuring as usual, when the analysis/computation stage fans one set of source data out to multiple graph and numeric displays, everything rendered in the same frame derives from that same source data and agrees — **0 mismatches** over a 10-min run.
 
 **Why this attribute**
 - Plan §Correctness: *"remaining internally consistent across the GUI, derived measurements, and longer-term summaries"* — *"calculations and visualizations are based on the same underlying data."*
@@ -82,15 +82,15 @@
 | Element | Content |
 |---------|---------|
 | Source | The analysis/computation stage (internal) |
-| Stimulus | One measurement result fans out to multiple displays (graphs/numbers) |
+| Stimulus | One set of source data fans out to multiple displays (graphs/numbers) |
 | Artifact | Numeric readouts and graph displays |
 | Environment | Measuring as usual (verified via Sim/Playback) |
-| Response | Everything shown in one frame derives from one result and agrees |
-| Response Measure | Over a 10-min run on known input: **0 mismatches** across all simultaneously shown displays (within display rounding); each display exposes its source-result identity, so the check is observable |
+| Response | Everything shown in one frame derives from one set of source data and agrees |
+| Response Measure | Over a 10-min run on known input: **0 mismatches** across all simultaneously shown displays (within display rounding); each display exposes its source-data identity, so the check is observable |
 
 **Why these numbers**
 - **0** is the only sensible target — consistency is a correctness-class property, not a tunable number.
-- The check is genuinely verifiable because each display exposes which result it came from.
+- The check is genuinely verifiable because each display exposes which source data it came from.
 
 **Related FRs** — FR-12-05, FR-06-06, FR-02-07…08 (views and summaries showing the same data)
 
@@ -240,9 +240,9 @@ ATAM style: each scenario carries an (**I**mportance, **D**ifficulty) pair, H/M/
 **관련 FR** — FR-12-08, FR-05-17…18 (잡음 필터링·averaging)
 
 ### QAS-3 · Consistency — 표시 간 값 일치
-> **한 줄 요약: 화면의 모든 숫자와 그래프는 같은 측정 결과에서 나온다.**
+> **한 줄 요약: 화면의 모든 숫자와 그래프는 같은 소스 데이터에서 나온다.**
 >
-> 평소처럼 측정하는 동안 분석/계산 단계가 하나의 측정 결과를 여러 그래프·숫자 표시에 전달하면, 한 프레임에 함께 표시되는 모든 것이 그 단일 결과에서 파생되어 일치하며, 10분 실행 동안 **불일치 0회**이어야 한다.
+> 평소처럼 측정하는 동안 분석/계산 단계가 하나의 소스 데이터를 여러 그래프·숫자 표시에 전달하면, 한 프레임에 함께 표시되는 모든 것이 그 단일 소스 데이터에서 파생되어 일치하며, 10분 실행 동안 **불일치 0회**이어야 한다.
 
 **왜 이 속성인가**
 - 플랜 §Correctness 원문: *"remaining internally consistent across the GUI, derived measurements, and longer-term summaries"* / *"calculations and visualizations are based on the same underlying data."*
@@ -251,15 +251,15 @@ ATAM style: each scenario carries an (**I**mportance, **D**ifficulty) pair, H/M/
 | 요소 | 내용 |
 |------|------|
 | 자극유발원 | 분석/계산 단계 (내부) |
-| 자극 | 하나의 측정 결과가 여러 표시(그래프/숫자)로 전달됨 |
+| 자극 | 하나의 소스 데이터가 여러 표시(그래프/숫자)로 전달됨 |
 | 대상 | 수치 표시값과 그래프 표시 |
 | 환경 | 평소처럼 측정 중 (검증은 Sim/Playback) |
-| 응답 | 한 프레임에 함께 표시되는 모든 것이 하나의 결과에서 파생되어 일치 |
-| 응답측정 | 알려진 기준 입력의 10분 실행 동안: 동시에 표시되는 모든 표시에서 **불일치 0회**(표시 반올림 이내); 각 표시는 소스 결과 식별자를 노출하여 검사 가능 |
+| 응답 | 한 프레임에 함께 표시되는 모든 것이 하나의 소스 데이터에서 파생되어 일치 |
+| 응답측정 | 알려진 기준 입력의 10분 실행 동안: 동시에 표시되는 모든 표시에서 **불일치 0회**(표시 반올림 이내); 각 표시는 소스 데이터 식별자를 노출하여 검사 가능 |
 
 **측정값 근거**
 - **0** 이 유일하게 말이 되는 목표 — 일관성은 정합성 계열 속성이지 조정 가능한 수치가 아님.
-- 각 표시가 어느 결과에서 왔는지 노출하므로 "0"을 실제로 검증 가능.
+- 각 표시가 어느 소스 데이터에서 왔는지 노출하므로 "0"을 실제로 검증 가능.
 
 **관련 FR** — FR-12-05, FR-06-06, FR-02-07…08 (여러 뷰·요약이 같은 데이터를 표시)
 
