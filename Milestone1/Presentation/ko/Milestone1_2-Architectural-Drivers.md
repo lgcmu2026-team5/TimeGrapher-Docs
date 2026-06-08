@@ -221,7 +221,7 @@
 **측정값 근거**
 - **≤ 500 ms** — p99(하위 1% 느린 값)를 Google INP(Interaction to Next Paint) 기준에서 "poor"로 넘어가기 직전 값(good ≤ 200 ms · needs improvement ≤ 500 ms · poor > 500 ms); 최종 디스플레이 갱신의 최대 허용 한계값으로 채택.
 
-**관련 FR** — FR-08-01, FR-12-04, FR-05-03, FR-12-14 (실시간/Live 표시 기능)
+**관련 FR** — [FR-08-01](#g08--escapement-analyzer-and-marker-line-display), [FR-12-04](#g12--scope-function-with-multiple-filter-views), [FR-05-03](#g05--beat-noise-scope-display), [FR-12-14](#g12--scope-function-with-multiple-filter-views) (실시간/Live 표시 기능)
 
 ### QAS-2 · Availability (Graceful Degradation) — 잡음·약신호 환경
 > **한 줄 요약: 잡음 속에서도 신호가 충분할 때는 측정 서비스를 유지하고, 부족하면 "신호 약함"을 표시한 뒤 적절하게 처리한다.**
@@ -245,7 +245,7 @@
 - **30 dB** — 팀 마이크로 실측한 최악 클린 녹음(9개, 30–51 dB)중 제일 심한 조건 — 의도적 잡음 주입으로만 도달; 잠정값.
 - **±3 s/d** — 표시된 일오차가 Sim/Playback의 기준 일오차에서 벗어날 수 있는 허용 폭. 폭은 가장 엄격한 Witschi 등급 대역(Chronometer −2…+6 s/d)의 약 절반을 기준으로 둔다. **95%**는 실험으로 확정할 팀 목표.
 
-**관련 FR** — FR-12-08, FR-05-17…18 (잡음 필터링·averaging)
+**관련 FR** — [FR-12-08](#g12--scope-function-with-multiple-filter-views), [FR-05-17…18](#g05--beat-noise-scope-display) (잡음 필터링·averaging)
 
 ### QAS-3 · Consistency — 표시 간 값 일치
 > **한 줄 요약: 화면의 모든 숫자와 그래프는 같은 소스 데이터에서 나온다.**
@@ -254,7 +254,7 @@
 
 **왜 이 속성인가**
 - 플랜 §Correctness 원문: *"remaining internally consistent across the GUI, derived measurements, and longer-term summaries"* / *"calculations and visualizations are based on the same underlying data."*
-- 그 절은 여러 요구의 묶음: 내부 일관성(→ **본 시나리오**)과 잡음 하 사용 가능(→ QAS-2). 본 시나리오는 일관성만 측정하므로 이름도 Consistency — Correctness라 부르면 나머지 부분까지 커버하는 듯한 과대 표기.
+- 그 절은 여러 요구의 묶음: 내부 일관성(→ **본 시나리오**)과 잡음 하 사용 가능(→ [QAS-2](#qas-2--availability-graceful-degradation--잡음약신호-환경)). 본 시나리오는 일관성만 측정하므로 이름도 Consistency — Correctness라 부르면 나머지 부분까지 커버하는 듯한 과대 표기.
 
 | 요소 | 내용 |
 |------|------|
@@ -269,7 +269,7 @@
 - **0** 이 유일하게 말이 되는 목표 — 일관성은 정합성 계열 속성이지 조정 가능한 수치가 아님.
 - 각 표시가 어느 소스 데이터에서 왔는지 노출하므로 "0"을 실제로 검증 가능.
 
-**관련 FR** — FR-12-05, FR-06-06, FR-02-07…08 (여러 뷰·요약이 같은 데이터를 표시)
+**관련 FR** — [FR-12-05](#g12--scope-function-with-multiple-filter-views), [FR-06-06](#g06--beat-error-display-and-diagnostic-trace), [FR-02-07…08](#g02--trace-display) (여러 뷰·요약이 같은 데이터를 표시)
 
 ### QAS-4 · Modifiability (Extensibility) — 새 측정/필터/그래프 추가
 > **한 줄 요약: 새 그래프·필터·측정값 추가 = 한 곳만 고친다 — 기능당 8 person-days.**
@@ -319,7 +319,7 @@
   - 계산: 20 arcmin = 20/60° = 0.333° ≈ 0.00582 rad → 글자 높이 = 시야 거리 × 시각 = 500 mm × 0.00582 ≈ **2.9 mm**
   - 본 패널 기준 px 환산 (8″ 1280×800 → √(1280²+800²)/8 ≈ 189 PPI, 1 px ≈ 0.135 mm): 글자 높이 2.9 mm ≈ **22 px**, 터치 타깃 9 mm ≈ **67 px** (참고용 — 규범 기준은 mm)
 
-**관련 FR** — FR-06-06, FR-01-05, FR-04-03, FR-02-06, FR-06-11·13 (한눈에 읽기·포지션 표시·경보)
+**관련 FR** — [FR-06-06](#g06--beat-error-display-and-diagnostic-trace), [FR-01-05](#g01--watch-position-testing), [FR-04-03](#g04--multi-position-sequence-display), [FR-02-06](#g02--trace-display), [FR-06-11·13](#g06--beat-error-display-and-diagnostic-trace) (한눈에 읽기·포지션 표시·경보)
 
 ## 우선순위
 
@@ -327,13 +327,13 @@ ATAM 방식: 각 시나리오에 (**I**중요도, **D**난이도) 쌍을 부여(
 
 | 순위 | QAS | 품질 속성 | I | D | 근거 |
 |------|-----|----------|---|---|------|
-| 1 | QAS-1 | Performance (Latency) | H | H | 결과가 빨리 떠야 하고, Pi 성능이 병목이 될 수 있음 |
-| 2 | QAS-2 | Availability | H | H | 실제 사용 환경에서는 잡음이나 약한 신호가 자주 생길 수 있음 |
-| 3 | QAS-3 | Consistency | H | M | 같은 측정 결과가 화면마다 다르게 보이면 안 됨 |
-| 4 | QAS-4 | Modifiability | H | M | 아직 추가해야 할 기능이 많음 |
-| 5 | QAS-5 | Usability | M | M | 작은 터치스크린이라 화면 배치가 제한됨 |
+| 1 | [QAS-1](#qas-1--performance-latency--소리-입력에서-화면-표시까지) | Performance (Latency) | H | H | 결과가 빨리 떠야 하고, Pi 성능이 병목이 될 수 있음 |
+| 2 | [QAS-2](#qas-2--availability-graceful-degradation--잡음약신호-환경) | Availability | H | H | 실제 사용 환경에서는 잡음이나 약한 신호가 자주 생길 수 있음 |
+| 3 | [QAS-3](#qas-3--consistency--표시-간-값-일치) | Consistency | H | M | 같은 측정 결과가 화면마다 다르게 보이면 안 됨 |
+| 4 | [QAS-4](#qas-4--modifiability-extensibility--새-측정필터그래프-추가) | Modifiability | H | M | 아직 추가해야 할 기능이 많음 |
+| 5 | [QAS-5](#qas-5--usability--터치스크린에서-읽기조작) | Usability | M | M | 작은 터치스크린이라 화면 배치가 제한됨 |
 
-**정렬:** QAS-1과 QAS-2는 장치가 실제로 쓸 만한지에 직접 연결되므로 앞에 둔다. QAS-3과 QAS-4는 결과 신뢰성과 개발 진행을 지키는 항목이라 그다음이다. QAS-5도 중요하지만 위험은 비교적 제한적이다.
+**정렬:** [QAS-1](#qas-1--performance-latency--소리-입력에서-화면-표시까지)과 [QAS-2](#qas-2--availability-graceful-degradation--잡음약신호-환경)는 장치가 실제로 쓸 만한지에 직접 연결되므로 앞에 둔다. [QAS-3](#qas-3--consistency--표시-간-값-일치)과 [QAS-4](#qas-4--modifiability-extensibility--새-측정필터그래프-추가)는 결과 신뢰성과 개발 진행을 지키는 항목이라 그다음이다. [QAS-5](#qas-5--usability--터치스크린에서-읽기조작)도 중요하지만 위험은 비교적 제한적이다.
 
 ## 제약사항
 

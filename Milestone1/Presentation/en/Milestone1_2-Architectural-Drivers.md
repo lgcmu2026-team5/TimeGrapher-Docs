@@ -221,7 +221,7 @@ The metric, unit, and standard terms used in the scenarios below are defined in 
 **Why these numbers**
 - **≤ 500 ms** — p99 (the slowest 1 %) sits at Google's INP (Interaction to Next Paint) boundary just before "poor" (good ≤ 200 ms · needs improvement ≤ 500 ms · poor > 500 ms); adopted as the maximum allowable limit for the final display update.
 
-**Related FRs** — FR-08-01, FR-12-04, FR-05-03, FR-12-14 (Live display and low-latency feedback features)
+**Related FRs** — [FR-08-01](#g08--escapement-analyzer-and-marker-line-display), [FR-12-04](#g12--scope-function-with-multiple-filter-views), [FR-05-03](#g05--beat-noise-scope-display), [FR-12-14](#g12--scope-function-with-multiple-filter-views) (Live display and low-latency feedback features)
 
 ### QAS-2 · Availability (Graceful Degradation) — Under Noisy or Weak Signals
 > **In one line: under noise, keep the measurement service usable when the signal is good enough, and show the "signal weak" indication while handling weak input appropriately.**
@@ -245,7 +245,7 @@ The metric, unit, and standard terms used in the scenarios below are defined in 
 - **30 dB** — the worst clean recording measured with the team's microphone (30–51 dB over 9 recordings): a severe condition reachable only by deliberate noise injection; provisional.
 - **±3 s/d** — the allowed difference between the displayed rate and the Sim/Playback reference rate; the width is based on roughly half of the tightest Witschi grade band (Chronometer −2…+6 s/d). **95 %** is a team target to confirm by experiment.
 
-**Related FRs** — FR-12-08, FR-05-17…18 (noise filtering, averaging)
+**Related FRs** — [FR-12-08](#g12--scope-function-with-multiple-filter-views), [FR-05-17…18](#g05--beat-noise-scope-display) (noise filtering, averaging)
 
 ### QAS-3 · Consistency — Consistent Values Across Displays
 > **In one line: every number and graph on screen comes from the same source data.**
@@ -254,7 +254,7 @@ The metric, unit, and standard terms used in the scenarios below are defined in 
 
 **Why this attribute**
 - Plan §Correctness: *"remaining internally consistent across the GUI, derived measurements, and longer-term summaries"* — *"calculations and visualizations are based on the same underlying data."*
-- That Plan section bundles multiple demands: stay internally consistent (→ **this scenario**) and stay usable under noise (→ QAS-2). This scenario measures only consistency, so that is its name — "Correctness" would overclaim the other parts.
+- That Plan section bundles multiple demands: stay internally consistent (→ **this scenario**) and stay usable under noise (→ [QAS-2](#qas-2--availability-graceful-degradation--under-noisy-or-weak-signals)). This scenario measures only consistency, so that is its name — "Correctness" would overclaim the other parts.
 
 | Element | Content |
 |---------|---------|
@@ -269,7 +269,7 @@ The metric, unit, and standard terms used in the scenarios below are defined in 
 - **0** is the only sensible target — consistency is a correctness-class property, not a tunable number.
 - The check is genuinely verifiable because each display exposes which source data it came from.
 
-**Related FRs** — FR-12-05, FR-06-06, FR-02-07…08 (views and summaries showing the same data)
+**Related FRs** — [FR-12-05](#g12--scope-function-with-multiple-filter-views), [FR-06-06](#g06--beat-error-display-and-diagnostic-trace), [FR-02-07…08](#g02--trace-display) (views and summaries showing the same data)
 
 ### QAS-4 · Modifiability (Extensibility) — Adding a New Measurement/Filter/Graph
 > **In one line: adding a new graph, filter, or measurement touches one place — 8 person-days per feature.**
@@ -319,7 +319,7 @@ The metric, unit, and standard terms used in the scenarios below are defined in 
   - Calculation: 20 arcmin = 20/60° = 0.333° ≈ 0.00582 rad → letter height = viewing distance × visual angle = 500 mm × 0.00582 ≈ **2.9 mm**
   - Pixel equivalents on this panel (8″ 1280×800 → √(1280²+800²)/8 ≈ 189 PPI, 1 px ≈ 0.135 mm): letter height 2.9 mm ≈ **22 px**, touch target 9 mm ≈ **67 px** (advisory — mm is normative)
 
-**Related FRs** — FR-06-06, FR-01-05, FR-04-03, FR-02-06, FR-06-11·13 (at-a-glance readings, position indication, alerts)
+**Related FRs** — [FR-06-06](#g06--beat-error-display-and-diagnostic-trace), [FR-01-05](#g01--watch-position-testing), [FR-04-03](#g04--multi-position-sequence-display), [FR-02-06](#g02--trace-display), [FR-06-11·13](#g06--beat-error-display-and-diagnostic-trace) (at-a-glance readings, position indication, alerts)
 
 ## Priority
 
@@ -327,13 +327,13 @@ ATAM style: each scenario carries an (**I**mportance, **D**ifficulty) pair, H/M/
 
 | Priority | QAS | Quality | I | D | Rationale |
 |----------|-----|---------|---|---|-----------|
-| 1 | QAS-1 | Performance (Latency) | H | H | The result must appear quickly, and the Pi may be the bottleneck |
-| 2 | QAS-2 | Availability | H | H | Noisy or weak signals are likely in actual use |
-| 3 | QAS-3 | Consistency | H | M | Users should not see different values for the same result |
-| 4 | QAS-4 | Modifiability | H | M | Many required features still need to be added |
-| 5 | QAS-5 | Usability | M | M | The small touchscreen limits layout choices |
+| 1 | [QAS-1](#qas-1--performance-latency--from-sound-input-to-screen-display) | Performance (Latency) | H | H | The result must appear quickly, and the Pi may be the bottleneck |
+| 2 | [QAS-2](#qas-2--availability-graceful-degradation--under-noisy-or-weak-signals) | Availability | H | H | Noisy or weak signals are likely in actual use |
+| 3 | [QAS-3](#qas-3--consistency--consistent-values-across-displays) | Consistency | H | M | Users should not see different values for the same result |
+| 4 | [QAS-4](#qas-4--modifiability-extensibility--adding-a-new-measurementfiltergraph) | Modifiability | H | M | Many required features still need to be added |
+| 5 | [QAS-5](#qas-5--usability--reading-and-operating-on-the-touchscreen) | Usability | M | M | The small touchscreen limits layout choices |
 
-**Ordering:** QAS-1 and QAS-2 come first because they affect whether the device is usable at all. QAS-3 and QAS-4 follow because they keep the results trustworthy and the project manageable. QAS-5 is still important, but its risk is more contained.
+**Ordering:** [QAS-1](#qas-1--performance-latency--from-sound-input-to-screen-display) and [QAS-2](#qas-2--availability-graceful-degradation--under-noisy-or-weak-signals) come first because they affect whether the device is usable at all. [QAS-3](#qas-3--consistency--consistent-values-across-displays) and [QAS-4](#qas-4--modifiability-extensibility--adding-a-new-measurementfiltergraph) follow because they keep the results trustworthy and the project manageable. [QAS-5](#qas-5--usability--reading-and-operating-on-the-touchscreen) is still important, but its risk is more contained.
 
 ## Constraints
 
