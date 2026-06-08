@@ -1,6 +1,6 @@
 # Planned Experiments
 
-**Contents** — [Risk-to-Experiment Map](#risk-to-experiment-map) · [EXP-01](#exp-01-avalonia-rendering-backend-on-the-rpi5) · [EXP-02](#exp-02-rpi5-real-time-sample-rate-ceiling) · [EXP-03](#exp-03-gui-real-time-rendering-design-patterns) · [EXP-04](#exp-04-on-device-tinyml-inference-feasibility) · [EXP-05](#exp-05-long-run-stability-24h) · [EXP-06](#exp-06-readability-and-touch-target-ui-thresholds) · [Integrated Schedule](#integrated-schedule) · [Common Approval Criteria](#common-approval-criteria)
+**Contents** — [Risk-to-Experiment Map](#risk-to-experiment-map) · [EXP-01](#exp-01-avalonia-rendering-backend-on-the-rpi5) · [EXP-02](#exp-02-rpi5-real-time-sample-rate-ceiling) · [EXP-03](#exp-03-gui-real-time-rendering-design-patterns) · [EXP-04](#exp-04-on-device-tinyml-inference-feasibility) · [EXP-05](#exp-05-long-run-stability-24h) · [Integrated Schedule](#integrated-schedule) · [Common Approval Criteria](#common-approval-criteria)
 
 ## Terminology
 
@@ -17,7 +17,6 @@ The terms used in this document are defined in the consolidated [Glossary](Miles
 | [EXP-03](#exp-03-gui-real-time-rendering-design-patterns) | [R-15](Milestone1_3-Risk-Assessment.md#f-project--process) | [QAS-1](Milestone1_2-Architectural-Drivers.md#qas-1--performance-latency--from-sound-input-to-screen-display), [QAS-4](Milestone1_2-Architectural-Drivers.md#qas-4--modifiability-extensibility--adding-a-new-measurementfiltergraph) | **High** | Which design patterns should we apply first to improve GUI real-time performance? |
 | [EXP-04](#exp-04-on-device-tinyml-inference-feasibility) | [R-17](Milestone1_3-Risk-Assessment.md#f-project--process) | [QAS-1](Milestone1_2-Architectural-Drivers.md#qas-1--performance-latency--from-sound-input-to-screen-display), [QAS-2](Milestone1_2-Architectural-Drivers.md#qas-2) | Mid | Can we add TinyML inference and still hold real-time behavior and trustworthiness? |
 | [EXP-05](#exp-05-long-run-stability-24h) | [R-04](Milestone1_3-Risk-Assessment.md#a-real-time-performance-rpi) | [QAS-1](Milestone1_2-Architectural-Drivers.md#qas-1--performance-latency--from-sound-input-to-screen-display) | Mid | Do memory/latency degrade over long runs? |
-| [EXP-06](#exp-06-readability-and-touch-target-ui-thresholds) | [R-12](Milestone1_3-Risk-Assessment.md#e-usability--ui-1280800), [R-13](Milestone1_3-Risk-Assessment.md#e-usability--ui-1280800) | [QAS-5](Milestone1_2-Architectural-Drivers.md#qas-5--usability--reading-and-operating-on-the-touchscreen) | Mid | What font-size / touch-target thresholds satisfy both readability and touch recognition? |
 
 ## EXP-01: Avalonia rendering backend on the RPi5
 
@@ -264,60 +263,11 @@ Planned
 
 - NA
 
-## EXP-06: Readability and touch-target UI thresholds
-
-**Risks:** [R-12](Milestone1_3-Risk-Assessment.md#e-usability--ui-1280800), [R-13](Milestone1_3-Risk-Assessment.md#e-usability--ui-1280800) · **QAS:** [QAS-5](Milestone1_2-Architectural-Drivers.md#qas-5--usability--reading-and-operating-on-the-touchscreen) · **Priority:** Mid
-
-### Results & Recommendations
-
-TO-DO: Record the font-size thresholds (minimum/recommended), the touch-target threshold, and the final UI-layout recommendation.
-
-### Objective
-
-Verify whether readability and touch operability can be secured when the summary bar + graphs + scope strip are shown together on a small screen. Core questions:
-
-- Q1. How does user satisfaction change as font size is varied in steps?
-- Q2. What is the minimum UI threshold that satisfies both font readability and touch recognition at once?
-
-### Status
-
-Planned
-
-### Expected Deliverables
-
-- Survey-result table of user satisfaction per font-size step
-- Touch success rate and mis-touch rate per font-size / touch-target combination
-- UI threshold proposal: minimum letter height (mm), recommended letter height (mm), minimum touch target (mm), mode-switch tab structure
-
-### Resources Needed
-
-- Raspberry Pi 5 + 1280×800 touch display ([C-2](Milestone1_2-Architectural-Drivers.md#design-constraints))
-- UI experiment build (switchable font-size / touch-target presets)
-- 8–12 participants (mix of team members + external users recommended)
-- Survey tool (Google Forms or equivalent)
-- Effort: 1.5 person-days
-
-### Experiment Description
-
-1. On a fixed layout, vary the font-size / touch-target combination in steps, perform the same task, and collect readability and operability data.
-2. Compare objective metrics (completion time, error rate, touch success rate, mis-touch rate) with subjective metrics (satisfaction survey) to derive minimum/recommended UI thresholds.
-3. Per SAP criteria, judge readability/touchability pass/fail and lock in the final layout recommendation.
-
-### Duration
-
-- D9: Prepare the experiment build and finalize the survey questions
-- D10: Rehearse with 2 pilot participants
-- D11–D12: Run the main experiment (8–12 people) and analyze results
-
-### Links & References
-
-- NA
-
 ## Integrated Schedule
 
 - Week 1: EXP-01, EXP-02, EXP-03
-- Week 2: EXP-04, EXP-06
-- Week 3: EXP-05, EXP-06 (extended verification), and re-runs of unresolved items
+- Week 2: EXP-04
+- Week 3: EXP-05, and re-runs of unresolved items
 
 ## Common Approval Criteria
 
