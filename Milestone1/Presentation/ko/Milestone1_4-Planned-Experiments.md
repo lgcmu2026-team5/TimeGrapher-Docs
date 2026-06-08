@@ -2,7 +2,7 @@
 
 > SAP(Software Architecture Practice) 원칙에 따라 최우선 리스크를 줄이기 위한 기술 실험. 각 실험은 자신이 해소하는 리스크와 품질속성 시나리오(QAS)에 연결되며, 측정 결과를 근거로 한 합격/불합격(pass/fail) 판정으로 마무리한다.
 
-**목차** — [리스크-실험 매핑](#리스크-실험-매핑) · [EXP-01](#exp-01-rpi5-실시간-샘플레이트-상한) · [EXP-02](#exp-02-gui-실시간-렌더링-디자인-패턴) · [EXP-03](#exp-03-rpi5-avalonia-렌더링-백엔드) · [EXP-04](#exp-04-온디바이스-tinyml-추론-타당성) · [EXP-05](#exp-05-장시간-24h-실행-안정성) · [EXP-06](#exp-06-글자-가독성과-터치-타깃-ui-기준) · [통합 일정](#통합-일정) · [공통 승인 기준](#공통-승인-기준)
+**목차** — [리스크-실험 매핑](#리스크-실험-매핑) · [EXP-01](#exp-01-rpi5-avalonia-렌더링-백엔드) · [EXP-02](#exp-02-rpi5-실시간-샘플레이트-상한) · [EXP-03](#exp-03-gui-실시간-렌더링-디자인-패턴) · [EXP-04](#exp-04-온디바이스-tinyml-추론-타당성) · [EXP-05](#exp-05-장시간-24h-실행-안정성) · [EXP-06](#exp-06-글자-가독성과-터치-타깃-ui-기준) · [통합 일정](#통합-일정) · [공통 승인 기준](#공통-승인-기준)
 
 ## 용어 설명
 
@@ -14,14 +14,77 @@
 
 | 실험 | 대응 리스크 | 관련 QAS | 우선순위 | 핵심 질문 |
 |---|---|---|---|---|
-| [EXP-01](#exp-01-rpi5-실시간-샘플레이트-상한) | [R-A1](Milestone1_3-Risk-Assessment.md#a-실시간-성능-rpi), [R-A3](Milestone1_3-Risk-Assessment.md#a-실시간-성능-rpi) | [QAS-1](Milestone1_2-Architectural-Drivers.md#qas-1--performance-latency--소리-입력에서-화면-표시까지) | **High** | Pi5에서 실시간 처리 가능한 샘플레이트 상한은? |
-| [EXP-02](#exp-02-gui-실시간-렌더링-디자인-패턴) | [R-F2](Milestone1_3-Risk-Assessment.md#f-프로젝트--프로세스) | [QAS-1](Milestone1_2-Architectural-Drivers.md#qas-1--performance-latency--소리-입력에서-화면-표시까지), [QAS-4](Milestone1_2-Architectural-Drivers.md#qas-4--modifiability-extensibility--새-측정필터그래프-추가) | **High** | GUI 실시간 성능 개선을 위해 어떤 디자인 패턴을 우선 적용할 것인가? |
-| [EXP-03](#exp-03-rpi5-avalonia-렌더링-백엔드) | [R-A5](Milestone1_3-Risk-Assessment.md#a-실시간-성능-rpi) | [QAS-1](Milestone1_2-Architectural-Drivers.md#qas-1--performance-latency--소리-입력에서-화면-표시까지) | **High** | C# 선택 시 Avalonia UI의 RPi5 렌더링 리스크를 어떻게 해소할 것인가? |
+| [EXP-01](#exp-01-rpi5-avalonia-렌더링-백엔드) | [R-A5](Milestone1_3-Risk-Assessment.md#a-실시간-성능-rpi) | [QAS-1](Milestone1_2-Architectural-Drivers.md#qas-1--performance-latency--소리-입력에서-화면-표시까지) | **High** | C# 선택 시 Avalonia UI의 RPi5 렌더링 리스크를 어떻게 해소할 것인가? |
+| [EXP-02](#exp-02-rpi5-실시간-샘플레이트-상한) | [R-A1](Milestone1_3-Risk-Assessment.md#a-실시간-성능-rpi), [R-A3](Milestone1_3-Risk-Assessment.md#a-실시간-성능-rpi) | [QAS-1](Milestone1_2-Architectural-Drivers.md#qas-1--performance-latency--소리-입력에서-화면-표시까지) | **High** | Pi5에서 실시간 처리 가능한 샘플레이트 상한은? |
+| [EXP-03](#exp-03-gui-실시간-렌더링-디자인-패턴) | [R-F2](Milestone1_3-Risk-Assessment.md#f-프로젝트--프로세스) | [QAS-1](Milestone1_2-Architectural-Drivers.md#qas-1--performance-latency--소리-입력에서-화면-표시까지), [QAS-4](Milestone1_2-Architectural-Drivers.md#qas-4--modifiability-extensibility--새-측정필터그래프-추가) | **High** | GUI 실시간 성능 개선을 위해 어떤 디자인 패턴을 우선 적용할 것인가? |
 | [EXP-04](#exp-04-온디바이스-tinyml-추론-타당성) | [R-F4](Milestone1_3-Risk-Assessment.md#f-프로젝트--프로세스) | [QAS-1](Milestone1_2-Architectural-Drivers.md#qas-1--performance-latency--소리-입력에서-화면-표시까지), [QAS-2](Milestone1_2-Architectural-Drivers.md#qas-2--availability-graceful-degradation--잡음약신호-환경) | Mid | TinyML 추론을 추가해도 실시간성과 신뢰성을 유지할 수 있는가? |
 | [EXP-05](#exp-05-장시간-24h-실행-안정성) | [R-A4](Milestone1_3-Risk-Assessment.md#a-실시간-성능-rpi) | [QAS-1](Milestone1_2-Architectural-Drivers.md#qas-1--performance-latency--소리-입력에서-화면-표시까지) | Mid | 장시간 실행에서 메모리/지연 열화가 발생하는가? |
 | [EXP-06](#exp-06-글자-가독성과-터치-타깃-ui-기준) | [R-E1](Milestone1_3-Risk-Assessment.md#e-사용성--ui-1280800), [R-E2](Milestone1_3-Risk-Assessment.md#e-사용성--ui-1280800) | [QAS-5](Milestone1_2-Architectural-Drivers.md#qas-5--usability--터치스크린에서-읽기조작) | Mid | 가독성과 터치 인식을 동시에 만족하는 글자 크기/터치 타깃 기준은 무엇인가? |
 
-## EXP-01: RPi5 실시간 샘플레이트 상한
+## EXP-01: RPi5 Avalonia 렌더링 백엔드
+
+**리스크:** [R-A5](Milestone1_3-Risk-Assessment.md#a-실시간-성능-rpi) · **QAS:** [QAS-1](Milestone1_2-Architectural-Drivers.md#qas-1--performance-latency--소리-입력에서-화면-표시까지) · **우선순위:** High
+
+### 결과 및 권장 사항
+
+TO-DO: RPi5 렌더링 백엔드 고정 정책 권장안(기본값 유지 또는 Software 강제)과 근거를 기록한다. (상세 수행 결과는 EXPERIMENT_RESULTS.md에 정리)
+
+### 목적
+
+C# 경로 채택 시 Avalonia UI가 RPi5에서 GPU 가속 렌더링이 SW 렌더링보다 *느려* 실시간 그래프가 끊길 수 있는 리스크를 기술실험으로 해소한다. 핵심 질문:
+
+- RPi5에서 GPU 가속 렌더링(GLX/EGL)이 소프트웨어 렌더링보다 느린가? (커뮤니티 보고: 가속 약 80 ms vs 소프트웨어 6–12 ms — 사실이면 실시간 그래프가 끊긴다.)
+
+이 답으로 **"RPi5 배포 시 Avalonia 렌더링 백엔드를 무엇으로 고정할 것인가"** 라는 설계 결정이 내려진다. 영향 범위: 앱 시작 설정(`Program.cs`), RPi 배포 가이드.
+
+**실험 배경:** RPi/임베디드 Linux에서 GPU 가속 렌더링 성능 저하 보고가 여러 건 있으나(Avalonia GitHub `#18807, #18942, #19288, #18127`) 원인이 제각각(앱 측 버그, 해상도, 드라이버 경로)이고 우리 워크로드와 같은 조건의 측정은 없다. 따라서 실기기에서 직접 측정해야 백엔드를 확정할 수 있다.
+
+### 상태
+
+계획됨
+
+### 예상 산출물
+
+- 앱에 내장된 재사용 가능한 벤치마크 하니스(CLI 실행, 결과 JSON 출력)
+- 백엔드별(GLX / EGL / Software) 프레임타임 비교표(FPS, 평균, p95, p99)
+- GL 렌더러 문자열 로그 — 진짜 HW 가속(V3D)인지 소프트웨어 폴백(llvmpipe)인지 판별
+- 렌더링 백엔드 선택 권장안(기본값 유지 또는 Software 강제) — `Program.cs` + 배포 가이드 반영용
+
+### 필요한 자원
+
+- Raspberry Pi 5(모니터 연결, SSH 접근) — 팀 공용 장비
+- Windows 개발 PC(.NET 8 SDK, linux-arm64 크로스 publish)
+- 작업 공수: 약 1인일
+
+### 실험 설명
+
+1. **벤치 하니스 구현** — 앱에 진단용 CLI 모드를 추가한다.
+   - `--render-mode=glx|egl|software`: 렌더링 백엔드를 폴백 없이 고정(실패하면 명확히 실패하도록).
+   - `--render-bench`: Sim 모드 런을 자동 시작 → 매 컴포지션 프레임마다 실제 그래프 파이프라인을 강제 리드로우(평상시보다 가혹한 부하) → 프레임 간격 30초 수집 → 통계를 JSON으로 출력 후 자동 종료.
+   - GL 프로브: 실제 생성된 GL 컨텍스트의 렌더러 문자열 기록(진짜 HW 가속(V3D)인지 소프트웨어 폴백(llvmpipe)인지 판별 — RPi에는 `glxinfo`가 없음).
+2. **Windows에서 하니스 동작 검증** — 짧은 측정으로 종단 확인.
+3. **RPi5 배포**: linux-arm64 self-contained publish → SSH로 전송 → `--smoke`로 기동 확인.
+4. **3개 백엔드 측정**: 각 워밍업 5초 + 측정 30초.
+
+   ```bash
+   DISPLAY=:0 ./TimeGrapher.App --render-bench --render-mode=glx --bench-label=pi5-glx
+   ```
+
+5. 결과 비교 → 백엔드 권장안 도출 → 본 문서와 [Risk Assessment(R-A5)](Milestone1_3-Risk-Assessment.md#a-실시간-성능-rpi)에 기록.
+
+**완료 기준:** ① 3개 백엔드 모두 30초 측정, ② GL 렌더러 문자열로 HW 가속 여부 확인, ③ 백엔드 선택 권장안 도출 — 세 조건이 모두 충족되면 실험을 완료한다.
+
+### 기간
+
+- D1–D2 (약 1인일)
+
+### 링크 및 참고 자료
+
+- 원 보고: [Avalonia Discussion #18807 — Poor Linux performance when using hardware acceleration](https://github.com/AvaloniaUI/Avalonia/discussions/18807)
+- 관련 사례: [Discussion #18942 — RPi 고해상도 전체 리페인트 저하](https://github.com/AvaloniaUI/Avalonia/discussions/18942)
+- [Avalonia 공식 — Raspberry Pi에서 DRM으로 실행](https://docs.avaloniaui.net/docs/guides/platforms/rpi/running-on-raspbian-lite-via-drm)
+
+## EXP-02: RPi5 실시간 샘플레이트 상한
 
 **리스크:** [R-A1](Milestone1_3-Risk-Assessment.md#a-실시간-성능-rpi), [R-A3](Milestone1_3-Risk-Assessment.md#a-실시간-성능-rpi) · **QAS:** [QAS-1](Milestone1_2-Architectural-Drivers.md#qas-1--performance-latency--소리-입력에서-화면-표시까지) · **우선순위:** High
 
@@ -70,7 +133,7 @@ Pi5 Live 환경에서 입력 → 분석 → 표시 파이프라인이 실시간 
 
 - NA
 
-## EXP-02: GUI 실시간 렌더링 디자인 패턴
+## EXP-03: GUI 실시간 렌더링 디자인 패턴
 
 **리스크:** [R-F2](Milestone1_3-Risk-Assessment.md#f-프로젝트--프로세스) · **QAS:** [QAS-1](Milestone1_2-Architectural-Drivers.md#qas-1--performance-latency--소리-입력에서-화면-표시까지), [QAS-4](Milestone1_2-Architectural-Drivers.md#qas-4--modifiability-extensibility--새-측정필터그래프-추가) · **우선순위:** High
 
@@ -115,52 +178,6 @@ GUI 실시간 성능 개선을 위해 렌더링/갱신 경로에 적용할 디�
 - D1–D2: 병목 분석 및 패턴 후보 도출
 - D3–D4: 패턴 PoC 및 비교 측정
 - D5: SAP 판정 및 적용 우선순위 확정
-
-### 링크 및 참고 자료
-
-- NA
-
-## EXP-03: RPi5 Avalonia 렌더링 백엔드
-
-**리스크:** [R-A5](Milestone1_3-Risk-Assessment.md#a-실시간-성능-rpi) · **QAS:** [QAS-1](Milestone1_2-Architectural-Drivers.md#qas-1--performance-latency--소리-입력에서-화면-표시까지) · **우선순위:** High
-
-### 결과 및 권장 사항
-
-TO-DO: C# 선택 기준에서 Avalonia UI 렌더링 백엔드 고정 정책과 배포 기본값을 기록한다.
-
-### 목적
-
-개발 효율(C# 전문가 보유)을 위해 C# 경로를 채택할 때, Avalonia UI가 RPi5에서 GPU 가속 렌더링이 SW 렌더링보다 느려질 수 있는 리스크를 기술실험으로 해소한다. 핵심 질문은 다음과 같다.
-
-- Q1. RPi5에서 GLX/EGL/Software 중 어떤 백엔드가 실제 워크로드에서 가장 안정적인 프레임 성능을 보이는가?
-- Q2. 10Hz 이상 그래프 갱신율과 UI freeze 최소화 기준을 만족하는 운영 기본값을 확정할 수 있는가?
-
-### 상태
-
-계획됨
-
-### 예상 산출물
-
-- Avalonia 백엔드별 성능 비교표(FPS, p95/p99 프레임타임, freeze 횟수)
-- 하드웨어/소프트웨어 렌더러 판별 로그(GL 컨텍스트 정보)
-- C# 배포 기본 정책(백엔드 고정값, 실패 시 폴백 규칙)
-
-### 필요한 자원
-
-- Raspberry Pi 5 실장비(모니터/SSH)
-- Avalonia 벤치 실행 빌드(CLI 측정 모드)
-- 프레임타임 수집 및 결과 로그 도구
-- 작업 공수: 1.0 person-days
-
-### 실험 설명
-
-1. Avalonia를 GLX/EGL/Software로 각각 실행해 동일 부하에서 프레임타임, FPS, freeze 지표를 수집한다.
-2. GPU 가속 대비 SW 렌더링 성능 역전 여부를 확인하고 실제 운영에 적합한 백엔드를 선정한다.
-3. SAP 기준으로 갱신율/안정성 충족 여부를 판정해 C# 배포 기본 백엔드 정책을 확정한다.
-
-### 기간
-
-- D6–D7
 
 ### 링크 및 참고 자료
 

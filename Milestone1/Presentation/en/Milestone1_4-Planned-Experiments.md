@@ -2,7 +2,7 @@
 
 > Technical experiments that buy down the highest-priority risks, organized along SAP (Software Architecture Practice) principles. Each experiment ties to the risks and quality-attribute scenarios (QAS) it de-risks and ends in a pass/fail decision recorded against measured results.
 
-**Contents** — [Risk-to-Experiment Map](#risk-to-experiment-map) · [EXP-01](#exp-01-rpi5-real-time-sample-rate-ceiling) · [EXP-02](#exp-02-gui-real-time-rendering-design-patterns) · [EXP-03](#exp-03-avalonia-rendering-backend-on-the-rpi5) · [EXP-04](#exp-04-on-device-tinyml-inference-feasibility) · [EXP-05](#exp-05-long-run-stability-24h) · [EXP-06](#exp-06-readability-and-touch-target-ui-thresholds) · [Integrated Schedule](#integrated-schedule) · [Common Approval Criteria](#common-approval-criteria)
+**Contents** — [Risk-to-Experiment Map](#risk-to-experiment-map) · [EXP-01](#exp-01-avalonia-rendering-backend-on-the-rpi5) · [EXP-02](#exp-02-rpi5-real-time-sample-rate-ceiling) · [EXP-03](#exp-03-gui-real-time-rendering-design-patterns) · [EXP-04](#exp-04-on-device-tinyml-inference-feasibility) · [EXP-05](#exp-05-long-run-stability-24h) · [EXP-06](#exp-06-readability-and-touch-target-ui-thresholds) · [Integrated Schedule](#integrated-schedule) · [Common Approval Criteria](#common-approval-criteria)
 
 ## Terminology
 
@@ -14,14 +14,77 @@ The terms used in this document are defined in the consolidated [Glossary](Miles
 
 | Experiment | Risks Addressed | Related QAS | Priority | Core Question |
 |---|---|---|---|---|
-| [EXP-01](#exp-01-rpi5-real-time-sample-rate-ceiling) | [R-A1](Milestone1_3-Risk-Assessment.md#a-real-time-performance-rpi), [R-A3](Milestone1_3-Risk-Assessment.md#a-real-time-performance-rpi) | [QAS-1](Milestone1_2-Architectural-Drivers.md#qas-1--performance-latency--from-sound-input-to-screen-display) | **High** | What is the highest sample rate the RPi5 can process in real time? |
-| [EXP-02](#exp-02-gui-real-time-rendering-design-patterns) | [R-F2](Milestone1_3-Risk-Assessment.md#f-project--process) | [QAS-1](Milestone1_2-Architectural-Drivers.md#qas-1--performance-latency--from-sound-input-to-screen-display), [QAS-4](Milestone1_2-Architectural-Drivers.md#qas-4--modifiability-extensibility--adding-a-new-measurementfiltergraph) | **High** | Which design patterns should we apply first to improve GUI real-time performance? |
-| [EXP-03](#exp-03-avalonia-rendering-backend-on-the-rpi5) | [R-A5](Milestone1_3-Risk-Assessment.md#a-real-time-performance-rpi) | [QAS-1](Milestone1_2-Architectural-Drivers.md#qas-1--performance-latency--from-sound-input-to-screen-display) | **High** | If we choose C#, how do we remove the Avalonia-on-RPi5 rendering risk? |
+| [EXP-01](#exp-01-avalonia-rendering-backend-on-the-rpi5) | [R-A5](Milestone1_3-Risk-Assessment.md#a-real-time-performance-rpi) | [QAS-1](Milestone1_2-Architectural-Drivers.md#qas-1--performance-latency--from-sound-input-to-screen-display) | **High** | If we choose C#, how do we remove the Avalonia-on-RPi5 rendering risk? |
+| [EXP-02](#exp-02-rpi5-real-time-sample-rate-ceiling) | [R-A1](Milestone1_3-Risk-Assessment.md#a-real-time-performance-rpi), [R-A3](Milestone1_3-Risk-Assessment.md#a-real-time-performance-rpi) | [QAS-1](Milestone1_2-Architectural-Drivers.md#qas-1--performance-latency--from-sound-input-to-screen-display) | **High** | What is the highest sample rate the RPi5 can process in real time? |
+| [EXP-03](#exp-03-gui-real-time-rendering-design-patterns) | [R-F2](Milestone1_3-Risk-Assessment.md#f-project--process) | [QAS-1](Milestone1_2-Architectural-Drivers.md#qas-1--performance-latency--from-sound-input-to-screen-display), [QAS-4](Milestone1_2-Architectural-Drivers.md#qas-4--modifiability-extensibility--adding-a-new-measurementfiltergraph) | **High** | Which design patterns should we apply first to improve GUI real-time performance? |
 | [EXP-04](#exp-04-on-device-tinyml-inference-feasibility) | [R-F4](Milestone1_3-Risk-Assessment.md#f-project--process) | [QAS-1](Milestone1_2-Architectural-Drivers.md#qas-1--performance-latency--from-sound-input-to-screen-display), [QAS-2](Milestone1_2-Architectural-Drivers.md#qas-2--availability-graceful-degradation--under-noisy-or-weak-signals) | Mid | Can we add TinyML inference and still hold real-time behavior and trustworthiness? |
 | [EXP-05](#exp-05-long-run-stability-24h) | [R-A4](Milestone1_3-Risk-Assessment.md#a-real-time-performance-rpi) | [QAS-1](Milestone1_2-Architectural-Drivers.md#qas-1--performance-latency--from-sound-input-to-screen-display) | Mid | Do memory/latency degrade over long runs? |
 | [EXP-06](#exp-06-readability-and-touch-target-ui-thresholds) | [R-E1](Milestone1_3-Risk-Assessment.md#e-usability--ui-1280800), [R-E2](Milestone1_3-Risk-Assessment.md#e-usability--ui-1280800) | [QAS-5](Milestone1_2-Architectural-Drivers.md#qas-5--usability--reading-and-operating-on-the-touchscreen) | Mid | What font-size / touch-target thresholds satisfy both readability and touch recognition? |
 
-## EXP-01: RPi5 real-time sample-rate ceiling
+## EXP-01: Avalonia rendering backend on the RPi5
+
+**Risks:** [R-A5](Milestone1_3-Risk-Assessment.md#a-real-time-performance-rpi) · **QAS:** [QAS-1](Milestone1_2-Architectural-Drivers.md#qas-1--performance-latency--from-sound-input-to-screen-display) · **Priority:** High
+
+### Results & Recommendations
+
+TO-DO: Record the recommended RPi5 rendering-backend lock policy (keep the default, or force Software) and the rationale. (Detailed run results go in EXPERIMENT_RESULTS.md.)
+
+### Objective
+
+When adopting the C# path, use a technical experiment to resolve the risk that Avalonia UI's GPU-accelerated rendering on the RPi5 may be *slower* than SW rendering and stutter the real-time graphs. Core question:
+
+- On the RPi5, is GPU-accelerated rendering (GLX/EGL) actually slower than software rendering? (Community reports: ~80 ms accelerated vs 6–12 ms software — if true, the real-time graphs stutter.)
+
+The answer drives the design decision **"which Avalonia rendering backend to lock for RPi5 deployment."** Impact scope: app startup config (`Program.cs`) and the RPi deployment guide.
+
+**Why this experiment:** multiple community reports flag slow GPU-accelerated rendering on RPi/embedded Linux (Avalonia GitHub `#18807, #18942, #19288, #18127`), but the causes differ across reports (app-side bugs, resolution, driver path) and none measure our workload's conditions. The backend can only be fixed by measuring on the real device.
+
+### Status
+
+Planned
+
+### Expected Deliverables
+
+- A reusable benchmark harness built into the app (CLI run, JSON output)
+- Per-backend (GLX / EGL / Software) frame-time comparison table (FPS, mean, p95, p99)
+- GL renderer-string log distinguishing true HW acceleration (V3D) from software fallback (llvmpipe)
+- Rendering-backend recommendation (keep the default, or force Software) for `Program.cs` + the deployment guide
+
+### Resources Needed
+
+- Raspberry Pi 5 (monitor connected, SSH access) — shared team device
+- Windows dev PC (.NET 8 SDK, linux-arm64 cross-publish)
+- Effort: ~1.0 person-day
+
+### Experiment Description
+
+1. **Build the bench harness** — add a diagnostic CLI mode to the app:
+   - `--render-mode=glx|egl|software`: lock the rendering backend with no fallback (so a failure fails loudly).
+   - `--render-bench`: auto-start a Sim run → force a full redraw of the real graph pipeline every composition frame (a harsher-than-normal load) → collect frame intervals for 30 s → emit stats as JSON → auto-exit.
+   - GL probe: record the renderer string of the actual GL context (to tell true HW acceleration (V3D) from software fallback (llvmpipe) — the RPi has no `glxinfo`).
+2. **Verify the harness on Windows** with a short measurement (end-to-end sanity check).
+3. **Deploy to the RPi5**: linux-arm64 self-contained publish → transfer over SSH → `--smoke` boot check.
+4. **Measure all three backends**: 5 s warmup + 30 s measurement each.
+
+   ```bash
+   DISPLAY=:0 ./TimeGrapher.App --render-bench --render-mode=glx --bench-label=pi5-glx
+   ```
+
+5. Compare results → derive the backend recommendation → record it here and in [Risk Assessment (R-A5)](Milestone1_3-Risk-Assessment.md#a-real-time-performance-rpi).
+
+**Completion criteria:** the experiment will be complete once ① all three backends are measured for 30 s, ② HW-acceleration status is confirmed via the GL renderer string, and ③ a backend recommendation is derived.
+
+### Duration
+
+- D1–D2 (~1 person-day)
+
+### Links & References
+
+- Original report: [Avalonia Discussion #18807 — Poor Linux performance when using hardware acceleration](https://github.com/AvaloniaUI/Avalonia/discussions/18807)
+- Related case: [Discussion #18942 — RPi high-resolution full-repaint degradation](https://github.com/AvaloniaUI/Avalonia/discussions/18942)
+- [Avalonia docs — Running on Raspberry Pi via DRM](https://docs.avaloniaui.net/docs/guides/platforms/rpi/running-on-raspbian-lite-via-drm)
+
+## EXP-02: RPi5 real-time sample-rate ceiling
 
 **Risks:** [R-A1](Milestone1_3-Risk-Assessment.md#a-real-time-performance-rpi), [R-A3](Milestone1_3-Risk-Assessment.md#a-real-time-performance-rpi) · **QAS:** [QAS-1](Milestone1_2-Architectural-Drivers.md#qas-1--performance-latency--from-sound-input-to-screen-display) · **Priority:** High
 
@@ -70,7 +133,7 @@ Planned
 
 - NA
 
-## EXP-02: GUI real-time rendering design patterns
+## EXP-03: GUI real-time rendering design patterns
 
 **Risks:** [R-F2](Milestone1_3-Risk-Assessment.md#f-project--process) · **QAS:** [QAS-1](Milestone1_2-Architectural-Drivers.md#qas-1--performance-latency--from-sound-input-to-screen-display), [QAS-4](Milestone1_2-Architectural-Drivers.md#qas-4--modifiability-extensibility--adding-a-new-measurementfiltergraph) · **Priority:** High
 
@@ -115,52 +178,6 @@ Planned
 - D1–D2: Bottleneck analysis and candidate-pattern shortlist
 - D3–D4: Pattern PoC and comparative measurement
 - D5: SAP judgment and application-priority finalization
-
-### Links & References
-
-- NA
-
-## EXP-03: Avalonia rendering backend on the RPi5
-
-**Risks:** [R-A5](Milestone1_3-Risk-Assessment.md#a-real-time-performance-rpi) · **QAS:** [QAS-1](Milestone1_2-Architectural-Drivers.md#qas-1--performance-latency--from-sound-input-to-screen-display) · **Priority:** High
-
-### Results & Recommendations
-
-TO-DO: Under the C#-selection scenario, record the Avalonia UI rendering-backend lock policy and the deployment default.
-
-### Objective
-
-When adopting the C# path for development efficiency (C# experts on the team), use a technical experiment to resolve the risk that Avalonia UI's GPU-accelerated rendering on the RPi5 may be slower than SW rendering. Core questions:
-
-- Q1. Among GLX/EGL/Software on the RPi5, which backend shows the most stable frame performance on the real workload?
-- Q2. Can we finalize an operating default that meets ≥10 Hz graph refresh and minimal UI freeze?
-
-### Status
-
-Planned
-
-### Expected Deliverables
-
-- Per-backend Avalonia performance comparison table (FPS, p95/p99 frame time, freeze count)
-- HW/SW renderer-identification log (GL context info)
-- C# deployment default policy (backend lock value, fallback rule on failure)
-
-### Resources Needed
-
-- Raspberry Pi 5 device (monitor / SSH)
-- Avalonia benchmark build (CLI measurement mode)
-- Frame-time collection and result-logging tools
-- Effort: 1.0 person-days
-
-### Experiment Description
-
-1. Run Avalonia under GLX/EGL/Software each, collecting frame time, FPS, and freeze metrics under identical load.
-2. Check whether SW rendering outperforms the GPU-accelerated path and select the backend suited to real operation.
-3. Per SAP criteria, judge refresh-rate/stability satisfaction and finalize the C# default-backend deployment policy.
-
-### Duration
-
-- D6–D7
 
 ### Links & References
 
