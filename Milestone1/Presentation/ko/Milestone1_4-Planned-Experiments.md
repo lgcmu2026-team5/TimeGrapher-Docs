@@ -39,7 +39,7 @@ C# 경로 채택 시 Avalonia Github의 다수 이슈처럼 GPU 가속 렌더링
 
 ### 상태
 
-계획됨
+진행 중
 
 ### 예상 산출물
 
@@ -189,7 +189,7 @@ TinyML 기반 분류(예: signal-quality, bad-data-rejection)를 RPi 온디바�
 
 ### 상태
 
-계획됨
+진행 중
 
 ### 예상 산출물
 
