@@ -2,7 +2,7 @@
 
 > Risks threatening the project, grouped by area and rated by probability and impact (High/Medium/Low).
 
-**Contents** — [Terminology](#terminology) · [Risk Summary](#risk-summary) · [A. Real-Time Performance](#a-real-time-performance-rpi) · [B. Signal Processing](#b-signal-processing--measurement-trustworthiness) · [C. Architecture](#c-architecture--extensibility) · [D. Hardware/Platform](#d-hardware--platform) · [E. Usability/UI](#e-usability--ui-1280800) · [F. Project/Process](#f-project--process) · [G. Other](#g-other--uncategorized)
+**Contents** — [Terminology](#terminology) · [Risk Summary](#risk-summary) · [APPENDIX](#appendix) · [A. Real-Time Performance](#a-real-time-performance-rpi) · [B. Signal Processing](#b-signal-processing--measurement-trustworthiness) · [C. Architecture](#c-architecture--extensibility) · [D. Hardware/Platform](#d-hardware--platform) · [E. Usability/UI](#e-usability--ui-1280800) · [F. Project/Process](#f-project--process) · [G. Other](#g-other--uncategorized)
 
 ## Terminology
 
@@ -42,6 +42,8 @@ Risk ID | Risk Title | Type | QAS | P | I
 [R-24](#g-other--uncategorized) | RPi5 debugging difficulty — hard to inspect state or debug | T | - | L | L
 [R-25](#g-other--uncategorized) | Uncertain data structures — audio buffer and measurement-data storage structures are undecided | T | - | L | L
 [R-26](#g-other--uncategorized) | Storage-speed bottleneck — SD-card writes may be slower than recording generation | T | - | L | L
+
+# APPENDIX
 
 ## A. Real-Time Performance (RPi)
 
