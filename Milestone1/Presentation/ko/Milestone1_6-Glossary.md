@@ -1,6 +1,6 @@
 # Glossary
 
-> Team 5 · Milestone 1 발표 문서 전반의 통합 용어집 — 모든 절이 일관되게 참조하는 용어의 단일 원천이다. 아래 용어는 현재 [Milestone 1-2 · Architectural Drivers](Milestone1_2-Architectural-Drivers.md)에서 사용되는 것들이며(해당 문서는 이 파일을 참조), 나머지 절이 채워지면 더 추가된다.
+> Team 5 · Milestone 1 발표 문서 전반의 통합 용어집 — 모든 절이 일관되게 참조하는 용어의 단일 원천이다. 아래 용어는 [Milestone 1-2 · Architectural Drivers](Milestone1_2-Architectural-Drivers.md)와 [Milestone 1-3 · Risk Assessment](Milestone1_3-Risk-Assessment.md)에서 사용되며(두 문서는 이 파일을 참조), 나머지 절이 채워지면 더 추가된다.
 
 ## 도메인 용어
 
@@ -38,3 +38,21 @@
 | ISO 9241-303 | 전자 디스플레이 인간공학 국제 표준 — 글자 크기 권고 기준의 출처 |
 | 글리프 (glyph) | 화면에 표시되는 글자 한 개의 모양 |
 | arcmin | 각도의 분 단위(1° = 60 arcmin) — 눈에 보이는 크기를 재는 단위 |
+
+## 플랫폼·엔지니어링 용어
+
+리스크 평가에서 참조하는 구현·플랫폼·프로세스 용어.
+
+| 용어 | 정의 |
+|------|------|
+| 샘플레이트 (48k/96k/192k) | 초당 오디오 샘플 수 — 96k는 초당 96,000개 샘플 |
+| block drop / missed beat | 처리가 입력을 못 따라가 오디오 블록을 버리거나 비트를 놓치는 것 |
+| FPS | Frames Per Second — 초당 화면 갱신 횟수. 낮으면 화면이 버벅임 |
+| RSS | 프로세스가 실제로 점유한 메모리 양 — 계속 늘면 메모리 누수 의심 |
+| ground truth | 검증의 기준이 되는 "정답" 값 |
+| AGC | Auto Gain Control — 마이크 음량 자동 조절 기능. 켜져 있으면 신호가 왜곡되므로 측정 전 꺼야 함 |
+| WASAPI / ALSA | Windows / Linux의 오디오 입출력 시스템 — 플랫폼마다 달라 포팅 시 차이가 드러남 |
+| spike | 본 구현 전에 기술 한계를 빠르게 확인하는 작은 실험 |
+| TinyML | 소형 기기(RPi 등)에서 직접 돌리는 경량 AI 모델 |
+| regression | 코드 수정으로 기존에 되던 기능이 깨지는 것 |
+| QAS / FR | QAS = 품질 속성 시나리오(QA Final 문서), FR = 기능 요구사항(Architectural Drivers 문서) |

@@ -1,6 +1,6 @@
 # Glossary
 
-> Consolidated glossary for the Team 5 · Milestone 1 presentation documents — the single source of truth for terminology, so every section can reference it consistently. The terms below are currently those used in [Milestone 1-2 · Architectural Drivers](Milestone1_2-Architectural-Drivers.md), which links here; more will be added as the remaining sections are filled in.
+> Consolidated glossary for the Team 5 · Milestone 1 presentation documents — the single source of truth for terminology, so every section can reference it consistently. The terms below are drawn from [Milestone 1-2 · Architectural Drivers](Milestone1_2-Architectural-Drivers.md) and [Milestone 1-3 · Risk Assessment](Milestone1_3-Risk-Assessment.md), which link here; more will be added as the remaining sections are filled in.
 
 ## Domain Terms
 
@@ -38,3 +38,21 @@ Metrics, units, and standards referenced by the quality attribute scenarios.
 | ISO 9241-303 | International ergonomics standard for electronic displays — source of the character-size guideline |
 | Glyph | The visual shape of a single character on screen |
 | arcmin | Minute of arc (1° = 60 arcmin) — unit for how large something appears to the eye |
+
+## Platform & Engineering Terms
+
+Implementation, platform, and process terms referenced by the risk assessment.
+
+| Term | Definition |
+|------|------------|
+| Sample rate (48k/96k/192k) | Audio samples per second — 96k means 96,000 samples per second |
+| block drop / missed beat | Processing falls behind the input, discarding audio blocks or missing beats |
+| FPS | Frames Per Second — screen updates per second; low FPS means a stuttering UI |
+| RSS | The memory a process actually occupies — steady growth suggests a leak |
+| Ground truth | The known correct value used as the verification reference |
+| AGC | Auto Gain Control — automatic microphone volume adjustment; must be off before measuring or it distorts the signal |
+| WASAPI / ALSA | The audio I/O systems of Windows / Linux — platform differences surface when porting |
+| spike | A small experiment to quickly probe a technical limit before real implementation |
+| TinyML | Lightweight AI models that run directly on small devices (e.g., RPi) |
+| regression | A code change breaking something that used to work |
+| QAS / FR | QAS = quality attribute scenario (QA Final doc); FR = functional requirement (Architectural Drivers doc) |
