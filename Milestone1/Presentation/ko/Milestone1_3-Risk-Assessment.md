@@ -21,7 +21,7 @@ Risk ID | 리스크 타이틀 | 구분 | QAS | P | I
 [R-A3](#a-실시간-성능-rpi) | 소리→화면 0.5초(p99 ≤ 500 ms) 목표를 못 지킨다 | T | [QAS-1](Milestone1_2-Architectural-Drivers.md#qas-1--performance-latency--소리-입력에서-화면-표시까지) | M | **H**
 [R-A4](#a-실시간-성능-rpi) | 장시간(24h+) 연속 실행 시 메모리가 새서 느려지거나 죽는다 | T | [QAS-1](Milestone1_2-Architectural-Drivers.md#qas-1--performance-latency--소리-입력에서-화면-표시까지) | M | M
 [R-A5](#a-실시간-성능-rpi) | Avalonia GPU 가속 렌더링이 RPi5에서 SW 렌더링보다 느려 실시간 그래프가 끊긴다 | T | [QAS-1](Milestone1_2-Architectural-Drivers.md#qas-1--performance-latency--소리-입력에서-화면-표시까지) | M | **H**
-[R-B1](#b-신호처리--측정-신뢰성) | A·C 이벤트 위치를 0.1 ms 정밀도로 못 찾아 rate·beat error·amplitude 전부 오염된다 | T | [QAS-2](Milestone1_2-Architectural-Drivers.md#qas-2--availability-graceful-degradation--잡음약신호-환경)<br>[QAS-3](Milestone1_2-Architectural-Drivers.md#qas-3--consistency--표시-간-값-일치) | **H** | **H**
+[R-B1](#b-신호처리--측정-신뢰성) | A·C 이벤트 위치를 0.1 ms 정밀도로 못 찾아 일오차·비트 에러·진폭 전부 오염된다 | T | [QAS-2](Milestone1_2-Architectural-Drivers.md#qas-2--availability-graceful-degradation--잡음약신호-환경)<br>[QAS-3](Milestone1_2-Architectural-Drivers.md#qas-3--consistency--표시-간-값-일치) | **H** | **H**
 [R-B2](#b-신호처리--측정-신뢰성) | 시끄럽거나 약한 신호에서 "신호 약함" 대신 오해를 부르는 값을 표시한다 | T | [QAS-2](Milestone1_2-Architectural-Drivers.md#qas-2--availability-graceful-degradation--잡음약신호-환경) | M | **H**
 [R-C1](#c-아키텍처--확장성) | 필터/마커 확장 구조를 미리 설계하지 않아 후반 비용이 급증한다 | T | [QAS-4](Milestone1_2-Architectural-Drivers.md#qas-4--modifiability-extensibility--새-측정필터그래프-추가) | M | M
 [R-D1](#d-하드웨어--플랫폼) | AGC를 끄지 않거나 마이크 결합이 나빠 신호가 왜곡된다 | T | [QAS-2](Milestone1_2-Architectural-Drivers.md#qas-2--availability-graceful-degradation--잡음약신호-환경) | M | **H**
@@ -47,7 +47,7 @@ Risk ID | 리스크 타이틀 | 구분 | QAS | P | I
 
 - **R-A1 — RPi5가 고속 샘플레이트(96k/192k)를 실시간으로 따라가지 못해 소리 데이터를 놓친다 (block drop / missed beat)**
   - **품질요소**: Performance (Throughput)
-  - **근거**: pdf (p.25 Real Time Performance), [QAS-1](Milestone1_2-Architectural-Drivers.md#qas-1--performance-latency--소리-입력에서-화면-표시까지)
+  - **근거**: pdf (p.25 Real Time Performance), [QAS-1](Milestone1_2-Architectural-Drivers.md#qas-1--performance-latency--소리-입력에서-화면-표시까지), [C-1](Milestone1_2-Architectural-Drivers.md#제약사항)
   - **발생 확률 / 영향**: High / High
   - **등급 근거**
     - P-High: 96k/192k 실시간 부하가 RPi5 하드웨어 한계에 근접해 도달 가능성 큼.
@@ -100,13 +100,13 @@ Risk ID | 리스크 타이틀 | 구분 | QAS | P | I
 
 ## B. 신호처리 / 측정 신뢰성
 
-- **R-B1 — A·C 이벤트 위치를 0.1 ms 정밀도로 못 찾으면 rate·beat error·amplitude 전부가 오염된다**
+- **R-B1 — A·C 이벤트 위치를 0.1 ms 정밀도로 못 찾으면 일오차·비트 에러·진폭 전부가 오염된다**
   - **품질요소**: Dependability (Reliability)
   - **근거**: [FR-08-04…06](Milestone1_2-Architectural-Drivers.md#g08--escapement-analyzer-and-marker-line-display), [FR-06-01…04](Milestone1_2-Architectural-Drivers.md#g06--beat-error-display-and-diagnostic-trace), [QAS-2](Milestone1_2-Architectural-Drivers.md#qas-2--availability-graceful-degradation--잡음약신호-환경), [QAS-3](Milestone1_2-Architectural-Drivers.md#qas-3--consistency--표시-간-값-일치)
   - **발생 확률 / 영향**: High / High
   - **등급 근거**
     - P-High: 실제 잡음 신호에서 0.1 ms 정밀 A·C 이벤트 검출은 본질적으로 어려움.
-    - I-High: rate·beat error·amplitude 세 핵심 지표를 전부 오염.
+    - I-High: 일오차·비트 에러·진폭 세 핵심 지표를 전부 오염.
   - **완화 방향**: 합성신호(정답 known) 벤치로 검출 알고리즘 조기 검증
   - **코멘트**: 현 로직 기준으로 정상동작 확인 및 필요 시 로직 개선 필요
 
@@ -136,7 +136,7 @@ Risk ID | 리스크 타이틀 | 구분 | QAS | P | I
 
 - **R-D1 — AGC를 끄지 않거나 마이크 결합이 나쁘면 신호가 왜곡돼 모든 측정이 망가진다**
   - **품질요소**: Dependability (Reliability)
-  - **근거**: pdf (p.29 Raspberry Pi OS — Auto Gain Control), [QAS-2](Milestone1_2-Architectural-Drivers.md#qas-2--availability-graceful-degradation--잡음약신호-환경)
+  - **근거**: pdf (p.29 Raspberry Pi OS — Auto Gain Control), [QAS-2](Milestone1_2-Architectural-Drivers.md#qas-2--availability-graceful-degradation--잡음약신호-환경), [C-4](Milestone1_2-Architectural-Drivers.md#제약사항)
   - **발생 확률 / 영향**: Medium / High
   - **등급 근거**
     - P-Medium: AGC는 기본값 켜짐+잊기 쉬운 수동 단계지만 체크리스트로 충분히 예방 가능.
@@ -146,7 +146,7 @@ Risk ID | 리스크 타이틀 | 구분 | QAS | P | I
 
 - **R-D2 — Windows에서 개발하고 RPi에서 데모 — 오디오 백엔드(WASAPI/ALSA) 등 플랫폼 차이가 늦게 드러난다**
   - **품질요소**: Portability (+Performance)
-  - **근거**: pdf (p.29 System Software), [QAS-1](Milestone1_2-Architectural-Drivers.md#qas-1--performance-latency--소리-입력에서-화면-표시까지)
+  - **근거**: pdf (p.29 System Software), [QAS-1](Milestone1_2-Architectural-Drivers.md#qas-1--performance-latency--소리-입력에서-화면-표시까지), [C-3](Milestone1_2-Architectural-Drivers.md#제약사항)
   - **발생 확률 / 영향**: Medium / Medium
   - **등급 근거**
     - P-Medium: WASAPI/ALSA 차이는 가능성 있으나 RPi 병행 구동으로 조기 발견.
@@ -168,7 +168,7 @@ Risk ID | 리스크 타이틀 | 구분 | QAS | P | I
 
 - **R-E1 — 작은 화면에 요약바 + 그래프 + 스코프 스트립을 가독성(글자 ≥ 2.9 mm·터치 ≥ 9 mm) 있게 다 못 담는다**
   - **품질요소**: Usability
-  - **근거**: pdf (p.27 8 Inch Touchscreen for Raspberry Pi), [QAS-5](Milestone1_2-Architectural-Drivers.md#qas-5--usability--터치스크린에서-읽기조작)
+  - **근거**: pdf (p.27 8 Inch Touchscreen for Raspberry Pi), [QAS-5](Milestone1_2-Architectural-Drivers.md#qas-5--usability--터치스크린에서-읽기조작), [C-2](Milestone1_2-Architectural-Drivers.md#제약사항)
   - **발생 확률 / 영향**: Medium / Medium
   - **등급 근거**
     - P-Medium: 작은 화면에 모든 패널을 가독성 있게 담기는 빠듯함.

@@ -205,7 +205,7 @@
 ### QAS-1 · Performance (Latency) — 소리 입력에서 화면 표시까지
 > **한 줄 요약: 소리가 마이크에 들어오면 0.5초 안에 화면에 나타난다.**
 >
-> Raspberry Pi 5에서 Live로 측정하는 동안 시계 소리가 마이크를 통해 입력 → 분석 → 표시 흐름에 들어오면, 시스템은 처리하여 화면에 표시하고 세 지연 구간을 보고하며, 10분 연속 실행 동안 (1) processing latency p99와 (2) display latency p99를 보고하고 (3) processing+display latency는 **p99 ≤ 500 ms**이어야 한다.
+> Raspberry Pi 5에서 Live로 측정하는 동안 시계 소리가 마이크를 통해 입력 → 분석 → 표시 흐름에 들어오면, 시스템은 처리하여 화면에 표시하고 세 지연 구간을 보고하며, 10분 연속 실행 동안 (1) capture-to-processing latency p99와 (2) processing-to-display latency p99를 보고하고 (3) total end-to-end(capture-to-display) latency는 **p99 ≤ 500 ms**이어야 한다.
 
 **왜 이 속성인가**
 - 플랜이 직접 요구하며, 3구간 분해까지 지정한다: *"Teams shall report capture-to-processing latency, processing-to-display latency, and total end-to-end latency in milliseconds."*
@@ -218,7 +218,7 @@
 | 대상 | 입력 → 분석 → 표시 - 해당 시점의 타임스탬프 |
 | 환경 | Raspberry Pi 5(8 GB)에서 Live 측정 |
 | 응답 | 처리하여 화면에 표시하고, 세 지연 구간을 보고함 |
-| 응답측정 | 10분 연속 실행 동안: (1) processing latency — p99 (2) display latency — p99 (3) processing + display latency — **p99 ≤ 500 ms** (pass/fail 게이트) |
+| 응답측정 | 10분 연속 실행 동안: (1) capture-to-processing latency — p99 (2) processing-to-display latency — p99 (3) total end-to-end latency — **p99 ≤ 500 ms** (pass/fail 게이트) |
 
 **측정값 근거**
 - **≤ 500 ms** — p99(하위 1% 느린 값)를 Google INP(Interaction to Next Paint) 기준에서 "poor"로 넘어가기 직전 값(good ≤ 200 ms · needs improvement ≤ 500 ms · poor > 500 ms); 최종 디스플레이 갱신의 최대 허용 한계값으로 채택.
@@ -274,7 +274,7 @@
 **관련 FR** — [FR-12-05](#g12--scope-function-with-multiple-filter-views), [FR-06-06](#g06--beat-error-display-and-diagnostic-trace), [FR-02-07…08](#g02--trace-display) (여러 뷰·요약이 같은 데이터를 표시)
 
 ### QAS-4 · Modifiability (Extensibility) — 새 측정/필터/그래프 추가
-> **한 줄 요약: 새 그래프·필터·측정값 추가 = 한 곳만 고친다 — 기능당 8 person-days.**
+> **한 줄 요약: 새 그래프·필터·측정값 추가 = 한 곳만 고친다.**
 >
 > 일정이 촉박한 개발 중에 개발자가 코드베이스에 새 그래프·필터·측정값을 추가하려 할 때, 기존 코드를 뜯어고치지 않고 점진적으로 추가하며, 기존 모듈 변경 **≤ 1개**(공통 부분만) · 기능당 8 person-days이어야 한다.
 
@@ -293,7 +293,7 @@
 
 **측정값 근거**
 - 3주 일정에 필수 기능 12종 — 좁은 변경 표면이어야만 가능한 일정.
-- 마일스톤2/3 일정 (16일) * 조 인원 (6명) / 기능 수 (12) = 8 person-days effort
+- 마일스톤2/3 일정 (16일) * 조 인원 (6명) / 기능 수 (12) = 8 person-days.
 
 **관련 FR** — 모든 요구사항
 

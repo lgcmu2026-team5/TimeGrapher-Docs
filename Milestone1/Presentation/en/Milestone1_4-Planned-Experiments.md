@@ -151,7 +151,7 @@ Planned
 ### Resources Needed
 
 - TimeGrapher_v10.4 source code
-- C++/Qt and concurrency/rendering pattern references
+- Concurrency/rendering pattern references
 - Profiling / frame-time measurement tools
 - Code-review session participants (2–4 people)
 - Effort: 2.0 person-days
@@ -291,7 +291,7 @@ Planned
 
 ### Resources Needed
 
-- Raspberry Pi 5 + 1280×800 touch display
+- Raspberry Pi 5 + 1280×800 touch display ([C-2](Milestone1_2-Architectural-Drivers.md#constraints))
 - UI experiment build (switchable font-size / touch-target presets)
 - 8–12 participants (mix of team members + external users recommended)
 - Survey tool (Google Forms or equivalent)

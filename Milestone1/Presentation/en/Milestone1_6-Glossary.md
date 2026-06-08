@@ -1,6 +1,6 @@
 # Glossary
 
-> Consolidated glossary for the Team 5 · Milestone 1 presentation documents — the single source of truth for terminology, so every section can reference it consistently. The terms below are drawn from [Milestone 1-2 · Architectural Drivers](Milestone1_2-Architectural-Drivers.md) and [Milestone 1-3 · Risk Assessment](Milestone1_3-Risk-Assessment.md), which link here; more will be added as the remaining sections are filled in.
+> Consolidated glossary for the Team 5 · Milestone 1 presentation documents — the single source of truth for terminology, so every section can reference it consistently. The terms below are referenced throughout the Milestone 1 presentation documents (Architectural Drivers, Risk Assessment, Planned Experiments, Architectural Approaches).
 
 ## Domain Terms
 
@@ -17,6 +17,7 @@ Watch-domain vocabulary used throughout the functional requirements.
 | Timing test | A measurement run that produces the watch's primary timing results (daily rate, amplitude, beat error, nominal beat rate). The "most recent timing test" is the latest such run whose results are retained for later reference (see [FR-11-05…08](Milestone1_2-Architectural-Drivers.md#g11--scope-mode-with-synchronized-sweep-display)). |
 | Balance-wheel unbalance | A poising error of the balance-and-hairspring assembly that makes the rate differ between vertical positions; it is revealed by a large rate spread across vertical positions (see [FR-04-09](Milestone1_2-Architectural-Drivers.md#g04--multi-position-sequence-display)). |
 | Onset / Peak | Signal feature points on a beat's acoustic waveform used as the marker measurement reference: **Onset** = the leading edge (start) of the beat noise; **Peak** = the point of maximum amplitude (see [FR-08-06](Milestone1_2-Architectural-Drivers.md#g08--escapement-analyzer-and-marker-line-display)). |
+| Vario (Display) | The long-term rate-and-amplitude stability view (G03) — surfaces each measurement's min / max / average / standard deviation / elapsed time / current value. |
 
 ## Quality-Attribute & Measurement Terms
 
@@ -37,6 +38,7 @@ Metrics, units, and standards referenced by the quality attribute scenarios.
 | ISO 9241-303 | International ergonomics standard for electronic displays — source of the character-size guideline |
 | Glyph | The visual shape of a single character on screen |
 | arcmin | Minute of arc (1° = 60 arcmin) — unit for how large something appears to the eye |
+| Witschi / Chronometer grade | Witschi — a watch-timing-machine maker whose accuracy grade bands are an industry reference; **Chronometer** is the tightest band (−2…+6 s/d), the basis for the ±3 s/d tolerance |
 
 ## Platform & Engineering Terms
 
@@ -54,4 +56,7 @@ Implementation, platform, and process terms referenced by the risk assessment.
 | spike | A small experiment to quickly probe a technical limit before real implementation |
 | TinyML | Lightweight AI models that run directly on small devices (e.g., RPi) |
 | regression | A code change breaking something that used to work |
-| QAS / FR | QAS = quality attribute scenario (QA Final doc); FR = functional requirement (Architectural Drivers doc) |
+| SAP | Software Architecture Practice — the architecture method this milestone follows (referenced as "per SAP criteria") |
+| Avalonia / Qt | Candidate cross-platform UI frameworks — Avalonia (.NET / C#) and Qt (C++); the UI stack is still under evaluation, not fixed |
+| GLX / EGL | Interfaces for GPU-accelerated (hardware) rendering on Linux — the backends compared against software rendering in EXP-01 |
+| QAS / FR / QAS-ALL | QAS = quality attribute scenario (Architectural Drivers doc); QAS-ALL = all quality-attribute scenarios (QAS-1…5); FR = functional requirement (Architectural Drivers doc) |

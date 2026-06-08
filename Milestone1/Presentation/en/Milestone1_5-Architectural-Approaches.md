@@ -90,7 +90,7 @@ One tactic anchored to each quality goal.
 | Strategy | Input sources · filter stages | Mic/playback/Sim and each filter plug in behind one interface, swappable |
 | Adapter | Platform audio | Windows (WASAPI) and RPi (ALSA) unified to one capture interface |
 | State | Session control | Idle → Measuring ⇄ Paused transitions as state objects (no scattered flags) |
-| Observer | Qt signals/slots | Producers don't know consumers; displays subscribe to the result frame |
+| Observer | Signals/slots (e.g., Qt) | Producers don't know consumers; displays subscribe to the result frame |
 | Facade | C detector-core wrapper | Hides the complex C detector core behind one clean call |
 | Producer–Consumer | Input ↔ analysis (shared buffer) | Input writes, analysis reads — decoupled so neither waits on the other's pace |
 | Pipe-and-Filter | Whole flow | Input → analysis → rendering wired as one-way stages |

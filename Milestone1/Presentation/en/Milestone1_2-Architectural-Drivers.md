@@ -205,7 +205,7 @@ The metric, unit, and standard terms used in the scenarios below are defined in 
 ### QAS-1 · Performance (Latency) — From Sound Input to Screen Display
 > **In one line: sound reaches the microphone → the result is on screen within 0.5 s.**
 >
-> While measuring live on the Raspberry Pi 5, when watch sound enters the input → analysis → display flow through the microphone, the system processes it, shows it on screen, and reports the three latency components — over a 10-min run, (1) processing latency p99 and (2) display latency p99 are reported, and (3) processing+display latency must be **p99 ≤ 500 ms**.
+> While measuring live on the Raspberry Pi 5, when watch sound enters the input → analysis → display flow through the microphone, the system processes it, shows it on screen, and reports the three latency components — over a 10-min run, (1) capture-to-processing latency p99 and (2) processing-to-display latency p99 are reported, and (3) total end-to-end (capture-to-display) latency must be **p99 ≤ 500 ms**.
 
 **Why this attribute**
 - The Plan demands it — and even prescribes the three-part split: *"Teams shall report capture-to-processing latency, processing-to-display latency, and total end-to-end latency in milliseconds."*
@@ -218,7 +218,7 @@ The metric, unit, and standard terms used in the scenarios below are defined in 
 | Artifact | The input → analysis → display flow — timestamped at each point |
 | Environment | Live measurement on the Raspberry Pi 5 (8 GB) |
 | Response | Process, show on screen, and report the three latency components |
-| Response Measure | Over a 10-min run: (1) processing latency — p99 (2) display latency — p99 (3) processing+display latency — **p99 ≤ 500 ms** (the pass/fail gate) |
+| Response Measure | Over a 10-min run: (1) capture-to-processing latency — p99 (2) processing-to-display latency — p99 (3) total end-to-end latency — **p99 ≤ 500 ms** (the pass/fail gate) |
 
 **Why these numbers**
 - **≤ 500 ms** — p99 (the slowest 1 %) sits at Google's INP (Interaction to Next Paint) boundary just before "poor" (good ≤ 200 ms · needs improvement ≤ 500 ms · poor > 500 ms); adopted as the maximum allowable limit for the final display update.
@@ -274,7 +274,7 @@ The metric, unit, and standard terms used in the scenarios below are defined in 
 **Related FRs** — [FR-12-05](#g12--scope-function-with-multiple-filter-views), [FR-06-06](#g06--beat-error-display-and-diagnostic-trace), [FR-02-07…08](#g02--trace-display) (views and summaries showing the same data)
 
 ### QAS-4 · Modifiability (Extensibility) — Adding a New Measurement/Filter/Graph
-> **In one line: adding a new graph, filter, or measurement touches one place — 8 person-days per feature.**
+> **In one line: adding a new graph, filter, or measurement touches one place.**
 >
 > During development under a tight schedule, when a developer adds a new graph, filter, or measurement to the codebase, the addition is incremental without tearing into existing code — **≤ 1 existing module changed** (common parts only), 8 person-days per feature.
 

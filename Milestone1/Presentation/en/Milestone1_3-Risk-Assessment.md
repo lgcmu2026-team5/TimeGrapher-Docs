@@ -47,7 +47,7 @@ Risk ID | Risk Title | Type | QAS | P | I
 
 - **R-A1 — The RPi5 fails to keep up with high sample rates (96k/192k) in real time and loses sound data (block drop / missed beat)**
   - **Quality attribute**: Performance (Throughput)
-  - **Evidence**: pdf (p.25 Real Time Performance), [QAS-1](Milestone1_2-Architectural-Drivers.md#qas-1--performance-latency--from-sound-input-to-screen-display)
+  - **Evidence**: pdf (p.25 Real Time Performance), [QAS-1](Milestone1_2-Architectural-Drivers.md#qas-1--performance-latency--from-sound-input-to-screen-display), [C-1](Milestone1_2-Architectural-Drivers.md#constraints)
   - **Probability / Impact**: High / High
   - **Grading rationale**
     - P-High: 96k/192k real-time load pushes the RPi5 to its hardware limit, so hitting it is likely.
@@ -136,7 +136,7 @@ Risk ID | Risk Title | Type | QAS | P | I
 
 - **R-D1 — If AGC stays on or the microphone couples poorly, the signal distorts and every measurement collapses**
   - **Quality attribute**: Dependability (Reliability)
-  - **Evidence**: pdf (p.29 Raspberry Pi OS — Auto Gain Control), [QAS-2](Milestone1_2-Architectural-Drivers.md#qas-2--availability-graceful-degradation--under-noisy-or-weak-signals)
+  - **Evidence**: pdf (p.29 Raspberry Pi OS — Auto Gain Control), [QAS-2](Milestone1_2-Architectural-Drivers.md#qas-2--availability-graceful-degradation--under-noisy-or-weak-signals), [C-4](Milestone1_2-Architectural-Drivers.md#constraints)
   - **Probability / Impact**: Medium / High
   - **Grading rationale**
     - P-Medium: AGC defaults on and is an easily-forgotten manual step, yet fully preventable by checklist.
@@ -146,7 +146,7 @@ Risk ID | Risk Title | Type | QAS | P | I
 
 - **R-D2 — Developing on Windows, demoing on RPi — platform differences (WASAPI/ALSA audio backends) surface late**
   - **Quality attribute**: Portability (+Performance)
-  - **Evidence**: pdf (p.29 System Software), [QAS-1](Milestone1_2-Architectural-Drivers.md#qas-1--performance-latency--from-sound-input-to-screen-display)
+  - **Evidence**: pdf (p.29 System Software), [QAS-1](Milestone1_2-Architectural-Drivers.md#qas-1--performance-latency--from-sound-input-to-screen-display), [C-3](Milestone1_2-Architectural-Drivers.md#constraints)
   - **Probability / Impact**: Medium / Medium
   - **Grading rationale**
     - P-Medium: WASAPI/ALSA divergence is likely but caught early by running the RPi in parallel.
@@ -168,7 +168,7 @@ Risk ID | Risk Title | Type | QAS | P | I
 
 - **R-E1 — The small screen can't legibly hold the summary bar + multiple graphs + scope strip (letters ≥ 2.9 mm · touch ≥ 9 mm)**
   - **Quality attribute**: Usability
-  - **Evidence**: pdf (p.27 8 Inch Touchscreen for Raspberry Pi), [QAS-5](Milestone1_2-Architectural-Drivers.md#qas-5--usability--reading-and-operating-on-the-touchscreen)
+  - **Evidence**: pdf (p.27 8 Inch Touchscreen for Raspberry Pi), [QAS-5](Milestone1_2-Architectural-Drivers.md#qas-5--usability--reading-and-operating-on-the-touchscreen), [C-2](Milestone1_2-Architectural-Drivers.md#constraints)
   - **Probability / Impact**: Medium / Medium
   - **Grading rationale**
     - P-Medium: fitting all panels legibly on the small screen is tight.

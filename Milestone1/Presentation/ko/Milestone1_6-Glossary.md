@@ -1,6 +1,6 @@
 # Glossary
 
-> Team 5 · Milestone 1 발표 문서 전반의 통합 용어집 — 모든 절이 일관되게 참조하는 용어의 단일 원천이다. 아래 용어는 [Milestone 1-2 · Architectural Drivers](Milestone1_2-Architectural-Drivers.md)와 [Milestone 1-3 · Risk Assessment](Milestone1_3-Risk-Assessment.md)에서 사용되며(두 문서는 이 파일을 참조), 나머지 절이 채워지면 더 추가된다.
+> Team 5 · Milestone 1 발표 문서 전반의 통합 용어집 — 모든 절이 일관되게 참조하는 용어의 단일 원천이다. 아래 용어는 Milestone 1 발표 문서 전반(Architectural Drivers, Risk Assessment, Planned Experiments, Architectural Approaches)에서 사용된다.
 
 ## 도메인 용어
 
@@ -17,6 +17,7 @@
 | 타이밍 테스트 (Timing test) | 시계의 주요 타이밍 결과(일오차, 진폭, 비트 에러, 공칭 진동수)를 산출하는 측정 실행. "가장 최근의 타이밍 테스트"는 그 결과가 이후 참조용으로 보존되는 가장 최근 실행을 의미한다([FR-11-05…08](Milestone1_2-Architectural-Drivers.md#g11--scope-mode-with-synchronized-sweep-display) 참조). |
 | 밸런스 휠 불균형 (Balance-wheel unbalance) | 수직 자세 간에 일오차가 달라지게 만드는 밸런스-헤어스프링 조립체의 포이징(poising) 오차. 여러 수직 자세에 걸친 큰 일오차 편차로 드러난다([FR-04-09](Milestone1_2-Architectural-Drivers.md#g04--multi-position-sequence-display) 참조). |
 | 온셋/피크 (Onset/Peak) | 마커 측정 기준으로 사용되는 비트 음향 파형의 신호 특징점: **Onset** = 비트 소리의 시작(앞 에지), **Peak** = 진폭이 최대인 지점([FR-08-06](Milestone1_2-Architectural-Drivers.md#g08--escapement-analyzer-and-marker-line-display) 참조). |
+| Vario (Display) / 바리오 (디스플레이) | 일오차·진폭의 장기 안정성 뷰(G03) — 각 측정 항목의 최소/최대/평균/표준편차/경과시간/현재값을 보여준다. |
 
 ## 품질 속성·측정 용어
 
@@ -37,6 +38,7 @@
 | ISO 9241-303 | 전자 디스플레이 인간공학 국제 표준 — 글자 크기 권고 기준의 출처 |
 | 글리프 (glyph) | 화면에 표시되는 글자 한 개의 모양 |
 | arcmin | 각도의 분 단위(1° = 60 arcmin) — 눈에 보이는 크기를 재는 단위 |
+| Witschi / Chronometer 등급 | Witschi — 정확도 등급 대역이 업계 기준으로 쓰이는 워치 타이밍머신 제조사; **Chronometer**는 가장 엄격한 등급(−2…+6 s/d)으로 ±3 s/d 허용폭의 근거 |
 
 ## 플랫폼·엔지니어링 용어
 
@@ -54,4 +56,7 @@
 | spike | 본 구현 전에 기술 한계를 빠르게 확인하는 작은 실험 |
 | TinyML | 소형 기기(RPi 등)에서 직접 돌리는 경량 AI 모델 |
 | regression | 코드 수정으로 기존에 되던 기능이 깨지는 것 |
-| QAS / FR | QAS = 품질 속성 시나리오(QA Final 문서), FR = 기능 요구사항(Architectural Drivers 문서) |
+| SAP | Software Architecture Practice — 본 마일스톤이 따르는 아키텍처 방법론("SAP 기준"으로 참조) |
+| Avalonia / Qt | 후보 크로스플랫폼 UI 프레임워크 — Avalonia(.NET / C#), Qt(C++); UI 스택은 아직 검토 중이며 확정되지 않음 |
+| GLX / EGL | Linux에서 GPU 가속(하드웨어) 렌더링 인터페이스 — EXP-01에서 소프트웨어 렌더링과 비교하는 백엔드 |
+| QAS / FR / QAS-ALL | QAS = 품질 속성 시나리오(Architectural Drivers 문서); QAS-ALL = 모든 품질 속성 시나리오(QAS-1…5); FR = 기능 요구사항(Architectural Drivers 문서) |
