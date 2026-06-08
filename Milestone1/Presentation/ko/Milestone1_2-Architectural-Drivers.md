@@ -208,8 +208,7 @@
 > Raspberry Pi 5에서 Live로 측정하는 동안 시계 소리가 마이크를 통해 입력 → 분석 → 표시 흐름에 들어오면, 실시간 랜더링 되어야 하는 데이터에 대하여 시스템은 처리하여 화면에 표시하고 세 지연 구간을 보고하며, 10분 연속 실행 동안 (1) capture-to-processing latency p99와 (2) processing-to-display latency p99를 보고하고 (3) total end-to-end(capture-to-display) latency는 **p99 ≤ 500 ms**이어야 한다.
 
 **왜 이 속성인가**
-- 플랜이 직접 요구하며, 3구간 분해까지 지정한다: *"Teams shall report capture-to-processing latency, processing-to-display latency, and total end-to-end latency in milliseconds."*
-- 이벤트가 도착하고 응답을 **시간**으로 측정 → SAP 정의 그대로 Performance (Latency).
+- *"Teams shall report capture-to-processing latency, processing-to-display latency, and total end-to-end latency in milliseconds."*
 
 | 요소 | 내용 |
 |------|------|
@@ -233,8 +232,7 @@
 > 잡음이 포함된 열악한 작업 환경에서 잡음 섞인 시계 소리 또는 약한 시계 소리가 잡음 제거·비트 감지 부분에 들어오면, 시스템은 신호를 수용해 제한된 오차 안의 측정값을 내거나, 품질 임계 미만 입력에는 "신호 약함"을 표시하고 적절하게 처리한다. SNR ≥ 30 dB에서 수용된 입력은 감지율 **≥ 95%**이고, 표시 일오차가 **Sim/Playback 기준 일오차에서 ±3 s/d 이내**여야 한다.
 
 **왜 이 속성인가**
-- 플랜 원문: *"the system should degrade gracefully when the signal is weak, noisy, or partially missing, rather than producing unstable or misleading outputs."* — 이 시나리오는 악조건 신호에서 불안정하거나 오해를 부르는 측정값을 피하는 데 초점을 둔다.
-- 임계 이상에서는 허용오차 내 감지·측정을, 임계 미만에서는 "신호 약함" 상태로 낮추는 게이트 — 둘 다 **악조건에서도 올바른 서비스를 계속 제공하는 능력** → Reliability.
+- *"the system should degrade gracefully when the signal is weak, noisy, or partially missing, rather than producing unstable or misleading outputs."*
 
 | 요소 | 내용 |
 |------|------|
@@ -257,8 +255,8 @@
 > 평소처럼 측정하는 동안 분석/계산 단계가 하나의 소스 데이터를 여러 그래프·숫자 표시에 전달하면, 한 프레임에 함께 표시되는 모든 것이 그 단일 소스 데이터에서 파생되어 일치하며, 10분 실행 동안 **불일치 0회**이어야 한다.
 
 **왜 이 속성인가**
-- 플랜 §Correctness 원문: *"remaining internally consistent across the GUI, derived measurements, and longer-term summaries"* / *"calculations and visualizations are based on the same underlying data."*
-- 그 절은 여러 요구의 묶음: 내부 일관성(→ **본 시나리오**)과 잡음 하 신뢰성 유지(→ [QAS-2](#qas-2)). 본 시나리오는 일관성만 측정하므로 이름도 Consistency — Correctness라 부르면 나머지 부분까지 커버하는 듯한 과대 표기.
+- *"remaining internally consistent across the GUI, derived measurements, and longer-term summaries"*
+- *"calculations and visualizations are based on the same underlying data."*
 
 | 요소 | 내용 |
 |------|------|
@@ -281,8 +279,7 @@
 > 일정이 촉박한 개발 중에 개발자가 코드베이스에 새 그래프·필터·측정값을 추가하려 할 때, 기존 코드를 뜯어고치지 않고 점진적으로 추가하며, 기존 모듈 변경 **≤ 1개**(공통 부분만) · 기능당 8 person-days이어야 한다.
 
 **왜 이 속성인가**
-- 플랜 원문(§Extensibility, Modifiability): *"support the addition of new measurements, filters, graphs, and display modes without major redesign of existing code."*
-- **변경 요청**을 **건드리는 코드의 양**으로 측정 → SAP의 Modifiability 일반 시나리오이며, 척도(영향 모듈/위치 수)도 SAP 권장 그대로.
+- *"support the addition of new measurements, filters, graphs, and display modes without major redesign of existing code."*
 
 | 요소 | 내용 |
 |------|------|
@@ -305,8 +302,7 @@
 > Raspberry Pi 5의 1280×800(8인치) 터치스크린에서 사용자가 GUI의 측정값을 읽고 모드를 전환할 때, 핵심 측정값을 가독성 있게 표시하고 주요 기능을 터치만으로 조작할 수 있으며, 일오차·비트 에러·진폭 동시 표시 · 영어 대문자 글자 높이 ≥ 2.9 mm · 터치 타깃 ≥ 9 mm를 만족해야 한다. 물리 크기(mm)가 규범 기준.
 
 **왜 이 속성인가**
-- 플랜 원문(§Usability and User Purpose): *"The GUI should support ease of use by clearly showing … the calculated values that matter most to the user, such as rate, beat error, amplitude."*
-- **사용자** 자극을 **가독성과 과업 시간**으로 측정 → SAP의 Usability 일반 시나리오. 터치 패널은 선택이 아니라 주어진 하드웨어.
+- *"The GUI should support ease of use by clearly showing … the calculated values that matter most to the user, such as rate, beat error, amplitude."*
 
 | 요소 | 내용 |
 |------|------|
