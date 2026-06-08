@@ -8,6 +8,7 @@
 - **GUI**: 오재홍, 윤성준
 
 # ARCHI-265 일정
+🔗 [Quire URL](https://quire.io/w/SUNYOUNG_OH/40?filter=all&share=ud59lcpw1fx35wkwjcub6tdurt5iyg&view=timeline)
 
 ## 범례
 
