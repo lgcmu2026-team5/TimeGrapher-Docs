@@ -23,9 +23,9 @@
     - ✅ **Requirements Analysis** — `06.01 ~ 06.02`
       - ✅ Requirements Analysis Writing (FR-01) — `06.01 ~ 06.03` _(Assigned: YUN, JunSung, Junyoung Park, D, SUNYOUNG OH, Jaehong)_
     - ✅ QA Scenarios — `06.01 ~ 06.03` _(Assigned: YUN, JunSung, Junyoung Park, D, SUNYOUNG OH, Jaehong)_
-  - ✅ **Risk Assessment** — `06.03 ~ 06.04` _(Assigned: YUN, JunSung, Junyoung Park, D, SUNYOUNG OH, Jaehong)_
-    - ✅ List up Technical Risks — `06.05 ~ 06.07`
-    - ✅ List up Non-Technical Risks — `06.05 ~ 06.07`
+  - ✅ **Risk Assessment** — `06.03 ~ 06.04`
+    - ✅ List up Technical Risks — `06.05 ~ 06.07` _(Assigned: YUN, JunSung, Junyoung Park, D, SUNYOUNG OH, Jaehong)_
+    - ✅ List up Non-Technical Risks — `06.05 ~ 06.07` _(Assigned: YUN, JunSung, Junyoung Park, D, SUNYOUNG OH, Jaehong)_
   - ✅ Planned Experiments — `06.06 ~ 06.07` _(Assigned: YUN, JunSung)_
   - ✅ **Architectural Approaches** — `06.07 ~ 06.08` _(Assigned: Jaehong, D)_
     - ✅ Describe Overview-level architecture — `TBD`
