@@ -42,7 +42,7 @@
   - ⬜ **Architecture** — `06.10 ~ 06.17`
     - ⬜ UML Diagram — `06.10 ~ 06.12` _(담당: YUN, SUNYOUNG OH)_
     - ⬜ Module View — `06.11 ~ 06.13` _(담당: YUN, SUNYOUNG OH, 재홍)_
-    - ⬜ C&CView — `06.13 ~ 06.15` _(담당: JunSung, YUN)_
+    - ⬜ C&C View — `06.13 ~ 06.15` _(담당: JunSung, YUN)_
     - ⬜ Allocation View — `06.15 ~ 06.17` _(담당: D, 재홍)_
   - ⬜ Implement / Test — `06.11 ~ 06.21` _(담당: 재홍, Junyoung Park, D)_
   - ⬜ Etc — `06.10 ~ 06.22`
