@@ -28,9 +28,9 @@
     - ✅ List up Non-Technical Risks — `06.05 ~ 06.07` _(Assigned: YUN, JunSung, Junyoung Park, D, SUNYOUNG OH, Jaehong)_
   - ✅ Planned Experiments — `06.06 ~ 06.07` _(Assigned: YUN, JunSung)_
   - ✅ **Architectural Approaches** — `06.07 ~ 06.08` _(Assigned: Jaehong, D)_
-    - ✅ Describe Overview-level architecture — `TBD`
+    - ✅ Describe Overview-level architecture _(Assigned: YUN, JunSung, Junyoung Park, D, SUNYOUNG OH, Jaehong)_
   - ✅ **Etc** — `05.28 ~ 06.07`
-    - ✅ **Milestone 1 Preview Action Items** — `TBD`
+    - ✅ **Milestone 1 Preview Action Items** _(Assigned: YUN, JunSung, Junyoung Park, D, SUNYOUNG OH, Jaehong)_
 - ⬜ **Milestone 2** — `06.08 ~ 06.22`
   - ⬜ Project Plan — `06.15` _(Assigned: JunSung)_
   - ⬜ **Experiments/Results** — `06.08 ~ 06.17`
