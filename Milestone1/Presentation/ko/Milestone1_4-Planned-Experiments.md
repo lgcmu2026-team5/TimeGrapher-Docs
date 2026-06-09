@@ -14,7 +14,7 @@
 |---|---|---|---|---|
 | [EXP-01](#exp-01-rpi5-avalonia-렌더링-백엔드) | [R-05](Milestone1_3-Risk-Assessment.md#a-실시간-성능-rpi) | [QAS-1](Milestone1_2-Architectural-Drivers.md#qas-1--performance-latency--소리-입력에서-화면-표시까지) | **High** | C# 선택 시 Avalonia UI의 RPi5 렌더링 리스크를 어떻게 해소할 것인가? |
 | [EXP-02](#exp-02-rpi5-실시간-샘플레이트-상한) | [R-01](Milestone1_3-Risk-Assessment.md#a-실시간-성능-rpi), [R-03](Milestone1_3-Risk-Assessment.md#a-실시간-성능-rpi) | [QAS-1](Milestone1_2-Architectural-Drivers.md#qas-1--performance-latency--소리-입력에서-화면-표시까지) | **High** | Pi5에서 실시간 처리 가능한 샘플레이트 상한은? |
-| [EXP-03](#exp-03-gui-실시간-렌더링-디자인-패턴) | [R-15](Milestone1_3-Risk-Assessment.md#f-프로젝트--프로세스) | [QAS-1](Milestone1_2-Architectural-Drivers.md#qas-1--performance-latency--소리-입력에서-화면-표시까지), [QAS-4](Milestone1_2-Architectural-Drivers.md#qas-4--modifiability-extensibility--새-측정필터그래프-추가) | **High** | GUI 실시간 성능 개선을 위해 어떤 디자인 패턴을 우선 적용할 것인가? |
+| [EXP-03](#exp-03-gui-실시간-렌더링-디자인-패턴) | [R-02](Milestone1_3-Risk-Assessment.md#a-실시간-성능-rpi) | [QAS-1](Milestone1_2-Architectural-Drivers.md#qas-1--performance-latency--소리-입력에서-화면-표시까지), [QAS-4](Milestone1_2-Architectural-Drivers.md#qas-4--modifiability-extensibility--새-측정필터그래프-추가) | **High** | GUI 실시간 성능 개선을 위해 어떤 디자인 패턴을 우선 적용할 것인가? |
 | [EXP-04](#exp-04-온디바이스-tinyml-추론-타당성) | [R-17](Milestone1_3-Risk-Assessment.md#f-프로젝트--프로세스) | [QAS-1](Milestone1_2-Architectural-Drivers.md#qas-1--performance-latency--소리-입력에서-화면-표시까지), [QAS-2](Milestone1_2-Architectural-Drivers.md#qas-2) | Mid | TinyML 추론을 추가해도 실시간성과 신뢰성을 유지할 수 있는가? |
 | [EXP-05](#exp-05-장시간-24h-실행-안정성) | [R-04](Milestone1_3-Risk-Assessment.md#a-실시간-성능-rpi) | [QAS-1](Milestone1_2-Architectural-Drivers.md#qas-1--performance-latency--소리-입력에서-화면-표시까지) | Mid | 장시간 실행에서 메모리/지연 열화가 발생하는가? |
 
@@ -123,7 +123,7 @@ Pi5 Live 환경에서 입력 → 분석 → 표시 파이프라인이 실시간 
 
 ## EXP-03: GUI 실시간 렌더링 디자인 패턴
 
-**리스크:** [R-15](Milestone1_3-Risk-Assessment.md#f-프로젝트--프로세스) · **QAS:** [QAS-1](Milestone1_2-Architectural-Drivers.md#qas-1--performance-latency--소리-입력에서-화면-표시까지), [QAS-4](Milestone1_2-Architectural-Drivers.md#qas-4--modifiability-extensibility--새-측정필터그래프-추가) · **우선순위:** High
+**리스크:** [R-02](Milestone1_3-Risk-Assessment.md#a-실시간-성능-rpi) · **QAS:** [QAS-1](Milestone1_2-Architectural-Drivers.md#qas-1--performance-latency--소리-입력에서-화면-표시까지), [QAS-4](Milestone1_2-Architectural-Drivers.md#qas-4--modifiability-extensibility--새-측정필터그래프-추가) · **우선순위:** High
 
 ### 결과 및 권장 사항
 

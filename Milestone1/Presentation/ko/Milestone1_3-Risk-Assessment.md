@@ -17,7 +17,7 @@
 Risk ID | 리스크 타이틀 | 구분 | QAS | P | I
 --------|--------------|------|-----|---|---
 🔴 [R-01](#a-실시간-성능-rpi) | RPi5가 고속 샘플레이트(96k/192k)를 실시간으로 못 따라가 소리 데이터를 놓친다 | T | [QAS-1](Milestone1_2-Architectural-Drivers.md#qas-1--performance-latency--소리-입력에서-화면-표시까지) | **H** | **H**
-[R-02](#a-실시간-성능-rpi) | 필터 4개 + 그래프 여러 개 동시 렌더링으로 화면이 버벅인다 | T | [QAS-1](Milestone1_2-Architectural-Drivers.md#qas-1--performance-latency--소리-입력에서-화면-표시까지)<br>[QAS-5](Milestone1_2-Architectural-Drivers.md#qas-5--usability--터치스크린에서-읽기조작) | M | **H**
+🔴 [R-02](#a-실시간-성능-rpi) | 필터 4개 + 그래프 여러 개 동시 렌더링으로 화면이 버벅인다 | T | [QAS-1](Milestone1_2-Architectural-Drivers.md#qas-1--performance-latency--소리-입력에서-화면-표시까지)<br>[QAS-5](Milestone1_2-Architectural-Drivers.md#qas-5--usability--터치스크린에서-읽기조작) | M | **H**
 🔴 [R-03](#a-실시간-성능-rpi) | 소리→화면 0.5초(p99 ≤ 500 ms) 목표를 못 지킨다 | T | [QAS-1](Milestone1_2-Architectural-Drivers.md#qas-1--performance-latency--소리-입력에서-화면-표시까지) | M | **H**
 🔴 [R-04](#a-실시간-성능-rpi) | 장시간(24h+) 연속 실행 시 메모리가 새서 느려지거나 죽는다 | T | [QAS-1](Milestone1_2-Architectural-Drivers.md#qas-1--performance-latency--소리-입력에서-화면-표시까지) | M | M
 🔴 [R-05](#a-실시간-성능-rpi) | Avalonia GPU 가속 렌더링이 RPi5에서 SW 렌더링보다 느려 실시간 그래프가 끊긴다 | T | [QAS-1](Milestone1_2-Architectural-Drivers.md#qas-1--performance-latency--소리-입력에서-화면-표시까지) | M | **H**
@@ -30,7 +30,7 @@ Risk ID | 리스크 타이틀 | 구분 | QAS | P | I
 [R-12](#e-사용성--ui-1280800) | 작은 화면에 요약바 + 그래프 + 스코프 스트립을 가독성 있게 다 못 담는다 | T | [QAS-5](Milestone1_2-Architectural-Drivers.md#qas-5--usability--터치스크린에서-읽기조작) | M | M
 [R-13](#e-사용성--ui-1280800) | 터치 정확도·인식률이 떨어질 수 있다 | T | [QAS-5](Milestone1_2-Architectural-Drivers.md#qas-5--usability--터치스크린에서-읽기조작) | L | L
 [R-14](#f-프로젝트--프로세스) | 3주 안에 12개 기능 + AI 전부 불가능 — 우선순위 실패 시 핵심이 빠진다 | NT | QAS-ALL | M | **H**
-🔴 [R-15](#f-프로젝트--프로세스) | 베이스라인 코드 이해에 시간이 걸려 착수가 늦어진다 | NT | [QAS-4](Milestone1_2-Architectural-Drivers.md#qas-4--modifiability-extensibility--새-측정필터그래프-추가) | L | M
+[R-15](#f-프로젝트--프로세스) | 베이스라인 코드 이해에 시간이 걸려 착수가 늦어진다 | NT | [QAS-4](Milestone1_2-Architectural-Drivers.md#qas-4--modifiability-extensibility--새-측정필터그래프-추가) | L | M
 [R-16](#f-프로젝트--프로세스) | Qt/C++·DSP·RPi 학습곡선으로 구현 품질이 흔들린다 | NT | [QAS-1](Milestone1_2-Architectural-Drivers.md#qas-1--performance-latency--소리-입력에서-화면-표시까지)<br>[QAS-2](Milestone1_2-Architectural-Drivers.md#qas-2) | L | M
 🔴 [R-17](#f-프로젝트--프로세스) | AI/TinyML 기능 시도 시 on-device 불확실성이 커진다 | T | [QAS-1](Milestone1_2-Architectural-Drivers.md#qas-1--performance-latency--소리-입력에서-화면-표시까지)<br>[QAS-2](Milestone1_2-Architectural-Drivers.md#qas-2) | M | M
 [R-18](#f-프로젝트--프로세스) | GenAI 생성 코드를 검증 없이 수용하면 그럴듯하지만 틀린 코드가 들어온다 | NT | [QAS-1](Milestone1_2-Architectural-Drivers.md#qas-1--performance-latency--소리-입력에서-화면-표시까지)<br>[QAS-2](Milestone1_2-Architectural-Drivers.md#qas-2)<br>[QAS-3](Milestone1_2-Architectural-Drivers.md#qas-3--consistency--표시-간-값-일치) | M | M
@@ -57,7 +57,7 @@ Risk ID | 리스크 타이틀 | 구분 | QAS | P | I
   - **Tradeoff point**: 샘플레이트는 측정 정밀도(0.1 ms당 샘플 수 증가)↔Performance(본 리스크)의 tradeoff point
   - **코멘트**: 1주차 spike 결과로 최종 샘플레이트 목표 결정
 
-- **R-02 — 필터 4개(F0→F3) + 그래프 여러 개를 동시에 그리면 화면이 버벅인다(<20 FPS·UI freeze)**
+- **🔴 R-02 — 필터 4개(F0→F3) + 그래프 여러 개를 동시에 그리면 화면이 버벅인다(<20 FPS·UI freeze)**
   - **근거**: [FR-12-01](Milestone1_2-Architectural-Drivers.md#g12--scope-function-with-multiple-filter-views), [FR-12-04](Milestone1_2-Architectural-Drivers.md#g12--scope-function-with-multiple-filter-views), [QAS-1](Milestone1_2-Architectural-Drivers.md#qas-1--performance-latency--소리-입력에서-화면-표시까지), [QAS-5](Milestone1_2-Architectural-Drivers.md#qas-5--usability--터치스크린에서-읽기조작)
   - **발생 확률 / 영향**: Medium / High
   - **등급 근거**
@@ -186,7 +186,7 @@ Risk ID | 리스크 타이틀 | 구분 | QAS | P | I
   - **완화 방향**: FR 우선순위 동결, AI는 optional 분리, 핵심 경로 우선
   - **코멘트**: 프로젝트 플래닝 잘 해서 진행하고 버릴 건 버림
 
-- **🔴 R-15 — 제공 베이스라인 코드(TimeGrapher_v10.4) 이해에 시간이 걸려 착수가 늦어진다**
+- **R-15 — 제공 베이스라인 코드(TimeGrapher_v10.4) 이해에 시간이 걸려 착수가 늦어진다**
   - **근거**: pdf (p.29 GUI Code), [QAS-4](Milestone1_2-Architectural-Drivers.md#qas-4--modifiability-extensibility--새-측정필터그래프-추가)
   - **발생 확률 / 영향**: Low / Medium
   - **등급 근거**
