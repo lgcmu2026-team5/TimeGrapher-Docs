@@ -26,9 +26,7 @@ Metrics, units, and standards referenced by the quality attribute scenarios.
 | Term | Definition |
 |------|------------|
 | p99 | The 99th-percentile value — everything except the slowest 1 % falls within this value |
-| Google INP | Interaction to Next Paint — Google's web metric for the time from user input to the next screen update (good ≤ 200 ms / poor > 500 ms) |
-| SPS | Samples Per Second — the audio sampling rate |
-| SNR | Signal-to-Noise Ratio (dB) — higher means a cleaner signal |
+| Google INP | Interaction to Next Paint — Google's web metric for the time from user input to the next screen update (good ≤ 200 ms / poor > 500 ms) || SNR | Signal-to-Noise Ratio (dB) — higher means a cleaner signal |
 | person-days | The amount of work one person completes in one day |
 | Rate | Seconds the watch gains or loses per day (s/d) |
 | Beat error | Asymmetry between the tick and tock intervals (ms) |

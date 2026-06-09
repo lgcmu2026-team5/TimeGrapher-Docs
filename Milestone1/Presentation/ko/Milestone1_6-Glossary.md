@@ -26,9 +26,7 @@
 | 용어 | 정의 |
 |------|------|
 | p99 | 측정값을 작은 순으로 정렬했을 때 99% 지점의 값 — 가장 느린 1%를 제외한 전부가 이 값 이내 |
-| Google INP | Interaction to Next Paint — 사용자 입력 후 다음 화면 갱신까지의 시간에 대한 Google 웹 지표 (good ≤ 200 ms / poor > 500 ms) |
-| SPS | Samples Per Second — 초당 오디오 샘플 수(샘플링 레이트) |
-| SNR | Signal-to-Noise Ratio — 신호 대 잡음 비(dB). 클수록 신호가 깨끗함 |
+| Google INP | Interaction to Next Paint — 사용자 입력 후 다음 화면 갱신까지의 시간에 대한 Google 웹 지표 (good ≤ 200 ms / poor > 500 ms) || SNR | Signal-to-Noise Ratio — 신호 대 잡음 비(dB). 클수록 신호가 깨끗함 |
 | person-days | 1명이 1일에 처리하는 작업량 단위 |
 | 일오차 (rate) | 시계가 하루에 빨라지거나 느려지는 초 수 (s/d) |
 | 비트 에러 (beat error) | tick과 tock 간격의 비대칭 정도 (ms) |
