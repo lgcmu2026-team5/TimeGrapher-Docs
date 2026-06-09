@@ -36,7 +36,7 @@ Risk ID | Risk Title | Type | QAS | P | I
 [R-16](#f-project--process) | Qt/C++·DSP·RPi learning curve shakes implementation quality | NT | [QAS-1](Milestone1_2-Architectural-Drivers.md#qas-1--performance-latency--from-sound-input-to-screen-display)<br>[QAS-2](Milestone1_2-Architectural-Drivers.md#qas-2) | L | M
 🔴 [R-17](#f-project--process) | Attempting the AI/TinyML feature raises on-device uncertainty | T | [QAS-1](Milestone1_2-Architectural-Drivers.md#qas-1--performance-latency--from-sound-input-to-screen-display)<br>[QAS-2](Milestone1_2-Architectural-Drivers.md#qas-2) | M | M
 [R-18](#f-project--process) | Accepting GenAI-generated code unverified lets in plausible-but-wrong code | NT | [QAS-1](Milestone1_2-Architectural-Drivers.md#qas-1--performance-latency--from-sound-input-to-screen-display)<br>[QAS-2](Milestone1_2-Architectural-Drivers.md#qas-2)<br>[QAS-3](Milestone1_2-Architectural-Drivers.md#qas-3--consistency--consistent-values-across-displays) | M | M
-[R-19](#f-project--process) | Only one test Pi5 — real-use verification doesn't fit the schedule | NT | [QAS-1](Milestone1_2-Architectural-Drivers.md#qas-1--performance-latency--from-sound-input-to-screen-display) | **H** | **H**
+[R-19](#f-project--process) | Only one test RPi5 — real-use verification doesn't fit the schedule | NT | [QAS-1](Milestone1_2-Architectural-Drivers.md#qas-1--performance-latency--from-sound-input-to-screen-display) | **H** | **H**
 [R-20](#g-other--uncategorized) | Communication — meaning may be lost between stakeholders when conversing in English | NT | - | L | L
 [R-21](#g-other--uncategorized) | Insufficient test environment — one device, no test room, no unit tests; regressions may slip through | NT | - | L | L
 [R-22](#g-other--uncategorized) | Long-run verification difficulty — items like 24-hour continuous runs are hard to actually verify | NT | - | L | L
@@ -213,7 +213,7 @@ Risk ID | Risk Title | Type | QAS | P | I
     - P-Medium: on-device AI uncertainty is real if the feature is attempted.
     - I-Medium: it is optional scope with a rule-based fallback.
   - **Mitigation**: Separate as optional scope; rule-based fallback if it falls short
-  - **Comment**: Windows first, then assess operability on the RPi 5 before adopting
+  - **Comment**: Windows first, then assess operability on the RPi5 before adopting
 
 - **R-18 — Accepting GenAI-generated code unverified lets in plausible-but-wrong code (esp. DSP / concurrency / real-time)**
   - **Evidence**: pdf (p.30 Project Deliverables), [QAS-1](Milestone1_2-Architectural-Drivers.md#qas-1--performance-latency--from-sound-input-to-screen-display), [QAS-2](Milestone1_2-Architectural-Drivers.md#qas-2), [QAS-3](Milestone1_2-Architectural-Drivers.md#qas-3--consistency--consistent-values-across-displays)
@@ -224,13 +224,13 @@ Risk ID | Risk Title | Type | QAS | P | I
   - **Mitigation**: Mandatory adversarial verification of generated code (unit tests, synthetic-signal bench); understand the core algorithms; confirm GenAI usage policy with mentors
   - **Comment**: See mitigation (code review, whole team understands the algorithms)
 
-- **R-19 — Only one test Pi5 — real-use verification doesn't fit the schedule**
+- **R-19 — Only one test RPi5 — real-use verification doesn't fit the schedule**
   - **Evidence**: pdf (p.26 System Hardware — Raspberry Pi), [QAS-1](Milestone1_2-Architectural-Drivers.md#qas-1--performance-latency--from-sound-input-to-screen-display)
   - **Probability / Impact**: High / High
   - **Grading rationale**
-    - P-High: one shared Pi5 makes a scheduling clash near-certain.
+    - P-High: one shared RPi5 makes a scheduling clash near-certain.
     - I-High: missing real-device verification undermines every RPi-dependent claim.
-  - **Mitigation**: Design most verification to run Sim/Playback-based (no hardware required), minimizing Pi5 dependence; schedule the real device only for must-have items such as performance measurement
+  - **Mitigation**: Design most verification to run Sim/Playback-based (no hardware required), minimizing RPi5 dependence; schedule the real device only for must-have items such as performance measurement
 
 ## G. Other / Uncategorized
 

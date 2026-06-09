@@ -82,7 +82,7 @@ TO-DO: After measurement, record the final recommended sample rate (48k/96k/192k
 
 ### Objective
 
-Confirm whether the input → analysis → display pipeline meets real-time requirements in the Pi5 Live environment. Core questions:
+Confirm whether the input → analysis → display pipeline meets real-time requirements in the RPi5 Live environment. Core questions:
 
 - Q1. Which sample rate runs stably without block drop?
 - Q2. Does processing + display latency meet p99 ≤ 500 ms?

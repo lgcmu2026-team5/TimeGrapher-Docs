@@ -36,7 +36,7 @@ Risk ID | 리스크 타이틀 | 구분 | QAS | P | I
 [R-16](#f-프로젝트--프로세스) | Qt/C++·DSP·RPi 학습곡선으로 구현 품질이 흔들린다 | NT | [QAS-1](Milestone1_2-Architectural-Drivers.md#qas-1--performance-latency--소리-입력에서-화면-표시까지)<br>[QAS-2](Milestone1_2-Architectural-Drivers.md#qas-2) | L | M
 🔴 [R-17](#f-프로젝트--프로세스) | AI/TinyML 기능 시도 시 on-device 불확실성이 커진다 | T | [QAS-1](Milestone1_2-Architectural-Drivers.md#qas-1--performance-latency--소리-입력에서-화면-표시까지)<br>[QAS-2](Milestone1_2-Architectural-Drivers.md#qas-2) | M | M
 [R-18](#f-프로젝트--프로세스) | GenAI 생성 코드를 검증 없이 수용하면 그럴듯하지만 틀린 코드가 들어온다 | NT | [QAS-1](Milestone1_2-Architectural-Drivers.md#qas-1--performance-latency--소리-입력에서-화면-표시까지)<br>[QAS-2](Milestone1_2-Architectural-Drivers.md#qas-2)<br>[QAS-3](Milestone1_2-Architectural-Drivers.md#qas-3--consistency--표시-간-값-일치) | M | M
-[R-19](#f-프로젝트--프로세스) | 테스트용 Pi5가 한 대뿐이라 실사용 검증 일정이 안 나온다 | NT | [QAS-1](Milestone1_2-Architectural-Drivers.md#qas-1--performance-latency--소리-입력에서-화면-표시까지) | **H** | **H**
+[R-19](#f-프로젝트--프로세스) | 테스트용 RPi5가 한 대뿐이라 실사용 검증 일정이 안 나온다 | NT | [QAS-1](Milestone1_2-Architectural-Drivers.md#qas-1--performance-latency--소리-입력에서-화면-표시까지) | **H** | **H**
 [R-20](#g-기타-또는-카테고리화-되지-않음) | 의사소통 — 영어 대화 시 이해관계자 간 정확한 의사전달이 안 될 수 있다 | NT | - | L | L
 [R-21](#g-기타-또는-카테고리화-되지-않음) | 테스트 환경 부족 — 장비 1대, 테스트룸·unit test 없음으로 로직 변경 시 regression을 놓칠 수 있다 | NT | - | L | L
 [R-22](#g-기타-또는-카테고리화-되지-않음) | 장시간 검증 곤란 — 24시간 연속 같은 항목은 실제 검증·평가가 어렵다 | NT | - | L | L
@@ -213,7 +213,7 @@ Risk ID | 리스크 타이틀 | 구분 | QAS | P | I
     - P-Medium: 시도 시 on-device AI 불확실성이 실재.
     - I-Medium: 선택 스코프이며 룰베이스 폴백이 있음.
   - **완화 방향**: optional 스코프로 분리, 미달 시 룰베이스 폴백
-  - **코멘트**: 우선 Windows 진행 후 RPi 5에서 동작성 검토 후 반영 결정
+  - **코멘트**: 우선 Windows 진행 후 RPi5에서 동작성 검토 후 반영 결정
 
 - **R-18 — GenAI 생성 코드를 검증 없이 수용하면 그럴듯하지만 틀린 코드가 들어온다 (특히 DSP/동시성/실시간 영역)**
   - **근거**: pdf (p.30 Project Deliverables), [QAS-1](Milestone1_2-Architectural-Drivers.md#qas-1--performance-latency--소리-입력에서-화면-표시까지), [QAS-2](Milestone1_2-Architectural-Drivers.md#qas-2), [QAS-3](Milestone1_2-Architectural-Drivers.md#qas-3--consistency--표시-간-값-일치)
@@ -224,13 +224,13 @@ Risk ID | 리스크 타이틀 | 구분 | QAS | P | I
   - **완화 방향**: 생성코드 adversarial 검증(단위테스트·합성신호 벤치) 의무화, 핵심 알고리즘은 이해 동반, GenAI 사용 허용여부 멘토 확인
   - **코멘트**: 완화 방향 참고 (코드리뷰, 우리 모두 알고리즘 이해 등)
 
-- **R-19 — 테스트용 Pi5가 한 대뿐이라 실사용 검증 일정이 안 나온다**
+- **R-19 — 테스트용 RPi5가 한 대뿐이라 실사용 검증 일정이 안 나온다**
   - **근거**: pdf (p.26 System Hardware — Raspberry Pi), [QAS-1](Milestone1_2-Architectural-Drivers.md#qas-1--performance-latency--소리-입력에서-화면-표시까지)
   - **발생 확률 / 영향**: High / High
   - **등급 근거**
-    - P-High: Pi5 한 대를 팀이 공유해 일정 충돌이 거의 확실.
+    - P-High: RPi5 한 대를 팀이 공유해 일정 충돌이 거의 확실.
     - I-High: 실기기 검증 부재는 RPi 의존 주장 전체의 신뢰를 떨어뜨림.
-  - **완화 방향**: 검증의 대부분을 Sim/Playback 기반(하드웨어 불요)으로 설계해 Pi5 의존 최소화; 실기기는 성능 측정 등 필수 항목에만 일정 배정
+  - **완화 방향**: 검증의 대부분을 Sim/Playback 기반(하드웨어 불요)으로 설계해 RPi5 의존 최소화; 실기기는 성능 측정 등 필수 항목에만 일정 배정
 
 ## G. 기타 또는 카테고리화 되지 않음
 
