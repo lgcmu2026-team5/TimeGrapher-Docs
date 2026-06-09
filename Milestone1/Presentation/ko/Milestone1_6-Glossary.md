@@ -44,6 +44,7 @@
 
 | 용어 | 정의 |
 |------|------|
+| RPi5 (Raspberry Pi 5) | 시스템이 구동되는 싱글보드 컴퓨터(8 GB RAM, 128 GB microSD) — 1280×800 8인치 터치 디스플레이가 연결되고 Raspberry Pi OS(Debian 기반, 64-bit/ARM64)를 실행하는 목표 배포 장비 |
 | 샘플레이트 (48k/96k/192k) | 초당 오디오 샘플 수 — 96k는 초당 96,000개 샘플 |
 | block drop / missed beat | 처리가 입력을 못 따라가 오디오 블록을 버리거나 비트를 놓치는 것 |
 | FPS | Frames Per Second — 초당 화면 갱신 횟수. 낮으면 화면이 버벅임 |

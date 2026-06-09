@@ -44,6 +44,7 @@ Implementation, platform, and process terms referenced by the risk assessment.
 
 | Term | Definition |
 |------|------------|
+| RPi5 (Raspberry Pi 5) | The single-board computer the system runs on (8 GB RAM, 128 GB microSD) — the target deployment device, with a 1280×800 8-inch touch display attached, running Raspberry Pi OS (Debian-based, 64-bit/ARM64) |
 | Sample rate (48k/96k/192k) | Audio samples per second — 96k means 96,000 samples per second |
 | block drop / missed beat | Processing falls behind the input, discarding audio blocks or missing beats |
 | FPS | Frames Per Second — screen updates per second; low FPS means a stuttering UI |
