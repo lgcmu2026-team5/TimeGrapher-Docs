@@ -44,8 +44,8 @@
     - ⬜ Module View — `06.11 ~ 06.13` _(담당: YUN, SUNYOUNG OH, 재홍)_
     - ⬜ C&CView — `06.13 ~ 06.15` _(담당: JunSung, YUN)_
     - ⬜ Allocation View — `06.15 ~ 06.17` _(담당: D, 재홍)_
-  - ⬜ implement / Test — `06.11 ~ 06.21` _(담당: 재홍, Junyoung Park, D)_
-  - ⬜ etc — `06.10 ~ 06.22`
+  - ⬜ Implement / Test — `06.11 ~ 06.21` _(담당: 재홍, Junyoung Park, D)_
+  - ⬜ Etc — `06.10 ~ 06.22`
 - ⬜ **Milestone 3** — `06.23 ~ 06.30`
   - ⬜ Prepare Presentation — `06.23 ~ 06.26` _(담당: SUNYOUNG OH, YUN)_
   - ⬜ Prepare Demonstration — `06.26 ~ 06.30` _(담당: 재홍, Junyoung Park, D)_

@@ -44,8 +44,8 @@
     - ⬜ Module View — `06.11 ~ 06.13` _(Assigned: YUN, SUNYOUNG OH, Jaehong)_
     - ⬜ C&C View — `06.13 ~ 06.15` _(Assigned: JunSung, YUN)_
     - ⬜ Allocation View — `06.15 ~ 06.17` _(Assigned: D, Jaehong)_
-  - ⬜ implement / Test — `06.11 ~ 06.21` _(Assigned: Jaehong, Junyoung Park, D)_
-  - ⬜ etc — `06.10 ~ 06.22`
+  - ⬜ Implement / Test — `06.11 ~ 06.21` _(Assigned: Jaehong, Junyoung Park, D)_
+  - ⬜ Etc — `06.10 ~ 06.22`
 - ⬜ **Milestone 3** — `06.23 ~ 06.30`
   - ⬜ Prepare Presentation — `06.23 ~ 06.26` _(Assigned: SUNYOUNG OH, YUN)_
   - ⬜ Prepare Demonstration — `06.26 ~ 06.30` _(Assigned: Jaehong, Junyoung Park, D)_
