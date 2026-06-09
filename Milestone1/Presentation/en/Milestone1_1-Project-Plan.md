@@ -13,7 +13,7 @@
 ## Legend
 
 - 🟡 In Progress
-- ⬜ Planned / Not Completed
+- ⬜ Planned
 - ✅ Completed
 
 ## Schedule
