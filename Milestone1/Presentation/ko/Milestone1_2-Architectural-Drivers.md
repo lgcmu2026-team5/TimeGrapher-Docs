@@ -205,7 +205,7 @@
 ### QAS-1 · Performance (Latency) — 소리 입력에서 화면 표시까지
 > **한 줄 요약: 소리가 마이크에 들어오면 0.5초 안에 화면에 나타난다.**
 >
-> Raspberry Pi 5에서 Live로 측정하는 동안 시계 소리가 마이크를 통해 입력 → 분석 → 표시 흐름에 들어오면, 실시간 랜더링 되어야 하는 데이터에 대하여 시스템은 처리하여 화면에 표시하고 세 지연 구간을 보고하며, 10분 연속 실행 동안 (1) capture-to-processing latency p99와 (2) processing-to-display latency p99를 보고하고 (3) total end-to-end(capture-to-display) latency는 **p99 ≤ 500 ms**이어야 한다.
+> Raspberry Pi 5에서 Live로 측정하는 동안 시계 소리가 마이크를 통해 입력 → 분석 → 표시 흐름에 들어오면, 실시간 렌더링 되어야 하는 데이터에 대하여 시스템은 처리하여 화면에 표시하고 세 지연 구간을 보고하며, 10분 연속 실행 동안 (1) capture-to-processing latency p99와 (2) processing-to-display latency p99를 보고하고 (3) total end-to-end(capture-to-display) latency는 **p99 ≤ 500 ms**이어야 한다.
 
 **관련 요구사항**
 - *"Teams shall report capture-to-processing latency, processing-to-display latency, and total end-to-end latency in milliseconds."*
@@ -216,7 +216,7 @@
 | 자극 | 마이크로 소리가 들어옴 |
 | 대상 | 입력 → 분석 → 표시 - 해당 시점의 타임스탬프 |
 | 환경 | Raspberry Pi 5(8 GB)에서 Live 측정 |
-| 응답 | 실시간 랜더링 되어야 하는 데이터에 대하여 처리하여 화면에 표시하고, 세 지연 구간을 보고함 |
+| 응답 | 실시간 렌더링 되어야 하는 데이터에 대하여 처리하여 화면에 표시하고, 세 지연 구간을 보고함 |
 | 응답측정 | 10분 연속 실행 동안: (1) capture-to-processing latency — p99 (2) processing-to-display latency — p99 (3) total end-to-end latency — **p99 ≤ 500 ms** (pass/fail 게이트) |
 
 **측정값 근거**
