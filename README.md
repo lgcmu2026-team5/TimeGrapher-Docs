@@ -19,3 +19,4 @@ TimeGrapher 프로젝트 관련 참고자료 모음.
 
 - 자료는 주제별로 폴더를 나눠 정리하면 찾기 편합니다.
 - 출처가 있는 자료는 링크나 출처를 함께 남겨두면 좋습니다.
+- Source code : https://github.com/lgcmu2026-team5/TimeGrapher-Net
