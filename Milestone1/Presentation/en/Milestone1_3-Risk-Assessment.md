@@ -45,7 +45,7 @@ Risk ID | Risk Title | Type | QAS | P | I
 [R-25](#g-other--uncategorized) | Uncertain data structures — audio buffer and measurement-data storage structures are undecided | T | - | L | L
 [R-26](#g-other--uncategorized) | Storage-speed bottleneck — SD-card writes may be slower than recording generation | T | - | L | L
 
-# APPENDIX
+## APPENDIX
 
 ## A. Real-Time Performance (RPi)
 
