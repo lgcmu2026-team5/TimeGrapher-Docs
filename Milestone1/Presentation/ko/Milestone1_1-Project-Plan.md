@@ -21,16 +21,16 @@
   - ✅ Project Plan — `05.29 ~ 06.07`
   - ✅ **Architectural Drivers** — `05.29 ~ 06.07`
     - ✅ **Requirements Analysis** — `06.01 ~ 06.02`
-      - ✅ Requirements Analysis 작성 — `06.01 ~ 06.03` _(담당: YUN、JunSung、Junyoung Park、D、SUNYOUNG OH, 재홍)_
-    - ✅ QA Scenarios — `06.01 ~ 06.03` _(담당: YUN、JunSung、Junyoung Park、D、SUNYOUNG OH, 재홍)_
+      - ✅ Requirements Analysis 작성 — `06.01 ~ 06.03` _(담당: YUN, JunSung, Junyoung Park, D, SUNYOUNG OH, 재홍)_
+    - ✅ QA Scenarios — `06.01 ~ 06.03` _(담당: YUN, JunSung, Junyoung Park, D, SUNYOUNG OH, 재홍)_
   - ✅ **Risk Assessment** — `06.03 ~ 06.04`
-    - ✅ List up Technical Risks — `06.05 ~ 06.07` _(담당: YUN、JunSung、Junyoung Park、D、SUNYOUNG OH, 재홍)_
-    - ✅ List up Non-Technical Risks — `06.05 ~ 06.07` _(담당: YUN、JunSung、Junyoung Park、D、SUNYOUNG OH, 재홍)_
+    - ✅ List up Technical Risks — `06.05 ~ 06.07` _(담당: YUN, JunSung, Junyoung Park, D, SUNYOUNG OH, 재홍)_
+    - ✅ List up Non-Technical Risks — `06.05 ~ 06.07` _(담당: YUN, JunSung, Junyoung Park, D, SUNYOUNG OH, 재홍)_
   - ✅ Planned Experiments — `06.06 ~ 06.07` _(담당: YUN, JunSung)_
   - ✅ **Architectural Approaches** — `06.07 ~ 06.08` _(담당: 재홍, D)_
-    - ✅ Describe Overview-level architecture _(담당: YUN、JunSung、Junyoung Park、D、SUNYOUNG OH, 재홍)_
+    - ✅ Describe Overview-level architecture _(담당: YUN, JunSung, Junyoung Park, D, SUNYOUNG OH, 재홍)_
   - ✅ **Etc** — `05.28 ~ 06.07`
-    - ✅ **Milestone 1 Preview Action Items** _(담당: YUN、JunSung、Junyoung Park、D、SUNYOUNG OH, 재홍)_
+    - ✅ **Milestone 1 Preview Action Items** _(담당: YUN, JunSung, Junyoung Park, D, SUNYOUNG OH, 재홍)_
 - ⬜ **Milestone 2** — `06.08 ~ 06.22`
   - ⬜ Project Plan — `06.15` _(담당: JunSung)_
   - ⬜ **Experiments/Results** — `06.08 ~ 06.17`
