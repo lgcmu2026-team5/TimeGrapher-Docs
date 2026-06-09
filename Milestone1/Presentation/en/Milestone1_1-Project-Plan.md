@@ -19,7 +19,7 @@
 
 - ✅ **Milestone 1** — `05.29 ~ 06.07`
   - ✅ Project Plan — `05.29 ~ 06.07`
-  - ✅ **Architecture Drivers** — `05.29 ~ 06.07`
+  - ✅ **Architectural Drivers** — `05.29 ~ 06.07`
     - ✅ **Requirements Analysis** — `06.01 ~ 06.02`
       - ✅ Requirements Analysis Writing (FR-01) — `06.01 ~ 06.03` _(Assigned: YUN, JunSung, Junyoung Park, D, SUNYOUNG OH, Jaehong)_
     - ✅ QA Scenarios — `06.01 ~ 06.03` _(Assigned: YUN, JunSung, Junyoung Park, D, SUNYOUNG OH, Jaehong)_

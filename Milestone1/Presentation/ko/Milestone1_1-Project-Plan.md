@@ -19,7 +19,7 @@
 
 - ✅ **Milestone 1** — `05.29 ~ 06.07`
   - ✅ Project Plan — `05.29 ~ 06.07`
-  - ✅ **Architecture Drivers** — `05.29 ~ 06.07`
+  - ✅ **Architectural Drivers** — `05.29 ~ 06.07`
     - ✅ **Requirements Analysis** — `06.01 ~ 06.02`
       - ✅ Requirements Analysis 작성 — `06.01 ~ 06.03` _(담당: YUN、JunSung、Junyoung Park、D、SUNYOUNG OH, 재홍)_
     - ✅ QA Scenarios — `06.01 ~ 06.03` _(담당: YUN、JunSung、Junyoung Park、D、SUNYOUNG OH, 재홍)_
