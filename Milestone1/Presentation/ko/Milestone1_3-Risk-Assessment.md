@@ -28,7 +28,7 @@ Risk ID | 리스크 타이틀 | 구분 | QAS | P | I
 [R-08](#c-아키텍처--확장성) | 필터/마커 확장 구조를 미리 설계하지 않아 후반 비용이 급증한다 | T | [QAS-4](Milestone1_2-Architectural-Drivers.md#qas-4--modifiability-extensibility--새-측정필터그래프-추가) | M | M
 [R-09](#d-하드웨어--플랫폼) | AGC를 끄지 않거나 마이크 결합이 나빠 신호가 왜곡된다 | T | [QAS-2](Milestone1_2-Architectural-Drivers.md#qas-2) | M | **H**
 [R-10](#d-하드웨어--플랫폼) | Windows 개발–RPi 데모 간 플랫폼 차이(WASAPI/ALSA)가 늦게 드러난다 | T | [QAS-1](Milestone1_2-Architectural-Drivers.md#qas-1--performance-latency--소리-입력에서-화면-표시까지) | M | M
-[R-11](#d-하드웨어--플랫폼) | 샘플레이트 3종(48/96/192k) 지원이 타이밍·복잡도를 키운다 | T | [QAS-1](Milestone1_2-Architectural-Drivers.md#qas-1--performance-latency--소리-입력에서-화면-표시까지) | M | M
+[R-11](#d-하드웨어--플랫폼) | 샘플레이트 3종(48/96/192k) 지원이 타이밍 복잡도를 키운다 | T | [QAS-1](Milestone1_2-Architectural-Drivers.md#qas-1--performance-latency--소리-입력에서-화면-표시까지) | M | M
 [R-12](#e-사용성--ui-1280800) | 작은 화면에 요약바 + 그래프 + 스코프 스트립을 가독성 있게 다 못 담는다 | T | [QAS-5](Milestone1_2-Architectural-Drivers.md#qas-5--usability--터치스크린에서-읽기조작) | M | M
 [R-13](#e-사용성--ui-1280800) | 터치 정확도·인식률이 떨어질 수 있다 | T | [QAS-5](Milestone1_2-Architectural-Drivers.md#qas-5--usability--터치스크린에서-읽기조작) | L | L
 [R-14](#f-프로젝트--프로세스) | 3주 안에 12개 기능 + AI 전부 불가능 — 우선순위 실패 시 핵심이 빠진다 | NT | QAS-ALL | M | **H**
@@ -148,7 +148,7 @@ Risk ID | 리스크 타이틀 | 구분 | QAS | P | I
   - **완화 방향**: 오디오 I/O를 포트-어댑터로 격리, RPi 조기·정기 검증
   - **코멘트**: 프로젝트 진행하면서 RPi에도 진행할 것이어서 리스크 낮음
 
-- **R-11 — 샘플레이트 3종(48/96/192k) 지원이 타이밍·복잡도를 키운다**
+- **R-11 — 샘플레이트 3종(48/96/192k) 지원이 타이밍 복잡도를 키운다**
   - **근거**: pdf (p.25 Real Time Performance), [QAS-1](Milestone1_2-Architectural-Drivers.md#qas-1--performance-latency--소리-입력에서-화면-표시까지)
   - **발생 확률 / 영향**: Medium / Medium
   - **등급 근거**
