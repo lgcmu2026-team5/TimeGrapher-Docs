@@ -1,6 +1,6 @@
 # Architectural Drivers
 
-**목차** — [Functional Requirements (FR)](#functional-requirements) · [Quality Attribute Scenarios (QAS)](#quality-attribute-scenarios) · [우선순위 (Priority)](#우선순위) · [설계 제약사항 (Design COnstraints)](#설계-제약사항)
+**목차** — [Functional Requirements (FR)](#functional-requirements) · [Quality Attribute Scenarios (QAS)](#quality-attribute-scenarios) · [우선순위 (Priority)](#우선순위) · [설계 제약사항 (Design Constraints)](#설계-제약사항)
 
 ## Glossary
 
