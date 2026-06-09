@@ -1,4 +1,4 @@
-# Project-Plan
+# Project Plan
 
 ## 팀 역할
 
