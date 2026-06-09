@@ -131,7 +131,7 @@ TO-DO: Record the priority and application scope of the design patterns chosen f
 
 ### Objective
 
-To improve GUI real-time performance, compare—from a technical-attribute perspective—the design patterns to apply on the rendering/refresh path, and finalize the patterns to apply first within the milestone. Core questions:
+Compare the candidate design patterns for the rendering/refresh path and decide which to apply first this milestone, to improve GUI real-time performance. Core questions:
 
 - Q1. For the current GUI bottleneck, which pattern (e.g., Producer-Consumer, Double Buffering, Object Pool) is effective?
 - Q2. Once applied, how do the patterns rank in frame stability, latency, and implementation difficulty?
