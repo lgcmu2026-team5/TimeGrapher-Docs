@@ -13,6 +13,8 @@ The terms used in this document are defined in the consolidated [Glossary](Miles
 > Type: **T** = Technical, **NT** = Non-technical
 >
 > **P** = Probability, **I** = Impact (**H** = High, M = Medium, L = Low)
+>
+> 🔴 = risk has a planned experiment (see [Planned Experiments](Milestone1_4-Planned-Experiments.md))
 
 Risk ID | Risk Title | Type | QAS | P | I
 --------|-----------|------|-----|---|---

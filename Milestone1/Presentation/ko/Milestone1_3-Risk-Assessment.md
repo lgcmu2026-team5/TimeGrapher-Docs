@@ -13,6 +13,8 @@
 > 구분: **T** = 기술(Technical), **NT** = 비기술(Non-technical)
 >
 > **P** = 발생 확률(Probability), **I** = 영향(Impact) — **H** = High, M = Medium, L = Low
+>
+> 🔴 = 계획된 실험이 있는 리스크([Planned Experiments](Milestone1_4-Planned-Experiments.md) 참조)
 
 Risk ID | 리스크 타이틀 | 구분 | QAS | P | I
 --------|--------------|------|-----|---|---
