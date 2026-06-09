@@ -247,7 +247,7 @@ Planned
 
 - A Pi (or equivalent) capable of long continuous runs
 - Long-term RSS/CPU/latency logging tools
-- Effort: 1.0 person-days (setup) + run wait
+- Effort: 1.0 person-day (setup) + run wait
 
 ### Experiment Description
 
