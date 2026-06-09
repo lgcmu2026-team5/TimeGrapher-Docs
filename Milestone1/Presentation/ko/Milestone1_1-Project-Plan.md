@@ -7,7 +7,8 @@
 - **알고리즘(기능, 계산식)**: 오선영, 박준영
 - **GUI**: 오재홍, 윤성준
 
-## ARCHI-265 일정 — 계층형 목록 버전
+## ARCHI-265 일정
+🔗 [Quire URL](https://quire.io/w/SUNYOUNG_OH/40?filter=all&share=ud59lcpw1fx35wkwjcub6tdurt5iyg&view=timeline)
 
 ## 범례
 
@@ -31,11 +32,11 @@
     - ✅ Describe Overview-level architecture _(담당: YUN, JunSung, Junyoung Park, D, SUNYOUNG OH, 재홍)_
   - ✅ **Etc** — `05.28 ~ 06.07`
     - ✅ **Milestone 1 Preview Action Items** _(담당: YUN, JunSung, Junyoung Park, D, SUNYOUNG OH, 재홍)_
-- ⬜ **Milestone 2** — `06.08 ~ 06.22`
-  - ⬜ Project Plan — `06.15` _(담당: JunSung)_
-  - ⬜ **Experiments/Results** — `06.08 ~ 06.17`
-    - ⬜ RPi5에서 실시간 처리 가능한 샘플레이트 확인 — `06.09 ~ 06.12` _(담당: Junyoung Park)_
-    - ⬜ TinyML 추론 — `06.09 ~ 06.15` _(담당: 재홍)_
+- 🟡 **Milestone 2** — `06.08 ~ 06.22`
+  - 🟡 Project Plan — `06.15` _(담당: JunSung)_
+  - 🟡 **Experiments/Results** — `06.08 ~ 06.17`
+    - 🟡 RPi5에서 실시간 처리 가능한 샘플레이트 확인 — `06.08 ~ 06.12` _(담당: Junyoung Park)_
+    - 🟡 TinyML 추론 — `06.08 ~ 06.15` _(담당: 재홍)_
     - ⬜ 실시간 최적화를 위한 설계 패턴을 제안(C++ vs C#) — `06.09 ~ 06.12` _(담당: JunSung, 재홍)_
     - ⬜ 장시간 실행에서 메모리/지연 열화 — `06.15 ~ 06.19` _(담당: D)_
     - ⬜ 터치 인식 만족도 — `06.09 ~ 06.10` _(담당: JunSung)_
