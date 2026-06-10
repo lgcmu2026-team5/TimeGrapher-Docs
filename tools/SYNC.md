@@ -11,6 +11,7 @@
 - **레포의 Milestone 문서를 정본(source of truth)으로 보고, Quire(`ARCHI-265.json`)를 거기에 맞춘다.**
 - 따라서 RESULT의 "비고·제안" 칸은 항상 **"Quire를 …로 변경/추가/삭제"** 형태로 적는다.
 - **Quire 수정이 필요 없는 항목은 보고하지 않는다.** 다음은 표에서 제외:
+  - **Milestone1 — 이미 완료되었으므로 비교 대상이 아니다.** Quire↔문서 정합이 끝났고 더 이상 동기화할 변경이 없으니 점검·표에서 제외한다.
   - 폴더가 비어 있거나 미착수라서 생긴 차이(예: Milestone2/3 산출물 미생성) — 비교할 정본 문서 자체가 없음.
   - 순수 문서 간 차이(초안 vs 공식 등 Quire와 무관).
   - 일치/이상 없음 항목.
@@ -70,3 +71,4 @@
 - 팀원 6명(모두 @andrew.cmu.edu): SUNGJUN YUN, SUNYOUNG OH, 재홍(Jaehongo), JunSung, Junyoung Park, Jongdae B.
 - 실험 EXP 순서(공식 `Milestone1_4` = 정본, Quire 동기화됨): EXP-01=Avalonia, EXP-02=샘플레이트, EXP-03=GUI 패턴, EXP-04=TinyML, EXP-05=장기안정성.
 - 마지막 점검 기준 Quire↔문서 불일치 없음(EXP 번호 정합 확인됨). 초안 파일(`..._SAP_Draft_ko-KR.md`·`Jun_...`)의 EXP-06은 공식·Quire 모두에 없는 문서 내부 잔재라 점검 대상 아님.
+- **Milestone1은 완료됨 — 이제 비교 대상이 아니다.** Quire↔문서 정합이 끝나 동기화할 변경이 없으므로 점검은 Milestone2/3에 집중한다.
