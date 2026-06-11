@@ -20,7 +20,7 @@ Risk ID | 리스크 타이틀 | 구분 | QAS | P | I
 --------|--------------|------|-----|---|---
 🔴 [R-01](#a-실시간-성능-rpi) | RPi5가 고속 샘플레이트(96k/192k)를 실시간으로 못 따라가 소리 데이터를 놓친다 | T | [QAS-1](Milestone1_2-Architectural-Drivers.md#qas-1--performance-latency--소리-입력에서-화면-표시까지) | **H** | **H**
 🔴 [R-02](#a-실시간-성능-rpi) | 필터 4개 + 그래프 여러 개 동시 렌더링으로 화면이 버벅인다 | T | [QAS-1](Milestone1_2-Architectural-Drivers.md#qas-1--performance-latency--소리-입력에서-화면-표시까지)<br>[QAS-5](Milestone1_2-Architectural-Drivers.md#qas-5--usability--터치스크린에서-읽기조작) | M | **H**
-🔴 [R-03](#a-실시간-성능-rpi) | 소리→화면 0.5초(p99 ≤ 500 ms) 목표를 못 지킨다 | T | [QAS-1](Milestone1_2-Architectural-Drivers.md#qas-1--performance-latency--소리-입력에서-화면-표시까지) | M | **H**
+🔴 [R-03](#a-실시간-성능-rpi) | 분석·표시가 비트 주기 예산(83.3 ms @ 43200 BPH)을 넘겨 backlog·stale 표시·block drop·missed beat가 발생한다 | T | [QAS-1](Milestone1_2-Architectural-Drivers.md#qas-1--performance-latency--소리-입력에서-화면-표시까지) | M | **H**
 🔴 [R-04](#a-실시간-성능-rpi) | 장시간(24h+) 연속 실행 시 메모리가 새서 느려지거나 죽는다 | T | [QAS-1](Milestone1_2-Architectural-Drivers.md#qas-1--performance-latency--소리-입력에서-화면-표시까지) | M | M
 🔴 [R-05](#a-실시간-성능-rpi) | Avalonia GPU 가속 렌더링이 RPi5에서 SW 렌더링보다 느려 실시간 그래프가 끊긴다 | T | [QAS-1](Milestone1_2-Architectural-Drivers.md#qas-1--performance-latency--소리-입력에서-화면-표시까지) | M | **H**
 [R-06](#b-신호처리--측정-신뢰성) | A·C 이벤트 위치를 0.1 ms 정밀도로 못 찾아 일오차·비트 에러·진폭 전부 오염된다 | T | [QAS-2](Milestone1_2-Architectural-Drivers.md#qas-2)<br>[QAS-3](Milestone1_2-Architectural-Drivers.md#qas-3--consistency--표시-간-값-일치) | **H** | **H**
@@ -69,14 +69,15 @@ Risk ID | 리스크 타이틀 | 구분 | QAS | P | I
   - **Tradeoff point**: 동시 4뷰 표시는 Usability([QAS-5](Milestone1_2-Architectural-Drivers.md#qas-5--usability--터치스크린에서-읽기조작))↔Performance의 tradeoff point
   - **코멘트**: 4개 동시 뷰 / 1개씩 뷰는 성능 확인 후 결정
 
-- **🔴 R-03 — 소리→화면 0.5초(p99 ≤ 500 ms) 목표를 못 지킨다**
-  - **근거**: [QAS-1](Milestone1_2-Architectural-Drivers.md#qas-1--performance-latency--소리-입력에서-화면-표시까지)
+- **🔴 R-03 — 분석·표시가 비트 주기 예산(83.3 ms @ 43200 BPH)을 넘겨 backlog·stale 표시·block drop·missed beat가 발생한다**
+  - **근거**: [QAS-1](Milestone1_2-Architectural-Drivers.md#qas-1--performance-latency--소리-입력에서-화면-표시까지) — 최고 목표 43200 BPH의 한 비트 주기는 83.3 ms(28800 BPH는 125.0 ms)
   - **발생 확률 / 영향**: Medium / High
   - **등급 근거**
-    - P-Medium: 500 ms 예산에 여유는 있으나 부하 시 RPi가 초과할 수 있음.
-    - I-High: 미달 시 [QAS-1](Milestone1_2-Architectural-Drivers.md#qas-1--performance-latency--소리-입력에서-화면-표시까지) 합격/불합격 게이트를 통과 못 함.
-  - **완화 방향**: 캡처/처리/표시 단계별 지연 계측·백로그 모니터링
-  - **코멘트**: 최악의 경우로 고려해서 리소스/프로세스 최적화 또는 기능 약화로 마이그레이션
+    - P-Medium: 처리·렌더링 부하는 샘플레이트·BPH·활성 탭·그래프 비용에 따라 변하며, 43200 BPH @ 192 kHz는 팀 목표 중 가장 공격적인 조건이라 예산을 넘길 수 있음.
+    - I-High: 비트 주기를 지속적으로 넘기면 backlog가 쌓여 오래된 데이터가 표시되고, 최악에는 block drop·missed beat로 측정값 자체가 오염됨.
+  - **완화 방향**: 세 지연 구간 CSV 계측(record/monitor), 분석/UI 스레드 분리 + 최신 프레임만 렌더링(latest-wins), bounded buffer/queue, 지속 초과 시 시각 품질 단계적 저하
+  - **Tradeoff point**: 높은 샘플레이트·더 많은 그래프 렌더링은 측정 정밀도/진단 가시성↔RPi5 부하·표시 지연의 tradeoff point
+  - **코멘트**: RPi5 1차 실측([EXP-02](Milestone1_4-Planned-Experiments.md#exp-02-rpi5-실시간-샘플레이트-상한) 참조)에서 28800 BPH @ 48 kHz, 43200 BPH @ 192 kHz 모두 Pass — Live 마이크 경로는 마이크 확보 후 재검증
 
 - **🔴 R-04 — 장시간(24h+) 연속 실행 시 메모리가 새서 느려지거나 죽는다**
   - **근거**: [FR-07-10](Milestone1_2-Architectural-Drivers.md#g07--long-term-performance-graph), [QAS-1](Milestone1_2-Architectural-Drivers.md#qas-1--performance-latency--소리-입력에서-화면-표시까지)

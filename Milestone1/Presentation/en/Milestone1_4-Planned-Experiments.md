@@ -78,22 +78,30 @@ In progress
 
 ### Results & Recommendations
 
-TO-DO: After measurement, record the final recommended sample rate (48k/96k/192k) and the rationale for the choice.
+**First measurement (GUI end-to-end latency) complete — both conditions pass.** Measured via `--analysis-log` CSV in a GUI session on the RPi5 with a real display attached. No microphone capture source was detected on the Pi, so verification used Simulation input passing through the same app pipeline.
+
+| Condition | capture-to-processing avg / worst | processing-to-display avg / worst | total E2E avg / worst | Budget (beat period) | drop / miss | Verdict |
+|---|---:|---:|---:|---:|---:|---|
+| Sim 28800 BPH @ 48 kHz | 0.8 / 34.2 ms | 5.6 / 17.5 ms | 6.3 / 40.7 ms | ≤ 125.0 ms | 0 / 0 | **Pass** |
+| Sim 43200 BPH @ 192 kHz | 1.1 / 25.5 ms | 5.5 / 22.4 ms | 6.6 / 30.4 ms | ≤ 83.3 ms | 0 / 0 | **Pass** |
+
+- Even under the most aggressive condition (43200 BPH @ 192 kHz), worst-case E2E was 30.4 ms — about 36.5 % of the 83.3 ms beat period.
+- **Remaining work**: ① re-measure the Live microphone path once a microphone is available (the OS audio stack, device driver, and USB buffering jitter may add latency) ② finalize the recommended sample rate (48k/96k/192k).
 
 ### Objective
 
 Confirm whether the input → analysis → display pipeline meets real-time requirements in the RPi5 Live environment. Core questions:
 
 - Q1. Which sample rate runs stably without block drop?
-- Q2. Does processing + display latency meet p99 ≤ 500 ms?
+- Q2. Does worst-case total end-to-end latency stay within one beat period? (83.3 ms at 43200 BPH · 125.0 ms at 28800 BPH)
 
 ### Status
 
-Planned
+In progress — first GUI E2E latency measurement done (Simulation); Live-microphone verification and the final sample-rate recommendation remain
 
 ### Expected Deliverables
 
-- Per-sample-rate performance comparison table (p50/p95/p99)
+- Per-sample-rate / per-BPH latency comparison table (average/worst)
 - Block-drop / missed-beat statistics table
 - WAV-fixture vs Live-input comparison table
 - Sample-rate target proposal (Go/No-Go)
@@ -109,7 +117,7 @@ Planned
 
 1. Run 48k/96k/192k under common Live/Playback conditions and measure the latency and stability of the input → analysis → display path.
 2. Compare total latency, block drop, missed beat, and CPU/RAM per sample rate to derive an operable threshold.
-3. Per SAP criteria, judge whether p99 latency and the no-drop condition are met, and finalize the default sample rate (Go/No-Go).
+3. Per SAP criteria, judge whether worst-case E2E ≤ one beat period and the no-drop condition are met, and finalize the default sample rate (Go/No-Go).
 
 ### Duration
 

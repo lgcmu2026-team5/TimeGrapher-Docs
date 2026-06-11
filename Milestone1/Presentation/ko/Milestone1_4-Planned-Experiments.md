@@ -78,22 +78,30 @@ C# 경로 채택 시 Avalonia Github의 다수 이슈처럼 RPi5에서 GPU 가�
 
 ### 결과 및 권장 사항
 
-TO-DO: 측정 완료 후 최종 권장 샘플레이트(48k/96k/192k)와 채택 근거를 기록한다.
+**1차 측정(GUI end-to-end latency) 완료 — 두 조건 모두 Pass.** RPi5에 실제 디스플레이를 연결한 GUI 세션에서 `--analysis-log` CSV로 측정했다. Pi에서 마이크 capture source가 감지되지 않아, 같은 앱 파이프라인을 통과하는 Simulation 입력으로 검증했다.
+
+| 조건 | capture-to-processing avg / worst | processing-to-display avg / worst | total E2E avg / worst | 기준(비트 주기) | drop / miss | 판정 |
+|---|---:|---:|---:|---:|---:|---|
+| Sim 28800 BPH @ 48 kHz | 0.8 / 34.2 ms | 5.6 / 17.5 ms | 6.3 / 40.7 ms | ≤ 125.0 ms | 0 / 0 | **Pass** |
+| Sim 43200 BPH @ 192 kHz | 1.1 / 25.5 ms | 5.5 / 22.4 ms | 6.6 / 30.4 ms | ≤ 83.3 ms | 0 / 0 | **Pass** |
+
+- 가장 공격적인 조건(43200 BPH @ 192 kHz)에서도 worst-case E2E 30.4 ms — 비트 주기 83.3 ms의 약 36.5% 수준.
+- **남은 작업**: ① Live 마이크 경로 재측정(마이크 확보 후 — OS 오디오 스택·드라이버·USB 버퍼링 jitter가 추가될 수 있음) ② 최종 권장 샘플레이트(48k/96k/192k) 확정.
 
 ### 목적
 
 RPi5 Live 환경에서 입력 → 분석 → 표시 파이프라인이 실시간 요구를 만족하는지 확인한다. 핵심 질문은 다음과 같다.
 
 - Q1. 어떤 샘플레이트가 block drop 없이 안정적으로 동작하는가?
-- Q2. processing + display latency가 p99 ≤ 500 ms를 만족하는가?
+- Q2. total end-to-end latency의 worst-case가 한 비트 주기 안에 들어오는가? (43200 BPH: 83.3 ms · 28800 BPH: 125.0 ms)
 
 ### 상태
 
-계획됨
+진행 중 — GUI E2E latency 1차 측정 완료(Simulation), Live 마이크 경로 검증과 최종 샘플레이트 권고 남음
 
 ### 예상 산출물
 
-- 샘플레이트별 성능 비교표(p50/p95/p99)
+- 샘플레이트·BPH 조건별 latency 비교표(평균/최악)
 - block drop / missed beat 통계표
 - WAV fixture vs Live 입력 비교 결과표
 - 샘플레이트 목표안(Go/No-Go)
@@ -109,7 +117,7 @@ RPi5 Live 환경에서 입력 → 분석 → 표시 파이프라인이 실시간
 
 1. 48k/96k/192k를 Live/Playback 공통 조건으로 실행해 입력 → 분석 → 표시 경로의 지연과 안정성을 측정한다.
 2. 샘플레이트별 total latency, block drop, missed beat, CPU/RAM을 비교해 운영 가능한 기준값을 도출한다.
-3. SAP 기준으로 p99 지연과 무드롭 조건 충족 여부를 판정하고 기본 샘플레이트(Go/No-Go)를 확정한다.
+3. SAP 기준으로 worst-case E2E ≤ 비트 주기와 무드롭 조건 충족 여부를 판정하고 기본 샘플레이트(Go/No-Go)를 확정한다.
 
 ### 기간
 

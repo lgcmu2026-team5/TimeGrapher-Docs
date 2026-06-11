@@ -203,24 +203,35 @@
 아래 시나리오에서 사용되는 지표·단위·표준 용어는 통합 [Glossary](Milestone1_6-Glossary.md)에 정의되어 있다 — **품질 속성·측정 용어** 참조.
 
 ### QAS-1 · Performance (Latency) — 소리 입력에서 화면 표시까지
-> **한 줄 요약: 소리가 마이크에 들어오면 0.5초 안에 화면에 나타난다.**
+> **한 줄 요약: 최고 목표 비트율 43200 BPH에서도 한 비트 주기(83.3 ms) 안에 분석 결과가 화면에 나타난다.**
 >
-> Raspberry Pi 5에서 Live로 측정하는 동안 시계 소리가 마이크를 통해 입력 → 분석 → 표시 흐름에 들어오면, 실시간 렌더링 되어야 하는 데이터에 대하여 시스템은 처리하여 화면에 표시하고 세 지연 구간을 보고하며, 10분 연속 실행 동안 (1) capture-to-processing latency p99와 (2) processing-to-display latency p99를 보고하고 (3) total end-to-end(capture-to-display) latency는 **p99 ≤ 500 ms**이어야 한다.
+> Raspberry Pi 5에서 Live, Playback, 또는 Simulation으로 측정하는 동안 오디오 샘플 블록이 입력 → 분석 → 표시 흐름에 들어오면, 시스템은 그 블록을 분석해 화면에 표시하고 세 지연 구간(capture-to-processing, processing-to-display, total end-to-end)을 기록하며, 지원하는 BPH에서 total end-to-end latency의 worst-case가 **한 비트 주기를 넘지 않아야 한다** — 43200 BPH에서 **≤ 83.3 ms**, 28800 BPH에서 **≤ 125.0 ms**.
 
 **관련 요구사항**
-- *"Teams shall report capture-to-processing latency, processing-to-display latency, and total end-to-end latency in milliseconds."*
+- *"The system shall record the time difference between (1) when an audio sample block is captured, (2) when that block is processed for beat detection and measurement, and (3) when the corresponding waveform segment and computed readings are displayed in the GUI."*
+- *"Teams shall report capture-to-processing latency, processing-to-display latency, and total end-to-end latency in milliseconds, together with average and worst-case values, as well as counts of dropped audio blocks and missed beat detections."*
 
 | 요소 | 내용 |
 |------|------|
-| 자극유발원 | 시계 소리 (외부) |
-| 자극 | 마이크로 소리가 들어옴 |
-| 대상 | 입력 → 분석 → 표시 - 해당 시점의 타임스탬프 |
-| 환경 | Raspberry Pi 5(8 GB)에서 Live 측정 |
-| 응답 | 실시간 렌더링 되어야 하는 데이터에 대하여 처리하여 화면에 표시하고, 세 지연 구간을 보고함 |
-| 응답측정 | 10분 연속 실행 동안: (1) capture-to-processing latency — p99 (2) processing-to-display latency — p99 (3) total end-to-end latency — **p99 ≤ 500 ms** (pass/fail 게이트) |
+| 자극유발원 | 시계 소리, 또는 같은 파이프라인을 통과하는 Sim/Playback 입력 (외부) |
+| 자극 | 오디오 샘플 블록이 캡처되어 분석 파이프라인에 들어옴 |
+| 대상 | 입력 버퍼 → beat detection/measurement → GUI 표시 — 각 시점의 타임스탬프 |
+| 환경 | Raspberry Pi 5(8 GB) + 연결된 디스플레이. Live 마이크 우선, 마이크가 없으면 Sim/Playback으로 같은 경로를 검증 |
+| 응답 | 입력 블록을 분석해 대응되는 waveform·marker·측정값을 화면에 표시하고, 세 지연 구간을 기록 |
+| 응답측정 | 지원하는 BPH에서 total end-to-end latency의 worst-case ≤ 한 비트 주기 — **43200 BPH: ≤ 83.3 ms · 28800 BPH: ≤ 125.0 ms** (pass/fail 게이트). 세 지연 구간의 평균/최악값을 보고하고, dropped audio blocks/samples = **0**, missed beat detections = **0** |
 
 **측정값 근거**
-- **≤ 500 ms** — p99(하위 1% 느린 값)를 Google INP(Interaction to Next Paint) 기준에서 "poor"로 넘어가기 직전 값(good ≤ 200 ms · needs improvement ≤ 500 ms · poor > 500 ms); 최종 디스플레이 갱신의 최대 허용 한계값으로 채택.
+- **latency 예산은 비트 주기에서 나온다** — TimeGrapher는 사용자 클릭에 반응하는 일반 GUI 앱이 아니라, 주기적으로 들어오는 시계 비트를 놓치지 않고 분석해야 하는 실시간 음향 측정 앱이다. 처리·표시가 비트 주기보다 지속적으로 느리면 backlog, 오래된(stale) 표시, block drop, missed beat가 발생한다.
+- 기존 기준 **p99 ≤ 500 ms**는 사람이 느끼는 GUI 반응성 기준으로는 타당하지만 실시간 비트 분석에는 너무 느슨해, 비트 주기 기반 worst-case 기준으로 교체했다.
+
+비트 주기 = 3600 s ÷ BPH:
+
+| BPH | 초당 비트 수 | 비트 주기 |
+|---:|---:|---:|
+| 21600 | 6 beats/s | 166.7 ms |
+| 28800 | 8 beats/s | 125.0 ms |
+| 36000 | 10 beats/s | 100.0 ms |
+| 43200 | 12 beats/s | 83.3 ms |
 
 **관련 FR** — [FR-08-01](#g08--escapement-analyzer-and-marker-line-display), [FR-12-04](#g12--scope-function-with-multiple-filter-views), [FR-05-03](#g05--beat-noise-scope-display), [FR-12-14](#g12--scope-function-with-multiple-filter-views) (실시간/Live 표시 및 저지연 피드백 기능)
 

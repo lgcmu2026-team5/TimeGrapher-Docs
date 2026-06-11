@@ -11,7 +11,7 @@ Watch-domain vocabulary used throughout the functional requirements.
 | A / B / C (= T1 / T2 / T3) | The three acoustic events produced within a single beat of a Swiss lever escapement. **A (T1)** = the impulse pin strikes the pallet fork — a clean, repeatable event used to determine rate and beat error; **B (T2)** = an escape-wheel tooth slides on the pallet stone — irregular, not used for measurement; **C (T3)** = the escape-wheel tooth locks and the pallet fork strikes the banking pin — the strongest sound, used together with A to calculate amplitude. Measurement uses the A and C events (see [FR-08-04](Milestone1_2-Architectural-Drivers.md#g08--escapement-analyzer-and-marker-line-display)); the filter views F0–F3 help locate and identify them. |
 | tick / tock | The two beats the balance produces in alternation over time — one beat per swing of the balance; the swing one way is the **tick**, the return swing is the **tock**. Beat error is the asymmetry between the successive tick and tock intervals; Scope 2 and the Beat Error trace lines display the tick and tock beats separately. Each beat — whether tick or tock — contains its own A/B/C events, so tick/tock (which beat, over time) and A/B/C (which event, within a beat) are different axes, not the same labels. |
 | Lift angle | The angular travel of the balance during which the escapement delivers impulse. A per-caliber constant (commonly ~40°–60°) provided as input and used to derive amplitude from the beat signal. |
-| BPH (beats per hour) | The number of balance beats (semi-oscillations) per hour — the watch's nominal operating frequency. Typical values: 18000, 21600, 28800 BPH. |
+| BPH (beats per hour) | The number of balance beats (semi-oscillations) per hour — the watch's nominal operating frequency. Typical values: 18000, 21600, 28800, 36000, 43200 BPH — this project's top target is 43200 BPH. |
 | Beat number | Synonym for the watch's nominal beat rate expressed in BPH; together with the selected interval it parameterizes the Scope 2 measurement cycle. |
 | Nominal (beat) rate | The watch's designed/target beat rate (in BPH or beats per second). "Nominal rate" and "nominal beat rate" denote the same quantity; it is used as the synchronization and reference value in the Scope Sweep display. |
 | Timing test | A measurement run that produces the watch's primary timing results (daily rate, amplitude, beat error, nominal beat rate). The "most recent timing test" is the latest such run whose results are retained for later reference (see [FR-11-05…08](Milestone1_2-Architectural-Drivers.md#g11--scope-mode-with-synchronized-sweep-display)). |
@@ -26,7 +26,9 @@ Metrics, units, and standards referenced by the quality attribute scenarios.
 | Term | Definition |
 |------|------------|
 | p99 | The 99th-percentile value — everything except the slowest 1 % falls within this value |
-| Google INP | Interaction to Next Paint — Google's web metric for the time from user input to the next screen update (good ≤ 200 ms / poor > 500 ms) || SNR | Signal-to-Noise Ratio (dB) — higher means a cleaner signal |
+| Beat period | Time between two consecutive beats = 3600 s ÷ BPH — 83.3 ms at 43200 BPH, 125.0 ms at 28800 BPH; the basis of the QAS-1 latency budget |
+| E2E (end-to-end) latency | Total delay from audio-block capture to screen display = capture-to-processing + processing-to-display |
+| SNR | Signal-to-Noise Ratio (dB) — higher means a cleaner signal |
 | person-days | The amount of work one person completes in one day |
 | Rate | Seconds the watch gains or loses per day (s/d) |
 | Beat error | Asymmetry between the tick and tock intervals (ms) |

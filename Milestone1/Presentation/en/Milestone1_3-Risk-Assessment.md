@@ -20,7 +20,7 @@ Risk ID | Risk Title | Type | QAS | P | I
 --------|-----------|------|-----|---|---
 🔴 [R-01](#a-real-time-performance-rpi) | RPi5 fails to keep up with high sample rates (96k/192k) and loses sound data | T | [QAS-1](Milestone1_2-Architectural-Drivers.md#qas-1--performance-latency--from-sound-input-to-screen-display) | **H** | **H**
 🔴 [R-02](#a-real-time-performance-rpi) | Rendering four filters + multiple graphs at once makes the screen stutter | T | [QAS-1](Milestone1_2-Architectural-Drivers.md#qas-1--performance-latency--from-sound-input-to-screen-display)<br>[QAS-5](Milestone1_2-Architectural-Drivers.md#qas-5--usability--reading-and-operating-on-the-touchscreen) | M | **H**
-🔴 [R-03](#a-real-time-performance-rpi) | Sound-to-screen 0.5 s (p99 ≤ 500 ms) target is missed | T | [QAS-1](Milestone1_2-Architectural-Drivers.md#qas-1--performance-latency--from-sound-input-to-screen-display) | M | **H**
+🔴 [R-03](#a-real-time-performance-rpi) | Analysis + display exceed the beat-period budget (83.3 ms @ 43200 BPH) — backlog, stale display, block drop, missed beats | T | [QAS-1](Milestone1_2-Architectural-Drivers.md#qas-1--performance-latency--from-sound-input-to-screen-display) | M | **H**
 🔴 [R-04](#a-real-time-performance-rpi) | Long continuous runs (24h+) leak memory and degrade or crash | T | [QAS-1](Milestone1_2-Architectural-Drivers.md#qas-1--performance-latency--from-sound-input-to-screen-display) | M | M
 🔴 [R-05](#a-real-time-performance-rpi) | Avalonia GPU-accelerated rendering on RPi5 slower than SW rendering, stuttering real-time graphs | T | [QAS-1](Milestone1_2-Architectural-Drivers.md#qas-1--performance-latency--from-sound-input-to-screen-display) | M | **H**
 [R-06](#b-signal-processing--measurement-trustworthiness) | A/C event positions not found to 0.1 ms — rate, beat error, amplitude all contaminated | T | [QAS-2](Milestone1_2-Architectural-Drivers.md#qas-2)<br>[QAS-3](Milestone1_2-Architectural-Drivers.md#qas-3--consistency--consistent-values-across-displays) | **H** | **H**
@@ -69,14 +69,15 @@ Risk ID | Risk Title | Type | QAS | P | I
   - **Tradeoff point**: showing 4 views at once trades Usability ([QAS-5](Milestone1_2-Architectural-Drivers.md#qas-5--usability--reading-and-operating-on-the-touchscreen)) against Performance
   - **Comment**: Decide 4 simultaneous views vs one-at-a-time after the performance check
 
-- **🔴 R-03 — The sound-to-screen 0.5 s (p99 ≤ 500 ms) target is missed**
-  - **Evidence**: [QAS-1](Milestone1_2-Architectural-Drivers.md#qas-1--performance-latency--from-sound-input-to-screen-display)
+- **🔴 R-03 — Analysis + display exceed the beat-period budget (83.3 ms @ 43200 BPH), causing backlog, stale display, block drop, and missed beats**
+  - **Evidence**: [QAS-1](Milestone1_2-Architectural-Drivers.md#qas-1--performance-latency--from-sound-input-to-screen-display) — one beat period at the top target 43200 BPH is 83.3 ms (125.0 ms at 28800 BPH)
   - **Probability / Impact**: Medium / High
   - **Grading rationale**
-    - P-Medium: the 500 ms budget has headroom but the RPi may exceed it under load.
-    - I-High: missing it fails the [QAS-1](Milestone1_2-Architectural-Drivers.md#qas-1--performance-latency--from-sound-input-to-screen-display) pass/fail gate.
-  - **Mitigation**: Instrument capture/processing/display latency per stage; monitor backlog
-  - **Comment**: For the worst case, optimize resources/processes or migrate to reduced features
+    - P-Medium: processing/rendering load varies with sample rate, BPH, active tab, and graph cost; 43200 BPH @ 192 kHz is the team's most aggressive target, so the budget may be exceeded.
+    - I-High: consistently exceeding the beat period builds a backlog and shows stale data; at worst, block drop / missed beats contaminate the measurements themselves.
+  - **Mitigation**: Instrument the three latency components to CSV (record/monitor); separate analysis/UI threads + render only the latest frame (latest-wins); bounded buffers/queues; degrade visual quality stepwise on sustained overrun
+  - **Tradeoff point**: higher sample rates and more graph rendering trade measurement precision / diagnostic visibility against RPi5 load and display latency
+  - **Comment**: First on-device measurement (see [EXP-02](Milestone1_4-Planned-Experiments.md#exp-02-rpi5-real-time-sample-rate-ceiling)) passed both 28800 BPH @ 48 kHz and 43200 BPH @ 192 kHz — re-verify the Live microphone path once a microphone is available
 
 - **🔴 R-04 — Long continuous runs (24h+) leak memory and degrade or crash**
   - **Evidence**: [FR-07-10](Milestone1_2-Architectural-Drivers.md#g07--long-term-performance-graph), [QAS-1](Milestone1_2-Architectural-Drivers.md#qas-1--performance-latency--from-sound-input-to-screen-display)

@@ -70,7 +70,7 @@ flowchart TB
 - **Every value computed once, delivered as one bundle** → no display ever disagrees with another. (Consistency)
 - **Keep measuring while the signal is good enough; below the threshold, show "signal weak" and handle the input appropriately** → a wrong number never reaches the screen. (Reliability)
 
-> **Why this shape?** The legacy code lumps capture, analysis, and drawing into one piece, which can't meet a 0.5 s response target or absorb new features. So we split it by purpose.
+> **Why this shape?** The legacy code lumps capture, analysis, and drawing into one piece, which can't respond within one beat period (83.3 ms at 43200 BPH) or absorb new features. So we split it by purpose.
 
 ## Software Architecture Tactics to Apply
 

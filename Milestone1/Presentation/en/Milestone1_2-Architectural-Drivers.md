@@ -203,24 +203,35 @@ The domain terms used throughout the functional requirements below are defined i
 The metric, unit, and standard terms used in the scenarios below are defined in the consolidated [Glossary](Milestone1_6-Glossary.md) — see **Quality-Attribute & Measurement Terms**.
 
 ### QAS-1 · Performance (Latency) — From Sound Input to Screen Display
-> **In one line: sound reaches the microphone → the result is on screen within 0.5 s.**
+> **In one line: even at the top target rate of 43200 BPH, the analysis result is on screen within one beat period (83.3 ms).**
 >
-> While measuring live on the Raspberry Pi 5, when watch sound enters the input → analysis → display flow through the microphone, the system processes data that must be rendered in real time, shows it on screen, and reports the three latency components — over a 10-min run, (1) capture-to-processing latency p99 and (2) processing-to-display latency p99 are reported, and (3) total end-to-end (capture-to-display) latency must be **p99 ≤ 500 ms**.
+> While measuring with Live, Playback, or Simulation on the Raspberry Pi 5, when an audio sample block enters the input → analysis → display flow, the system analyzes the block, shows the result on screen, and records the three latency components (capture-to-processing, processing-to-display, total end-to-end) — at every supported BPH, worst-case total end-to-end latency must **not exceed one beat period**: **≤ 83.3 ms** at 43200 BPH, **≤ 125.0 ms** at 28800 BPH.
 
-**Related requirement**
-- *"Teams shall report capture-to-processing latency, processing-to-display latency, and total end-to-end latency in milliseconds."*
+**Related requirements**
+- *"The system shall record the time difference between (1) when an audio sample block is captured, (2) when that block is processed for beat detection and measurement, and (3) when the corresponding waveform segment and computed readings are displayed in the GUI."*
+- *"Teams shall report capture-to-processing latency, processing-to-display latency, and total end-to-end latency in milliseconds, together with average and worst-case values, as well as counts of dropped audio blocks and missed beat detections."*
 
 | Element | Content |
 |---------|---------|
-| Source | Watch sound (external) |
-| Stimulus | Sound arrives at the microphone |
-| Artifact | The input → analysis → display flow — timestamped at each point |
-| Environment | Live measurement on the Raspberry Pi 5 (8 GB) |
-| Response | Process data that must be rendered in real time, show it on screen, and report the three latency components |
-| Response Measure | Over a 10-min run: (1) capture-to-processing latency — p99 (2) processing-to-display latency — p99 (3) total end-to-end latency — **p99 ≤ 500 ms** (the pass/fail gate) |
+| Source | Watch sound, or Sim/Playback input passing through the same pipeline (external) |
+| Stimulus | An audio sample block is captured and enters the analysis pipeline |
+| Artifact | Input buffer → beat detection/measurement → GUI display — timestamped at each point |
+| Environment | Raspberry Pi 5 (8 GB) + connected display. Live microphone preferred; the same path is verified via Sim/Playback when no microphone is available |
+| Response | Analyze the input block, show the corresponding waveform / markers / computed readings on screen, and record the three latency components |
+| Response Measure | At every supported BPH, worst-case total end-to-end latency ≤ one beat period — **43200 BPH: ≤ 83.3 ms · 28800 BPH: ≤ 125.0 ms** (the pass/fail gate). Report average/worst values for all three latency components, with dropped audio blocks/samples = **0** and missed beat detections = **0** |
 
 **Why these numbers**
-- **≤ 500 ms** — p99 (the slowest 1 %) sits at Google's INP (Interaction to Next Paint) boundary just before "poor" (good ≤ 200 ms · needs improvement ≤ 500 ms · poor > 500 ms); adopted as the maximum allowable limit for the final display update.
+- **The latency budget comes from the beat period** — TimeGrapher is not a GUI app reacting to user clicks but a real-time acoustic measurement app that must analyze every periodically arriving watch beat without missing one. If processing and display consistently take longer than one beat period, backlog, stale display, block drop, and missed beats follow.
+- The previous criterion, **p99 ≤ 500 ms**, is reasonable as a human-perceived GUI-responsiveness limit but far too loose for real-time beat analysis, so it was replaced with the beat-period-based worst-case criterion.
+
+Beat period = 3600 s ÷ BPH:
+
+| BPH | Beats per second | Beat period |
+|---:|---:|---:|
+| 21600 | 6 beats/s | 166.7 ms |
+| 28800 | 8 beats/s | 125.0 ms |
+| 36000 | 10 beats/s | 100.0 ms |
+| 43200 | 12 beats/s | 83.3 ms |
 
 **Related FRs** — [FR-08-01](#g08--escapement-analyzer-and-marker-line-display), [FR-12-04](#g12--scope-function-with-multiple-filter-views), [FR-05-03](#g05--beat-noise-scope-display), [FR-12-14](#g12--scope-function-with-multiple-filter-views) (Live display and low-latency feedback features)
 
