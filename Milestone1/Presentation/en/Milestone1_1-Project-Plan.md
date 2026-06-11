@@ -8,6 +8,87 @@
 - **GUI**: Jaehong Oh, Sungjun Yoon
 
 ## ARCHI-265 Schedule
+
+### ✅ Milestone 1 — `05.29 ~ 06.08`
+
+```mermaid
+%%{init: {"gantt": {"useWidth": 1200, "barHeight": 24, "fontSize": 12, "sectionFontSize": 12}}}%%
+gantt
+    title Milestone 1 (Completed)
+    dateFormat YYYY-MM-DD
+    axisFormat %m.%d
+
+    section Plan
+    Project Plan                  :done, 2026-05-29, 2026-05-31
+
+    section Drivers
+    Architectural Drivers         :done, 2026-05-29, 2026-06-07
+    Requirements Analysis         :done, 2026-06-01, 2026-06-03
+    QA Scenarios                  :done, 2026-06-01, 2026-06-03
+
+    section Risk
+    Risk Assessment               :done, 2026-06-03, 2026-06-05
+
+    section Experiments
+    Planned Experiments           :done, 2026-06-06, 2026-06-07
+
+    section Approaches
+    Architectural Approaches      :done, 2026-06-07, 2026-06-08
+
+    section Etc
+    M1 Preview Action Items       :done, 2026-05-28, 2026-06-07
+```
+
+### 🟡 Milestone 2 — `06.08 ~ 06.22`
+
+```mermaid
+%%{init: {"gantt": {"useWidth": 1200, "barHeight": 24, "fontSize": 12, "sectionFontSize": 12}}}%%
+gantt
+    title Milestone 2 (In Progress)
+    dateFormat YYYY-MM-DD
+    axisFormat %m.%d
+
+    section M1 Feedback
+    Performance latency follow-up :active, 2026-06-09, 2026-06-10
+    Plan follow-up (Gantt charts) :done, 2026-06-09, 2026-06-10
+
+    section Review
+    Milestone 1 Review            :2026-06-09, 1d
+    Project Plan Review 1         :2026-06-15, 1d
+
+    section Experiments
+    EXP-01 Avalonia rendering backend :active, 2026-06-09, 2026-06-10
+    EXP-02 Sample-rate ceiling    :2026-06-09, 2026-06-12
+    EXP-03 GUI rendering patterns :2026-06-09, 2026-06-13
+    EXP-04 On-device TinyML       :active, 2026-06-09, 2026-06-15
+    EXP-05 Long-run stability     :2026-06-09, 2026-06-11
+
+    section Architecture
+    UML Diagram                   :2026-06-10, 2026-06-11
+    Module View                   :2026-06-10, 2026-06-11
+    C&C View                      :2026-06-10, 2026-06-11
+    Allocation View               :2026-06-10, 2026-06-11
+
+    section Implement
+    Implement / Test              :2026-06-12, 2026-06-22
+    Signal Processing Core        :active, 2026-06-09, 2026-06-19
+    GUI (Graph)                   :2026-06-09, 2026-06-23
+```
+
+### ⬜ Milestone 3 — `06.23 ~ 06.30`
+
+```mermaid
+%%{init: {"gantt": {"useWidth": 1200, "barHeight": 24, "fontSize": 12, "sectionFontSize": 12}}}%%
+gantt
+    title Milestone 3 (Planned)
+    dateFormat YYYY-MM-DD
+    axisFormat %m.%d
+
+    section Wrap-up
+    Prepare Presentation          :2026-06-23, 2026-06-26
+    Prepare Demonstration         :2026-06-26, 2026-06-30
+```
+
 🔗 [Quire URL](https://quire.io/w/SUNYOUNG_OH/40?filter=all&share=ud59lcpw1fx35wkwjcub6tdurt5iyg&view=timeline)
 
 ## Legend
@@ -15,37 +96,43 @@
 - 🟡 In Progress
 - ⬜ Planned
 - ✅ Completed
+- "All" in assignments = all six team members
 
 ## Schedule
 
-- ✅ **Milestone 1** — `05.29 ~ 06.07`
-  - ✅ Project Plan — `05.29 ~ 06.07`
+- ✅ **Milestone 1** — `05.29 ~ 06.08`
+  - ✅ Project Plan — `05.29 ~ 05.31`
   - ✅ **Architectural Drivers** — `05.29 ~ 06.07`
-    - ✅ **Requirements Analysis** — `06.01 ~ 06.02`
-      - ✅ Requirements Analysis Writing (FR-01) — `06.01 ~ 06.03` _(Assigned: YUN, JunSung, Junyoung Park, D, SUNYOUNG OH, Jaehong)_
-    - ✅ QA Scenarios — `06.01 ~ 06.03` _(Assigned: YUN, JunSung, Junyoung Park, D, SUNYOUNG OH, Jaehong)_
-  - ✅ **Risk Assessment** — `06.03 ~ 06.04`
-    - ✅ List up Technical Risks — `06.05 ~ 06.07` _(Assigned: YUN, JunSung, Junyoung Park, D, SUNYOUNG OH, Jaehong)_
-    - ✅ List up Non-Technical Risks — `06.05 ~ 06.07` _(Assigned: YUN, JunSung, Junyoung Park, D, SUNYOUNG OH, Jaehong)_
+    - ✅ Requirements Analysis — `06.01 ~ 06.03` _(Assigned: All)_
+    - ✅ QA Scenarios — `06.01 ~ 06.03` _(Assigned: All)_
+  - ✅ **Risk Assessment** — `06.03 ~ 06.05`
+    - ✅ List up Technical Risks — `06.03 ~ 06.05` _(Assigned: All)_
+    - ✅ List up Non-Technical Risks — `06.03 ~ 06.05` _(Assigned: All)_
   - ✅ Planned Experiments — `06.06 ~ 06.07` _(Assigned: YUN, JunSung)_
   - ✅ **Architectural Approaches** — `06.07 ~ 06.08` _(Assigned: Jaehong, D)_
-    - ✅ Describe Overview-level architecture _(Assigned: YUN, JunSung, Junyoung Park, D, SUNYOUNG OH, Jaehong)_
-  - ✅ **Etc** — `05.28 ~ 06.07`
-    - ✅ **Milestone 1 Preview Action Items** _(Assigned: YUN, JunSung, Junyoung Park, D, SUNYOUNG OH, Jaehong)_
+    - ✅ Describe Overview-level architecture _(Assigned: All)_
+  - ✅ Etc — `05.28 ~ 06.07` (Milestone 1 Preview Action Items, All)
 - 🟡 **Milestone 2** — `06.08 ~ 06.22`
-  - 🟡 Project Plan — `06.15` _(Assigned: JunSung)_
+  - 🟡 **M1 Feedback** — `06.09 ~ 06.10`
+    - 🟡 Performance latency follow-up — `06.09 ~ 06.10` _(Assigned: Jaehong, JunSung)_ — latency measurement data, QAS-1/Risk/Test story link, and threshold rationale done; architecture-tactics supplement remains
+    - ✅ Plan follow-up (insert Gantt charts) — `06.09 ~ 06.10` _(Assigned: Jaehong)_
+  - ⬜ **Project Plan Review**
+    - ⬜ Milestone 1 Review — `06.09`
+    - ⬜ Project Plan Review #1 — `06.15` _(Assigned: JunSung)_
   - 🟡 **Experiments/Results** — `06.08 ~ 06.17`
-    - 🟡 Verify real-time processing sample rate capability on RPi5 — `06.08 ~ 06.12` _(Assigned: Junyoung Park)_
-    - 🟡 TinyML Inference — `06.08 ~ 06.15` _(Assigned: Jaehong)_
-    - ⬜ Propose design patterns for real-time optimization (C++ vs C#) — `06.09 ~ 06.12` _(Assigned: JunSung, Jaehong)_
-    - ⬜ Memory/latency degradation during long-term execution — `06.15 ~ 06.19` _(Assigned: D)_
-    - ⬜ Touch recognition satisfaction — `06.09 ~ 06.10` _(Assigned: JunSung)_
-  - ⬜ **Architecture** — `06.10 ~ 06.17`
-    - ⬜ UML Diagram — `06.10 ~ 06.12` _(Assigned: YUN, SUNYOUNG OH)_
-    - ⬜ Module View — `06.11 ~ 06.13` _(Assigned: YUN, SUNYOUNG OH, Jaehong)_
-    - ⬜ C&C View — `06.13 ~ 06.15` _(Assigned: JunSung, YUN)_
-    - ⬜ Allocation View — `06.15 ~ 06.17` _(Assigned: D, Jaehong)_
-  - ⬜ Implement / Test — `06.11 ~ 06.21` _(Assigned: Jaehong, Junyoung Park, D)_
+    - 🟡 EXP-01 Avalonia rendering backend on the RPi5 — `06.09 ~ 06.10` _(Assigned: Jaehong)_
+    - ⬜ EXP-02 RPi5 real-time sample-rate ceiling — `06.09 ~ 06.12` _(Assigned: Junyoung Park)_
+    - ⬜ EXP-03 GUI real-time rendering design patterns — `06.09 ~ 06.13` _(Assigned: YUN)_
+    - 🟡 EXP-04 On-device TinyML inference feasibility — `06.09 ~ 06.15` _(Assigned: SUNYOUNG OH)_
+    - ⬜ EXP-05 Long-run stability (24h+) — `06.09 ~ 06.11` _(Assigned: D)_
+  - ⬜ **Architecture** — `06.10 ~ 06.11`
+    - ⬜ UML Diagram — `06.10 ~ 06.11` _(Assigned: YUN, SUNYOUNG OH)_
+    - ⬜ Module View — `06.10 ~ 06.11` _(Assigned: YUN, SUNYOUNG OH, Jaehong)_
+    - ⬜ C&C View — `06.10 ~ 06.11` _(Assigned: JunSung, YUN)_ — includes the signal-processing pipe-and-filter view plus peer-to-peer and performance-tactic review
+    - ⬜ Allocation View — `06.10 ~ 06.11` _(Assigned: D, Jaehong)_
+  - ⬜ **Implement / Test** — `06.12 ~ 06.22` _(Assigned: All)_
+    - 🟡 Signal Processing Core — `06.09 ~ 06.19` — Block diagram (in progress) → Phase 1 Core DSP → Phase 2 Measurement → Phase 3 Waveform → Phase 4 Frequency
+    - ⬜ GUI (Graph) — `06.09 ~ 06.23` — G01–G12 graphs split across 3 groups (Yoon/Kim · Oh J./Baek · Park/Oh S.)
   - ⬜ Etc — `06.10 ~ 06.22`
 - ⬜ **Milestone 3** — `06.23 ~ 06.30`
   - ⬜ Prepare Presentation — `06.23 ~ 06.26` _(Assigned: SUNYOUNG OH, YUN)_
