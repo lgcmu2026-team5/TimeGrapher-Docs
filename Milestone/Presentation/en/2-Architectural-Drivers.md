@@ -1,10 +1,10 @@
 # Architectural Drivers
 
-**Contents** — [Functional Requirements (FR)](#functional-requirements) · [Quality Attribute Scenarios (QAS)](#quality-attribute-scenarios) · [Priority](#priority) · [Design Constraints](#design-constraints)
+**Contents** — [Functional Requirements (FR)](#functional-requirements) · [Quality Attribute Scenarios (QAS)](#quality-attribute-scenarios) · [Design Constraints](#design-constraints)
 
 ## Glossary
 
-The domain terms used throughout the functional requirements below are defined in the consolidated [Glossary](Milestone1_6-Glossary.md) — see **Domain Terms**.
+The domain terms used throughout the functional requirements below are defined in the consolidated [Glossary](6-Glossary.md) — see **Domain Terms**.
 
 ## Functional Requirements
 
@@ -200,14 +200,16 @@ The domain terms used throughout the functional requirements below are defined i
 
 ### Terminology
 
-The metric, unit, and standard terms used in the scenarios below are defined in the consolidated [Glossary](Milestone1_6-Glossary.md) — see **Quality-Attribute & Measurement Terms**.
+The metric, unit, and standard terms used in the scenarios below are defined in the consolidated [Glossary](6-Glossary.md) — see **Quality-Attribute & Measurement Terms**.
 
 ### QAS-1 · Performance (Latency) — From Sound Input to Screen Display
+**Prioritization** — Rank 1 · Importance: H · Difficulty: H · Rationale: The result must appear quickly, and the Pi may be the bottleneck.
+
 > **In one line: even at the top target rate of 43200 BPH, the analysis result is on screen within one beat period (83.3 ms).**
 >
 > While measuring with Live, Playback, or Simulation on the Raspberry Pi 5, when an audio sample block enters the input → analysis → display flow, the system analyzes the block, shows the result on screen, and records the three latency components (capture-to-processing, processing-to-display, total end-to-end) — at every supported BPH, worst-case total end-to-end latency must **not exceed one beat period**: **≤ 83.3 ms** at 43200 BPH, **≤ 125.0 ms** at 28800 BPH.
 
-**Related requirements**
+**Related requirements in the project description**
 - *"The system shall record the time difference between (1) when an audio sample block is captured, (2) when that block is processed for beat detection and measurement, and (3) when the corresponding waveform segment and computed readings are displayed in the GUI."*
 - *"Teams shall report capture-to-processing latency, processing-to-display latency, and total end-to-end latency in milliseconds, together with average and worst-case values, as well as counts of dropped audio blocks and missed beat detections."*
 
@@ -238,11 +240,13 @@ Beat period = 3600 s ÷ BPH:
 <a id="qas-2"></a>
 
 ### QAS-2 · Reliability — Under Noisy or Weak Signals
+**Prioritization** — Rank 2 · Importance: H · Difficulty: H · Rationale: Noisy or weak signals are likely in actual use.
+
 > **In one line: under noise, keep the measurement service reliable when the signal is good enough, and show the "signal weak" indication while handling weak input appropriately.**
 >
 > In a noisy working environment, when watch sound mixed with ambient noise — or a weak signal — reaches the noise-removal / beat-detection part, the system either accepts the signal and produces a bounded measurement, or shows the "signal weak" indication while handling weak input appropriately. At SNR ≥ 30 dB, accepted input must meet detection **≥ 95 %** and keep the displayed rate **within ±3 s/d of the Sim/Playback reference rate**.
 
-**Related requirement**
+**Related requirements in the project description**
 - *"the system should degrade gracefully when the signal is weak, noisy, or partially missing, rather than producing unstable or misleading outputs"*
 
 | Element | Content |
@@ -261,11 +265,13 @@ Beat period = 3600 s ÷ BPH:
 **Related FRs** — [FR-12-08](#g12--scope-function-with-multiple-filter-views), [FR-05-17…18](#g05--beat-noise-scope-display) (noise filtering, averaging)
 
 ### QAS-3 · Consistency — Consistent Values Across Displays
+**Prioritization** — Rank 3 · Importance: H · Difficulty: M · Rationale: Users should not see different values for the same result.
+
 > **In one line: every number and graph on screen comes from the same source data.**
 >
 > While measuring as usual, when the analysis/computation stage fans one set of source data out to multiple graph and numeric displays, everything rendered in the same frame derives from that same source data and agrees — **0 mismatches** over a 10-min run.
 
-**Related requirement**
+**Related requirements in the project description**
 - *"remaining internally consistent across the GUI, derived measurements, and longer-term summaries"*
 - *"calculations and visualizations are based on the same underlying data."*
 
@@ -285,11 +291,13 @@ Beat period = 3600 s ÷ BPH:
 **Related FRs** — [FR-12-05](#g12--scope-function-with-multiple-filter-views), [FR-06-06](#g06--beat-error-display-and-diagnostic-trace), [FR-02-07…08](#g02--trace-display) (views and summaries showing the same data)
 
 ### QAS-4 · Modifiability (Extensibility) — Adding a New Measurement/Filter/Graph
+**Prioritization** — Rank 4 · Importance: H · Difficulty: M · Rationale: Many required features still need to be added.
+
 > **In one line: adding a new graph, filter, or measurement touches one place.**
 >
 > During development under a tight schedule, when a developer adds a new graph, filter, or measurement to the codebase, the addition is incremental without changing codes for the existing graphs — **≤ 1 existing module changed** (common parts only), 8 person-days per feature.
 
-**Related requirement**
+**Related requirements in the project description**
 - *"support the addition of new measurements, filters, graphs, and display modes without major redesign of existing code."*
 
 | Element | Content |
@@ -308,11 +316,13 @@ Beat period = 3600 s ÷ BPH:
 **Related FRs** — all requirements
 
 ### QAS-5 · Usability — Reading and Operating on the Touchscreen
+**Prioritization** — Rank 5 · Importance: M · Difficulty: M · Rationale: The small touchscreen limits layout choices.
+
 > **In one line: on the small 1280×800 touchscreen, the three key readings are readable at a glance and operable by finger.**
 >
 > On the Raspberry Pi 5's 1280×800 (8-inch) touchscreen, when the user reads measurement values and switches modes in the GUI, key readings are shown legibly and primary functions operate by touch alone — rate / beat error / amplitude visible simultaneously, uppercase letter height ≥ 2.9 mm, touch targets ≥ 9 mm. Physical sizes (mm) are normative.
 
-**Related requirement**
+**Related requirements in the project description**
 - *"The GUI should support ease of use by clearly showing … the calculated values that matter most to the user, such as rate, beat error, amplitude."*
 
 | Element | Content |
@@ -331,18 +341,6 @@ Beat period = 3600 s ÷ BPH:
   - Pixel equivalents on this panel (8″ 1280×800 → √(1280²+800²)/8 ≈ 189 PPI, 1 px ≈ 0.135 mm): letter height 2.9 mm ≈ **22 px**, touch target 9 mm ≈ **67 px** (advisory — mm is normative)
 
 **Related FRs** — [FR-06-06](#g06--beat-error-display-and-diagnostic-trace), [FR-01-05](#g01--watch-position-testing), [FR-04-03](#g04--multi-position-sequence-display), [FR-02-06](#g02--trace-display), [FR-06-11·13](#g06--beat-error-display-and-diagnostic-trace) (at-a-glance readings, position indication, alerts)
-
-## Priority
-
-ATAM style: each scenario carries an (**I**mportance, **D**ifficulty) pair, H/M/L. The H/H scenarios shape the architecture most.
-
-| Priority | QAS | Quality | I | D | Rationale |
-|----------|-----|---------|---|---|-----------|
-| 1 | [QAS-1](#qas-1--performance-latency--from-sound-input-to-screen-display) | Performance (Latency) | H | H | The result must appear quickly, and the Pi may be the bottleneck |
-| 2 | [QAS-2](#qas-2) | Reliability | H | H | Noisy or weak signals are likely in actual use |
-| 3 | [QAS-3](#qas-3--consistency--consistent-values-across-displays) | Consistency | H | M | Users should not see different values for the same result |
-| 4 | [QAS-4](#qas-4--modifiability-extensibility--adding-a-new-measurementfiltergraph) | Modifiability | H | M | Many required features still need to be added |
-| 5 | [QAS-5](#qas-5--usability--reading-and-operating-on-the-touchscreen) | Usability | M | M | The small touchscreen limits layout choices |
 
 ## Design Constraints
 

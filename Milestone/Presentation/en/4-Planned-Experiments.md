@@ -4,7 +4,7 @@
 
 ## Terminology
 
-The terms used in this document are defined in the consolidated [Glossary](Milestone1_6-Glossary.md).
+The terms used in this document are defined in the consolidated [Glossary](6-Glossary.md).
 
 ## Risk-to-Experiment Map
 
@@ -12,15 +12,15 @@ The terms used in this document are defined in the consolidated [Glossary](Miles
 
 | Experiment | Risks Addressed | Related QAS | Priority | Core Question |
 |---|---|---|---|---|
-| [EXP-01](#exp-01-avalonia-rendering-backend-on-the-rpi5) | [R-05](Milestone1_3-Risk-Assessment.md#a-real-time-performance-rpi) | [QAS-1](Milestone1_2-Architectural-Drivers.md#qas-1--performance-latency--from-sound-input-to-screen-display) | **High** | If we choose C#, how do we remove the Avalonia-on-RPi5 rendering risk? |
-| [EXP-02](#exp-02-rpi5-real-time-sample-rate-ceiling) | [R-01](Milestone1_3-Risk-Assessment.md#a-real-time-performance-rpi), [R-03](Milestone1_3-Risk-Assessment.md#a-real-time-performance-rpi) | [QAS-1](Milestone1_2-Architectural-Drivers.md#qas-1--performance-latency--from-sound-input-to-screen-display) | **High** | What is the highest sample rate the RPi5 can process in real time? |
-| [EXP-03](#exp-03-gui-real-time-rendering-design-patterns) | [R-02](Milestone1_3-Risk-Assessment.md#a-real-time-performance-rpi) | [QAS-1](Milestone1_2-Architectural-Drivers.md#qas-1--performance-latency--from-sound-input-to-screen-display), [QAS-4](Milestone1_2-Architectural-Drivers.md#qas-4--modifiability-extensibility--adding-a-new-measurementfiltergraph) | **High** | Which design patterns should we apply first to improve GUI real-time performance? |
-| [EXP-04](#exp-04-on-device-tinyml-inference-feasibility) | [R-17](Milestone1_3-Risk-Assessment.md#f-project--process) | [QAS-1](Milestone1_2-Architectural-Drivers.md#qas-1--performance-latency--from-sound-input-to-screen-display), [QAS-2](Milestone1_2-Architectural-Drivers.md#qas-2) | Mid | Can we add TinyML inference and still hold real-time behavior and trustworthiness? |
-| [EXP-05](#exp-05-long-run-stability-24h) | [R-04](Milestone1_3-Risk-Assessment.md#a-real-time-performance-rpi) | [QAS-1](Milestone1_2-Architectural-Drivers.md#qas-1--performance-latency--from-sound-input-to-screen-display) | Mid | Do memory/latency degrade over long runs? |
+| [EXP-01](#exp-01-avalonia-rendering-backend-on-the-rpi5) | [R-05](3-Risk-Assessment.md#a-real-time-performance-rpi) | [QAS-1](2-Architectural-Drivers.md#qas-1--performance-latency--from-sound-input-to-screen-display) | **High** | If we choose C#, how do we remove the Avalonia-on-RPi5 rendering risk? |
+| [EXP-02](#exp-02-rpi5-real-time-sample-rate-ceiling) | [R-01](3-Risk-Assessment.md#a-real-time-performance-rpi), [R-03](3-Risk-Assessment.md#a-real-time-performance-rpi) | [QAS-1](2-Architectural-Drivers.md#qas-1--performance-latency--from-sound-input-to-screen-display) | **High** | What is the highest sample rate the RPi5 can process in real time? |
+| [EXP-03](#exp-03-gui-real-time-rendering-design-patterns) | [R-02](3-Risk-Assessment.md#a-real-time-performance-rpi) | [QAS-1](2-Architectural-Drivers.md#qas-1--performance-latency--from-sound-input-to-screen-display), [QAS-4](2-Architectural-Drivers.md#qas-4--modifiability-extensibility--adding-a-new-measurementfiltergraph) | **High** | Which design patterns should we apply first to improve GUI real-time performance? |
+| [EXP-04](#exp-04-on-device-tinyml-inference-feasibility) | [R-17](3-Risk-Assessment.md#f-project--process) | [QAS-1](2-Architectural-Drivers.md#qas-1--performance-latency--from-sound-input-to-screen-display), [QAS-2](2-Architectural-Drivers.md#qas-2) | Mid | Can we add TinyML inference and still hold real-time behavior and trustworthiness? |
+| [EXP-05](#exp-05-long-run-stability-24h) | [R-04](3-Risk-Assessment.md#a-real-time-performance-rpi) | [QAS-1](2-Architectural-Drivers.md#qas-1--performance-latency--from-sound-input-to-screen-display) | Mid | Do memory/latency degrade over long runs? |
 
 ## EXP-01: Avalonia rendering backend on the RPi5
 
-**Risks:** [R-05](Milestone1_3-Risk-Assessment.md#a-real-time-performance-rpi) · **QAS:** [QAS-1](Milestone1_2-Architectural-Drivers.md#qas-1--performance-latency--from-sound-input-to-screen-display) · **Priority:** High
+**Risks:** [R-05](3-Risk-Assessment.md#a-real-time-performance-rpi) · **QAS:** [QAS-1](2-Architectural-Drivers.md#qas-1--performance-latency--from-sound-input-to-screen-display) · **Priority:** High
 
 ### Results & Recommendations
 
@@ -58,7 +58,7 @@ In progress
 1. **Build the benchmark test** — add a diagnostic measurement mode to the app: lock each rendering backend (GLX/EGL/Software) with no fallback, drive the real graph pipeline under a heavy per-frame redraw load (using a synthetic Sim signal), and collect frame intervals over a fixed window — while recording which GL renderer is actually active to tell HW acceleration from software fallback.
 2. **Verify the benchmark on Windows** with a short measurement (end-to-end sanity check).
 3. **Deploy to the RPi5 and measure** — run each of the three backends with a warmup followed by ~30 s of measurement.
-4. **Compare results → derive the backend recommendation** — record it here and in [Risk Assessment (R-05)](Milestone1_3-Risk-Assessment.md#a-real-time-performance-rpi).
+4. **Compare results → derive the backend recommendation** — record it here and in [Risk Assessment (R-05)](3-Risk-Assessment.md#a-real-time-performance-rpi).
 
 **Completion criteria:** the experiment will be complete once ① all three backends are measured, ② the active-renderer (HW-acceleration) status is confirmed, and ③ a backend recommendation is derived.
 
@@ -74,7 +74,7 @@ In progress
 
 ## EXP-02: RPi5 real-time sample-rate ceiling
 
-**Risks:** [R-01](Milestone1_3-Risk-Assessment.md#a-real-time-performance-rpi), [R-03](Milestone1_3-Risk-Assessment.md#a-real-time-performance-rpi) · **QAS:** [QAS-1](Milestone1_2-Architectural-Drivers.md#qas-1--performance-latency--from-sound-input-to-screen-display) · **Priority:** High
+**Risks:** [R-01](3-Risk-Assessment.md#a-real-time-performance-rpi), [R-03](3-Risk-Assessment.md#a-real-time-performance-rpi) · **QAS:** [QAS-1](2-Architectural-Drivers.md#qas-1--performance-latency--from-sound-input-to-screen-display) · **Priority:** High
 
 ### Results & Recommendations
 
@@ -131,7 +131,7 @@ In progress — first GUI E2E latency measurement done (Simulation); Live-microp
 
 ## EXP-03: GUI real-time rendering design patterns
 
-**Risks:** [R-02](Milestone1_3-Risk-Assessment.md#a-real-time-performance-rpi) · **QAS:** [QAS-1](Milestone1_2-Architectural-Drivers.md#qas-1--performance-latency--from-sound-input-to-screen-display), [QAS-4](Milestone1_2-Architectural-Drivers.md#qas-4--modifiability-extensibility--adding-a-new-measurementfiltergraph) · **Priority:** High
+**Risks:** [R-02](3-Risk-Assessment.md#a-real-time-performance-rpi) · **QAS:** [QAS-1](2-Architectural-Drivers.md#qas-1--performance-latency--from-sound-input-to-screen-display), [QAS-4](2-Architectural-Drivers.md#qas-4--modifiability-extensibility--adding-a-new-measurementfiltergraph) · **Priority:** High
 
 ### Results & Recommendations
 
@@ -153,7 +153,7 @@ Planned
 
 - GUI-performance pattern comparison table (effect, application difficulty, schedule impact)
 - Priority pattern set (1st / 2nd) and the list of target modules
-- PoC scope and verification checklist for the pattern application
+- technical experiment scope and verification checklist for the pattern application
 
 ### Resources Needed
 
@@ -166,13 +166,13 @@ Planned
 ### Experiment Description
 
 1. Identify the GUI refresh-path bottleneck and shortlist applicable design-pattern candidates.
-2. Compare candidate patterns with small PoCs, measuring latency, frame stability, and implementation difficulty.
+2. Compare candidate patterns with technical experiments, measuring latency, frame stability, and implementation difficulty.
 3. Per SAP criteria, finalize the first-priority pattern set and decide the milestone application scope.
 
 ### Duration
 
 - D1–D2: Bottleneck analysis and candidate-pattern shortlist
-- D3–D4: Pattern PoC and comparative measurement
+- D3–D4: Pattern technical experiment and comparative measurement
 - D5: SAP judgment and application-priority finalization
 
 ### Links & References
@@ -181,7 +181,7 @@ Planned
 
 ## EXP-04: On-device TinyML inference feasibility
 
-**Risks:** [R-17](Milestone1_3-Risk-Assessment.md#f-project--process) · **QAS:** [QAS-1](Milestone1_2-Architectural-Drivers.md#qas-1--performance-latency--from-sound-input-to-screen-display), [QAS-2](Milestone1_2-Architectural-Drivers.md#qas-2) · **Priority:** Mid
+**Risks:** [R-17](3-Risk-Assessment.md#f-project--process) · **QAS:** [QAS-1](2-Architectural-Drivers.md#qas-1--performance-latency--from-sound-input-to-screen-display), [QAS-2](2-Architectural-Drivers.md#qas-2) · **Priority:** Mid
 
 ### Results & Recommendations
 
@@ -228,7 +228,7 @@ In progress
 
 ## EXP-05: Long-run stability (24h+)
 
-**Risks:** [R-04](Milestone1_3-Risk-Assessment.md#a-real-time-performance-rpi) · **QAS:** [QAS-1](Milestone1_2-Architectural-Drivers.md#qas-1--performance-latency--from-sound-input-to-screen-display) · **Priority:** Mid
+**Risks:** [R-04](3-Risk-Assessment.md#a-real-time-performance-rpi) · **QAS:** [QAS-1](2-Architectural-Drivers.md#qas-1--performance-latency--from-sound-input-to-screen-display) · **Priority:** Mid
 
 ### Results & Recommendations
 

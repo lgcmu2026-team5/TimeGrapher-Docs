@@ -1,10 +1,10 @@
 # Architectural Drivers
 
-**목차** — [Functional Requirements (FR)](#functional-requirements) · [Quality Attribute Scenarios (QAS)](#quality-attribute-scenarios) · [우선순위 (Priority)](#우선순위) · [설계 제약사항 (Design Constraints)](#설계-제약사항)
+**목차** — [Functional Requirements (FR)](#functional-requirements) · [Quality Attribute Scenarios (QAS)](#quality-attribute-scenarios) · [설계 제약사항 (Design Constraints)](#설계-제약사항)
 
 ## Glossary
 
-아래 기능 요구사항 전반에서 사용되는 도메인 용어는 통합 [Glossary](Milestone1_6-Glossary.md)에 정의되어 있다 — **도메인 용어** 참조.
+아래 기능 요구사항 전반에서 사용되는 도메인 용어는 통합 [Glossary](6-Glossary.md)에 정의되어 있다 — **도메인 용어** 참조.
 
 ## Functional Requirements
 
@@ -200,14 +200,16 @@
 
 ### 용어 설명
 
-아래 시나리오에서 사용되는 지표·단위·표준 용어는 통합 [Glossary](Milestone1_6-Glossary.md)에 정의되어 있다 — **품질 속성·측정 용어** 참조.
+아래 시나리오에서 사용되는 지표·단위·표준 용어는 통합 [Glossary](6-Glossary.md)에 정의되어 있다 — **품질 속성·측정 용어** 참조.
 
 ### QAS-1 · Performance (Latency) — 소리 입력에서 화면 표시까지
+**우선순위** — 1순위 · 중요도: H · 난이도: H · 근거: 결과가 빨리 떠야 하고, Pi 성능이 병목이 될 수 있음.
+
 > **한 줄 요약: 최고 목표 비트율 43200 BPH에서도 한 비트 주기(83.3 ms) 안에 분석 결과가 화면에 나타난다.**
 >
 > Raspberry Pi 5에서 Live, Playback, 또는 Simulation으로 측정하는 동안 오디오 샘플 블록이 입력 → 분석 → 표시 흐름에 들어오면, 시스템은 그 블록을 분석해 화면에 표시하고 세 지연 구간(capture-to-processing, processing-to-display, total end-to-end)을 기록하며, 지원하는 BPH에서 total end-to-end latency의 worst-case가 **한 비트 주기를 넘지 않아야 한다** — 43200 BPH에서 **≤ 83.3 ms**, 28800 BPH에서 **≤ 125.0 ms**.
 
-**관련 요구사항**
+**프로젝트 기술서상의 관련 요구사항**
 - *"The system shall record the time difference between (1) when an audio sample block is captured, (2) when that block is processed for beat detection and measurement, and (3) when the corresponding waveform segment and computed readings are displayed in the GUI."*
 - *"Teams shall report capture-to-processing latency, processing-to-display latency, and total end-to-end latency in milliseconds, together with average and worst-case values, as well as counts of dropped audio blocks and missed beat detections."*
 
@@ -238,11 +240,13 @@
 <a id="qas-2"></a>
 
 ### QAS-2 · Reliability — 잡음·약신호 환경
+**우선순위** — 2순위 · 중요도: H · 난이도: H · 근거: 실제 사용 환경에서는 잡음이나 약한 신호가 자주 생길 수 있음.
+
 > **한 줄 요약: 잡음 속에서도 신호가 충분할 때는 측정 서비스를 신뢰 가능하게 유지하고, 부족하면 "신호 약함"을 표시한 뒤 적절하게 처리한다.**
 >
 > 잡음이 포함된 열악한 작업 환경에서 잡음 섞인 시계 소리 또는 약한 시계 소리가 잡음 제거·비트 감지 부분에 들어오면, 시스템은 신호를 수용해 제한된 오차 안의 측정값을 내거나, 품질 임계 미만 입력에는 "신호 약함"을 표시하고 적절하게 처리한다. SNR ≥ 30 dB에서 수용된 입력은 감지율 **≥ 95%**이고, 표시 일오차가 **Sim/Playback 기준 일오차에서 ±3 s/d 이내**여야 한다.
 
-**관련 요구사항**
+**프로젝트 기술서상의 관련 요구사항**
 - *"the system should degrade gracefully when the signal is weak, noisy, or partially missing, rather than producing unstable or misleading outputs."*
 
 | 요소 | 내용 |
@@ -261,11 +265,13 @@
 **관련 FR** — [FR-12-08](#g12--scope-function-with-multiple-filter-views), [FR-05-17…18](#g05--beat-noise-scope-display) (잡음 필터링·averaging)
 
 ### QAS-3 · Consistency — 표시 간 값 일치
+**우선순위** — 3순위 · 중요도: H · 난이도: M · 근거: 같은 측정 결과가 화면마다 다르게 보이면 안 됨.
+
 > **한 줄 요약: 화면의 모든 숫자와 그래프는 같은 소스 데이터에서 나온다.**
 >
 > 평소처럼 측정하는 동안 분석/계산 단계가 하나의 소스 데이터를 여러 그래프·숫자 표시에 전달하면, 한 프레임에 함께 표시되는 모든 것이 그 단일 소스 데이터에서 파생되어 일치하며, 10분 실행 동안 **불일치 0회**이어야 한다.
 
-**관련 요구사항**
+**프로젝트 기술서상의 관련 요구사항**
 - *"remaining internally consistent across the GUI, derived measurements, and longer-term summaries"*
 - *"calculations and visualizations are based on the same underlying data."*
 
@@ -285,11 +291,13 @@
 **관련 FR** — [FR-12-05](#g12--scope-function-with-multiple-filter-views), [FR-06-06](#g06--beat-error-display-and-diagnostic-trace), [FR-02-07…08](#g02--trace-display) (여러 뷰·요약이 같은 데이터를 표시)
 
 ### QAS-4 · Modifiability (Extensibility) — 새 측정/필터/그래프 추가
+**우선순위** — 4순위 · 중요도: H · 난이도: M · 근거: 아직 추가해야 할 기능이 많음.
+
 > **한 줄 요약: 새 그래프·필터·측정값 추가 = 한 곳만 고친다.**
 >
 > 일정이 촉박한 개발 중에 개발자가 코드베이스에 새 그래프·필터·측정값을 추가하려 할 때, 기존 코드를 뜯어고치지 않고 점진적으로 추가하며, 기존 모듈 변경 **≤ 1개**(공통 부분만) · 기능당 8 person-days이어야 한다.
 
-**관련 요구사항**
+**프로젝트 기술서상의 관련 요구사항**
 - *"support the addition of new measurements, filters, graphs, and display modes without major redesign of existing code."*
 
 | 요소 | 내용 |
@@ -308,11 +316,13 @@
 **관련 FR** — 모든 요구사항
 
 ### QAS-5 · Usability — 터치스크린에서 읽기·조작
+**우선순위** — 5순위 · 중요도: M · 난이도: M · 근거: 작은 터치스크린이라 화면 배치가 제한됨.
+
 > **한 줄 요약: 작은 1280×800 터치스크린에서도 핵심 값 3개를 한눈에 읽고 손가락으로 조작한다.**
 >
 > Raspberry Pi 5의 1280×800(8인치) 터치스크린에서 사용자가 GUI의 측정값을 읽고 모드를 전환할 때, 핵심 측정값을 가독성 있게 표시하고 주요 기능을 터치만으로 조작할 수 있으며, 일오차·비트 에러·진폭 동시 표시 · 영어 대문자 글자 높이 ≥ 2.9 mm · 터치 타깃 ≥ 9 mm를 만족해야 한다. 물리 크기(mm)가 규범 기준.
 
-**관련 요구사항**
+**프로젝트 기술서상의 관련 요구사항**
 - *"The GUI should support ease of use by clearly showing … the calculated values that matter most to the user, such as rate, beat error, amplitude."*
 
 | 요소 | 내용 |
@@ -331,18 +341,6 @@
   - 본 패널 기준 px 환산 (8″ 1280×800 → √(1280²+800²)/8 ≈ 189 PPI, 1 px ≈ 0.135 mm): 글자 높이 2.9 mm ≈ **22 px**, 터치 타깃 9 mm ≈ **67 px** (참고용 — 규범 기준은 mm)
 
 **관련 FR** — [FR-06-06](#g06--beat-error-display-and-diagnostic-trace), [FR-01-05](#g01--watch-position-testing), [FR-04-03](#g04--multi-position-sequence-display), [FR-02-06](#g02--trace-display), [FR-06-11·13](#g06--beat-error-display-and-diagnostic-trace) (한눈에 읽기·포지션 표시·경보)
-
-## 우선순위
-
-ATAM 방식: 각 시나리오에 (**I**중요도, **D**난이도) 쌍을 부여(H/M/L). H/H 시나리오가 아키텍처를 가장 좌우한다.
-
-| 순위 | QAS | 품질 속성 | I | D | 근거 |
-|------|-----|----------|---|---|------|
-| 1 | [QAS-1](#qas-1--performance-latency--소리-입력에서-화면-표시까지) | Performance (Latency) | H | H | 결과가 빨리 떠야 하고, Pi 성능이 병목이 될 수 있음 |
-| 2 | [QAS-2](#qas-2) | Reliability | H | H | 실제 사용 환경에서는 잡음이나 약한 신호가 자주 생길 수 있음 |
-| 3 | [QAS-3](#qas-3--consistency--표시-간-값-일치) | Consistency | H | M | 같은 측정 결과가 화면마다 다르게 보이면 안 됨 |
-| 4 | [QAS-4](#qas-4--modifiability-extensibility--새-측정필터그래프-추가) | Modifiability | H | M | 아직 추가해야 할 기능이 많음 |
-| 5 | [QAS-5](#qas-5--usability--터치스크린에서-읽기조작) | Usability | M | M | 작은 터치스크린이라 화면 배치가 제한됨 |
 
 ## 설계 제약사항
 
