@@ -9,8 +9,13 @@
 
 🔗 [Quire URL](https://quire.io/w/SUNYOUNG_OH/40?filter=all&share=ud59lcpw1fx35wkwjcub6tdurt5iyg&view=timeline)
 
-## Legend
+## Legend (timeline-based)
 
-- ⬜ Completed · 🟨 In Progress · 🟦 Planned · 🟥 Delayed · 📍 vertical line = today (charts)
+- Colors
+  - ⬛ Gray: Completed
+  - 🟥 Red: Overdue (past the period but not completed)
+  - 🟨 Yellow: In Progress
+  - 🟦 Blue: Planned
+- ◆ review milestone (charts) · yellow vertical line = today (charts)
+- Arrow = task order (dependency). A→B means B can start only after A is done.
 - "All" in assignments = all six team members
-- A curved line between tasks indicates that the outcome of the source task affects the target task.
