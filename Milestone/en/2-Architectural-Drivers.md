@@ -235,8 +235,6 @@ Beat period = 3600 s ÷ BPH:
 | 36000 | 10 beats/s | 100.0 ms |
 | 43200 | 12 beats/s | 83.3 ms |
 
-**Related FRs** — [FR-08-01](#g08--escapement-analyzer-and-marker-line-display), [FR-12-04](#g12--scope-function-with-multiple-filter-views), [FR-05-03](#g05--beat-noise-scope-display), [FR-12-14](#g12--scope-function-with-multiple-filter-views) (Live display and low-latency feedback features)
-
 <a id="qas-2"></a>
 
 ### QAS-2 · Reliability — Under Noisy or Weak Signals
@@ -262,8 +260,6 @@ Beat period = 3600 s ÷ BPH:
 - **30 dB** — the worst clean recording measured with the team's microphone (30–51 dB over 9 recordings): a severe condition reachable only by deliberate noise injection; provisional.
 - **±3 s/d** — the allowed difference between the displayed rate and the Sim/Playback reference rate; the width is based on roughly half of the tightest Witschi grade band (Chronometer −2…+6 s/d). **95 %** is a team target to confirm by experiment.
 
-**Related FRs** — [FR-12-08](#g12--scope-function-with-multiple-filter-views), [FR-05-17…18](#g05--beat-noise-scope-display) (noise filtering, averaging)
-
 ### QAS-3 · Consistency — Consistent Values Across Displays
 **Prioritization** — Rank 3 · Importance: H · Difficulty: M · Rationale: Users should not see different values for the same result.
 
@@ -288,8 +284,6 @@ Beat period = 3600 s ÷ BPH:
 - **0** is the only sensible target — consistency is a correctness-class property, not a tunable number.
 - The check is genuinely verifiable because each display exposes which source data it came from.
 
-**Related FRs** — [FR-12-05](#g12--scope-function-with-multiple-filter-views), [FR-06-06](#g06--beat-error-display-and-diagnostic-trace), [FR-02-07…08](#g02--trace-display) (views and summaries showing the same data)
-
 ### QAS-4 · Modifiability (Extensibility) — Adding a New Measurement/Filter/Graph
 **Prioritization** — Rank 4 · Importance: H · Difficulty: M · Rationale: Many required features still need to be added.
 
@@ -312,8 +306,6 @@ Beat period = 3600 s ÷ BPH:
 **Why these numbers**
 - 12 mandatory features in a 3-week schedule — only a bounded touch surface makes that feasible.
 - Milestone 2/3 schedule (16 days) × 6 team members / 12 features = 8 person-days per feature.
-
-**Related FRs** — all requirements
 
 ### QAS-5 · Usability — Reading and Operating on the Touchscreen
 **Prioritization** — Rank 5 · Importance: M · Difficulty: M · Rationale: The small touchscreen limits layout choices.
@@ -339,8 +331,6 @@ Beat period = 3600 s ÷ BPH:
 - **Uppercase letter height ≥ 2.9 mm** — considering full-screen visibility (SMPTE), character legibility (ISO 9241-303), and room for touch operation, the design viewing distance is conservatively set to 50 cm. At 50 cm, ISO 9241-303's recommended glyph size of ≥ 20 arcmin converts to 2.9 mm — a viewing-distance-based physical size, independent of panel resolution.
   - Calculation: 20 arcmin = 20/60° = 0.333° ≈ 0.00582 rad → letter height = viewing distance × visual angle = 500 mm × 0.00582 ≈ **2.9 mm**
   - Pixel equivalents on this panel (8″ 1280×800 → √(1280²+800²)/8 ≈ 189 PPI, 1 px ≈ 0.135 mm): letter height 2.9 mm ≈ **22 px**, touch target 9 mm ≈ **67 px** (advisory — mm is normative)
-
-**Related FRs** — [FR-06-06](#g06--beat-error-display-and-diagnostic-trace), [FR-01-05](#g01--watch-position-testing), [FR-04-03](#g04--multi-position-sequence-display), [FR-02-06](#g02--trace-display), [FR-06-11·13](#g06--beat-error-display-and-diagnostic-trace) (at-a-glance readings, position indication, alerts)
 
 ## Design Constraints
 

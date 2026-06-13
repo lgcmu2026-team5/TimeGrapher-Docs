@@ -235,8 +235,6 @@
 | 36000 | 10 beats/s | 100.0 ms |
 | 43200 | 12 beats/s | 83.3 ms |
 
-**관련 FR** — [FR-08-01](#g08--escapement-analyzer-and-marker-line-display), [FR-12-04](#g12--scope-function-with-multiple-filter-views), [FR-05-03](#g05--beat-noise-scope-display), [FR-12-14](#g12--scope-function-with-multiple-filter-views) (실시간/Live 표시 및 저지연 피드백 기능)
-
 <a id="qas-2"></a>
 
 ### QAS-2 · Reliability — 잡음·약신호 환경
@@ -262,8 +260,6 @@
 - **30 dB** — 팀 마이크로 실측한 최악 클린 녹음(9개, 30–51 dB)중 제일 심한 조건 — 의도적 잡음 주입으로만 도달; 잠정값.
 - **±3 s/d** — 표시된 일오차가 Sim/Playback의 기준 일오차에서 벗어날 수 있는 허용 폭. 폭은 가장 엄격한 Witschi 등급 대역(Chronometer −2…+6 s/d)의 약 절반을 기준으로 둔다. **95%**는 실험으로 확정할 팀 목표.
 
-**관련 FR** — [FR-12-08](#g12--scope-function-with-multiple-filter-views), [FR-05-17…18](#g05--beat-noise-scope-display) (잡음 필터링·averaging)
-
 ### QAS-3 · Consistency — 표시 간 값 일치
 **우선순위** — 3순위 · 중요도: H · 난이도: M · 근거: 같은 측정 결과가 화면마다 다르게 보이면 안 됨.
 
@@ -288,8 +284,6 @@
 - **0** 이 유일하게 말이 되는 목표 — 일관성은 정합성 계열 속성이지 조정 가능한 수치가 아님.
 - 각 표시가 어느 소스 데이터에서 왔는지 노출하므로 "0"을 실제로 검증 가능.
 
-**관련 FR** — [FR-12-05](#g12--scope-function-with-multiple-filter-views), [FR-06-06](#g06--beat-error-display-and-diagnostic-trace), [FR-02-07…08](#g02--trace-display) (여러 뷰·요약이 같은 데이터를 표시)
-
 ### QAS-4 · Modifiability (Extensibility) — 새 측정/필터/그래프 추가
 **우선순위** — 4순위 · 중요도: H · 난이도: M · 근거: 아직 추가해야 할 기능이 많음.
 
@@ -312,8 +306,6 @@
 **측정값 근거**
 - 3주 일정에 필수 기능 12종 — 좁은 변경 표면이어야만 가능한 일정.
 - 마일스톤2/3 일정 (16일) * 조 인원 (6명) / 기능 수 (12) = 8 person-days.
-
-**관련 FR** — 모든 요구사항
 
 ### QAS-5 · Usability — 터치스크린에서 읽기·조작
 **우선순위** — 5순위 · 중요도: M · 난이도: M · 근거: 작은 터치스크린이라 화면 배치가 제한됨.
@@ -339,8 +331,6 @@
 - **영어 대문자 글자 높이 ≥ 2.9 mm** — 화면 전체 가시성(SMPTE)·글자 가독성(ISO 9241-303)·터치 조작 여유를 고려해 설계 시야 거리를 보수적으로 50 cm로 채택. 50 cm에서 ISO 9241-303 권장 글자 크기 ≥ 20 arcmin을 환산하면 2.9 mm — 시야 거리 기반 물리 크기로, 패널 해상도와 무관.
   - 계산: 20 arcmin = 20/60° = 0.333° ≈ 0.00582 rad → 글자 높이 = 시야 거리 × 시각 = 500 mm × 0.00582 ≈ **2.9 mm**
   - 본 패널 기준 px 환산 (8″ 1280×800 → √(1280²+800²)/8 ≈ 189 PPI, 1 px ≈ 0.135 mm): 글자 높이 2.9 mm ≈ **22 px**, 터치 타깃 9 mm ≈ **67 px** (참고용 — 규범 기준은 mm)
-
-**관련 FR** — [FR-06-06](#g06--beat-error-display-and-diagnostic-trace), [FR-01-05](#g01--watch-position-testing), [FR-04-03](#g04--multi-position-sequence-display), [FR-02-06](#g02--trace-display), [FR-06-11·13](#g06--beat-error-display-and-diagnostic-trace) (한눈에 읽기·포지션 표시·경보)
 
 ## 설계 제약사항
 
