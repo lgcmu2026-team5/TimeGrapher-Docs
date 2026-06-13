@@ -22,7 +22,7 @@ Risk ID | Risk Title | Type | QAS | P | I
 [R-02](#a-real-time-performance-rpi) 🔴 | Rendering four filters + multiple graphs at once makes the screen stutter | T | [QAS-1](2-Architectural-Drivers.md#qas-1--performance-latency--from-sound-input-to-screen-display)<br>[QAS-5](2-Architectural-Drivers.md#qas-5--usability--reading-and-operating-on-the-touchscreen) | M | **H**
 [R-03](#a-real-time-performance-rpi) 🔴 | Analysis + display exceed the beat-period budget (83.3 ms @ 43200 BPH) — backlog, stale display, block drop, missed beats | T | [QAS-1](2-Architectural-Drivers.md#qas-1--performance-latency--from-sound-input-to-screen-display) | M | **H**
 [R-04](#a-real-time-performance-rpi) 🔴 | Long continuous runs (24h+) leak memory and degrade or crash | T | [QAS-1](2-Architectural-Drivers.md#qas-1--performance-latency--from-sound-input-to-screen-display) | M | M
-[R-05](#a-real-time-performance-rpi) | Closed: .NET (C#) + Avalonia UI selected after RPi5 latency/rendering checks | T | [QAS-1](2-Architectural-Drivers.md#qas-1--performance-latency--from-sound-input-to-screen-display) | L | L
+[R-05](#a-real-time-performance-rpi) 🔴 | Closed: .NET (C#) + Avalonia UI selected after RPi5 latency/rendering checks | T | [QAS-1](2-Architectural-Drivers.md#qas-1--performance-latency--from-sound-input-to-screen-display) | L | L
 [R-06](#b-signal-processing--measurement-trustworthiness) | A/C event positions not found to 0.1 ms — rate, beat error, amplitude all contaminated | T | [QAS-2](2-Architectural-Drivers.md#qas-2)<br>[QAS-3](2-Architectural-Drivers.md#qas-3--consistency--consistent-values-across-displays) | **H** | **H**
 [R-07](#b-signal-processing--measurement-trustworthiness) | Noisy/weak signals produce misleading values instead of a graceful "signal weak" | T | [QAS-2](2-Architectural-Drivers.md#qas-2) | M | **H**
 [R-08](#c-architecture--extensibility) | No up-front filter/marker extension design — late-stage cost soars | T | [QAS-4](2-Architectural-Drivers.md#qas-4--modifiability-extensibility--adding-a-new-measurementfiltergraph) | M | M
@@ -86,7 +86,7 @@ Risk ID | Risk Title | Type | QAS | P | I
   - **Mitigation**: Monitor the long-term RSS trend; design buffer caps and aggregation
   - **Comment**: First verify memory leaks in the current code (experiment)
 
-- **R-05 — Closed: .NET (C#) + Avalonia UI selected after RPi5 latency/rendering checks**
+- **🔴 R-05 — Closed: .NET (C#) + Avalonia UI selected after RPi5 latency/rendering checks**
   - **Evidence**: [QAS-1 latency result](../../result_latency.md) passed all Simulation and WAV replay conditions: worst-case E2E latency stayed inside the beat-period budget, dropped audio samples = 0, and missed beat detections = 0. The [rendering backend result](../../result_renderer.md) also did not reproduce the reported Avalonia-on-RPi5 slowdown: GLX/EGL GPU rendering reached about 60 FPS and SW rendering was slower.
   - **Probability / Impact**: Low / Low
   - **Grading rationale**
