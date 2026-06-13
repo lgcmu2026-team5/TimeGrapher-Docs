@@ -2,7 +2,7 @@
 
 - 실험 계획: [PLANNED_EXPERIMENTS.md](PLANNED_EXPERIMENTS.md)
 - 대상 리스크: R-A2 (Avalonia 사용 시 RPi5에서 GPU 가속 렌더링이 버그로 SW 렌더링보다 느려 그래프 갱신이 끊길 수 있다)
-- 수행일: 2026-06-06 (1주차 spike, 당일 완료)
+- 수행일: 2026-06-06 (1주차 technical experiment, 당일 완료)
 
 ## 한 줄 결론
 
@@ -19,9 +19,6 @@
 | 워크로드 | Sim 모드(28800bph)로 실제 분석→렌더 파이프라인 가동, 매 컴포지션 프레임마다 Rate/Scope 그래프 강제 리드로우 |
 | 측정 | 백엔드별 워밍업 5초 + 측정 30초, 프레임 간격 통계 수집 |
 
-워크로드 참고: 평상시 앱은 약 10–12Hz로만 갱신하면 충분하다.
-이 실험은 매 프레임 리드로우를 강제했으므로 **실사용보다 5배 이상 가혹한 조건**이다.
-
 ## 측정 결과
 
 | 렌더링 백엔드 | GL 렌더러 | FPS | 평균 | p50 | p95 | p99 | 최대 |
@@ -30,7 +27,7 @@
 | EGL (GPU 가속) | Broadcom V3D 7.1.10.2 | 60.0 | 16.7ms | 16.3ms | 19.2ms | 21.7ms | 31.0ms |
 | Software (CPU) | — | 43.6 | 22.9ms | 22.2ms | 30.0ms | 33.7ms | 38.2ms |
 
-\* 측정 30초 중 1회성 스파이크 (p99가 21.0ms이므로 시작 직후 과도기로 판단)
+\* 측정 30초 중 1회성 프레임 지연 (p99가 21.0ms이므로 시작 직후 과도기로 판단)
 
 ## 해석
 
@@ -41,11 +38,9 @@
    GL 렌더러 문자열이 `V3D 7.1.10.2`(RPi5의 VideoCore GPU)로 기록됐다.
    소프트웨어 폴백(llvmpipe)이었다면 측정 자체가 무효였을 것이다.
 3. **SW 렌더링이 오히려 더 느렸다** (43.6fps, 평균 22.9ms). 보고와 방향이 반대다.
-   다만 43.6fps도 앱 요구치(10Hz 이상)의 4배가 넘으므로, 어느 백엔드든 이 앱에는 충분하다.
+   다만 43.6fps도 하드웨어 디스플레이 기준 30fps를 넘으므로, 어느 백엔드든 화면 갱신에는 충분하다.
    참고로 SW 렌더링은 vsync와 동기화되지 않아 화면 찢김(tearing)이 생길 수 있고,
    CPU를 더 쓰므로 오디오 분석 스레드와 경쟁한다 — GPU 기본값을 유지할 또 다른 이유다.
-4. 원 보고(#18807)는 출처 추적 결과 해당 사용자 앱의 거대 배경 이미지(ImageBrush)가
-   GPU 캐시를 넘쳐 생긴 문제로 종결됐고, 우리 앱에는 그런 요소가 없다. 실측 결과와 일치한다.
 
 ## 완료 기준 충족 여부
 
@@ -55,12 +50,9 @@
 | ② GL 렌더러 문자열로 하드웨어 가속 여부 확인 | O |
 | ③ 백엔드 선택 권장안 도출 | O |
 
-## 권장 사항
+## 조치 사항
 
 1. **렌더링 설정을 바꾸지 않는다.** Avalonia 기본값(GPU 우선, Software 폴백)을 유지한다.
-2. 벤치 하니스는 코드에 유지한다. 배포 환경이 바뀌면(고해상도 모니터 등) 30초 만에 재측정할 수 있다.
-3. 대형 이미지/ImageBrush는 추가하지 않는다 (원 보고의 실제 원인).
-4. **리스크 R-A2는 발생 확률을 Low로 하향하고 종결한다.**
 
 ## 참고: Windows 측정 (동일 하니스, 동일 프로토콜)
 
@@ -91,5 +83,3 @@ TimeGrapher.App.exe --render-bench --render-mode=angle    --bench-label=win-angl
 TimeGrapher.App.exe --render-bench --render-mode=wgl      --bench-label=win-wgl
 TimeGrapher.App.exe --render-bench --render-mode=software --bench-label=win-sw
 ```
-
-하니스 코드: `src/TimeGrapher.App/Diagnostics/`, `src/TimeGrapher.App/Views/MainWindow.RenderBench.cs`

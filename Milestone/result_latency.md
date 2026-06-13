@@ -1,8 +1,6 @@
 # QAS-1 Latency Experiment Results Detail
 
 > 목적: Raspberry Pi 5 실제 GUI 실행에서 수집한 `--analysis-log` CSV를 기반으로 QAS-1 latency 결과를 상세 정리한다.
->
-> 관련 문서: `Milestone1_QAS1_Latency_Risk_Experiment_Addendum.md`
 
 ## 1. 실험 개요
 
