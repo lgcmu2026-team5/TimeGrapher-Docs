@@ -22,7 +22,7 @@ Risk ID | 리스크 타이틀 | 구분 | QAS | P | I
 [R-02](#a-실시간-성능-rpi) 🔴 | 필터 4개 + 그래프 여러 개 동시 렌더링으로 화면이 버벅인다 | T | [QAS-1](2-Architectural-Drivers.md#qas-1--performance-latency--소리-입력에서-화면-표시까지)<br>[QAS-5](2-Architectural-Drivers.md#qas-5--usability--터치스크린에서-읽기조작) | M | **H**
 [R-03](#a-실시간-성능-rpi) 🔴 | 분석·표시가 비트 주기 예산(83.3 ms @ 43200 BPH)을 넘겨 backlog·stale 표시·block drop·missed beat가 발생한다 | T | [QAS-1](2-Architectural-Drivers.md#qas-1--performance-latency--소리-입력에서-화면-표시까지) | M | **H**
 [R-04](#a-실시간-성능-rpi) 🔴 | 장시간(24h+) 연속 실행 시 메모리가 새서 느려지거나 죽는다 | T | [QAS-1](2-Architectural-Drivers.md#qas-1--performance-latency--소리-입력에서-화면-표시까지) | M | M
-[R-05](#a-실시간-성능-rpi) 🔴 | Avalonia GPU 가속 렌더링이 RPi5에서 SW 렌더링보다 느려 실시간 그래프가 끊긴다 | T | [QAS-1](2-Architectural-Drivers.md#qas-1--performance-latency--소리-입력에서-화면-표시까지) | M | **H**
+[R-05](#a-실시간-성능-rpi) | 종결: RPi5 latency/rendering 확인 후 .NET (C#) + Avalonia UI 개발 결정 | T | [QAS-1](2-Architectural-Drivers.md#qas-1--performance-latency--소리-입력에서-화면-표시까지) | L | L
 [R-06](#b-신호처리--측정-신뢰성) | A·C 이벤트 위치를 0.1 ms 정밀도로 못 찾아 일오차·비트 에러·진폭 전부 오염된다 | T | [QAS-2](2-Architectural-Drivers.md#qas-2)<br>[QAS-3](2-Architectural-Drivers.md#qas-3--consistency--표시-간-값-일치) | **H** | **H**
 [R-07](#b-신호처리--측정-신뢰성) | 시끄럽거나 약한 신호에서 "신호 약함" 대신 오해를 부르는 값을 표시한다 | T | [QAS-2](2-Architectural-Drivers.md#qas-2) | M | **H**
 [R-08](#c-아키텍처--확장성) | 필터/마커 확장 구조를 미리 설계하지 않아 후반 비용이 급증한다 | T | [QAS-4](2-Architectural-Drivers.md#qas-4--modifiability-extensibility--새-측정필터그래프-추가) | M | M
@@ -86,15 +86,15 @@ Risk ID | 리스크 타이틀 | 구분 | QAS | P | I
   - **완화 방향**: 장기 RSS 추세 모니터, 버퍼 상한·집계(aggregation) 설계
   - **코멘트**: 현 코드 기준으로 메모리 릭 확인 (실험)
 
-- **🔴 R-05 — Avalonia 프레임워크 사용 시 RPi5에서 GPU 가속 렌더링이 버그로 SW 렌더링보다 느려 실시간 그래프(Rate/Scope) 갱신이 끊길 수 있다**
-  - **근거**: Avalonia GitHub에 RPi/임베디드의 GPU 가속 성능 저하 보고 다수 — `#18807, #18942, #19288, #18127`. pdf (p.25 Real Time Performance), [QAS-1](2-Architectural-Drivers.md#qas-1--performance-latency--소리-입력에서-화면-표시까지)
-  - **발생 확률 / 영향**: Medium / High
+- **R-05 — 종결: RPi5 latency/rendering 확인 후 .NET (C#) + Avalonia UI 개발 결정**
+  - **근거**: [QAS-1 latency 결과](../../result_latency.md)에서 Simulation 및 WAV 재생 조건이 모두 통과했다. worst-case E2E latency는 비트 주기 예산 안에 있었고, dropped audio samples와 missed beat detections는 모두 0이었다. [렌더링 백엔드 결과](../../result_renderer.md)에서도 Avalonia-on-RPi5 성능 저하 보고는 재현되지 않았고, GLX/EGL GPU 렌더링은 약 60 FPS에 도달했으며 SW 렌더링이 더 느렸다.
+  - **발생 확률 / 영향**: Low / Low
   - **등급 근거**
-    - P-Medium: GPU 가속 저하 보고는 많으나 원인이 제각각이라 우리 워크로드엔 안 나타날 수 있음.
-    - I-High: 실시간 그래프 끊김은 [QAS-1](2-Architectural-Drivers.md#qas-1--performance-latency--소리-입력에서-화면-표시까지) 위반(SW 렌더 1줄 전환으로 완전 완화).
-  - **완화 방향**: 1주차 technical experiment로 RPi5 실기기에서 렌더링 백엔드(GLX/EGL/Software) A/B 측정 후 백엔드 확정. 가속 경로가 느리면 Software 렌더링으로 전환(설정 1줄, 기능 손실 없음)
-  - **Tradeoff point**: 렌더링 백엔드는 UI 프레임 안정성↔CPU 점유(Software 렌더링은 오디오 분석 스레드와 CPU 경쟁)의 tradeoff point
-  - **코멘트**: 유사 보고가 여러 건 퍼져 있으나 원인이 제각각(앱 측 버그, 해상도, 드라이버 경로)이라 우리 워크로드에서의 실측 확인 필요. 1주차 technical experiment(Planned Experiments 실험 1) 결과로 렌더링 백엔드 기본값 유지/변경 결정
+    - P-Low: 현재 RPi5 앱 워크로드가 latency 예산을 충족했고 Avalonia GPU 경로에서도 보고된 성능 저하가 나타나지 않음.
+    - I-Low: Avalonia 선택에 대해 남은 아키텍처 리스크가 확인되지 않았고, 기본 GPU 우선 렌더링 경로를 사용할 수 있음.
+  - **완화 방향**: 본 리스크에 대한 추가 완화 없음.
+  - **결정**: R-05는 리스크 없음으로 종결한다. 구현은 .NET (C#) + Avalonia UI로 진행한다.
+  - **코멘트**: 배포 환경 또는 렌더링 워크로드가 크게 바뀌는 경우에만 재측정한다.
 
 ## B. 신호처리 / 측정 신뢰성
 
