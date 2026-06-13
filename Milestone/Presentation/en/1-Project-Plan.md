@@ -11,6 +11,6 @@
 
 ## Legend
 
-- 🟩 Completed · 🟨 In Progress · 🟦 Planned · ◆ review milestone (charts) · red vertical line = today (charts)
+- ⬜ Completed · 🟨 In Progress · 🟦 Planned · 🟥 Delayed · 📍 vertical line = today (charts)
 - "All" in assignments = all six team members
 - A curved line between tasks indicates that the outcome of the source task affects the target task.
