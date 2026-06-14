@@ -1,22 +1,12 @@
-# TimeGrapher
+# TimeGrapher Docs
 
-TimeGrapher 프로젝트 관련 참고자료 모음.
+TimeGrapher project documentation and reference-material repository.
 
-## 소개
+## Folders
 
-이 저장소는 TimeGrapher 프로젝트를 진행하면서 모은 참고자료들을 보관하는 공간입니다.
-문서, 자료, 메모 등을 자유롭게 추가합니다.
-
-## 구성
-
-```
-.
-├── README.md
-└── (참고자료들)
-```
-
-## 참고
-
-- 자료는 주제별로 폴더를 나눠 정리하면 찾기 편합니다.
-- 출처가 있는 자료는 링크나 출처를 함께 남겨두면 좋습니다.
-- Source code : https://github.com/lgcmu2026-team5/TimeGrapher-Net
+| Folder | Description |
+|---|---|
+| `DomainDocs/` | Domain and project reference documents. Original PDFs are under `pdf/`; Markdown conversions and extracted images are under `md/`. |
+| `Milestone/` | Milestone documents. `en/` and `ko/` hold paired English/Korean presentation files, and `m1-m2-diff/` is for milestone comparison notes. |
+| `TempDocs/` | Temporary working documents. `Implement_docs/` contains implementation requirement/checklist notes, and `porting-sourcenote/` contains Qt/C++ to .NET/Avalonia porting notes. |
+| `TestResult/` | Test and experiment result summaries, including latency and renderer result notes. |
