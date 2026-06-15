@@ -17,6 +17,9 @@ The domain terms used throughout the functional requirements below are defined i
 | FR-01-04 | recommended | The Watch-Position Testing should provide the user with support for intermediate positions. |
 | FR-01-05 | mandatory | The Watch-Position Testing shall provide the user with a clear indication of the active test position while measurements are being taken. |
 | FR-01-06 | mandatory | The Watch-Position Testing shall provide the user with measurement results associated with the active test position. |
+| FR-01-07 | optional | The Watch-Position Testing may provide the user with the accumulated beat count measured at each test position. |
+| FR-01-08 | optional | The Watch-Position Testing may provide the user with a graphical orientation indicator (e.g., crown/dial pictogram) for each test position. |
+| FR-01-09 | optional | The Watch-Position Testing may provide the user with a guided sequence that advances to the next test position once a configurable amount of measurement is reached. |
 
 ### G02 · Trace Display
 | ID | Grade | Requirement |
