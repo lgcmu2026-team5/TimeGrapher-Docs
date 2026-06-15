@@ -64,6 +64,9 @@ The domain terms used throughout the functional requirements below are defined i
 | FR-04-07 | mandatory | The Multi-Position Sequence Display shall provide the user with D, the difference between the largest and smallest measured value. |
 | FR-04-08 | recommended | The Multi-Position Sequence Display should provide the user with a comparison between vertical and horizontal positions. |
 | FR-04-09 | recommended | The Multi-Position Sequence Display should provide the user with indicators that can reveal possible balance-wheel unbalance. |
+| FR-04-10 | optional | The Multi-Position Sequence Display may provide the user with the ability to export the per-position results and the summary values (X, D) to a file. |
+| FR-04-11 | optional | The Multi-Position Sequence Display may provide the user with the ability to clear or re-measure an individual test position without resetting the whole sequence. |
+| FR-04-12 | optional | The Multi-Position Sequence Display may provide the user with a per-position elapsed-measurement-time column. |
 
 ### G05 · Beat-Noise Scope Display
 | ID | Grade | Requirement |
