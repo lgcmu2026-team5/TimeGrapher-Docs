@@ -202,6 +202,32 @@ The domain terms used throughout the functional requirements below are defined i
 
 The metric, unit, and standard terms used in the scenarios below are defined in the consolidated [Glossary](6-Glossary.md) — see **Quality-Attribute & Measurement Terms**.
 
+### QAS-0 · Accuracy — From Acoustic Event Detection to Computed Watch Metrics
+**Prioritization** — Rank 1 · Importance: H · Difficulty: H · Rationale: All watch metrics are derived from precisely timed acoustic events; any detection error propagates into every computed output.
+
+> **In one line: on a clean signal with known reference values, the system identifies the onset and peak of each beat with enough timing precision to produce a computed rate within ±1.0 s/d of the reference.**
+>
+> While measuring in Sim or Playback mode with a clean signal and known reference values, when acoustic signal data flows through acquisition, filtering, event detection, and calculation, the system correctly identifies the start/onset (A event) and peak (C event) of each tick and tock beat, preserves timing precision at every pipeline stage, and computes rate, beat error, amplitude, lift angle, BPH, and balance-wheel frequency within the allowed tolerance — on clean Sim/Playback input with no noise injection and known reference values, computed rate must be **within ±1.0 s/d** of the reference over ≥ 1,000 consecutive beats.
+
+**Related requirements in the project description**
+- *"The system shall detect the relevant watch events with sufficient accuracy to support meaningful measurement of small timing differences."*
+- *"the software must accurately identify the start/onset and peak of the important acoustic signals used to compute watch metrics such as rate, beat error, amplitude, lift angle, beats per hour, and balance-wheel frequency."*
+- *"the architecture should preserve timing precision throughout acquisition, filtering, event detection, and calculation."*
+- *"Since these measurements are derived from very small timing differences at high sample rates, slight deviations may be significant."*
+
+| Element | Content |
+|---------|---------|
+| Source | Sim/Playback input with known timing reference and no noise injection (external) |
+| Stimulus | Acoustic signal data flows through the acquisition → filtering → event detection → calculation pipeline |
+| Artifact | Event detection stage (onset and peak of A and C events) and all derived metric computations (rate, beat error, amplitude, lift angle, BPH, balance-wheel frequency) |
+| Environment | Raspberry Pi 5 running Sim/Playback mode; clean input signal with known reference values and no noise injection |
+| Response | Identify onset and peak of each beat correctly; compute rate, beat error, amplitude, lift angle, BPH, and balance-wheel frequency from those events; preserve timing precision at every pipeline stage |
+| Response Measure | Over ≥ 1,000 consecutive beats on clean Sim/Playback input with known reference and no noise injection: computed rate **within ±1.0 s/d** of the reference |
+
+**Why these numbers**
+- **±1.0 s/d** — one-eighth of the tightest Witschi grade band (Chronometer −2…+6 s/d, range 8 s/d); ensures that under clean signal conditions the computed value is a trustworthy indicator of the watch's grade; provisional.
+- System behavior under noisy or weak signals — including detection rate and graceful degradation — is a separate concern addressed in QAS-2.
+
 ### QAS-1 · Performance (Latency) — From Sound Input to Screen Display
 **Prioritization** — Rank 1 · Importance: H · Difficulty: H · Rationale: The result must appear quickly, and the Pi may be the bottleneck.
 

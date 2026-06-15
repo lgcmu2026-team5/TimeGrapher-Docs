@@ -202,6 +202,32 @@
 
 아래 시나리오에서 사용되는 지표·단위·표준 용어는 통합 [Glossary](6-Glossary.md)에 정의되어 있다 — **품질 속성·측정 용어** 참조.
 
+### QAS-0 · Accuracy — 음향 이벤트 검출에서 시계 지표 계산까지의 정확도
+**우선순위** — 1순위 · 중요도: H · 난이도: H · 근거: 모든 시계 지표는 정밀하게 타이밍된 음향 이벤트에서 파생되므로, 검출 오류는 모든 계산 결과에 전파된다.
+
+> **한 줄 요약: 잡음이 없는 깨끗한 신호와 기준값을 알 수 있는 조건에서, 시스템은 각 비트의 개시점과 피크를 충분한 타이밍 정밀도로 식별하여 계산된 일오차를 기준값 ±1.0 s/d 이내로 산출한다.**
+>
+> 기준값이 알려진 Sim 또는 Playback 모드에서 잡음이 없는 깨끗한 신호로 측정 중에, 음향 신호 데이터가 수집 → 필터링 → 이벤트 검출 → 계산 파이프라인을 통과할 때, 시스템은 각 tick 및 tock 비트의 시작점/개시점(A 이벤트)과 피크(C 이벤트)를 정확히 식별하고, 파이프라인의 모든 단계에서 타이밍 정밀도를 유지하며, 일오차(rate), 비트 에러(beat error), 진폭(amplitude), 구동각(lift angle), BPH, 밸런스 휠 주파수를 허용 오차 이내로 계산한다 — 잡음 주입 없이 기준값이 알려진 Sim/Playback 입력에서, 연속 1,000비트 이상에 걸쳐 계산된 일오차는 기준값 대비 **±1.0 s/d 이내**여야 한다.
+
+**프로젝트 기술서상의 관련 요구사항**
+- *"The system shall detect the relevant watch events with sufficient accuracy to support meaningful measurement of small timing differences."*
+- *"the software must accurately identify the start/onset and peak of the important acoustic signals used to compute watch metrics such as rate, beat error, amplitude, lift angle, beats per hour, and balance-wheel frequency."*
+- *"the architecture should preserve timing precision throughout acquisition, filtering, event detection, and calculation."*
+- *"Since these measurements are derived from very small timing differences at high sample rates, slight deviations may be significant."*
+
+| 요소 | 내용 |
+|------|------|
+| 자극유발원 | 잡음 주입 없이 알려진 타이밍 기준값이 있는 Sim/Playback 입력 (외부) |
+| 자극 | 음향 신호 데이터가 수집 → 필터링 → 이벤트 검출 → 계산 파이프라인을 통과함 |
+| 대상 | 이벤트 검출 단계(A 이벤트 및 C 이벤트의 개시점/피크)와 모든 파생 지표 계산(일오차, 비트 에러, 진폭, 구동각, BPH, 밸런스 휠 주파수) |
+| 환경 | Sim/Playback 모드로 실행 중인 Raspberry Pi 5; 잡음 주입 없이 기준값이 알려진 깨끗한 입력 신호 |
+| 응답 | 각 비트의 개시점과 피크를 정확히 식별하고, 해당 이벤트에서 일오차, 비트 에러, 진폭, 구동각, BPH, 밸런스 휠 주파수를 계산하며, 파이프라인의 모든 단계에서 타이밍 정밀도를 유지 |
+| 응답측정 | 잡음 주입 없이 기준값이 알려진 Sim/Playback 입력에서 연속 1,000비트 이상: 계산된 일오차가 기준값 대비 **±1.0 s/d 이내** |
+
+**측정값 근거**
+- **±1.0 s/d** — 가장 엄격한 Witschi 등급 대역(Chronometer −2…+6 s/d, 범위 8 s/d)의 1/8에 해당; 깨끗한 신호 조건에서 계산된 값이 시계 등급의 신뢰할 수 있는 지표임을 보장; 잠정값.
+- 잡음·약신호 환경에서의 감지율과 graceful degradation은 별도 관심사로 QAS-2에서 다룬다.
+
 ### QAS-1 · Performance (Latency) — 소리 입력에서 화면 표시까지
 **우선순위** — 1순위 · 중요도: H · 난이도: H · 근거: 결과가 빨리 떠야 하고, Pi 성능이 병목이 될 수 있음.
 
