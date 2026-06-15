@@ -12,15 +12,15 @@ The terms used in this document are defined in the consolidated [Glossary](6-Glo
 
 | Experiment | Risks Addressed | Related QAS | Priority | Core Question |
 |---|---|---|---|---|
-| [EXP-01](#exp-01-avalonia-rendering-backend-on-the-rpi5) | [R-05](3-Risk-Assessment.md#a-real-time-performance-rpi) | [QAS-1](2-Architectural-Drivers.md#qas-1--performance-latency--from-sound-input-to-screen-display) | **High** | If we choose C#, how do we remove the Avalonia-on-RPi5 rendering risk? |
-| [EXP-02](#exp-02-rpi5-real-time-sample-rate-ceiling) | [R-01](3-Risk-Assessment.md#a-real-time-performance-rpi), [R-03](3-Risk-Assessment.md#a-real-time-performance-rpi) | [QAS-1](2-Architectural-Drivers.md#qas-1--performance-latency--from-sound-input-to-screen-display) | **High** | What is the highest sample rate the RPi5 can process in real time? |
-| [EXP-03](#exp-03-gui-real-time-rendering-design-patterns) | [R-02](3-Risk-Assessment.md#a-real-time-performance-rpi) | [QAS-1](2-Architectural-Drivers.md#qas-1--performance-latency--from-sound-input-to-screen-display), [QAS-4](2-Architectural-Drivers.md#qas-4--modifiability-extensibility--adding-a-new-measurementfiltergraph) | **High** | Which design patterns should we apply first to improve GUI real-time performance? |
-| [EXP-04](#exp-04-on-device-tinyml-inference-feasibility) | [R-17](3-Risk-Assessment.md#f-project--process) | [QAS-1](2-Architectural-Drivers.md#qas-1--performance-latency--from-sound-input-to-screen-display), [QAS-2](2-Architectural-Drivers.md#qas-2) | Mid | Can we add TinyML inference and still hold real-time behavior and trustworthiness? |
-| [EXP-05](#exp-05-long-run-stability-24h) | [R-04](3-Risk-Assessment.md#a-real-time-performance-rpi) | [QAS-1](2-Architectural-Drivers.md#qas-1--performance-latency--from-sound-input-to-screen-display) | Mid | Do memory/latency degrade over long runs? |
+| [EXP-01](#exp-01-avalonia-rendering-backend-on-the-rpi5) | [R-05](3-Risk-Assessment.md#a-real-time-performance-rpi) | [QAS-2](2-Architectural-Drivers.md#qas-2--performance-latency--from-sound-input-to-screen-display) | **High** | If we choose C#, how do we remove the Avalonia-on-RPi5 rendering risk? |
+| [EXP-02](#exp-02-rpi5-real-time-sample-rate-ceiling) | [R-01](3-Risk-Assessment.md#a-real-time-performance-rpi), [R-03](3-Risk-Assessment.md#a-real-time-performance-rpi) | [QAS-2](2-Architectural-Drivers.md#qas-2--performance-latency--from-sound-input-to-screen-display) | **High** | What is the highest sample rate the RPi5 can process in real time? |
+| [EXP-03](#exp-03-gui-real-time-rendering-design-patterns) | [R-02](3-Risk-Assessment.md#a-real-time-performance-rpi) | [QAS-2](2-Architectural-Drivers.md#qas-2--performance-latency--from-sound-input-to-screen-display), [QAS-5](2-Architectural-Drivers.md#qas-5--modifiability-extensibility--adding-a-new-measurementfiltergraph) | **High** | Which design patterns should we apply first to improve GUI real-time performance? |
+| [EXP-04](#exp-04-on-device-tinyml-inference-feasibility) | [R-17](3-Risk-Assessment.md#f-project--process) | [QAS-2](2-Architectural-Drivers.md#qas-2--performance-latency--from-sound-input-to-screen-display), [QAS-3](2-Architectural-Drivers.md#qas-3) | Mid | Can we add TinyML inference and still hold real-time behavior and trustworthiness? |
+| [EXP-05](#exp-05-long-run-stability-24h) | [R-04](3-Risk-Assessment.md#a-real-time-performance-rpi) | [QAS-2](2-Architectural-Drivers.md#qas-2--performance-latency--from-sound-input-to-screen-display) | Mid | Do memory/latency degrade over long runs? |
 
 ## EXP-01: Avalonia rendering backend on the RPi5
 
-**Risks:** [R-05](3-Risk-Assessment.md#a-real-time-performance-rpi) · **QAS:** [QAS-1](2-Architectural-Drivers.md#qas-1--performance-latency--from-sound-input-to-screen-display) · **Priority:** High
+**Risks:** [R-05](3-Risk-Assessment.md#a-real-time-performance-rpi) · **QAS:** [QAS-2](2-Architectural-Drivers.md#qas-2--performance-latency--from-sound-input-to-screen-display) · **Priority:** High
 
 ### Results & Recommendations
 
@@ -74,7 +74,7 @@ In progress
 
 ## EXP-02: RPi5 real-time sample-rate ceiling
 
-**Risks:** [R-01](3-Risk-Assessment.md#a-real-time-performance-rpi), [R-03](3-Risk-Assessment.md#a-real-time-performance-rpi) · **QAS:** [QAS-1](2-Architectural-Drivers.md#qas-1--performance-latency--from-sound-input-to-screen-display) · **Priority:** High
+**Risks:** [R-01](3-Risk-Assessment.md#a-real-time-performance-rpi), [R-03](3-Risk-Assessment.md#a-real-time-performance-rpi) · **QAS:** [QAS-2](2-Architectural-Drivers.md#qas-2--performance-latency--from-sound-input-to-screen-display) · **Priority:** High
 
 ### Results & Recommendations
 
@@ -131,7 +131,7 @@ In progress — first GUI E2E latency measurement done (Simulation); Live-microp
 
 ## EXP-03: GUI real-time rendering design patterns
 
-**Risks:** [R-02](3-Risk-Assessment.md#a-real-time-performance-rpi) · **QAS:** [QAS-1](2-Architectural-Drivers.md#qas-1--performance-latency--from-sound-input-to-screen-display), [QAS-4](2-Architectural-Drivers.md#qas-4--modifiability-extensibility--adding-a-new-measurementfiltergraph) · **Priority:** High
+**Risks:** [R-02](3-Risk-Assessment.md#a-real-time-performance-rpi) · **QAS:** [QAS-2](2-Architectural-Drivers.md#qas-2--performance-latency--from-sound-input-to-screen-display), [QAS-5](2-Architectural-Drivers.md#qas-5--modifiability-extensibility--adding-a-new-measurementfiltergraph) · **Priority:** High
 
 ### Results & Recommendations
 
@@ -181,7 +181,7 @@ Planned
 
 ## EXP-04: On-device TinyML inference feasibility
 
-**Risks:** [R-17](3-Risk-Assessment.md#f-project--process) · **QAS:** [QAS-1](2-Architectural-Drivers.md#qas-1--performance-latency--from-sound-input-to-screen-display), [QAS-2](2-Architectural-Drivers.md#qas-2) · **Priority:** Mid
+**Risks:** [R-17](3-Risk-Assessment.md#f-project--process) · **QAS:** [QAS-2](2-Architectural-Drivers.md#qas-2--performance-latency--from-sound-input-to-screen-display), [QAS-3](2-Architectural-Drivers.md#qas-3) · **Priority:** Mid
 
 ### Results & Recommendations
 
@@ -228,7 +228,7 @@ In progress
 
 ## EXP-05: Long-run stability (24h+)
 
-**Risks:** [R-04](3-Risk-Assessment.md#a-real-time-performance-rpi) · **QAS:** [QAS-1](2-Architectural-Drivers.md#qas-1--performance-latency--from-sound-input-to-screen-display) · **Priority:** Mid
+**Risks:** [R-04](3-Risk-Assessment.md#a-real-time-performance-rpi) · **QAS:** [QAS-2](2-Architectural-Drivers.md#qas-2--performance-latency--from-sound-input-to-screen-display) · **Priority:** Mid
 
 ### Results & Recommendations
 
@@ -280,5 +280,5 @@ Planned
 ## Common Approval Criteria
 
 - Pass/fail judgment completed for the High-priority experiments (performance/robustness)
-- QAS-1, QAS-2 threshold values finalized
+- QAS-2, QAS-3 threshold values finalized
 - Adoption/rejection decision rationale recorded together with the experiment logs

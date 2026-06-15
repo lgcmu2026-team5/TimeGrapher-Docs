@@ -26,7 +26,7 @@ Metrics, units, and standards referenced by the quality attribute scenarios.
 | Term | Definition |
 |------|------------|
 | p99 | The 99th-percentile value — everything except the slowest 1 % falls within this value |
-| Beat period | Time between two consecutive beats = 3600 s ÷ BPH — 83.3 ms at 43200 BPH, 125.0 ms at 28800 BPH; the basis of the QAS-1 latency budget |
+| Beat period | Time between two consecutive beats = 3600 s ÷ BPH — 83.3 ms at 43200 BPH, 125.0 ms at 28800 BPH; the basis of the QAS-2 latency budget |
 | E2E (end-to-end) latency | Total delay from audio-block capture to screen display = capture-to-processing + processing-to-display |
 | SNR | Signal-to-Noise Ratio (dB) — higher means a cleaner signal |
 | person-days | The amount of work one person completes in one day |
@@ -60,4 +60,4 @@ Implementation, platform, and process terms referenced by the risk assessment.
 | SAP | Software Architecture Practice — the architecture method this milestone follows (referenced as "per SAP criteria") |
 | Avalonia / Qt | Candidate cross-platform UI frameworks — Avalonia (.NET / C#) and Qt (C++); the UI stack is still under evaluation, not fixed |
 | GLX / EGL | Interfaces for GPU-accelerated (hardware) rendering on Linux — the backends compared against software rendering in EXP-01 |
-| QAS / FR / QAS-ALL | QAS = quality attribute scenario (Architectural Drivers doc); QAS-ALL = all quality-attribute scenarios (QAS-1…5); FR = functional requirement (Architectural Drivers doc) |
+| QAS / FR / QAS-ALL | QAS = quality attribute scenario (Architectural Drivers doc); QAS-ALL = all quality-attribute scenarios (QAS-1…6); FR = functional requirement (Architectural Drivers doc) |

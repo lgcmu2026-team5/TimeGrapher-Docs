@@ -202,7 +202,7 @@ The domain terms used throughout the functional requirements below are defined i
 
 The metric, unit, and standard terms used in the scenarios below are defined in the consolidated [Glossary](6-Glossary.md) — see **Quality-Attribute & Measurement Terms**.
 
-### QAS-0 · Accuracy — From Acoustic Event Detection to Computed Watch Metrics
+### QAS-1 · Accuracy — From Acoustic Event Detection to Computed Watch Metrics
 **Prioritization** — Rank 1 · Importance: H · Difficulty: H · Rationale: All watch metrics are derived from precisely timed acoustic events; any detection error propagates into every computed output.
 
 > **In one line: on a clean signal with known reference values, the system identifies the onset and peak of each beat with enough timing precision to produce a computed rate within ±1.0 s/d of the reference.**
@@ -226,9 +226,9 @@ The metric, unit, and standard terms used in the scenarios below are defined in 
 
 **Why these numbers**
 - **±1.0 s/d** — one-eighth of the tightest Witschi grade band (Chronometer −2…+6 s/d, range 8 s/d); ensures that under clean signal conditions the computed value is a trustworthy indicator of the watch's grade; provisional.
-- System behavior under noisy or weak signals — including detection rate and graceful degradation — is a separate concern addressed in QAS-2.
+- System behavior under noisy or weak signals — including detection rate and graceful degradation — is a separate concern addressed in QAS-3.
 
-### QAS-1 · Performance (Latency) — From Sound Input to Screen Display
+### QAS-2 · Performance (Latency) — From Sound Input to Screen Display
 **Prioritization** — Rank 1 · Importance: H · Difficulty: H · Rationale: The result must appear quickly, and the Pi may be the bottleneck.
 
 > **In one line: even at the top target rate of 43200 BPH, the analysis result is on screen within one beat period (83.3 ms).**
@@ -261,9 +261,9 @@ Beat period = 3600 s ÷ BPH:
 | 36000 | 10 beats/s | 100.0 ms |
 | 43200 | 12 beats/s | 83.3 ms |
 
-<a id="qas-2"></a>
+<a id="qas-3"></a>
 
-### QAS-2 · Reliability — Under Noisy or Weak Signals
+### QAS-3 · Reliability — Under Noisy or Weak Signals
 **Prioritization** — Rank 2 · Importance: H · Difficulty: H · Rationale: Noisy or weak signals are likely in actual use.
 
 > **In one line: under noise, keep the measurement service reliable when the signal is good enough, and show the "signal weak" indication while handling weak input appropriately.**
@@ -286,7 +286,7 @@ Beat period = 3600 s ÷ BPH:
 - **30 dB** — the worst clean recording measured with the team's microphone (30–51 dB over 9 recordings): a severe condition reachable only by deliberate noise injection; provisional.
 - **±3 s/d** — the allowed difference between the displayed rate and the Sim/Playback reference rate; the width is based on roughly half of the tightest Witschi grade band (Chronometer −2…+6 s/d). **95 %** is a team target to confirm by experiment.
 
-### QAS-3 · Consistency — Consistent Values Across Displays
+### QAS-4 · Consistency — Consistent Values Across Displays
 **Prioritization** — Rank 3 · Importance: H · Difficulty: M · Rationale: Users should not see different values for the same result.
 
 > **In one line: every number and graph on screen comes from the same source data.**
@@ -310,7 +310,7 @@ Beat period = 3600 s ÷ BPH:
 - **0** is the only sensible target — consistency is a correctness-class property, not a tunable number.
 - The check is genuinely verifiable because each display exposes which source data it came from.
 
-### QAS-4 · Modifiability (Extensibility) — Adding a New Measurement/Filter/Graph
+### QAS-5 · Modifiability (Extensibility) — Adding a New Measurement/Filter/Graph
 **Prioritization** — Rank 4 · Importance: H · Difficulty: M · Rationale: Many required features still need to be added.
 
 > **In one line: adding a new graph, filter, or measurement touches one place.**
@@ -333,7 +333,7 @@ Beat period = 3600 s ÷ BPH:
 - 12 mandatory features in a 3-week schedule — only a bounded touch surface makes that feasible.
 - Milestone 2/3 schedule (16 days) × 6 team members / 12 features = 8 person-days per feature.
 
-### QAS-5 · Usability — Reading and Operating on the Touchscreen
+### QAS-6 · Usability — Reading and Operating on the Touchscreen
 **Prioritization** — Rank 5 · Importance: M · Difficulty: M · Rationale: The small touchscreen limits layout choices.
 
 > **In one line: on the small 1280×800 touchscreen, the three key readings are readable at a glance and operable by finger.**

@@ -26,7 +26,7 @@
 | 용어 | 정의 |
 |------|------|
 | p99 | 측정값을 작은 순으로 정렬했을 때 99% 지점의 값 — 가장 느린 1%를 제외한 전부가 이 값 이내 |
-| 비트 주기 (beat period) | 연속한 두 비트 사이의 시간 = 3600 s ÷ BPH — 43200 BPH에서 83.3 ms, 28800 BPH에서 125.0 ms; QAS-1 latency 예산의 근거 |
+| 비트 주기 (beat period) | 연속한 두 비트 사이의 시간 = 3600 s ÷ BPH — 43200 BPH에서 83.3 ms, 28800 BPH에서 125.0 ms; QAS-2 latency 예산의 근거 |
 | E2E (end-to-end) latency | 오디오 블록 캡처부터 화면 표시까지의 총 지연 = capture-to-processing + processing-to-display |
 | SNR | Signal-to-Noise Ratio — 신호 대 잡음 비(dB). 클수록 신호가 깨끗함 |
 | person-days | 1명이 1일에 처리하는 작업량 단위 |
@@ -60,4 +60,4 @@
 | SAP | Software Architecture Practice — 본 마일스톤이 따르는 아키텍처 방법론("SAP 기준"으로 참조) |
 | Avalonia / Qt | 후보 크로스플랫폼 UI 프레임워크 — Avalonia(.NET / C#), Qt(C++); UI 스택은 아직 검토 중이며 확정되지 않음 |
 | GLX / EGL | Linux에서 GPU 가속(하드웨어) 렌더링 인터페이스 — EXP-01에서 소프트웨어 렌더링과 비교하는 백엔드 |
-| QAS / FR / QAS-ALL | QAS = 품질 속성 시나리오(Architectural Drivers 문서); QAS-ALL = 모든 품질 속성 시나리오(QAS-1…5); FR = 기능 요구사항(Architectural Drivers 문서) |
+| QAS / FR / QAS-ALL | QAS = 품질 속성 시나리오(Architectural Drivers 문서); QAS-ALL = 모든 품질 속성 시나리오(QAS-1…6); FR = 기능 요구사항(Architectural Drivers 문서) |
