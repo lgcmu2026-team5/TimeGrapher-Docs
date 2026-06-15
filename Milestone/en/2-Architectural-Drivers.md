@@ -122,6 +122,9 @@ The domain terms used throughout the functional requirements below are defined i
 | FR-07-09 | recommended | The Long-Term Performance Graph should provide the user with a visual indication of the variation range. |
 | FR-07-10 | recommended | The Long-Term Performance Graph should provide the user with support for long-duration tests. |
 | FR-07-11 | recommended | The Long-Term Performance Graph should provide the user with a reduced update frequency as elapsed time increases. |
+| FR-07-12 | optional | The Long-Term Performance Graph may provide the user with the ability to export the recorded rate/amplitude/beat-error time series to a file. |
+| FR-07-13 | optional | The Long-Term Performance Graph may provide the user with the ability to toggle the visibility of each measure pane (rate, amplitude, beat error). |
+| FR-07-14 | optional | The Long-Term Performance Graph may provide the user with a configurable test-window length or update cadence. |
 
 ### G08 · Escapement Analyzer and Marker-Line Display
 | ID | Grade | Requirement |
