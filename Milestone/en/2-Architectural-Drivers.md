@@ -233,7 +233,7 @@ The metric, unit, and standard terms used in the scenarios below are defined in 
 
 > **In one line: even at the top target condition 43200 BPH @ 192 kHz, the analysis result is on screen within one beat period (83.3 ms).**
 >
-> While measuring with Live, Playback, or Simulation on the Raspberry Pi 5, when an audio sample block enters the input → analysis → display flow, the system analyzes the block, shows the result on screen, and records the three latency components (capture-to-processing, processing-to-display, total end-to-end) — at every supported BPH, worst-case total end-to-end latency must **not exceed one beat period**: **≤ 83.3 ms** at 43200 BPH, **≤ 125.0 ms** at 28800 BPH.
+> While measuring with Live, Playback, or Simulation on the Raspberry Pi 5, when an audio sample block enters the input → analysis → display flow, the system analyzes the block, shows the result on screen, and records the three latency components (capture-to-processing, processing-to-display, total end-to-end) — at every supported BPH, worst-case total end-to-end latency must **not exceed one beat period**: **≤ 83.3 ms** at 43200 BPH @ 192 kHz, **≤ 166.7 ms** at 21600 BPH @ 48 kHz.
 
 **Related requirements in the project description**
 - *"The system shall record the time difference between (1) when an audio sample block is captured, (2) when that block is processed for beat detection and measurement, and (3) when the corresponding waveform segment and computed readings are displayed in the GUI."*
@@ -246,7 +246,7 @@ The metric, unit, and standard terms used in the scenarios below are defined in 
 | Artifact | Input buffer → beat detection/measurement → GUI display — timestamped at each point |
 | Environment | Raspberry Pi 5 (8 GB) + connected display. Live microphone preferred; the same path is verified via Sim/Playback when no microphone is available |
 | Response | Analyze the input block, show the corresponding waveform / markers / computed readings on screen, and record the three latency components |
-| Response Measure | At every supported BPH, worst-case total end-to-end latency ≤ one beat period — **43200 BPH: ≤ 83.3 ms · 28800 BPH: ≤ 125.0 ms** (the pass/fail gate). Report average/worst values for all three latency components, with dropped audio blocks/samples = **0** and missed beat detections = **0** |
+| Response Measure | At every supported BPH, worst-case total end-to-end latency ≤ one beat period — **43200 BPH @ 192 kHz: ≤ 83.3 ms · 21600 BPH @ 48 kHz: ≤ 166.7 ms** (the pass/fail gate). Report average/worst values for all three latency components, with dropped audio blocks/samples = **0** and missed beat detections = **0** |
 
 **Why these numbers**
 - **The latency budget comes from the beat period** — TimeGrapher is not a GUI app reacting to user clicks but a real-time acoustic measurement app that must analyze every periodically arriving watch beat without missing one. If processing and display consistently take longer than one beat period, backlog, stale display, block drop, and missed beats follow.
@@ -261,7 +261,7 @@ Beat period = 3600 s ÷ BPH:
 | 36000 | 10 beats/s | 100.0 ms |
 | 43200 | 12 beats/s | 83.3 ms |
 
-> **BPH sets the budget; sample rate sets the load.** The beat period (= the latency budget) is `3600 s ÷ BPH` and depends **only on BPH**, not on sample rate. Sample rate is a separate axis that sets the **number of samples — i.e. the processing load** — to handle per beat: the higher the sample rate at which the same beat-period budget must be met, the heavier the load. Latency is therefore verified at **paired conditions**: the top target is where the shortest budget and the highest load coincide, **43200 BPH @ 192 kHz** (83.3 ms), and the baseline measures a lower BPH at 48 kHz. See [EXP-02](4-Planned-Experiments.md#exp-02-rpi5-real-time-sample-rate-ceiling) and [result_latency](../../TestResult/result_latency.md) for the measured conditions and results.
+> **BPH sets the budget; sample rate sets the load.** The beat period (= the latency budget) is `3600 s ÷ BPH` and depends **only on BPH**, not on sample rate. Sample rate is a separate axis that sets the **number of samples — i.e. the processing load** — to handle per beat: the higher the sample rate at which the same beat-period budget must be met, the heavier the load. Latency is therefore verified at **paired conditions**: the top target is where the shortest budget and the highest load coincide, **43200 BPH @ 192 kHz** (83.3 ms), and the baseline is **21600 BPH @ 48 kHz** (166.7 ms). See [EXP-02](4-Planned-Experiments.md#exp-02-rpi5-real-time-sample-rate-ceiling) and [result_latency](../../TestResult/result_latency.md) for the measured conditions and results.
 
 <a id="qas-3"></a>
 

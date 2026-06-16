@@ -233,7 +233,7 @@
 
 > **한 줄 요약: 최고 목표 조건 43200 BPH @ 192 kHz에서도 한 비트 주기(83.3 ms) 안에 분석 결과가 화면에 나타난다.**
 >
-> Raspberry Pi 5에서 Live, Playback, 또는 Simulation으로 측정하는 동안 오디오 샘플 블록이 입력 → 분석 → 표시 흐름에 들어오면, 시스템은 그 블록을 분석해 화면에 표시하고 세 지연 구간(capture-to-processing, processing-to-display, total end-to-end)을 기록하며, 지원하는 BPH에서 total end-to-end latency의 worst-case가 **한 비트 주기를 넘지 않아야 한다** — 43200 BPH에서 **≤ 83.3 ms**, 28800 BPH에서 **≤ 125.0 ms**.
+> Raspberry Pi 5에서 Live, Playback, 또는 Simulation으로 측정하는 동안 오디오 샘플 블록이 입력 → 분석 → 표시 흐름에 들어오면, 시스템은 그 블록을 분석해 화면에 표시하고 세 지연 구간(capture-to-processing, processing-to-display, total end-to-end)을 기록하며, 지원하는 BPH에서 total end-to-end latency의 worst-case가 **한 비트 주기를 넘지 않아야 한다** — 43200 BPH @ 192 kHz에서 **≤ 83.3 ms**, 21600 BPH @ 48 kHz에서 **≤ 166.7 ms**.
 
 **프로젝트 기술서상의 관련 요구사항**
 - *"The system shall record the time difference between (1) when an audio sample block is captured, (2) when that block is processed for beat detection and measurement, and (3) when the corresponding waveform segment and computed readings are displayed in the GUI."*
@@ -246,7 +246,7 @@
 | 대상 | 입력 버퍼 → beat detection/measurement → GUI 표시 — 각 시점의 타임스탬프 |
 | 환경 | Raspberry Pi 5(8 GB) + 연결된 디스플레이. Live 마이크 우선, 마이크가 없으면 Sim/Playback으로 같은 경로를 검증 |
 | 응답 | 입력 블록을 분석해 대응되는 waveform·marker·측정값을 화면에 표시하고, 세 지연 구간을 기록 |
-| 응답측정 | 지원하는 BPH에서 total end-to-end latency의 worst-case ≤ 한 비트 주기 — **43200 BPH: ≤ 83.3 ms · 28800 BPH: ≤ 125.0 ms** (pass/fail 게이트). 세 지연 구간의 평균/최악값을 보고하고, dropped audio blocks/samples = **0**, missed beat detections = **0** |
+| 응답측정 | 지원하는 BPH에서 total end-to-end latency의 worst-case ≤ 한 비트 주기 — **43200 BPH @ 192 kHz: ≤ 83.3 ms · 21600 BPH @ 48 kHz: ≤ 166.7 ms** (pass/fail 게이트). 세 지연 구간의 평균/최악값을 보고하고, dropped audio blocks/samples = **0**, missed beat detections = **0** |
 
 **측정값 근거**
 - **latency 예산은 비트 주기에서 나온다** — TimeGrapher는 사용자 클릭에 반응하는 일반 GUI 앱이 아니라, 주기적으로 들어오는 시계 비트를 놓치지 않고 분석해야 하는 실시간 음향 측정 앱이다. 처리·표시가 비트 주기보다 지속적으로 느리면 backlog, 오래된(stale) 표시, block drop, missed beat가 발생한다.
@@ -261,7 +261,7 @@
 | 36000 | 10 beats/s | 100.0 ms |
 | 43200 | 12 beats/s | 83.3 ms |
 
-> **예산은 BPH가, 부하는 sample rate가 정한다.** 비트 주기(= latency 예산)는 `3600 s ÷ BPH`로 **BPH에만 의존**하며 sample rate와 무관하다. sample rate는 비트 1개를 처리하는 동안 들어오는 **샘플 수, 즉 처리 부하**를 정하는 별도의 축이다 — 같은 비트 주기 예산을 더 높은 sample rate에서 지켜야 할수록 부하가 커진다. 그래서 latency는 두 축을 **짝지은 조건**에서 검증한다: 최고 목표는 가장 짧은 예산과 가장 높은 부하가 겹치는 **43200 BPH @ 192 kHz**(83.3 ms), 기준은 더 낮은 BPH를 48 kHz에서 측정한다. 실측 조건·결과는 [EXP-02](4-Planned-Experiments.md#exp-02-rpi5-실시간-샘플레이트-상한)·[result_latency](../../TestResult/result_latency.md) 참조.
+> **예산은 BPH가, 부하는 sample rate가 정한다.** 비트 주기(= latency 예산)는 `3600 s ÷ BPH`로 **BPH에만 의존**하며 sample rate와 무관하다. sample rate는 비트 1개를 처리하는 동안 들어오는 **샘플 수, 즉 처리 부하**를 정하는 별도의 축이다 — 같은 비트 주기 예산을 더 높은 sample rate에서 지켜야 할수록 부하가 커진다. 그래서 latency는 두 축을 **짝지은 조건**에서 검증한다: 최고 목표는 가장 짧은 예산과 가장 높은 부하가 겹치는 **43200 BPH @ 192 kHz**(83.3 ms), 기준은 **21600 BPH @ 48 kHz**(166.7 ms)이다. 실측 조건·결과는 [EXP-02](4-Planned-Experiments.md#exp-02-rpi5-실시간-샘플레이트-상한)·[result_latency](../../TestResult/result_latency.md) 참조.
 
 <a id="qas-3"></a>
 
