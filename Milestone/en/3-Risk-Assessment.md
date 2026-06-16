@@ -21,7 +21,7 @@ Risk ID | Risk Title | Type | QAS | P | I
 [R-01](#a-real-time-performance-rpi) 🔴 | RPi5 fails to keep up with high sample rates (96k/192k) and loses sound data | T | [QAS-2](2-Architectural-Drivers.md#qas-2--performance-latency--from-sound-input-to-screen-display) | **L** | **H**
 [R-02](#a-real-time-performance-rpi) 🔴 | Rendering four filters + multiple graphs at once makes the screen stutter | T | [QAS-2](2-Architectural-Drivers.md#qas-2--performance-latency--from-sound-input-to-screen-display)<br>[QAS-6](2-Architectural-Drivers.md#qas-6--usability--reading-and-operating-on-the-touchscreen) | M | **H**
 [R-03](#a-real-time-performance-rpi) 🔴 | Analysis + display exceed the beat-period budget (83.3 ms @ 43200 BPH) — backlog, stale display, block drop, missed beats | T | [QAS-2](2-Architectural-Drivers.md#qas-2--performance-latency--from-sound-input-to-screen-display) | M | **H**
-[R-04](#a-real-time-performance-rpi) 🔴 | Long continuous runs (24h+) leak memory and degrade or crash | T | [QAS-2](2-Architectural-Drivers.md#qas-2--performance-latency--from-sound-input-to-screen-display) | M | M
+[R-04](#a-real-time-performance-rpi) 🔴 | Long continuous runs (24h+) leak memory and degrade or crash | T | [QAS-2](2-Architectural-Drivers.md#qas-2--performance-latency--from-sound-input-to-screen-display) | **L** | M
 [R-05](#a-real-time-performance-rpi) 🔴 | Closed: .NET (C#) + Avalonia UI selected after RPi5 latency/rendering checks | T | [QAS-2](2-Architectural-Drivers.md#qas-2--performance-latency--from-sound-input-to-screen-display) | L | L
 [R-06](#b-signal-processing--measurement-trustworthiness) | A/C event positions not found to 0.1 ms — rate, beat error, amplitude all contaminated | T | [QAS-3](2-Architectural-Drivers.md#qas-3)<br>[QAS-4](2-Architectural-Drivers.md#qas-4--consistency--consistent-values-across-displays) | **H** | **H**
 [R-07](#b-signal-processing--measurement-trustworthiness) | Noisy/weak signals produce misleading values instead of a graceful "signal weak" | T | [QAS-3](2-Architectural-Drivers.md#qas-3) | M | **H**
@@ -79,12 +79,12 @@ Risk ID | Risk Title | Type | QAS | P | I
 
 - **🔴 R-04 — Long continuous runs (24h+) leak memory and degrade or crash**
   - **Evidence**: [FR-07-10](2-Architectural-Drivers.md#g07--long-term-performance-graph), [QAS-2](2-Architectural-Drivers.md#qas-2--performance-latency--from-sound-input-to-screen-display)
-  - **Probability / Impact**: Medium / Medium
+  - **Probability / Impact**: Low / Medium
   - **Grading rationale**
-    - P-Medium: leaks are plausible but only accumulate over long runs.
+    - P-Low: [EXP-05](4-Planned-Experiments.md#exp-05-long-run-stability-24h) 24h+ continuous-run measurement showed RSS flat at about 406 MB (change -1.6 MB across the run) with no late-run CPU/latency degradation, confirming it is not at a leak-suspect level.
     - I-Medium: hits only the optional 24h+ feature, is gradual, and is restart-recoverable with values staying correct.
   - **Mitigation**: Monitor the long-term RSS trend; design buffer caps and aggregation
-  - **Comment**: First verify memory leaks in the current code (experiment)
+  - **Comment**: [EXP-05](4-Planned-Experiments.md#exp-05-long-run-stability-24h) passes 24h+ stability — flat RSS (no leak), CPU at a steady ~1.4 cores. Re-measure with the same procedure (0.5 s RSS/CPU long-term logging) when new computations, filters, graphs, or AI Features are added.
 
 - **🔴 R-05 — Closed: .NET (C#) + Avalonia UI selected after RPi5 latency/rendering checks**
   - **Evidence**: [QAS-2 latency result](../../result_latency.md) passed all Simulation and WAV replay conditions: worst-case E2E latency stayed inside the beat-period budget, dropped audio samples = 0, and missed beat detections = 0. The [rendering backend result](../../result_renderer.md) also did not reproduce the reported Avalonia-on-RPi5 slowdown: GLX/EGL GPU rendering reached about 60 FPS and SW rendering was slower.
