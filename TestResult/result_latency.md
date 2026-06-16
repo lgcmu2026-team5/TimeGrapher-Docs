@@ -1,44 +1,44 @@
 # QAS-2 Latency Experiment Plan & Results
 
-> 목적: 실제 GUI 실행에서 수집하는 `--analysis-log` CSV를 기반으로 QAS-2 latency를 측정한다. 2개 조건 × 입력 모드 매트릭스로 측정한다.
+> Purpose: measure QAS-2 latency from the `--analysis-log` CSV collected during a real GUI run. Measured over a matrix of 2 conditions × input modes.
 
-## 1. 실험 개요
+## 1. Experiment Overview
 
-QAS-2은 오디오 입력 블록이 캡처된 시점부터 beat detection/measurement 처리 완료 시점, 그리고 대응 waveform/marker/computed reading이 GUI에 표시된 시점까지의 latency를 보고하도록 요구한다. 이번 실험은 TimeGrapher.App을 실제 디스플레이 GUI로 실행하고, `--analysis-log <csv>`로 각 GUI 표시 프레임의 latency를 수집한다.
+QAS-2 requires reporting the latency from when an audio input block is captured, through when beat detection/measurement finishes, to when the corresponding waveform/marker/computed reading is shown in the GUI. This experiment runs TimeGrapher.App as a real on-display GUI and collects the per-display-frame latency via `--analysis-log <csv>`.
 
-실험 목적은 다음 두 조건에서 total end-to-end latency가 비트 주기 예산 안에 들어오는지 확인하는 것이다.
+The goal is to confirm that, under the two conditions below, the total end-to-end latency stays within the beat-period budget.
 
-| 조건 | BPH | Sample rate | 비트 주기 예산 |
+| Condition | BPH | Sample rate | Beat-period budget |
 |---|---:|---:|---:|
-| 기준 조건 | 21600 BPH | 48 kHz | 166.667 ms |
-| 최고 목표 조건 | 43200 BPH | 192 kHz | 83.333 ms |
+| Baseline | 21600 BPH | 48 kHz | 166.667 ms |
+| Top target | 43200 BPH | 192 kHz | 83.333 ms |
 
-비트 주기 계산식:
+Beat-period formula:
 
 ```text
 beat_period_ms = 3600 s / BPH * 1000 ms/s
 ```
 
-측정은 **Raspberry Pi 5(주 대상)** 와 **Windows(참고)** 두 플랫폼에서 각각 수행한다. QAS-2 판정의 기준 플랫폼은 배포 대상인 Raspberry Pi 5이며, Windows 결과는 개발 PC 참고치로만 기록한다.
+Measurement is run on two platforms: **Raspberry Pi 5 (primary)** and **Windows (reference)**. The QAS-2 verdict is based on the deployment target, the Raspberry Pi 5; Windows results are recorded only as dev-PC reference values.
 
-## 2. 실험 환경
+## 2. Experiment Environment
 
-| 항목 | Raspberry Pi 5 (주 대상) | Windows (참고) |
+| Item | Raspberry Pi 5 (primary) | Windows (reference) |
 |---|---|---|
-| Hardware | Raspberry Pi 5 | 개발 PC |
+| Hardware | Raspberry Pi 5 | dev PC |
 | OS | Debian GNU/Linux 13 (trixie), arm64 | Windows 11 |
-| 오디오 백엔드 | ALSA | WASAPI |
-| GUI session | labwc Wayland + XWayland `:0` | Windows 데스크톱 |
+| Audio backend | ALSA | WASAPI |
+| GUI session | labwc Wayland + XWayland `:0` | Windows desktop |
 | App build | linux-arm64 self-contained build | win-x64 build |
-| 측정 옵션 | `./TimeGrapher.App --analysis-log <csv>` | `TimeGrapher.App.exe --analysis-log <csv>` |
-| 입력 모드 | Live(USB 마이크) / Playback / Simulation | Live(USB 마이크) / Playback / Simulation |
-| 활성 탭 | Rate/Scope | Rate/Scope |
+| Measurement option | `./TimeGrapher.App --analysis-log <csv>` | `TimeGrapher.App.exe --analysis-log <csv>` |
+| Input modes | Live (USB mic) / Playback / Simulation | Live (USB mic) / Playback / Simulation |
+| Active tab | Rate/Scope | Rate/Scope |
 
-Live 마이크 경로는 USB 마이크가 capture source로 감지된 상태에서 측정한다.
+The Live microphone path is measured with a USB microphone detected as a capture source.
 
-## 3. 측정 방법
+## 3. Measurement Method
 
-CSV 컬럼:
+CSV columns:
 
 ```text
 capture_to_processing_ms,
@@ -54,38 +54,38 @@ dropped_audio_samples,
 missed_beat_detections
 ```
 
-상세 통계의 `avg`, `p95`, `p99`, `worst`는 누적 평균 컬럼이 아니라 각 row의 per-frame latency 컬럼에서 다시 계산한다.
+The detailed `avg`, `p95`, `p99`, and `worst` statistics are recomputed from each row's per-frame latency columns, not from the cumulative-average columns.
 
-Percentile 계산 방식은 nearest-rank 방식이다.
+Percentiles use the nearest-rank method.
 
 ```text
 index = ceil(percentile * frame_count) - 1
 ```
 
-**길이 통일**: CSV는 GUI에 표시되는 프레임마다 한 row를 기록하므로 row 수는 run 길이에 비례한다. 각 run을 넉넉히 돌린 뒤, 분석 단계에서 비교 대상 CSV들의 **공통 최소 프레임 수**만큼 앞부분을 잘라 동일 프레임 수 기준으로 통계를 계산한다.
+**Length unification**: the CSV records one row per displayed GUI frame, so the row count is proportional to run length. Each run is run generously, then in analysis every compared CSV is truncated at the front to the **common-minimum frame count** so statistics are computed over the same number of frames.
 
-## 4. 실험 매트릭스 및 측정 절차
+## 4. Experiment Matrix and Procedure
 
-2개 조건 × 입력 모드 = **플랫폼당 5 run** (43200 BPH @ 192 kHz는 Live 제외).
+2 conditions × input modes = **5 runs per platform** (43200 BPH @ 192 kHz excludes Live).
 
-| 조건 | Simulation | Playback | Live |
+| Condition | Simulation | Playback | Live |
 |---|---|---|---|
-| 21600 BPH @ 48 kHz | run | run (Live 녹음 WAV) | run (실제 무브먼트) |
-| 43200 BPH @ 192 kHz | run | run (합성 WAV) | 해당 없음 (하이비트 무브먼트 미보유) |
+| 21600 BPH @ 48 kHz | run | run (Live-recorded WAV) | run (real movement) |
+| 43200 BPH @ 192 kHz | run | run (synthetic WAV) | N/A (no high-beat movement) |
 
-→ 플랫폼당 5 run. Raspberry Pi 5(주)와 Windows(참고)에서 각각 수행하므로 총 10 run.
+→ 5 runs per platform. Run on both Raspberry Pi 5 (primary) and Windows (reference), for 10 runs total.
 
-입력 모드별 절차:
+Procedure per input mode:
 
-1. **Live** — 캡처 sample rate를 48 kHz로 설정하고 실제 무브먼트를 USB 마이크로 캡처한다. record 세션을 켜고 `--analysis-log`로 측정하면 live CSV와 함께 float32 mono WAV이 동시에 저장된다. 43200 BPH는 하이비트 무브먼트를 확보하지 못해 Live를 수행하지 않는다.
-2. **Playback** — 21600 BPH는 Live에서 저장한 WAV을 동일 sample rate로 재생한다. 43200 BPH는 실녹음 WAV이 없어 합성 WAV(`sample/43200BPH_synthetic_192000Hz.wav`)을 재생한다.
-3. **Simulation** — BPH와 sample rate를 직접 설정해 독립적으로 측정한다.
+1. **Live** — set the capture sample rate to 48 kHz and capture a real movement with the USB microphone. With the record session on, `--analysis-log` produces the live CSV together with a float32 mono WAV. 43200 BPH is not run in Live because no high-beat movement was available.
+2. **Playback** — for 21600 BPH, replay the WAV saved during Live at the same sample rate. For 43200 BPH, since no real recording exists, replay a synthetic WAV (`sample/43200BPH_synthetic_192000Hz.wav`).
+3. **Simulation** — set BPH and sample rate directly and measure independently.
 
-**43200 BPH @ 192 kHz Playback용 합성 WAV 출처**: 앱 Simulation과 동일한 `WatchSynthStream` 생성기(Clean config, pcmPeak 0.35, noise 0)로 생성한 float32 mono 192 kHz · 60초 파일이다. `TimeGrapher.Verify` 검증에서 `detected_bph=43200`, `sync_status=Synced`로 확인했다. 실제 음향 녹음이 아니라 합성 신호이므로, 해당 조건의 Playback은 실음향 디코딩이 아닌 파일 디코딩 경로 검증으로 한정된다.
+**Source of the 43200 BPH @ 192 kHz Playback synthetic WAV**: a float32 mono 192 kHz, 60 s file generated by the same `WatchSynthStream` generator the app's Simulation uses (Clean config, pcmPeak 0.35, noise 0). `TimeGrapher.Verify` confirmed `detected_bph=43200`, `sync_status=Synced`. Because it is a synthetic signal rather than a real acoustic recording, the Playback for that condition validates the file-decode path, not the real-acoustic decode path.
 
-## 5. 결과
+## 5. Results
 
-### 5.1 Raspberry Pi 5 (주 대상)
+### 5.1 Raspberry Pi 5 (primary)
 
 | Condition | Input | Frames | E2E avg | E2E p95 | E2E p99 | E2E worst | Budget | Worst usage | Drop | Miss | Result |
 |---|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---|
@@ -95,9 +95,9 @@ index = ceil(percentile * frame_count) - 1
 | 43200 BPH @ 192 kHz | Simulation | 1035 | 7.133 ms | 12.358 ms | 13.834 ms | 34.003 ms | 83.333 ms | 40.8% | 0 | 0 | Pass |
 | 43200 BPH @ 192 kHz | Playback | 1035 | 6.830 ms | 11.834 ms | 13.807 ms | 34.562 ms | 83.333 ms | 41.5% | 0 | 0 | Pass |
 
-Raspberry Pi 5 5 run은 모두 비트 주기 예산 안에 들어왔고 dropped audio samples·missed beat detections가 0이었다(공통 최소 프레임 1035 기준). 측정 CSV는 `csv/pi/`에 있다.
+All 5 Raspberry Pi 5 runs stayed within the beat-period budget with zero dropped audio samples and missed beat detections (common-minimum 1035 frames). The CSVs are in `csv/pi/`.
 
-#### Raspberry Pi 5 per-leg 상세 (avg / p95 / p99 / worst, ms)
+#### Raspberry Pi 5 per-leg detail (avg / p95 / p99 / worst, ms)
 
 | Run | Leg | avg | p95 | p99 | worst |
 |---|---|---:|---:|---:|---:|
@@ -117,7 +117,7 @@ Raspberry Pi 5 5 run은 모두 비트 주기 예산 안에 들어왔고 dropped 
 | 43200@192k Playback | processing-to-display | 5.479 | 10.608 | 12.580 | 19.695 |
 | 43200@192k Playback | total end-to-end | 6.830 | 11.834 | 13.807 | 34.562 |
 
-### 5.2 Windows (참고)
+### 5.2 Windows (reference)
 
 | Condition | Input | Frames | E2E avg | E2E p95 | E2E p99 | E2E worst | Budget | Worst usage | Drop | Miss | Result |
 |---|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---|
@@ -127,9 +127,9 @@ Raspberry Pi 5 5 run은 모두 비트 주기 예산 안에 들어왔고 dropped 
 | 43200 BPH @ 192 kHz | Simulation | 787 | 15.186 ms | 17.824 ms | 19.071 ms | 26.352 ms | 83.333 ms | 31.6% | 0 | 0 | Pass |
 | 43200 BPH @ 192 kHz | Playback | 787 | 13.946 ms | 17.763 ms | 18.731 ms | 24.061 ms | 83.333 ms | 28.9% | 0 | 0 | Pass |
 
-Windows 5 run은 모두 비트 주기 예산 안에 들어왔고 dropped audio samples·missed beat detections가 0이었다(공통 최소 프레임 787 기준). 측정 CSV는 `csv/win/`에 있다.
+All 5 Windows runs stayed within the beat-period budget with zero dropped audio samples and missed beat detections (common-minimum 787 frames). The CSVs are in `csv/win/`.
 
-#### Windows per-leg 상세 (avg / p95 / p99 / worst, ms)
+#### Windows per-leg detail (avg / p95 / p99 / worst, ms)
 
 | Run | Leg | avg | p95 | p99 | worst |
 |---|---|---:|---:|---:|---:|
@@ -149,11 +149,9 @@ Windows 5 run은 모두 비트 주기 예산 안에 들어왔고 dropped audio s
 | 43200@192k Playback | processing-to-display | 13.168 | 17.106 | 17.896 | 23.527 |
 | 43200@192k Playback | total end-to-end | 13.946 | 17.763 | 18.731 | 24.061 |
 
-Raspberry Pi 5 결과표(§5.1)는 측정 후 같은 방식으로 채운다.
+## 6. QAS-2 Verdict
 
-## 6. QAS-2 판정
-
-QAS-2 판정은 배포 대상인 Raspberry Pi 5 결과를 기준으로 한다(Windows는 참고치). Raspberry Pi 5 기준 두 조건 모두 충족한다.
+The QAS-2 verdict is based on the deployment target, the Raspberry Pi 5 (Windows is reference). On the Raspberry Pi 5, both conditions meet the requirement.
 
 | Requirement | 21600@48k (Sim/Playback/Live) | 43200@192k (Sim/Playback) |
 |---|---|---|
@@ -162,15 +160,15 @@ QAS-2 판정은 배포 대상인 Raspberry Pi 5 결과를 기준으로 한다(Wi
 | missed beat detections = 0 | Pass | Pass |
 | report avg/p95/p99/worst for latency legs | Pass | Pass |
 
-## 7. 제한 사항
+## 7. Limitations
 
-1. Live 경로는 USB 마이크가 capture source로 감지된 상태에서만 측정할 수 있다.
-2. 43200 BPH(하이비트) 무브먼트를 확보하지 못해 해당 조건의 Live는 두 플랫폼 모두에서 수행하지 않는다. 또한 같은 이유로 실녹음 WAV이 없어 43200 BPH Playback은 합성 WAV으로 대체했다(§4 출처 참조). 따라서 43200 BPH 조건은 실음향 입력 경로 검증이 빠져 있다.
-3. CSV에는 wall-clock timestamp가 없으므로 실행 시간 분포는 frame count와 latency 값으로만 분석한다.
-4. 이번 실험은 Rate/Scope 탭이 활성화된 상태의 GUI 결과다. 다른 탭, 특히 Spectrogram/Sound Print 등 이미지 중심 탭은 별도 측정이 필요할 수 있다.
+1. The Live path can only be measured with a USB microphone detected as a capture source.
+2. No high-beat (43200 BPH) movement was available, so that condition's Live is not run on either platform. For the same reason there is no real recording, so the 43200 BPH Playback used a synthetic WAV instead (see the source in §4). The 43200 BPH condition therefore lacks real-acoustic input-path verification.
+3. The CSV has no wall-clock timestamp, so run-time distribution is analyzed only from frame count and latency values.
+4. These are GUI results with the Rate/Scope tab active. Other tabs — especially image-centric ones such as Spectrogram/Sound Print — may need separate measurement.
 
-## 8. 결론
+## 8. Conclusion
 
-Raspberry Pi 5(주 대상)에서 21600 BPH @ 48 kHz, 43200 BPH @ 192 kHz 두 조건을 Simulation/Playback/Live(43200 BPH는 Sim/Playback) 입력 모드로 측정한 결과, worst-case E2E latency가 모두 비트 주기 예산 안에 들어왔고 dropped audio samples·missed beat detections는 전부 0이었다. 가장 빡빡한 43200 BPH @ 192 kHz에서도 worst E2E는 34.562 ms로 예산 83.333 ms의 약 41.5% 수준이었다. Windows(참고) 5 run도 모두 예산 안에 들어왔다. 따라서 QAS-2 latency 목표는 두 조건·세 입력 모드에서 충족한다.
+On the Raspberry Pi 5 (primary), the two conditions 21600 BPH @ 48 kHz and 43200 BPH @ 192 kHz were measured across the Simulation/Playback/Live input modes (43200 BPH: Sim/Playback). Worst-case E2E latency stayed within the beat-period budget in every case, and dropped audio samples and missed beat detections were all 0. Even the tightest condition, 43200 BPH @ 192 kHz, had a worst E2E of 34.562 ms — about 41.5 % of the 83.333 ms budget. The Windows (reference) 5 runs were all within budget as well. The QAS-2 latency goal is therefore met across the two conditions and three input modes.
 
-입력 모드별로 보면, Pi에서 Live(21600 BPH)의 E2E avg가 3.908 ms로 Sim/Playback보다 낮았는데, 이는 processing-to-display 평균이 1.269 ms로 가장 짧았기 때문이다. 반면 capture-to-processing은 Live가 2.639 ms로 가장 높아, 실제 캡처 경로의 입력 지연이 반영된 것으로 보인다.
+By input mode, the Pi Live run (21600 BPH) had the lowest E2E avg at 3.908 ms because its processing-to-display average was the shortest at 1.269 ms. Conversely its capture-to-processing was the highest at 2.639 ms, reflecting the input latency of the real capture path.

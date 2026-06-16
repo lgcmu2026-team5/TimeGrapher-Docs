@@ -1,84 +1,83 @@
-# 실험 1 결과: RPi5 렌더링 백엔드 성능 A/B 측정
+# Experiment 1 Results: RPi5 Rendering-Backend Performance A/B Measurement
 
-- 실험 계획: [PLANNED_EXPERIMENTS.md](PLANNED_EXPERIMENTS.md)
-- 대상 리스크: R-A2 (Avalonia 사용 시 RPi5에서 GPU 가속 렌더링이 버그로 SW 렌더링보다 느려 그래프 갱신이 끊길 수 있다)
-- 수행일: 2026-06-06 (1주차 technical experiment, 당일 완료)
+- Experiment plan: [PLANNED_EXPERIMENTS.md](PLANNED_EXPERIMENTS.md)
+- Target risk: R-A2 (with Avalonia, a bug could make GPU-accelerated rendering on the RPi5 slower than SW rendering, stuttering graph updates)
+- Date: 2026-06-06 (Week-1 technical experiment, completed same day)
 
-## 한 줄 결론
+## One-line Conclusion
 
-**보고는 우리 앱에서 재현되지 않았다. GPU 가속이 SW 렌더링보다 오히려 빨랐고, 렌더링 설정은 기본값(GPU 우선)을 유지한다.**
+**The report did not reproduce in our app. GPU acceleration was actually faster than SW rendering, so the rendering setting stays at the default (GPU-first).**
 
-## 실험 환경
+## Experiment Environment
 
-| 항목 | 값 |
+| Item | Value |
 |------|----|
-| 기기 | Raspberry Pi 5 (4코어 Cortex-A76, 16GB) |
-| OS / 세션 | Debian 13 (trixie), labwc(Wayland) + XWayland 경유 |
-| 그래픽 드라이버 | Mesa 25.0.7 (V3D) |
-| 화면 / 창 크기 | 1280×800 모니터, 앱 창 1280×722 (사실상 전체 화면) |
-| 워크로드 | Sim 모드(28800bph)로 실제 분석→렌더 파이프라인 가동, 매 컴포지션 프레임마다 Rate/Scope 그래프 강제 리드로우 |
-| 측정 | 백엔드별 워밍업 5초 + 측정 30초, 프레임 간격 통계 수집 |
+| Device | Raspberry Pi 5 (4-core Cortex-A76, 16 GB) |
+| OS / session | Debian 13 (trixie), labwc (Wayland) via XWayland |
+| Graphics driver | Mesa 25.0.7 (V3D) |
+| Display / window size | 1280×800 monitor, app window 1280×722 (effectively full screen) |
+| Workload | Sim mode (28800 bph) driving the real analysis→render pipeline, forcing a Rate/Scope graph redraw every composition frame |
+| Measurement | Per backend: 5 s warmup + 30 s measurement, collecting frame-interval statistics |
 
-## 측정 결과
+## Measurement Results
 
-| 렌더링 백엔드 | GL 렌더러 | FPS | 평균 | p50 | p95 | p99 | 최대 |
+| Rendering backend | GL renderer | FPS | mean | p50 | p95 | p99 | max |
 |--------------|-----------|:---:|:---:|:---:|:---:|:---:|:---:|
-| GLX (GPU 가속) | Broadcom V3D 7.1.10.2 | 59.2 | 16.9ms | 16.4ms | 18.6ms | 21.0ms | 476.7ms* |
-| EGL (GPU 가속) | Broadcom V3D 7.1.10.2 | 60.0 | 16.7ms | 16.3ms | 19.2ms | 21.7ms | 31.0ms |
-| Software (CPU) | — | 43.6 | 22.9ms | 22.2ms | 30.0ms | 33.7ms | 38.2ms |
+| GLX (GPU-accelerated) | Broadcom V3D 7.1.10.2 | 59.2 | 16.9 ms | 16.4 ms | 18.6 ms | 21.0 ms | 476.7 ms* |
+| EGL (GPU-accelerated) | Broadcom V3D 7.1.10.2 | 60.0 | 16.7 ms | 16.3 ms | 19.2 ms | 21.7 ms | 31.0 ms |
+| Software (CPU) | — | 43.6 | 22.9 ms | 22.2 ms | 30.0 ms | 33.7 ms | 38.2 ms |
 
-\* 측정 30초 중 1회성 프레임 지연 (p99가 21.0ms이므로 시작 직후 과도기로 판단)
+\* A one-off frame delay during the 30 s measurement (p99 is 21.0 ms, so judged a startup transient)
 
-## 해석
+## Interpretation
 
-1. **GPU 가속 두 백엔드 모두 화면 주사율(약 60Hz) 한계까지 도달했다.**
-   평균 16.7–16.9ms는 vsync 간격(16.7ms)과 일치한다. 즉 GPU는 더 빠를 수 있는데 화면이 60Hz라 묶인 상태다.
-   보고된 "가속 약 80ms"는 어디서도 재현되지 않았다.
-2. **진짜 하드웨어 가속이 동작했음을 확인했다.**
-   GL 렌더러 문자열이 `V3D 7.1.10.2`(RPi5의 VideoCore GPU)로 기록됐다.
-   소프트웨어 폴백(llvmpipe)이었다면 측정 자체가 무효였을 것이다.
-3. **SW 렌더링이 오히려 더 느렸다** (43.6fps, 평균 22.9ms). 보고와 방향이 반대다.
-   다만 43.6fps도 하드웨어 디스플레이 기준 30fps를 넘으므로, 어느 백엔드든 화면 갱신에는 충분하다.
-   참고로 SW 렌더링은 vsync와 동기화되지 않아 화면 찢김(tearing)이 생길 수 있고,
-   CPU를 더 쓰므로 오디오 분석 스레드와 경쟁한다 — GPU 기본값을 유지할 또 다른 이유다.
+1. **Both GPU-accelerated backends reached the display refresh ceiling (~60 Hz).**
+   The 16.7–16.9 ms mean matches the vsync interval (16.7 ms); i.e. the GPU could go faster but is bound by the 60 Hz display.
+   The reported "~80 ms accelerated" did not reproduce anywhere.
+2. **True hardware acceleration was confirmed.**
+   The GL renderer string was recorded as `V3D 7.1.10.2` (the RPi5's VideoCore GPU).
+   Had it been the software fallback (llvmpipe), the measurement would have been invalid.
+3. **SW rendering was actually slower** (43.6 fps, 22.9 ms mean) — the opposite direction of the report.
+   That said, 43.6 fps still exceeds the 30 fps hardware-display bar, so any backend is sufficient for screen updates.
+   Note that SW rendering is not vsync-synchronized (possible tearing) and uses more CPU, competing with the audio-analysis thread — another reason to keep the GPU default.
 
-## 완료 기준 충족 여부
+## Completion Criteria
 
-| 완료 기준 | 충족 |
+| Completion criterion | Met |
 |-----------|:---:|
-| ① 3개 백엔드(GLX/EGL/Software) 모두 30초 측정 완료 | O |
-| ② GL 렌더러 문자열로 하드웨어 가속 여부 확인 | O |
-| ③ 백엔드 선택 권장안 도출 | O |
+| ① All three backends (GLX/EGL/Software) measured for 30 s | O |
+| ② Hardware acceleration confirmed via the GL renderer string | O |
+| ③ Backend recommendation derived | O |
 
-## 조치 사항
+## Action Items
 
-1. **렌더링 설정을 바꾸지 않는다.** Avalonia 기본값(GPU 우선, Software 폴백)을 유지한다.
+1. **Do not change the rendering setting.** Keep the Avalonia default (GPU-first, Software fallback).
 
-## 참고: Windows 측정 (동일 하니스, 동일 프로토콜)
+## Reference: Windows Measurement (same harness, same protocol)
 
-하니스의 크로스플랫폼 검증을 겸해 Windows 개발 PC(Intel Arc 내장 GPU, 1280×750 창)에서도 측정했다.
-Windows는 R-A2의 대상이 아니며 참고용이다.
+To also cross-check the harness, we measured on a Windows dev PC (Intel Arc integrated GPU, 1280×750 window).
+Windows is not the target of R-A2 and is for reference only.
 
-| 렌더링 백엔드 | GL 렌더러 | FPS | 평균 | p50 | p95 | p99 |
+| Rendering backend | GL renderer | FPS | mean | p50 | p95 | p99 |
 |--------------|-----------|:---:|:---:|:---:|:---:|:---:|
-| ANGLE (기본값, D3D11) | ANGLE Direct3D11 | 57.8 | 17.3ms | 16.7ms | 18.1ms | 33.7ms |
-| WGL (OpenGL 직결) | Intel Arc Graphics (GL 4.0) | 61.6 | 16.2ms | 15.9ms | 17.3ms | 31.7ms |
-| Software (CPU) | — | 58.8 | 17.0ms | 15.9ms | 31.5ms | 32.2ms |
+| ANGLE (default, D3D11) | ANGLE Direct3D11 | 57.8 | 17.3 ms | 16.7 ms | 18.1 ms | 33.7 ms |
+| WGL (direct OpenGL) | Intel Arc Graphics (GL 4.0) | 61.6 | 16.2 ms | 15.9 ms | 17.3 ms | 31.7 ms |
+| Software (CPU) | — | 58.8 | 17.0 ms | 15.9 ms | 31.5 ms | 32.2 ms |
 
-세 모드 모두 화면 주사율(약 60Hz) 한계에 도달 — Windows에서는 어떤 백엔드든 차이가 없다.
-RPi5와 달리 Software도 60fps에 도달하는 이유는 데스크톱 CPU가 충분히 빠르기 때문이다.
-(Windows 기본값은 GLX/WGL이 아닌 ANGLE — OpenGL 명령을 Direct3D11로 번역하는 계층)
+All three modes reached the display refresh ceiling (~60 Hz) — on Windows, no backend makes a difference.
+Unlike the RPi5, Software also reaches 60 fps here because the desktop CPU is fast enough.
+(The Windows default is ANGLE — a layer translating OpenGL calls to Direct3D11 — not GLX/WGL.)
 
-## 재현 방법
+## How to Reproduce
 
 ```bash
-# RPi5에서 (linux-arm64 self-contained publish 배포 후)
+# On the RPi5 (after deploying a linux-arm64 self-contained publish)
 DISPLAY=:0 ./TimeGrapher.App --render-bench --render-mode=glx      --bench-label=pi5-glx
 DISPLAY=:0 ./TimeGrapher.App --render-bench --render-mode=egl      --bench-label=pi5-egl
 DISPLAY=:0 ./TimeGrapher.App --render-bench --render-mode=software --bench-label=pi5-sw
-# 결과는 stdout에 "RENDER_BENCH_RESULT {json}" 한 줄로 출력됨
+# Results are printed to stdout as a single "RENDER_BENCH_RESULT {json}" line
 
-# Windows에서 (참고 측정)
+# On Windows (reference measurement)
 TimeGrapher.App.exe --render-bench --render-mode=angle    --bench-label=win-angle
 TimeGrapher.App.exe --render-bench --render-mode=wgl      --bench-label=win-wgl
 TimeGrapher.App.exe --render-bench --render-mode=software --bench-label=win-sw
