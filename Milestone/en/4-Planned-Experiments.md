@@ -124,7 +124,7 @@ Complete — both conditions measured over 5 runs each (Raspberry Pi 5 and Windo
 
 ### Links & References
 
-- NA
+- [QAS-2 latency measurement results — result_latency.md](../../TestResult/result_latency.md)
 
 ## EXP-03: GUI real-time rendering design patterns
 

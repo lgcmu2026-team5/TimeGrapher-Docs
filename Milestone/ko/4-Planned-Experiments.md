@@ -124,7 +124,7 @@ RPi5 Live 환경에서 입력 → 분석 → 표시 파이프라인이 실시간
 
 ### 링크 및 참고 자료
 
-- NA
+- [QAS-2 latency 측정 결과 — result_latency.md](../../TestResult/result_latency.md)
 
 ## EXP-03: GUI 실시간 렌더링 디자인 패턴
 
