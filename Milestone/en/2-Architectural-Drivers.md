@@ -231,7 +231,7 @@ The metric, unit, and standard terms used in the scenarios below are defined in 
 ### QAS-2 · Performance (Latency) — From Sound Input to Screen Display
 **Prioritization** — Rank 1 · Importance: H · Difficulty: H · Rationale: The result must appear quickly, and the Pi may be the bottleneck.
 
-> **In one line: even at the top target rate of 43200 BPH, the analysis result is on screen within one beat period (83.3 ms).**
+> **In one line: even at the top target condition 43200 BPH @ 192 kHz, the analysis result is on screen within one beat period (83.3 ms).**
 >
 > While measuring with Live, Playback, or Simulation on the Raspberry Pi 5, when an audio sample block enters the input → analysis → display flow, the system analyzes the block, shows the result on screen, and records the three latency components (capture-to-processing, processing-to-display, total end-to-end) — at every supported BPH, worst-case total end-to-end latency must **not exceed one beat period**: **≤ 83.3 ms** at 43200 BPH, **≤ 125.0 ms** at 28800 BPH.
 
@@ -260,6 +260,8 @@ Beat period = 3600 s ÷ BPH:
 | 28800 | 8 beats/s | 125.0 ms |
 | 36000 | 10 beats/s | 100.0 ms |
 | 43200 | 12 beats/s | 83.3 ms |
+
+> **BPH sets the budget; sample rate sets the load.** The beat period (= the latency budget) is `3600 s ÷ BPH` and depends **only on BPH**, not on sample rate. Sample rate is a separate axis that sets the **number of samples — i.e. the processing load** — to handle per beat: the higher the sample rate at which the same beat-period budget must be met, the heavier the load. Latency is therefore verified at **paired conditions**: the top target is where the shortest budget and the highest load coincide, **43200 BPH @ 192 kHz** (83.3 ms), and the baseline measures a lower BPH at 48 kHz. See [EXP-02](4-Planned-Experiments.md#exp-02-rpi5-real-time-sample-rate-ceiling) and [result_latency](../../TestResult/result_latency.md) for the measured conditions and results.
 
 <a id="qas-3"></a>
 

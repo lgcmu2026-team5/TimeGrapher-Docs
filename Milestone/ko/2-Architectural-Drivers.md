@@ -231,7 +231,7 @@
 ### QAS-2 · Performance (Latency) — 소리 입력에서 화면 표시까지
 **우선순위** — 1순위 · 중요도: H · 난이도: H · 근거: 결과가 빨리 떠야 하고, Pi 성능이 병목이 될 수 있음.
 
-> **한 줄 요약: 최고 목표 비트율 43200 BPH에서도 한 비트 주기(83.3 ms) 안에 분석 결과가 화면에 나타난다.**
+> **한 줄 요약: 최고 목표 조건 43200 BPH @ 192 kHz에서도 한 비트 주기(83.3 ms) 안에 분석 결과가 화면에 나타난다.**
 >
 > Raspberry Pi 5에서 Live, Playback, 또는 Simulation으로 측정하는 동안 오디오 샘플 블록이 입력 → 분석 → 표시 흐름에 들어오면, 시스템은 그 블록을 분석해 화면에 표시하고 세 지연 구간(capture-to-processing, processing-to-display, total end-to-end)을 기록하며, 지원하는 BPH에서 total end-to-end latency의 worst-case가 **한 비트 주기를 넘지 않아야 한다** — 43200 BPH에서 **≤ 83.3 ms**, 28800 BPH에서 **≤ 125.0 ms**.
 
@@ -260,6 +260,8 @@
 | 28800 | 8 beats/s | 125.0 ms |
 | 36000 | 10 beats/s | 100.0 ms |
 | 43200 | 12 beats/s | 83.3 ms |
+
+> **예산은 BPH가, 부하는 sample rate가 정한다.** 비트 주기(= latency 예산)는 `3600 s ÷ BPH`로 **BPH에만 의존**하며 sample rate와 무관하다. sample rate는 비트 1개를 처리하는 동안 들어오는 **샘플 수, 즉 처리 부하**를 정하는 별도의 축이다 — 같은 비트 주기 예산을 더 높은 sample rate에서 지켜야 할수록 부하가 커진다. 그래서 latency는 두 축을 **짝지은 조건**에서 검증한다: 최고 목표는 가장 짧은 예산과 가장 높은 부하가 겹치는 **43200 BPH @ 192 kHz**(83.3 ms), 기준은 더 낮은 BPH를 48 kHz에서 측정한다. 실측 조건·결과는 [EXP-02](4-Planned-Experiments.md#exp-02-rpi5-실시간-샘플레이트-상한)·[result_latency](../../TestResult/result_latency.md) 참조.
 
 <a id="qas-3"></a>
 
