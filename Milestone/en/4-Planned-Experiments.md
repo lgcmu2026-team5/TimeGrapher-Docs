@@ -34,12 +34,13 @@ The terms used in this document are defined in the consolidated [Glossary](6-Glo
 **FPS by backend (Raspberry Pi 5, higher is better)**
 
 ```mermaid
-%%{init: {"themeVariables": {"xyChart": {"plotColorPalette": "#A50034"}}}}%%
+%%{init: {"themeVariables": {"xyChart": {"plotColorPalette": "#A50034, #999999"}}}}%%
 xychart-beta horizontal
-    title "RPi5 FPS by rendering backend (display ceiling ~60 Hz)"
+    title "RPi5 FPS by rendering backend (gray line = 60 FPS display ceiling)"
     x-axis ["GLX(GPU)", "EGL(GPU)", "Software(CPU)"]
     y-axis "FPS" 0 --> 70
     bar [59.2, 60.0, 43.6]
+    line [60, 60, 60]
 ```
 
 ### Objective
@@ -105,12 +106,13 @@ Complete — GPU acceleration confirmed faster than Software; keep the default (
 **Worst-case E2E latency as % of beat-period budget (Raspberry Pi 5, lower is better, 100% = budget)**
 
 ```mermaid
-%%{init: {"themeVariables": {"xyChart": {"plotColorPalette": "#A50034"}}}}%%
+%%{init: {"themeVariables": {"xyChart": {"plotColorPalette": "#A50034, #999999"}}}}%%
 xychart-beta horizontal
-    title "RPi5 worst-case latency / budget per run (%)"
+    title "RPi5 worst-case latency / budget per run (gray line = 100% budget)"
     x-axis ["21600@48k Sim", "21600@48k Play", "21600@48k Live", "43200@192k Sim", "43200@192k Play"]
-    y-axis "Budget usage (%)" 0 --> 100
+    y-axis "Budget usage (%)" 0 --> 110
     bar [25.2, 26.4, 24.2, 40.8, 41.5]
+    line [100, 100, 100, 100, 100]
 ```
 
 ### Objective
@@ -273,12 +275,13 @@ In progress
 > Data collected during the 24-hour continuous run, shown as 30-minute segment means.
 
 ```mermaid
-%%{init: {"themeVariables": {"xyChart": {"plotColorPalette": "#A50034"}}}}%%
+%%{init: {"themeVariables": {"xyChart": {"plotColorPalette": "#A50034, #999999"}}}}%%
 xychart-beta
-    title "Process CPU usage trend (0–24h, 4 cores = 400%)"
+    title "Process CPU usage trend (0–24h, gray line = 4-core 400% ceiling)"
     x-axis "Elapsed time (h)" 0 --> 24
-    y-axis "CPU usage (%)" 0 --> 200
+    y-axis "CPU usage (%)" 0 --> 420
     line [127.5, 133.4, 134.0, 135.0, 136.0, 136.0, 137.0, 137.0, 138.0, 138.0, 138.7, 139.0, 139.0, 139.4, 140.0, 140.0, 140.0, 140.2, 141.0, 141.0, 141.0, 141.0, 141.0, 141.7, 142.0, 142.0, 142.0, 142.0, 142.0, 142.0, 142.0, 142.5, 143.0, 143.0, 143.0, 143.0, 143.0, 143.0, 143.0, 143.0, 143.0, 143.0, 143.0, 143.5, 144.0, 144.0, 144.0, 144.0]
+    line [400, 400, 400, 400, 400, 400, 400, 400, 400, 400, 400, 400, 400, 400, 400, 400, 400, 400, 400, 400, 400, 400, 400, 400, 400, 400, 400, 400, 400, 400, 400, 400, 400, 400, 400, 400, 400, 400, 400, 400, 400, 400, 400, 400, 400, 400, 400, 400]
 ```
 
 ```mermaid

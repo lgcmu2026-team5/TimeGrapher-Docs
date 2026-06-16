@@ -34,12 +34,13 @@
 **백엔드별 FPS (Raspberry Pi 5, 높을수록 좋음)**
 
 ```mermaid
-%%{init: {"themeVariables": {"xyChart": {"plotColorPalette": "#A50034"}}}}%%
+%%{init: {"themeVariables": {"xyChart": {"plotColorPalette": "#A50034, #999999"}}}}%%
 xychart-beta horizontal
-    title "RPi5 렌더링 백엔드별 FPS (디스플레이 한계 ~60 Hz)"
+    title "RPi5 렌더링 백엔드별 FPS (회색선 = 60 FPS 디스플레이 한계)"
     x-axis ["GLX(GPU)", "EGL(GPU)", "Software(CPU)"]
     y-axis "FPS" 0 --> 70
     bar [59.2, 60.0, 43.6]
+    line [60, 60, 60]
 ```
 
 ### 목적
@@ -105,12 +106,13 @@ C# 경로 채택 시 Avalonia Github의 다수 이슈처럼 RPi5에서 GPU 가�
 **worst-case E2E 지연의 비트 주기 예산 사용률 (Raspberry Pi 5, 낮을수록 여유, 100% = 예산)**
 
 ```mermaid
-%%{init: {"themeVariables": {"xyChart": {"plotColorPalette": "#A50034"}}}}%%
+%%{init: {"themeVariables": {"xyChart": {"plotColorPalette": "#A50034, #999999"}}}}%%
 xychart-beta horizontal
-    title "RPi5 run별 worst-case 지연 / 예산 (%)"
+    title "RPi5 run별 worst-case 지연 / 예산 (회색선 = 100% 예산)"
     x-axis ["21600@48k Sim", "21600@48k Play", "21600@48k Live", "43200@192k Sim", "43200@192k Play"]
-    y-axis "예산 사용률 (%)" 0 --> 100
+    y-axis "예산 사용률 (%)" 0 --> 110
     bar [25.2, 26.4, 24.2, 40.8, 41.5]
+    line [100, 100, 100, 100, 100]
 ```
 
 ### 목적
@@ -273,12 +275,13 @@ TinyML 기반 분류(예: signal-quality, bad-data-rejection)를 RPi 온디바�
 > 24시간 연속 실행 동안 수집한 데이터를 30분 단위 구간 평균으로 표시.
 
 ```mermaid
-%%{init: {"themeVariables": {"xyChart": {"plotColorPalette": "#A50034"}}}}%%
+%%{init: {"themeVariables": {"xyChart": {"plotColorPalette": "#A50034, #999999"}}}}%%
 xychart-beta
-    title "프로세스 CPU 사용률 추세 (0–24h, 4코어 = 400%)"
+    title "프로세스 CPU 사용률 추세 (0–24h, 회색선 = 4코어 400% 상한)"
     x-axis "경과 시간 (h)" 0 --> 24
-    y-axis "CPU 사용률 (%)" 0 --> 200
+    y-axis "CPU 사용률 (%)" 0 --> 420
     line [127.5, 133.4, 134.0, 135.0, 136.0, 136.0, 137.0, 137.0, 138.0, 138.0, 138.7, 139.0, 139.0, 139.4, 140.0, 140.0, 140.0, 140.2, 141.0, 141.0, 141.0, 141.0, 141.0, 141.7, 142.0, 142.0, 142.0, 142.0, 142.0, 142.0, 142.0, 142.5, 143.0, 143.0, 143.0, 143.0, 143.0, 143.0, 143.0, 143.0, 143.0, 143.0, 143.0, 143.5, 144.0, 144.0, 144.0, 144.0]
+    line [400, 400, 400, 400, 400, 400, 400, 400, 400, 400, 400, 400, 400, 400, 400, 400, 400, 400, 400, 400, 400, 400, 400, 400, 400, 400, 400, 400, 400, 400, 400, 400, 400, 400, 400, 400, 400, 400, 400, 400, 400, 400, 400, 400, 400, 400, 400, 400]
 ```
 
 ```mermaid
