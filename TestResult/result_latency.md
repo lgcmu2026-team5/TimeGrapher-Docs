@@ -1,17 +1,19 @@
-# QAS-1 Latency Experiment Results Detail
+# QAS-1 Latency Experiment Plan & Results
 
-> 목적: Raspberry Pi 5 실제 GUI 실행에서 수집한 `--analysis-log` CSV를 기반으로 QAS-1 latency 결과를 상세 정리한다.
+> 목적: 실제 GUI 실행에서 수집하는 `--analysis-log` CSV를 기반으로 QAS-1 latency를 재측정한다. **기존 측정 결과는 폐기했다.** 아래 2개 조건 × 입력 모드 매트릭스로 다시 측정한다.
+
+> **폐기 안내**: 이전 버전 문서는 28800 BPH @ 48 kHz(Sim), 43200 BPH @ 192 kHz(Sim), 21600 BPH @ 48 kHz(WAV), 28800 BPH @ 384 kHz(WAV) 네 건의 결과를 담고 있었다. 조건 집합이 설계 목표와 정합하지 않아 전부 폐기하고, 아래의 정리된 두 조건으로 재측정한다.
 
 ## 1. 실험 개요
 
-QAS-1은 오디오 입력 블록이 캡처된 시점부터 beat detection/measurement 처리 완료 시점, 그리고 대응 waveform/marker/computed reading이 GUI에 표시된 시점까지의 latency를 보고하도록 요구한다. 이번 실험은 Raspberry Pi 5에서 TimeGrapher.App을 실제 디스플레이 GUI로 실행하고, `--analysis-log <csv>`로 각 GUI 표시 프레임의 latency를 수집했다.
+QAS-1은 오디오 입력 블록이 캡처된 시점부터 beat detection/measurement 처리 완료 시점, 그리고 대응 waveform/marker/computed reading이 GUI에 표시된 시점까지의 latency를 보고하도록 요구한다. 이번 실험은 TimeGrapher.App을 실제 디스플레이 GUI로 실행하고, `--analysis-log <csv>`로 각 GUI 표시 프레임의 latency를 수집한다.
 
 실험 목적은 다음 두 조건에서 total end-to-end latency가 비트 주기 예산 안에 들어오는지 확인하는 것이다.
 
 | 조건 | BPH | Sample rate | 비트 주기 예산 |
 |---|---:|---:|---:|
-| 기준 조건 | 28800 BPH | 48 kHz | 125.0 ms |
-| 최고 목표 조건 | 43200 BPH | 192 kHz | 83.3 ms |
+| 기준 조건 | 21600 BPH | 48 kHz | 166.667 ms |
+| 최고 목표 조건 | 43200 BPH | 192 kHz | 83.333 ms |
 
 비트 주기 계산식:
 
@@ -19,33 +21,24 @@ QAS-1은 오디오 입력 블록이 캡처된 시점부터 beat detection/measur
 beat_period_ms = 3600 s / BPH * 1000 ms/s
 ```
 
-위 두 설계 목표 조건의 Simulation 결과에 더해, 실제 오디오 파형 디코딩 경로를 검증하기 위한 WAV 파일 재생 실험 두 건(21600 BPH @ 48 kHz, 28800 BPH @ 384 kHz)을 추가로 수집했다. 이 문서는 총 네 건의 실험을 정리한다.
+측정은 **Raspberry Pi 5(주 대상)** 와 **Windows(참고)** 두 플랫폼에서 각각 수행한다. QAS-1 판정의 기준 플랫폼은 배포 대상인 Raspberry Pi 5이며, Windows 결과는 개발 PC 참고치로만 기록한다.
 
 ## 2. 실험 환경
 
-아래 환경은 네 건의 실험(Simulation 2건, WAV 재생 2건)에 모두 동일하게 적용된다. 입력 모드만 다를 뿐 하드웨어와 빌드는 동일하다.
+| 항목 | Raspberry Pi 5 (주 대상) | Windows (참고) |
+|---|---|---|
+| Hardware | Raspberry Pi 5 | 개발 PC |
+| OS | Debian GNU/Linux 13 (trixie), arm64 | Windows 11 |
+| 오디오 백엔드 | ALSA | WASAPI |
+| GUI session | labwc Wayland + XWayland `:0` | Windows 데스크톱 |
+| App build | linux-arm64 self-contained build | win-x64 build |
+| 측정 옵션 | `./TimeGrapher.App --analysis-log <csv>` | `TimeGrapher.App.exe --analysis-log <csv>` |
+| 입력 모드 | Live(USB 마이크) / Playback / Simulation | Live(USB 마이크) / Playback / Simulation |
+| 활성 탭 | Rate/Scope | Rate/Scope |
 
-| 항목 | 값 |
-|---|---|
-| Hardware | Raspberry Pi 5 |
-| OS | Debian GNU/Linux 13 (trixie), arm64 |
-| GUI session | labwc Wayland + XWayland `:0` |
-| App build | `TimeGrapher.App` linux-arm64 self-contained build |
-| 실행 방식 | Pi 디스플레이에 실제 GUI 표시, SSH로 원격 조작 |
-| 측정 옵션 | `./TimeGrapher.App --analysis-log <csv>` |
-| 입력 모드 | Simulation, WAV 파일 재생 |
-| Live microphone | 미수행. Pi에서 `source_count=0`, ALSA capture hardware 없음 |
+Live 마이크 경로는 USB 마이크가 capture source로 감지된 상태에서 측정한다. 직전 측정 시점에는 Pi에서 capture source가 감지되지 않아 Live를 수행하지 못했으므로, 이번 재측정에서는 마이크 확보가 선행 조건이다.
 
-마이크 입력 장치가 OS에서 감지되지 않았기 때문에 Live microphone 경로는 이번 실험에서 제외했다. 대신 두 가지 입력 모드로 앱 파이프라인을 검증했다. (1) Simulation 입력으로 앱 내부 입력 worker, analysis worker, GUI render scheduler, GUI display timestamp까지 포함한 앱 파이프라인을 검증했다. (2) 사전 녹음한 WAV 파일을 앱 입력으로 재생하여, 실제 오디오 파형 디코딩과 동일 분석/표시 경로를 추가로 검증했다.
-
-## 3. 원본 CSV
-
-| 조건 | CSV 위치 | CSV rows |
-|---|---|---:|
-| Simulation 28800 BPH @ 48 kHz | `~/tg-gui-latency-20260610195614.csv` | 1182 rows = header + 1181 frames |
-| Simulation 43200 BPH @ 192 kHz | `~/tg-gui-latency-43200-192k-20260610195614.csv` | 434 rows = header + 433 frames |
-| WAV 재생 21600 BPH @ 48 kHz | `Project/EXP/wav48.csv` | 1175 rows = header + 1174 frames |
-| WAV 재생 28800 BPH @ 384 kHz | `Project/EXP/wav384.csv` | 809 rows = header + 808 frames |
+## 3. 측정 방법
 
 CSV 컬럼:
 
@@ -63,7 +56,7 @@ dropped_audio_samples,
 missed_beat_detections
 ```
 
-이번 상세 통계의 `avg`, `p95`, `p99`, `worst`는 누적 평균 컬럼이 아니라 각 row의 per-frame latency 컬럼에서 다시 계산했다.
+상세 통계의 `avg`, `p95`, `p99`, `worst`는 누적 평균 컬럼이 아니라 각 row의 per-frame latency 컬럼에서 다시 계산한다.
 
 Percentile 계산 방식은 nearest-rank 방식이다.
 
@@ -71,195 +64,117 @@ Percentile 계산 방식은 nearest-rank 방식이다.
 index = ceil(percentile * frame_count) - 1
 ```
 
-## 4. 상세 결과: Simulation 28800 BPH @ 48 kHz
+**길이 통일**: CSV는 GUI에 표시되는 프레임마다 한 row를 기록하므로 row 수는 run 길이에 비례한다. 각 run을 넉넉히 돌린 뒤, 분석 단계에서 비교 대상 CSV들의 **공통 최소 프레임 수**만큼 앞부분을 잘라 동일 프레임 수 기준으로 통계를 계산한다.
 
-비트 주기 예산: **125.0 ms**
+## 4. 실험 매트릭스 및 측정 절차
 
-| Latency leg | avg | p95 | p99 | worst |
-|---|---:|---:|---:|---:|
-| capture-to-processing | 0.764 ms | 1.698 ms | 2.737 ms | 34.246 ms |
-| processing-to-display | 5.565 ms | 10.118 ms | 11.802 ms | 17.506 ms |
-| total end-to-end | 6.329 ms | 10.900 ms | 12.615 ms | 40.720 ms |
+2개 조건 × 입력 모드 = **플랫폼당 5 run** (43200 BPH @ 192 kHz는 Live 제외).
 
-### 안정성 카운터
+| 조건 | Simulation | Playback | Live |
+|---|---|---|---|
+| 21600 BPH @ 48 kHz | run | run (Live 녹음 WAV) | run (실제 무브먼트) |
+| 43200 BPH @ 192 kHz | run | run (합성 WAV) | 해당 없음 (하이비트 무브먼트 미보유) |
 
-| Counter | Value |
-|---|---:|
-| dropped audio samples | 0 |
-| missed beat detections | 0 |
+→ 플랫폼당 5 run. Raspberry Pi 5(주)와 Windows(참고)에서 각각 수행하므로 총 10 run.
 
-### 예산 대비 판정
+입력 모드별 절차:
 
-| Metric | Value |
-|---|---:|
-| E2E budget | 125.0 ms |
-| E2E p99 | 12.615 ms |
-| E2E worst | 40.720 ms |
-| Worst-case budget usage | 32.6% |
-| Worst-case remaining margin | 84.280 ms |
-| Result | Pass |
+1. **Live** — 캡처 sample rate를 48 kHz로 설정하고 실제 무브먼트를 USB 마이크로 캡처한다. record 세션을 켜고 `--analysis-log`로 측정하면 live CSV와 함께 float32 mono WAV이 동시에 저장된다. 43200 BPH는 하이비트 무브먼트를 확보하지 못해 Live를 수행하지 않는다.
+2. **Playback** — 21600 BPH는 Live에서 저장한 WAV을 동일 sample rate로 재생한다. 43200 BPH는 실녹음 WAV이 없어 합성 WAV(`sample/43200BPH_synthetic_192000Hz.wav`)을 재생한다.
+3. **Simulation** — BPH와 sample rate를 직접 설정해 독립적으로 측정한다.
 
-해석:
+**43200 BPH @ 192 kHz Playback용 합성 WAV 출처**: 앱 Simulation과 동일한 `WatchSynthStream` 생성기(Clean config, pcmPeak 0.35, noise 0)로 생성한 float32 mono 192 kHz · 60초 파일이다. `TimeGrapher.Verify` 검증에서 `detected_bph=43200`, `sync_status=Synced`로 확인했다. 실제 음향 녹음이 아니라 합성 신호이므로, 해당 조건의 Playback은 실음향 디코딩이 아닌 파일 디코딩 경로 검증으로 한정된다.
 
-- 평균 E2E는 6.329 ms로 비트 주기 예산의 약 5.1% 수준이다.
-- p99 E2E는 12.615 ms로 비트 주기 예산의 약 10.1% 수준이다.
-- worst E2E도 40.720 ms로 125.0 ms 예산 안에 충분히 들어왔다.
-- dropped audio samples와 missed beat detections가 모두 0이므로 stale/backlog가 측정 실패로 이어진 증거는 없다.
+## 5. 결과
 
-## 5. 상세 결과: Simulation 43200 BPH @ 192 kHz
+**측정 대기(TBD).** 재측정 후 아래 표를 채운다.
 
-비트 주기 예산: **83.3 ms**
+### 5.1 Raspberry Pi 5 (주 대상)
 
-| Latency leg | avg | p95 | p99 | worst |
-|---|---:|---:|---:|---:|
-| capture-to-processing | 1.127 ms | 2.247 ms | 3.252 ms | 25.501 ms |
-| processing-to-display | 5.504 ms | 10.401 ms | 12.420 ms | 22.354 ms |
-| total end-to-end | 6.631 ms | 11.713 ms | 13.842 ms | 30.382 ms |
+| Condition | Input | Frames | E2E avg | E2E p95 | E2E p99 | E2E worst | Budget | Worst usage | Drop | Miss | Result |
+|---|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---|
+| 21600 BPH @ 48 kHz | Simulation | 1035 | 6.176 ms | 10.722 ms | 12.398 ms | 41.975 ms | 166.667 ms | 25.2% | 0 | 0 | Pass |
+| 21600 BPH @ 48 kHz | Playback | 1035 | 6.335 ms | 11.146 ms | 12.985 ms | 43.939 ms | 166.667 ms | 26.4% | 0 | 0 | Pass |
+| 21600 BPH @ 48 kHz | Live | 1035 | 3.908 ms | 6.424 ms | 9.132 ms | 40.378 ms | 166.667 ms | 24.2% | 0 | 0 | Pass |
+| 43200 BPH @ 192 kHz | Simulation | 1035 | 7.133 ms | 12.358 ms | 13.834 ms | 34.003 ms | 83.333 ms | 40.8% | 0 | 0 | Pass |
+| 43200 BPH @ 192 kHz | Playback | 1035 | 6.830 ms | 11.834 ms | 13.807 ms | 34.562 ms | 83.333 ms | 41.5% | 0 | 0 | Pass |
 
-### 안정성 카운터
+Raspberry Pi 5 5 run은 모두 비트 주기 예산 안에 들어왔고 dropped audio samples·missed beat detections가 0이었다(공통 최소 프레임 1035 기준). 측정 CSV는 `csv/pi/`에 있다.
 
-| Counter | Value |
-|---|---:|
-| dropped audio samples | 0 |
-| missed beat detections | 0 |
+#### Raspberry Pi 5 per-leg 상세 (avg / p95 / p99 / worst, ms)
 
-### 예산 대비 판정
+| Run | Leg | avg | p95 | p99 | worst |
+|---|---|---:|---:|---:|---:|
+| 21600@48k Sim | capture-to-processing | 0.782 | 1.758 | 2.733 | 36.966 |
+| 21600@48k Sim | processing-to-display | 5.394 | 10.029 | 11.862 | 13.776 |
+| 21600@48k Sim | total end-to-end | 6.176 | 10.722 | 12.398 | 41.975 |
+| 21600@48k Playback | capture-to-processing | 0.899 | 2.174 | 3.119 | 37.247 |
+| 21600@48k Playback | processing-to-display | 5.436 | 10.330 | 11.966 | 20.757 |
+| 21600@48k Playback | total end-to-end | 6.335 | 11.146 | 12.985 | 43.939 |
+| 21600@48k Live | capture-to-processing | 2.639 | 4.598 | 6.110 | 14.011 |
+| 21600@48k Live | processing-to-display | 1.269 | 3.138 | 4.114 | 31.752 |
+| 21600@48k Live | total end-to-end | 3.908 | 6.424 | 9.132 | 40.378 |
+| 43200@192k Sim | capture-to-processing | 1.457 | 3.099 | 4.186 | 28.522 |
+| 43200@192k Sim | processing-to-display | 5.676 | 11.144 | 12.541 | 21.247 |
+| 43200@192k Sim | total end-to-end | 7.133 | 12.358 | 13.834 | 34.003 |
+| 43200@192k Playback | capture-to-processing | 1.351 | 2.697 | 3.673 | 29.313 |
+| 43200@192k Playback | processing-to-display | 5.479 | 10.608 | 12.580 | 19.695 |
+| 43200@192k Playback | total end-to-end | 6.830 | 11.834 | 13.807 | 34.562 |
 
-| Metric | Value |
-|---|---:|
-| E2E budget | 83.333 ms |
-| E2E p99 | 13.842 ms |
-| E2E worst | 30.382 ms |
-| Worst-case budget usage | 36.5% |
-| Worst-case remaining margin | 52.951 ms |
-| Result | Pass |
+### 5.2 Windows (참고)
 
-해석:
+| Condition | Input | Frames | E2E avg | E2E p95 | E2E p99 | E2E worst | Budget | Worst usage | Drop | Miss | Result |
+|---|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---|
+| 21600 BPH @ 48 kHz | Simulation | 787 | 13.723 ms | 17.623 ms | 18.651 ms | 22.619 ms | 166.667 ms | 13.6% | 0 | 0 | Pass |
+| 21600 BPH @ 48 kHz | Playback | 787 | 11.453 ms | 17.517 ms | 18.423 ms | 34.846 ms | 166.667 ms | 20.9% | 0 | 0 | Pass |
+| 21600 BPH @ 48 kHz | Live | 787 | 10.996 ms | 20.026 ms | 21.194 ms | 26.038 ms | 166.667 ms | 15.6% | 0 | 0 | Pass |
+| 43200 BPH @ 192 kHz | Simulation | 787 | 15.186 ms | 17.824 ms | 19.071 ms | 26.352 ms | 83.333 ms | 31.6% | 0 | 0 | Pass |
+| 43200 BPH @ 192 kHz | Playback | 787 | 13.946 ms | 17.763 ms | 18.731 ms | 24.061 ms | 83.333 ms | 28.9% | 0 | 0 | Pass |
 
-- 43200 BPH는 한 비트가 83.3 ms마다 들어오는 최고 목표 조건이다.
-- 평균 E2E는 6.631 ms로 비트 주기 예산의 약 8.0% 수준이다.
-- p99 E2E는 13.842 ms로 비트 주기 예산의 약 16.6% 수준이다.
-- worst E2E도 30.382 ms로 83.3 ms 예산의 약 36.5% 수준이다.
-- dropped audio samples와 missed beat detections가 모두 0이므로 192 kHz 입력에서도 앱 내부 Simulation 파이프라인은 backlog 없이 처리되었다.
+Windows 5 run은 모두 비트 주기 예산 안에 들어왔고 dropped audio samples·missed beat detections가 0이었다(공통 최소 프레임 787 기준). 측정 CSV는 `csv/win/`에 있다.
 
-## 6. 상세 결과: WAV 재생 21600 BPH @ 48 kHz
+#### Windows per-leg 상세 (avg / p95 / p99 / worst, ms)
 
-사전 녹음한 WAV 파일을 앱 입력으로 재생한 결과다. Simulation과 달리 실제 오디오 파형 디코딩 경로가 포함된다.
+| Run | Leg | avg | p95 | p99 | worst |
+|---|---|---:|---:|---:|---:|
+| 21600@48k Sim | capture-to-processing | 0.707 | 1.529 | 2.383 | 11.539 |
+| 21600@48k Sim | processing-to-display | 13.016 | 17.015 | 17.746 | 22.257 |
+| 21600@48k Sim | total end-to-end | 13.723 | 17.623 | 18.651 | 22.619 |
+| 21600@48k Playback | capture-to-processing | 0.521 | 1.054 | 1.739 | 11.092 |
+| 21600@48k Playback | processing-to-display | 10.933 | 16.973 | 17.760 | 32.419 |
+| 21600@48k Playback | total end-to-end | 11.453 | 17.517 | 18.423 | 34.846 |
+| 21600@48k Live | capture-to-processing | 0.662 | 1.332 | 1.935 | 12.159 |
+| 21600@48k Live | processing-to-display | 10.334 | 19.234 | 20.430 | 25.142 |
+| 21600@48k Live | total end-to-end | 10.996 | 20.026 | 21.194 | 26.038 |
+| 43200@192k Sim | capture-to-processing | 0.838 | 1.859 | 2.519 | 12.882 |
+| 43200@192k Sim | processing-to-display | 14.347 | 17.041 | 18.350 | 25.574 |
+| 43200@192k Sim | total end-to-end | 15.186 | 17.824 | 19.071 | 26.352 |
+| 43200@192k Playback | capture-to-processing | 0.778 | 1.751 | 2.301 | 11.189 |
+| 43200@192k Playback | processing-to-display | 13.168 | 17.106 | 17.896 | 23.527 |
+| 43200@192k Playback | total end-to-end | 13.946 | 17.763 | 18.731 | 24.061 |
 
-비트 주기 예산: **166.667 ms**
+Raspberry Pi 5 결과표(§5.1)는 측정 후 같은 방식으로 채운다.
 
-| Latency leg | avg | p95 | p99 | worst |
-|---|---:|---:|---:|---:|
-| capture-to-processing | 0.910 ms | 2.248 ms | 3.258 ms | 24.431 ms |
-| processing-to-display | 5.429 ms | 10.678 ms | 11.751 ms | 21.253 ms |
-| total end-to-end | 6.339 ms | 11.365 ms | 13.047 ms | 29.413 ms |
+## 6. QAS-1 판정
 
-### 안정성 카운터
+QAS-1 판정은 배포 대상인 Raspberry Pi 5 결과를 기준으로 한다(Windows는 참고치). Raspberry Pi 5 기준 두 조건 모두 충족한다.
 
-| Counter | Value |
-|---|---:|
-| dropped audio samples | 0 |
-| missed beat detections | 0 |
+| Requirement | 21600@48k (Sim/Playback/Live) | 43200@192k (Sim/Playback) |
+|---|---|---|
+| E2E worst-case <= one beat period | Pass (worst 43.939 <= 166.667 ms) | Pass (worst 34.562 <= 83.333 ms) |
+| dropped audio samples = 0 | Pass | Pass |
+| missed beat detections = 0 | Pass | Pass |
+| report avg/p95/p99/worst for latency legs | Pass | Pass |
 
-### 예산 대비 판정
+## 7. 제한 사항
 
-| Metric | Value |
-|---|---:|
-| E2E budget | 166.667 ms |
-| E2E p99 | 13.047 ms |
-| E2E worst | 29.413 ms |
-| Worst-case budget usage | 17.6% |
-| Worst-case remaining margin | 137.254 ms |
-| Result | Pass |
-
-해석:
-
-- 21600 BPH는 한 비트가 166.667 ms마다 들어오는 6 bps 조건이다.
-- 평균 E2E는 6.339 ms로 비트 주기 예산의 약 3.8% 수준이다.
-- p99 E2E는 13.047 ms로 비트 주기 예산의 약 7.8% 수준이다.
-- worst E2E도 29.413 ms로 166.667 ms 예산 안에 충분히 들어왔다.
-- dropped audio samples와 missed beat detections가 모두 0이므로 WAV 파형 디코딩 경로에서도 backlog 없이 처리되었다.
-
-## 7. 상세 결과: WAV 재생 28800 BPH @ 384 kHz
-
-사전 녹음한 WAV 파일을 앱 입력으로 재생한 결과다. 384 kHz는 이번 실험에서 가장 높은 샘플레이트 조건이다.
-
-비트 주기 예산: **125.0 ms**
-
-| Latency leg | avg | p95 | p99 | worst |
-|---|---:|---:|---:|---:|
-| capture-to-processing | 1.489 ms | 2.476 ms | 3.537 ms | 28.968 ms |
-| processing-to-display | 5.599 ms | 10.385 ms | 11.974 ms | 14.641 ms |
-| total end-to-end | 7.088 ms | 11.918 ms | 13.747 ms | 34.935 ms |
-
-### 안정성 카운터
-
-| Counter | Value |
-|---|---:|
-| dropped audio samples | 0 |
-| missed beat detections | 0 |
-
-### 예산 대비 판정
-
-| Metric | Value |
-|---|---:|
-| E2E budget | 125.0 ms |
-| E2E p99 | 13.747 ms |
-| E2E worst | 34.935 ms |
-| Worst-case budget usage | 27.9% |
-| Worst-case remaining margin | 90.065 ms |
-| Result | Pass |
-
-해석:
-
-- 평균 E2E는 7.088 ms로 비트 주기 예산의 약 5.7% 수준이다.
-- p99 E2E는 13.747 ms로 비트 주기 예산의 약 11.0% 수준이다.
-- worst E2E도 34.935 ms로 125.0 ms 예산의 약 27.9% 수준이다.
-- capture-to-processing 평균이 1.489 ms로 네 실험 중 가장 높은데, 384 kHz의 높은 샘플레이트로 분석 입력량이 가장 많은 영향으로 볼 수 있다.
-- dropped audio samples와 missed beat detections가 모두 0이므로 384 kHz WAV 입력에서도 파이프라인은 backlog 없이 처리되었다.
-
-## 8. 네 실험 비교
-
-| Condition | Input | Frames | E2E avg | E2E p95 | E2E p99 | E2E worst | Budget | Worst usage | Drop | Miss |
-|---|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-| 28800 BPH @ 48 kHz | Simulation | 1181 | 6.329 ms | 10.900 ms | 12.615 ms | 40.720 ms | 125.0 ms | 32.6% | 0 | 0 |
-| 43200 BPH @ 192 kHz | Simulation | 433 | 6.631 ms | 11.713 ms | 13.842 ms | 30.382 ms | 83.3 ms | 36.5% | 0 | 0 |
-| 21600 BPH @ 48 kHz | WAV 재생 | 1174 | 6.339 ms | 11.365 ms | 13.047 ms | 29.413 ms | 166.667 ms | 17.6% | 0 | 0 |
-| 28800 BPH @ 384 kHz | WAV 재생 | 808 | 7.088 ms | 11.918 ms | 13.747 ms | 34.935 ms | 125.0 ms | 27.9% | 0 | 0 |
-
-관찰:
-
-1. capture-to-processing 평균은 샘플레이트가 올라갈수록 증가하는 경향이다. 48 kHz(0.764~0.910 ms) < 192 kHz(1.127 ms) < 384 kHz(1.489 ms) 순으로, 분석 입력량 증가의 영향으로 볼 수 있다.
-2. processing-to-display 평균은 네 조건 모두 약 5.4~5.6 ms 수준이다. GUI 표시 구간은 샘플레이트보다 render scheduling 및 UI thread 상태의 영향을 더 크게 받는 것으로 보인다.
-3. total E2E 평균은 네 조건 모두 약 6~7 ms 수준으로 안정적이며, WAV 재생 경로도 Simulation과 동등한 수준의 E2E latency를 보였다.
-4. worst-case는 네 조건 모두 첫 동기화/초기 표시 구간의 transient spike가 반영된 값으로 보이며, 그래도 각 비트 주기 예산 안에 들어왔다.
-5. 네 실험 모두 dropped audio samples와 missed beat detections가 0이다.
-
-## 9. QAS-1 판정
-
-QAS-1의 수정 기준을 다음과 같이 적용한다.
-
-| Requirement | 28800@48k (Sim) | 43200@192k (Sim) | 21600@48k (WAV) | 28800@384k (WAV) |
-|---|---:|---:|---:|---:|
-| E2E worst-case <= one beat period | Pass: 40.720 <= 125.0 ms | Pass: 30.382 <= 83.333 ms | Pass: 29.413 <= 166.667 ms | Pass: 34.935 <= 125.0 ms |
-| dropped audio samples = 0 | Pass | Pass | Pass | Pass |
-| missed beat detections = 0 | Pass | Pass | Pass | Pass |
-| report avg/p95/p99/worst for latency legs | Pass | Pass | Pass | Pass |
-
-결론적으로, Simulation 및 WAV 재생 입력 모두에서 QAS-1 latency 목표는 충족한다.
-
-## 10. 제한 사항
-
-1. Live microphone 경로는 아직 검증하지 못했다. Pi에서 capture source가 감지되지 않았기 때문이다. WAV 재생은 실제 파형 디코딩 경로를 포함하지만, USB microphone driver, OS audio stack, real acoustic noise, hardware buffering jitter는 포함하지 않는다.
-2. Simulation은 앱 내부의 input worker와 analysis/display path를 검증한다. WAV 재생은 여기에 파일 디코딩 경로를 추가로 검증하지만, 두 모드 모두 라이브 캡처 hardware 경로는 대체하지 못한다.
-3. CSV에는 wall-clock timestamp가 없으므로 정확한 실행 시간 분포는 frame count와 latency 값으로만 분석했다.
+1. Live 경로는 USB 마이크가 capture source로 감지된 상태에서만 측정할 수 있다.
+2. 43200 BPH(하이비트) 무브먼트를 확보하지 못해 해당 조건의 Live는 두 플랫폼 모두에서 수행하지 않는다. 또한 같은 이유로 실녹음 WAV이 없어 43200 BPH Playback은 합성 WAV으로 대체했다(§4 출처 참조). 따라서 43200 BPH 조건은 실음향 입력 경로 검증이 빠져 있다.
+3. CSV에는 wall-clock timestamp가 없으므로 실행 시간 분포는 frame count와 latency 값으로만 분석한다.
 4. 이번 실험은 Rate/Scope 탭이 활성화된 상태의 GUI 결과다. 다른 탭, 특히 Spectrogram/Sound Print 등 이미지 중심 탭은 별도 측정이 필요할 수 있다.
 
-## 11. 결론
+## 8. 결론
 
-- 기존 500 ms 기준보다 엄격한 beat-period 기준을 적용해도 네 실험 모두 통과했다.
-- 최고 목표 조건인 43200 BPH @ 192 kHz에서 E2E p99는 13.842 ms, worst는 30.382 ms로 83.3 ms 예산 안에 들어왔다.
-- WAV 재생 입력에서도 E2E latency는 Simulation과 동등한 수준이었고(avg 6.3~7.1 ms), 가장 높은 384 kHz 샘플레이트에서도 worst E2E는 34.935 ms로 125.0 ms 예산의 약 27.9% 수준에 머물렀다.
-- dropped audio samples와 missed beat detections는 네 실험 모두 0이었다.
-- 현재 아키텍처의 핵심 성능 tactic인 analysis/UI thread 분리, latest-wins frame scheduling, active-tab rendering, bounded resource usage, record/monitor 계측이 QAS-1 충족에 기여한 것으로 해석할 수 있다.
-- 다음 검증 단계는 USB microphone이 Pi에서 capture source로 잡힌 상태에서 동일한 CSV 로깅을 Live mode로 반복하는 것이다.
+Raspberry Pi 5(주 대상)에서 21600 BPH @ 48 kHz, 43200 BPH @ 192 kHz 두 조건을 Simulation/Playback/Live(43200 BPH는 Sim/Playback) 입력 모드로 측정한 결과, worst-case E2E latency가 모두 비트 주기 예산 안에 들어왔고 dropped audio samples·missed beat detections는 전부 0이었다. 가장 빡빡한 43200 BPH @ 192 kHz에서도 worst E2E는 34.562 ms로 예산 83.333 ms의 약 41.5% 수준이었다. Windows(참고) 5 run도 모두 예산 안에 들어왔다. 따라서 QAS-1 latency 목표는 두 조건·세 입력 모드에서 충족한다.
+
+입력 모드별로 보면, Pi에서 Live(21600 BPH)의 E2E avg가 3.908 ms로 Sim/Playback보다 낮았는데, 이는 processing-to-display 평균이 1.269 ms로 가장 짧았기 때문이다. 반면 capture-to-processing은 Live가 2.639 ms로 가장 높아, 실제 캡처 경로의 입력 지연이 반영된 것으로 보인다.

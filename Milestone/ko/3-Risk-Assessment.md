@@ -18,7 +18,7 @@
 
 Risk ID | 리스크 타이틀 | 구분 | QAS | P | I
 --------|--------------|------|-----|---|---
-[R-01](#a-실시간-성능-rpi) 🔴 | RPi5가 고속 샘플레이트(96k/192k)를 실시간으로 못 따라가 소리 데이터를 놓친다 | T | [QAS-2](2-Architectural-Drivers.md#qas-2--performance-latency--소리-입력에서-화면-표시까지) | **H** | **H**
+[R-01](#a-실시간-성능-rpi) 🔴 | RPi5가 고속 샘플레이트(96k/192k)를 실시간으로 못 따라가 소리 데이터를 놓친다 | T | [QAS-2](2-Architectural-Drivers.md#qas-2--performance-latency--소리-입력에서-화면-표시까지) | **L** | **H**
 [R-02](#a-실시간-성능-rpi) 🔴 | 필터 4개 + 그래프 여러 개 동시 렌더링으로 화면이 버벅인다 | T | [QAS-2](2-Architectural-Drivers.md#qas-2--performance-latency--소리-입력에서-화면-표시까지)<br>[QAS-6](2-Architectural-Drivers.md#qas-6--usability--터치스크린에서-읽기조작) | M | **H**
 [R-03](#a-실시간-성능-rpi) 🔴 | 분석·표시가 비트 주기 예산(83.3 ms @ 43200 BPH)을 넘겨 backlog·stale 표시·block drop·missed beat가 발생한다 | T | [QAS-2](2-Architectural-Drivers.md#qas-2--performance-latency--소리-입력에서-화면-표시까지) | M | **H**
 [R-04](#a-실시간-성능-rpi) 🔴 | 장시간(24h+) 연속 실행 시 메모리가 새서 느려지거나 죽는다 | T | [QAS-2](2-Architectural-Drivers.md#qas-2--performance-latency--소리-입력에서-화면-표시까지) | M | M
@@ -49,13 +49,13 @@ Risk ID | 리스크 타이틀 | 구분 | QAS | P | I
 
 - **🔴 R-01 — RPi5가 고속 샘플레이트(96k/192k)를 실시간으로 따라가지 못해 소리 데이터를 놓친다 (block drop / missed beat)**
   - **근거**: pdf (p.25 Real Time Performance), [QAS-2](2-Architectural-Drivers.md#qas-2--performance-latency--소리-입력에서-화면-표시까지), [C-1](2-Architectural-Drivers.md#설계-제약사항)
-  - **발생 확률 / 영향**: High / High
+  - **발생 확률 / 영향**: Low / High
   - **등급 근거**
-    - P-High: 96k/192k 실시간 부하가 RPi5 하드웨어 한계에 근접해 도달 가능성 큼.
-    - I-High: 소리 데이터 손실은 핵심 측정 자체를 망가뜨림.
-  - **완화 방향**: 1주차 technical experiment로 RPi 처리 한계 측정 후 샘플레이트 목표 확정(192k는 stretch로 격하)
+    - P-Low: [EXP-02](4-Planned-Experiments.md#exp-02-rpi5-실시간-샘플레이트-상한) 측정에서 43200 BPH @ 192 kHz가 Raspberry Pi 5에서 worst-case E2E 예산의 약 41% 수준으로 동작했고 block drop·missed beat가 0이었다. 고속 샘플레이트 실시간 처리가 실측으로 확인됨.
+    - I-High: 소리 데이터 손실은 핵심 측정 자체를 망가뜨림(발생 시 영향은 그대로 큼).
+  - **완화 방향**: 기본 48 kHz / 최고 지원 192 kHz로 샘플레이트 목표 확정([EXP-02](4-Planned-Experiments.md#exp-02-rpi5-실시간-샘플레이트-상한) 권장). 192k는 더 이상 stretch로 격하하지 않는다.
   - **Tradeoff point**: 샘플레이트는 측정 정밀도(0.1 ms당 샘플 수 증가)↔Performance(본 리스크)의 tradeoff point
-  - **코멘트**: 1주차 technical experiment 결과로 최종 샘플레이트 목표 결정
+  - **코멘트**: 측정은 Rate/Scope 탭·latency 및 drop/miss 기준. 96 kHz 직접 측정과 CPU/RAM headroom, 이미지 중심 탭은 별도 확인이 남음.
 
 - **🔴 R-02 — 필터 4개(F0→F3) + 그래프 여러 개를 동시에 그리면 화면이 버벅인다(<20 FPS·UI freeze)**
   - **근거**: [FR-12-01](2-Architectural-Drivers.md#g12--scope-function-with-multiple-filter-views), [FR-12-04](2-Architectural-Drivers.md#g12--scope-function-with-multiple-filter-views), [QAS-2](2-Architectural-Drivers.md#qas-2--performance-latency--소리-입력에서-화면-표시까지), [QAS-6](2-Architectural-Drivers.md#qas-6--usability--터치스크린에서-읽기조작)
@@ -68,14 +68,14 @@ Risk ID | 리스크 타이틀 | 구분 | QAS | P | I
   - **코멘트**: 4개 동시 뷰 / 1개씩 뷰는 성능 확인 후 결정
 
 - **🔴 R-03 — 분석·표시가 비트 주기 예산(83.3 ms @ 43200 BPH)을 넘겨 backlog·stale 표시·block drop·missed beat가 발생한다**
-  - **근거**: [QAS-2](2-Architectural-Drivers.md#qas-2--performance-latency--소리-입력에서-화면-표시까지) — 최고 목표 43200 BPH의 한 비트 주기는 83.3 ms(28800 BPH는 125.0 ms)
+  - **근거**: [QAS-2](2-Architectural-Drivers.md#qas-2--performance-latency--소리-입력에서-화면-표시까지) — 최고 목표 43200 BPH의 한 비트 주기는 83.3 ms(21600 BPH는 166.7 ms)
   - **발생 확률 / 영향**: Medium / High
   - **등급 근거**
     - P-Medium: 처리·렌더링 부하는 샘플레이트·BPH·활성 탭·그래프 비용에 따라 변하며, 43200 BPH @ 192 kHz는 팀 목표 중 가장 공격적인 조건이라 예산을 넘길 수 있음.
     - I-High: 비트 주기를 지속적으로 넘기면 backlog가 쌓여 오래된 데이터가 표시되고, 최악에는 block drop·missed beat로 측정값 자체가 오염됨.
   - **완화 방향**: 세 지연 구간 CSV 계측(record/monitor), 분석/UI 스레드 분리 + 최신 프레임만 렌더링(latest-wins), bounded buffer/queue, 지속 초과 시 시각 품질 단계적 저하
   - **Tradeoff point**: 높은 샘플레이트·더 많은 그래프 렌더링은 측정 정밀도/진단 가시성↔RPi5 부하·표시 지연의 tradeoff point
-  - **코멘트**: RPi5 1차 실측([EXP-02](4-Planned-Experiments.md#exp-02-rpi5-실시간-샘플레이트-상한) 참조)에서 28800 BPH @ 48 kHz, 43200 BPH @ 192 kHz 모두 Pass — Live 마이크 경로는 마이크 확보 후 재검증
+  - **코멘트**: 21600 BPH @ 48 kHz, 43200 BPH @ 192 kHz 두 조건을 Live/Playback/Simulation 입력 모드로 재측정 완료([EXP-02](4-Planned-Experiments.md#exp-02-rpi5-실시간-샘플레이트-상한) 참조) — Raspberry Pi 5(주)·Windows(참고) 모두 비트 주기 예산 안에서 Pass(drop=0, miss=0). 43200 BPH는 하이비트 무브먼트 미보유로 Live 제외·Playback은 합성 WAV
 
 - **🔴 R-04 — 장시간(24h+) 연속 실행 시 메모리가 새서 느려지거나 죽는다**
   - **근거**: [FR-07-10](2-Architectural-Drivers.md#g07--long-term-performance-graph), [QAS-2](2-Architectural-Drivers.md#qas-2--performance-latency--소리-입력에서-화면-표시까지)
