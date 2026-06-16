@@ -122,6 +122,7 @@ The domain terms used throughout the functional requirements below are defined i
 | FR-07-09 | recommended | The Long-Term Performance Graph should provide the user with a visual indication of the variation range. |
 | FR-07-10 | recommended | The Long-Term Performance Graph should provide the user with support for long-duration tests. |
 | FR-07-11 | recommended | The Long-Term Performance Graph should provide the user with a reduced update frequency as elapsed time increases. |
+| FR-07-12 | recommended | The Long-Term Performance Graph should provide the user with the acceptable range of each measurement, drawn as reference limit lines so the trace can be read against its tolerance over time. |
 
 ### G08 · Escapement Analyzer and Marker-Line Display
 | ID | Grade | Requirement |

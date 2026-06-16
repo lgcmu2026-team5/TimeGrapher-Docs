@@ -122,6 +122,7 @@
 | FR-07-09 | recommended | 장기 성능 그래프는 변동 범위에 대한 시각적 표시를 사용자에게 제공하는 것이 권장된다. |
 | FR-07-10 | recommended | 장기 성능 그래프는 장시간 테스트에 대한 지원을 사용자에게 제공하는 것이 권장된다. |
 | FR-07-11 | recommended | 장기 성능 그래프는 경과 시간이 늘어남에 따라 업데이트 빈도를 줄여 사용자에게 제공하는 것이 권장된다. |
+| FR-07-12 | recommended | 장기 성능 그래프는 각 측정값의 허용 범위를 기준 한계선으로 표시하여, 시간에 따른 추이를 허용 범위와 비교해 읽을 수 있도록 사용자에게 제공하는 것이 권장된다. |
 
 ### G08 · Escapement Analyzer and Marker-Line Display
 | ID | Grade | Requirement |
