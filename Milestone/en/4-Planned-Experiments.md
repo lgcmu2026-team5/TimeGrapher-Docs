@@ -78,46 +78,45 @@ In progress
 
 ### Results & Recommendations
 
-**First measurement (GUI end-to-end latency) complete — both conditions pass.** Measured via `--analysis-log` CSV in a GUI session on the RPi5 with a real display attached. No microphone capture source was detected on the Pi, so verification used Simulation input passing through the same app pipeline.
+**Re-measurement complete — both conditions pass.** The prior results (28800@48k Sim, 43200@192k Sim, 21600@48k WAV, 28800@384k WAV) were discarded because the condition set did not match the design targets; the two conditions below were re-measured across input modes. See [result_latency.md](../../TestResult/result_latency.md) for the full plan and results.
 
-| Condition | capture-to-processing avg / worst | processing-to-display avg / worst | total E2E avg / worst | Budget (beat period) | drop / miss | Verdict |
-|---|---:|---:|---:|---:|---:|---|
-| Sim 28800 BPH @ 48 kHz | 0.8 / 34.2 ms | 5.6 / 17.5 ms | 6.3 / 40.7 ms | ≤ 125.0 ms | 0 / 0 | **Pass** |
-| Sim 43200 BPH @ 192 kHz | 1.1 / 25.5 ms | 5.5 / 22.4 ms | 6.6 / 30.4 ms | ≤ 83.3 ms | 0 / 0 | **Pass** |
-
-- Even under the most aggressive condition (43200 BPH @ 192 kHz), worst-case E2E was 30.4 ms — about 36.5 % of the 83.3 ms beat period.
-- **Remaining work**: ① re-measure the Live microphone path once a microphone is available (the OS audio stack, device driver, and USB buffering jitter may add latency) ② finalize the recommended sample rate (48k/96k/192k).
+- **Conditions**: 21600 BPH @ 48 kHz (budget 166.667 ms), 43200 BPH @ 192 kHz (budget 83.333 ms)
+- **Matrix**: 2 conditions × input modes = 5 runs per platform (43200 BPH @ 192 kHz excludes Live for lack of a high-beat movement). Run on Raspberry Pi 5 (primary) and Windows (reference) — 10 runs total.
+- **43200 BPH @ 192 kHz Playback**: with no real recording available, measured with a `WatchSynthStream` synthetic WAV (verified by `TimeGrapher.Verify`: detected_bph=43200, Synced). Real-acoustic input-path verification is excluded.
+- **Result**: 5 runs each on Raspberry Pi 5 (primary) and Windows (reference). Both conditions stay within the beat-period budget (Pi: 43200@192k worst 34.6 ms vs 83.3 ms) with drop·miss 0; even the tightest condition is about 41.5 % of budget.
+- **Recommendation (Go/No-Go)**: **Go.** Fix the base sample rate at **48 kHz** (largest margin, verified across all of Simulation/Playback/Live) and the top supported sample rate at **192 kHz**. Since the most aggressive 43200 BPH @ 192 kHz sits at about 41 % of budget with zero drop/miss on the Pi, [R-01](3-Risk-Assessment.md#a-real-time-performance-rpi)'s concern about 192 kHz real-time processing is resolved (no longer demoted to stretch). 96 kHz was not measured directly in this latency experiment, but since both 48 kHz and 192 kHz are within budget it is considered supportable as an in-between value (verify separately if needed).
+- **Measurement-scope limits**: This verdict was made on the Rate/Scope tab using latency and drop/miss criteria. CPU/RAM headroom, image-centric tabs (Spectrogram/Sound Print), and the 43200 BPH real-acoustic Live path need separate evaluation.
 
 ### Objective
 
 Confirm whether the input → analysis → display pipeline meets real-time requirements in the RPi5 Live environment. Core questions:
 
 - Q1. Which sample rate runs stably without block drop?
-- Q2. Does worst-case total end-to-end latency stay within one beat period? (83.3 ms at 43200 BPH · 125.0 ms at 28800 BPH)
+- Q2. Does worst-case total end-to-end latency stay within one beat period? (83.3 ms at 43200 BPH · 166.7 ms at 21600 BPH)
 
 ### Status
 
-In progress — first GUI E2E latency measurement done (Simulation); Live-microphone verification and the final sample-rate recommendation remain
+Complete — both conditions measured over 5 runs each (Raspberry Pi 5 and Windows both pass); recommended sample rate fixed (48 kHz base / 192 kHz top)
 
 ### Expected Deliverables
 
-- Per-sample-rate / per-BPH latency comparison table (average/worst)
+- Per-condition / per-input-mode / per-platform latency comparison table (avg/p95/p99/worst)
 - Block-drop / missed-beat statistics table
-- WAV-fixture vs Live-input comparison table
+- Input-mode (Sim/Playback/Live) and platform (Pi/Windows) comparison table
 - Sample-rate target proposal (Go/No-Go)
 
 ### Resources Needed
 
-- 1× Raspberry Pi 5 (physical device)
-- Live input + Playback WAV fixture (TimeGrapherTestFilesWeishiMic)
+- 1× Raspberry Pi 5 (primary), Windows dev PC (reference)
+- Live input (real movement + USB microphone), Playback WAV (21600 BPH from the Live recording, 43200 BPH synthetic)
 - Latency/drop logging code
 - Effort: 1.5 person-days
 
 ### Experiment Description
 
-1. Run 48k/96k/192k under common Live/Playback conditions and measure the latency and stability of the input → analysis → display path.
-2. Compare total latency, block drop, missed beat, and CPU/RAM per sample rate to derive an operable threshold.
-3. Per SAP criteria, judge whether worst-case E2E ≤ one beat period and the no-drop condition are met, and finalize the default sample rate (Go/No-Go).
+1. Run the two conditions 21600 BPH @ 48 kHz and 43200 BPH @ 192 kHz across the Simulation/Playback/Live input modes (43200 BPH excludes Live; 5 runs per platform) and measure the latency and stability of the input → analysis → display path. Run on Raspberry Pi 5 (primary) and Windows (reference).
+2. Compare total latency (avg/p95/p99/worst), block drop, and missed beat per condition / input mode / platform. Truncate to the common-minimum frame count across the compared CSVs before computing statistics.
+3. Per SAP criteria, judge whether worst-case E2E ≤ one beat period and the no-drop condition (drop=0, miss=0) are met, on the Raspberry Pi 5 (Windows is reference).
 
 ### Duration
 

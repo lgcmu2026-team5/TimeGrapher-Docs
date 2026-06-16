@@ -18,7 +18,7 @@ The terms used in this document are defined in the consolidated [Glossary](6-Glo
 
 Risk ID | Risk Title | Type | QAS | P | I
 --------|-----------|------|-----|---|---
-[R-01](#a-real-time-performance-rpi) 🔴 | RPi5 fails to keep up with high sample rates (96k/192k) and loses sound data | T | [QAS-2](2-Architectural-Drivers.md#qas-2--performance-latency--from-sound-input-to-screen-display) | **H** | **H**
+[R-01](#a-real-time-performance-rpi) 🔴 | RPi5 fails to keep up with high sample rates (96k/192k) and loses sound data | T | [QAS-2](2-Architectural-Drivers.md#qas-2--performance-latency--from-sound-input-to-screen-display) | **L** | **H**
 [R-02](#a-real-time-performance-rpi) 🔴 | Rendering four filters + multiple graphs at once makes the screen stutter | T | [QAS-2](2-Architectural-Drivers.md#qas-2--performance-latency--from-sound-input-to-screen-display)<br>[QAS-6](2-Architectural-Drivers.md#qas-6--usability--reading-and-operating-on-the-touchscreen) | M | **H**
 [R-03](#a-real-time-performance-rpi) 🔴 | Analysis + display exceed the beat-period budget (83.3 ms @ 43200 BPH) — backlog, stale display, block drop, missed beats | T | [QAS-2](2-Architectural-Drivers.md#qas-2--performance-latency--from-sound-input-to-screen-display) | M | **H**
 [R-04](#a-real-time-performance-rpi) 🔴 | Long continuous runs (24h+) leak memory and degrade or crash | T | [QAS-2](2-Architectural-Drivers.md#qas-2--performance-latency--from-sound-input-to-screen-display) | M | M
@@ -49,13 +49,13 @@ Risk ID | Risk Title | Type | QAS | P | I
 
 - **🔴 R-01 — The RPi5 fails to keep up with high sample rates (96k/192k) in real time and loses sound data (block drop / missed beat)**
   - **Evidence**: pdf (p.25 Real Time Performance), [QAS-2](2-Architectural-Drivers.md#qas-2--performance-latency--from-sound-input-to-screen-display), [C-1](2-Architectural-Drivers.md#design-constraints)
-  - **Probability / Impact**: High / High
+  - **Probability / Impact**: Low / High
   - **Grading rationale**
-    - P-High: 96k/192k real-time load pushes the RPi5 to its hardware limit, so hitting it is likely.
-    - I-High: lost audio data breaks the core measurement outright.
-  - **Mitigation**: Week-1 technical experiment to measure the RPi's processing limit, then fix the sample-rate target (192k demoted to stretch)
+    - P-Low: [EXP-02](4-Planned-Experiments.md#exp-02-rpi5-real-time-sample-rate-ceiling) measured 43200 BPH @ 192 kHz running at about 41% of the worst-case E2E budget on the Raspberry Pi 5 with zero block drop / missed beats. High-rate real-time processing is confirmed by measurement.
+    - I-High: lost audio data breaks the core measurement outright (the impact, if it occurs, remains high).
+  - **Mitigation**: Fix the sample-rate target at 48 kHz base / 192 kHz top ([EXP-02](4-Planned-Experiments.md#exp-02-rpi5-real-time-sample-rate-ceiling) recommendation); 192k is no longer demoted to stretch
   - **Tradeoff point**: the sample rate trades measurement precision (more samples per 0.1 ms) against Performance (this risk)
-  - **Comment**: Use the week-1 technical experiment result to set the final sample-rate target
+  - **Comment**: Measurement was on the Rate/Scope tab using latency and drop/miss criteria; direct 96 kHz measurement, CPU/RAM headroom, and image-centric tabs remain to be checked separately
 
 - **🔴 R-02 — Rendering four filters (F0→F3) plus multiple graphs at once makes the screen stutter (<20 FPS · UI freeze)**
   - **Evidence**: [FR-12-01](2-Architectural-Drivers.md#g12--scope-function-with-multiple-filter-views), [FR-12-04](2-Architectural-Drivers.md#g12--scope-function-with-multiple-filter-views), [QAS-2](2-Architectural-Drivers.md#qas-2--performance-latency--from-sound-input-to-screen-display), [QAS-6](2-Architectural-Drivers.md#qas-6--usability--reading-and-operating-on-the-touchscreen)
@@ -68,14 +68,14 @@ Risk ID | Risk Title | Type | QAS | P | I
   - **Comment**: Decide 4 simultaneous views vs one-at-a-time after the performance check
 
 - **🔴 R-03 — Analysis + display exceed the beat-period budget (83.3 ms @ 43200 BPH), causing backlog, stale display, block drop, and missed beats**
-  - **Evidence**: [QAS-2](2-Architectural-Drivers.md#qas-2--performance-latency--from-sound-input-to-screen-display) — one beat period at the top target 43200 BPH is 83.3 ms (125.0 ms at 28800 BPH)
+  - **Evidence**: [QAS-2](2-Architectural-Drivers.md#qas-2--performance-latency--from-sound-input-to-screen-display) — one beat period at the top target 43200 BPH is 83.3 ms (166.7 ms at 21600 BPH)
   - **Probability / Impact**: Medium / High
   - **Grading rationale**
     - P-Medium: processing/rendering load varies with sample rate, BPH, active tab, and graph cost; 43200 BPH @ 192 kHz is the team's most aggressive target, so the budget may be exceeded.
     - I-High: consistently exceeding the beat period builds a backlog and shows stale data; at worst, block drop / missed beats contaminate the measurements themselves.
   - **Mitigation**: Instrument the three latency components to CSV (record/monitor); separate analysis/UI threads + render only the latest frame (latest-wins); bounded buffers/queues; degrade visual quality stepwise on sustained overrun
   - **Tradeoff point**: higher sample rates and more graph rendering trade measurement precision / diagnostic visibility against RPi5 load and display latency
-  - **Comment**: First on-device measurement (see [EXP-02](4-Planned-Experiments.md#exp-02-rpi5-real-time-sample-rate-ceiling)) passed both 28800 BPH @ 48 kHz and 43200 BPH @ 192 kHz — re-verify the Live microphone path once a microphone is available
+  - **Comment**: Re-measured both 21600 BPH @ 48 kHz and 43200 BPH @ 192 kHz across Live/Playback/Simulation input modes (see [EXP-02](4-Planned-Experiments.md#exp-02-rpi5-real-time-sample-rate-ceiling)) — both pass within the beat-period budget on Raspberry Pi 5 (primary) and Windows (reference) with drop=0, miss=0; 43200 BPH excludes Live (no high-beat movement) and its Playback uses a synthetic WAV
 
 - **🔴 R-04 — Long continuous runs (24h+) leak memory and degrade or crash**
   - **Evidence**: [FR-07-10](2-Architectural-Drivers.md#g07--long-term-performance-graph), [QAS-2](2-Architectural-Drivers.md#qas-2--performance-latency--from-sound-input-to-screen-display)
