@@ -24,7 +24,12 @@
 
 ### 결과 및 권장 사항
 
-TO-DO: RPi5 렌더링 백엔드 고정 정책 권장안(기본값 유지 또는 Software 강제)과 근거를 기록한다.
+**완료 — 기본값(GPU 우선) 유지 권장.** 보고된 "GPU 가속 ~80 ms 저하"는 우리 앱에서 재현되지 않았다(상세: [result_renderer.md](../../TestResult/result_renderer.md)).
+
+- **Pi5 측정**: GLX 59.2 FPS(평균 16.9 ms) · EGL 60.0 FPS(16.7 ms) · Software 43.6 FPS(22.9 ms). GPU 두 백엔드는 화면 주사율(~60 Hz, vsync 16.7 ms) 한계까지 도달했고 SW가 오히려 더 느렸다.
+- **하드웨어 가속 확인**: GL 렌더러가 `V3D 7.1.10.2`(RPi5 GPU)로 기록 — llvmpipe 폴백 아님.
+- **권장**: Avalonia 기본값(GPU 우선, Software 폴백) 유지, 설정 변경 없음. SW는 더 느린 데다 tearing·CPU 경쟁(오디오 스레드)까지 있어 불리.
+- (참고) Windows는 세 백엔드 모두 ~60 Hz 한계로 차이 없음.
 
 ### 목적
 
@@ -38,7 +43,7 @@ C# 경로 채택 시 Avalonia Github의 다수 이슈처럼 RPi5에서 GPU 가�
 
 ### 상태
 
-진행 중
+완료 — GPU 가속이 SW보다 빠름을 확인, 렌더링 기본값(GPU 우선) 유지 권장
 
 ### 예상 산출물
 
@@ -68,6 +73,7 @@ C# 경로 채택 시 Avalonia Github의 다수 이슈처럼 RPi5에서 GPU 가�
 
 ### 링크 및 참고 자료
 
+- [렌더링 백엔드 A/B 측정 결과 — result_renderer.md](../../TestResult/result_renderer.md)
 - 원 보고: [Avalonia Discussion #18807 — Poor Linux performance when using hardware acceleration](https://github.com/AvaloniaUI/Avalonia/discussions/18807)
 - 관련 사례: [Discussion #18942 — RPi 고해상도 전체 리페인트 저하](https://github.com/AvaloniaUI/Avalonia/discussions/18942)
 - [Avalonia 공식 — Raspberry Pi에서 DRM으로 실행](https://docs.avaloniaui.net/docs/guides/platforms/rpi/running-on-raspbian-lite-via-drm)

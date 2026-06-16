@@ -24,7 +24,12 @@ The terms used in this document are defined in the consolidated [Glossary](6-Glo
 
 ### Results & Recommendations
 
-TO-DO: Record the recommended RPi5 rendering-backend lock policy (keep the default, or force Software) and the rationale.
+**Complete — keep the default (GPU-first).** The reported "~80 ms GPU-acceleration slowdown" did not reproduce in our app (details: [result_renderer.md](../../TestResult/result_renderer.md)).
+
+- **Pi5 measurement**: GLX 59.2 FPS (mean 16.9 ms) · EGL 60.0 FPS (16.7 ms) · Software 43.6 FPS (22.9 ms). Both GPU backends hit the display refresh ceiling (~60 Hz, 16.7 ms vsync), and Software was actually slower.
+- **HW acceleration confirmed**: the GL renderer logged as `V3D 7.1.10.2` (the RPi5 GPU) — not an llvmpipe fallback.
+- **Recommendation**: keep Avalonia's default (GPU-first, Software fallback); no config change. Software is slower and also brings tearing and CPU contention with the audio thread.
+- (Reference) On Windows all three backends hit the ~60 Hz ceiling — no difference.
 
 ### Objective
 
@@ -38,7 +43,7 @@ The answer drives the design decision **"which Avalonia rendering backend to loc
 
 ### Status
 
-In progress
+Complete — GPU acceleration confirmed faster than Software; keep the default (GPU-first) rendering
 
 ### Expected Deliverables
 
@@ -68,6 +73,7 @@ In progress
 
 ### Links & References
 
+- [Rendering-backend A/B measurement results — result_renderer.md](../../TestResult/result_renderer.md)
 - Original report: [Avalonia Discussion #18807 — Poor Linux performance when using hardware acceleration](https://github.com/AvaloniaUI/Avalonia/discussions/18807)
 - Related case: [Discussion #18942 — RPi high-resolution full-repaint degradation](https://github.com/AvaloniaUI/Avalonia/discussions/18942)
 - [Avalonia docs — Running on Raspberry Pi via DRM](https://docs.avaloniaui.net/docs/guides/platforms/rpi/running-on-raspbian-lite-via-drm)
