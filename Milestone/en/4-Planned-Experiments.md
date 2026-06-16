@@ -78,7 +78,7 @@ In progress
 
 ### Results & Recommendations
 
-**Re-measurement complete — both conditions pass.** The prior four results were discarded because their conditions did not match the design targets; the two conditions below were re-measured across input modes (details: [result_latency.md](../../TestResult/result_latency.md)).
+**Both conditions pass.** The two conditions were measured across input modes (details: [result_latency.md](../../TestResult/result_latency.md)).
 
 - **Conditions & matrix**: 21600 BPH @ 48 kHz (166.7 ms), 43200 BPH @ 192 kHz (83.3 ms) × Simulation/Playback/Live = 5 runs per platform (43200 excludes Live — no high-beat movement). Measured on Raspberry Pi 5 (primary) and Windows (reference).
 - **Result**: both conditions within budget, drop·miss 0. Even the tightest, 43200@192k, is ~41 % of budget on the Pi (worst 34.6 / 83.3 ms). The 43200 Playback used a verified synthetic WAV (`WatchSynthStream`) since no real recording exists.

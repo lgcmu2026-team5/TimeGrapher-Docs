@@ -78,7 +78,7 @@ C# 경로 채택 시 Avalonia Github의 다수 이슈처럼 RPi5에서 GPU 가�
 
 ### 결과 및 권장 사항
 
-**재측정 완료 — 두 조건 모두 Pass.** 기존 4건 결과는 조건이 설계 목표와 맞지 않아 폐기하고, 두 조건을 입력 모드별로 다시 측정했다(상세: [result_latency.md](../../TestResult/result_latency.md)).
+**두 조건 모두 Pass.** 두 조건을 입력 모드별로 측정했다(상세: [result_latency.md](../../TestResult/result_latency.md)).
 
 - **조건·매트릭스**: 21600 BPH @ 48 kHz(166.7 ms), 43200 BPH @ 192 kHz(83.3 ms) × Simulation/Playback/Live = 플랫폼당 5 run(43200은 하이비트 무브먼트가 없어 Live 제외). Raspberry Pi 5(주)·Windows(참고)에서 각각 측정.
 - **결과**: 두 조건 모두 예산 안 Pass, drop·miss 0. 가장 빡빡한 43200@192k도 Pi worst-case가 예산의 약 41%(34.6 / 83.3 ms). 43200 Playback은 실녹음이 없어 검증된 합성 WAV(`WatchSynthStream`)을 썼다.

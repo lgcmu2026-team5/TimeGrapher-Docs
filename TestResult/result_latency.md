@@ -1,8 +1,6 @@
 # QAS-2 Latency Experiment Plan & Results
 
-> 목적: 실제 GUI 실행에서 수집하는 `--analysis-log` CSV를 기반으로 QAS-2 latency를 재측정한다. **기존 측정 결과는 폐기했다.** 아래 2개 조건 × 입력 모드 매트릭스로 다시 측정한다.
-
-> **폐기 안내**: 이전 버전 문서는 28800 BPH @ 48 kHz(Sim), 43200 BPH @ 192 kHz(Sim), 21600 BPH @ 48 kHz(WAV), 28800 BPH @ 384 kHz(WAV) 네 건의 결과를 담고 있었다. 조건 집합이 설계 목표와 정합하지 않아 전부 폐기하고, 아래의 정리된 두 조건으로 재측정한다.
+> 목적: 실제 GUI 실행에서 수집하는 `--analysis-log` CSV를 기반으로 QAS-2 latency를 측정한다. 2개 조건 × 입력 모드 매트릭스로 측정한다.
 
 ## 1. 실험 개요
 
@@ -36,7 +34,7 @@ beat_period_ms = 3600 s / BPH * 1000 ms/s
 | 입력 모드 | Live(USB 마이크) / Playback / Simulation | Live(USB 마이크) / Playback / Simulation |
 | 활성 탭 | Rate/Scope | Rate/Scope |
 
-Live 마이크 경로는 USB 마이크가 capture source로 감지된 상태에서 측정한다. 직전 측정 시점에는 Pi에서 capture source가 감지되지 않아 Live를 수행하지 못했으므로, 이번 재측정에서는 마이크 확보가 선행 조건이다.
+Live 마이크 경로는 USB 마이크가 capture source로 감지된 상태에서 측정한다.
 
 ## 3. 측정 방법
 
@@ -86,8 +84,6 @@ index = ceil(percentile * frame_count) - 1
 **43200 BPH @ 192 kHz Playback용 합성 WAV 출처**: 앱 Simulation과 동일한 `WatchSynthStream` 생성기(Clean config, pcmPeak 0.35, noise 0)로 생성한 float32 mono 192 kHz · 60초 파일이다. `TimeGrapher.Verify` 검증에서 `detected_bph=43200`, `sync_status=Synced`로 확인했다. 실제 음향 녹음이 아니라 합성 신호이므로, 해당 조건의 Playback은 실음향 디코딩이 아닌 파일 디코딩 경로 검증으로 한정된다.
 
 ## 5. 결과
-
-**측정 대기(TBD).** 재측정 후 아래 표를 채운다.
 
 ### 5.1 Raspberry Pi 5 (주 대상)
 

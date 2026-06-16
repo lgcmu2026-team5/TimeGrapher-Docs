@@ -75,7 +75,7 @@ Risk ID | Risk Title | Type | QAS | P | I
     - I-High: sustained overrun builds backlog and stale display; at worst, block drop / missed beats contaminate the measurements.
   - **Mitigation**: Instrument the three latency components to CSV; separate analysis/UI threads + latest-wins rendering; bounded buffers/queues; degrade visual quality stepwise on sustained overrun
   - **Tradeoff point**: higher sample rate and more graphs = measurement precision / diagnostic visibility ↔ RPi5 load and display latency
-  - **Comment**: Re-measured 21600 BPH @ 48 kHz and 43200 BPH @ 192 kHz across Live/Playback/Simulation (see [EXP-02](4-Planned-Experiments.md#exp-02-rpi5-real-time-sample-rate-ceiling)) — both pass within budget on Raspberry Pi 5 (primary) and Windows (reference) with drop=0, miss=0. Re-measure on the same criteria whenever a new computation, filter, graph, or AI feature is added.
+  - **Comment**: Measured 21600 BPH @ 48 kHz and 43200 BPH @ 192 kHz across Live/Playback/Simulation (see [EXP-02](4-Planned-Experiments.md#exp-02-rpi5-real-time-sample-rate-ceiling)) — both pass within budget on Raspberry Pi 5 (primary) and Windows (reference) with drop=0, miss=0. Re-measure on the same criteria whenever a new computation, filter, graph, or AI feature is added.
 
 - **🔴 R-04 — Long continuous runs (24h+) leak memory and degrade or crash**
   - **Evidence**: [FR-07-10](2-Architectural-Drivers.md#g07--long-term-performance-graph), [QAS-2](2-Architectural-Drivers.md#qas-2--performance-latency--from-sound-input-to-screen-display)

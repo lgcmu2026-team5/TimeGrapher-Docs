@@ -75,7 +75,7 @@ Risk ID | 리스크 타이틀 | 구분 | QAS | P | I
     - I-High: 예산 초과가 지속되면 backlog·stale 표시, 최악엔 block drop·missed beat로 측정값이 오염됨.
   - **완화 방향**: 세 지연 구간 CSV 계측, 분석/UI 스레드 분리 + latest-wins 렌더링, bounded buffer/queue, 지속 초과 시 시각 품질 단계적 저하
   - **Tradeoff point**: 높은 샘플레이트·많은 그래프 = 측정 정밀도/진단 가시성 ↔ RPi5 부하·표시 지연
-  - **코멘트**: 21600 BPH @ 48 kHz·43200 BPH @ 192 kHz를 Live/Playback/Simulation으로 재측정 완료([EXP-02](4-Planned-Experiments.md#exp-02-rpi5-실시간-샘플레이트-상한)) — Pi(주)·Windows(참고) 모두 예산 내 Pass(drop=0, miss=0). 새 연산·필터·그래프·AI Feature가 추가 구현될 때마다 동일 기준으로 재측정 예정.
+  - **코멘트**: 21600 BPH @ 48 kHz·43200 BPH @ 192 kHz를 Live/Playback/Simulation으로 측정 완료([EXP-02](4-Planned-Experiments.md#exp-02-rpi5-실시간-샘플레이트-상한)) — Pi(주)·Windows(참고) 모두 예산 내 Pass(drop=0, miss=0). 새 연산·필터·그래프·AI Feature가 추가 구현될 때마다 동일 기준으로 재측정 예정.
 
 - **🔴 R-04 — 장시간(24h+) 연속 실행 시 메모리가 새서 느려지거나 죽는다**
   - **근거**: [FR-07-10](2-Architectural-Drivers.md#g07--long-term-performance-graph), [QAS-2](2-Architectural-Drivers.md#qas-2--performance-latency--소리-입력에서-화면-표시까지)
