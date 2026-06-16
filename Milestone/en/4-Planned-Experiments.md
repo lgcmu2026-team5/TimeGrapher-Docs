@@ -78,14 +78,12 @@ In progress
 
 ### Results & Recommendations
 
-**Re-measurement complete — both conditions pass.** The prior results (28800@48k Sim, 43200@192k Sim, 21600@48k WAV, 28800@384k WAV) were discarded because the condition set did not match the design targets; the two conditions below were re-measured across input modes. See [result_latency.md](../../TestResult/result_latency.md) for the full plan and results.
+**Re-measurement complete — both conditions pass.** The prior four results were discarded because their conditions did not match the design targets; the two conditions below were re-measured across input modes (details: [result_latency.md](../../TestResult/result_latency.md)).
 
-- **Conditions**: 21600 BPH @ 48 kHz (budget 166.667 ms), 43200 BPH @ 192 kHz (budget 83.333 ms)
-- **Matrix**: 2 conditions × input modes = 5 runs per platform (43200 BPH @ 192 kHz excludes Live for lack of a high-beat movement). Run on Raspberry Pi 5 (primary) and Windows (reference) — 10 runs total.
-- **43200 BPH @ 192 kHz Playback**: with no real recording available, measured with a `WatchSynthStream` synthetic WAV (verified by `TimeGrapher.Verify`: detected_bph=43200, Synced). Real-acoustic input-path verification is excluded.
-- **Result**: 5 runs each on Raspberry Pi 5 (primary) and Windows (reference). Both conditions stay within the beat-period budget (Pi: 43200@192k worst 34.6 ms vs 83.3 ms) with drop·miss 0; even the tightest condition is about 41.5 % of budget.
-- **Recommendation (Go/No-Go)**: **Go.** Fix the base sample rate at **48 kHz** (largest margin, verified across all of Simulation/Playback/Live) and the top supported sample rate at **192 kHz**. Since the most aggressive 43200 BPH @ 192 kHz sits at about 41 % of budget with zero drop/miss on the Pi, [R-01](3-Risk-Assessment.md#a-real-time-performance-rpi)'s concern about 192 kHz real-time processing is resolved (no longer demoted to stretch). 96 kHz was not measured directly in this latency experiment, but since both 48 kHz and 192 kHz are within budget it is considered supportable as an in-between value (verify separately if needed).
-- **Measurement-scope limits**: This verdict was made on the Rate/Scope tab using latency and drop/miss criteria. CPU/RAM headroom, image-centric tabs (Spectrogram/Sound Print), and the 43200 BPH real-acoustic Live path need separate evaluation.
+- **Conditions & matrix**: 21600 BPH @ 48 kHz (166.7 ms), 43200 BPH @ 192 kHz (83.3 ms) × Simulation/Playback/Live = 5 runs per platform (43200 excludes Live — no high-beat movement). Measured on Raspberry Pi 5 (primary) and Windows (reference).
+- **Result**: both conditions within budget, drop·miss 0. Even the tightest, 43200@192k, is ~41 % of budget on the Pi (worst 34.6 / 83.3 ms). The 43200 Playback used a verified synthetic WAV (`WatchSynthStream`) since no real recording exists.
+- **Recommendation (Go)**: fix the base at **48 kHz** and the top at **192 kHz**. 192k passes with margin, so [R-01](3-Risk-Assessment.md#a-real-time-performance-rpi)'s 192k concern is resolved (no longer a stretch). 96 kHz was not measured but is considered supportable as an in-between value.
+- **Limits**: verdict is on the Rate/Scope tab by latency/drop·miss. CPU/RAM, image tabs (Spectrogram/Sound Print), and the 43200 real-acoustic Live path need separate evaluation.
 
 ### Objective
 
@@ -114,9 +112,9 @@ Complete — both conditions measured over 5 runs each (Raspberry Pi 5 and Windo
 
 ### Experiment Description
 
-1. Run the two conditions 21600 BPH @ 48 kHz and 43200 BPH @ 192 kHz across the Simulation/Playback/Live input modes (43200 BPH excludes Live; 5 runs per platform) and measure the latency and stability of the input → analysis → display path. Run on Raspberry Pi 5 (primary) and Windows (reference).
-2. Compare total latency (avg/p95/p99/worst), block drop, and missed beat per condition / input mode / platform. Truncate to the common-minimum frame count across the compared CSVs before computing statistics.
-3. Per SAP criteria, judge whether worst-case E2E ≤ one beat period and the no-drop condition (drop=0, miss=0) are met, on the Raspberry Pi 5 (Windows is reference).
+1. Measure both conditions (21600@48k, 43200@192k) across Simulation/Playback/Live — 43200 excludes Live, 5 runs per platform, on Raspberry Pi 5 (primary) and Windows (reference).
+2. Compare total latency (avg/p95/p99/worst), block drop, and missed beat per condition / input mode / platform. Truncate to the common-minimum frame count across CSVs.
+3. Judge worst-case E2E ≤ one beat period and drop=0 / miss=0 on the Raspberry Pi 5 (Windows is reference).
 
 ### Duration
 

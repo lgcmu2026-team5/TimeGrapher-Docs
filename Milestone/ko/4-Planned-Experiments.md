@@ -78,14 +78,12 @@ C# 경로 채택 시 Avalonia Github의 다수 이슈처럼 RPi5에서 GPU 가�
 
 ### 결과 및 권장 사항
 
-**재측정 완료 — 두 조건 모두 Pass.** 기존 측정 결과(28800@48k Sim, 43200@192k Sim, 21600@48k WAV, 28800@384k WAV)는 조건 집합이 설계 목표와 정합하지 않아 폐기하고, 아래 두 조건을 입력 모드별로 다시 측정했다. 상세 계획·결과는 [result_latency.md](../../TestResult/result_latency.md) 참조.
+**재측정 완료 — 두 조건 모두 Pass.** 기존 4건 결과는 조건이 설계 목표와 맞지 않아 폐기하고, 두 조건을 입력 모드별로 다시 측정했다(상세: [result_latency.md](../../TestResult/result_latency.md)).
 
-- **조건**: 21600 BPH @ 48 kHz(예산 166.667 ms), 43200 BPH @ 192 kHz(예산 83.333 ms)
-- **매트릭스**: 2개 조건 × 입력 모드 = 플랫폼당 5 run (43200 BPH @ 192 kHz는 하이비트 무브먼트 미보유로 Live 제외). Raspberry Pi 5(주 대상)와 Windows(참고)에서 각각 수행 — 총 10 run.
-- **43200 BPH @ 192 kHz Playback**: 실녹음 WAV이 없어 `WatchSynthStream` 합성 WAV으로 측정한다(`TimeGrapher.Verify`에서 detected_bph=43200·Synced 확인). 실음향 입력 경로 검증은 제외된다.
-- **결과**: Raspberry Pi 5(주)·Windows(참고) 각각 5 run 측정 완료. 두 조건 모두 worst-case E2E가 비트 주기 예산 안(Pi 기준 43200@192k worst 34.6 ms vs 83.3 ms), drop·miss 0. 가장 빡빡한 조건도 예산의 약 41.5% 수준.
-- **권장(Go/No-Go)**: **Go.** 기본 샘플레이트는 **48 kHz**(여유가 가장 크고 Simulation/Playback/Live 세 입력 모드 모두 검증), 최고 지원 샘플레이트는 **192 kHz**로 확정한다. 가장 공격적인 43200 BPH @ 192 kHz도 Pi에서 worst-case E2E가 예산의 약 41% 수준이고 drop·miss가 0이라, 192 kHz 실시간 처리에 대한 [R-01](3-Risk-Assessment.md#a-실시간-성능-rpi)의 우려는 해소된다(더 이상 192k를 stretch로 격하할 필요 없음). 96 kHz는 이번 latency 실험에서 직접 측정하지 않았으나 48 kHz·192 kHz가 모두 예산 안인 점에서 그 사이 값으로 지원 가능하다고 본다(필요 시 별도 확인).
-- **측정 범위 한계**: 본 판정은 Rate/Scope 탭에서 latency 및 drop/miss 기준으로 내렸다. CPU/RAM headroom, 이미지 중심 탭(Spectrogram/Sound Print), 43200 BPH 실음향 Live 경로는 별도 평가가 필요하다.
+- **조건·매트릭스**: 21600 BPH @ 48 kHz(166.7 ms), 43200 BPH @ 192 kHz(83.3 ms) × Simulation/Playback/Live = 플랫폼당 5 run(43200은 하이비트 무브먼트가 없어 Live 제외). Raspberry Pi 5(주)·Windows(참고)에서 각각 측정.
+- **결과**: 두 조건 모두 예산 안 Pass, drop·miss 0. 가장 빡빡한 43200@192k도 Pi worst-case가 예산의 약 41%(34.6 / 83.3 ms). 43200 Playback은 실녹음이 없어 검증된 합성 WAV(`WatchSynthStream`)을 썼다.
+- **권장(Go)**: 기본 **48 kHz**, 최고 지원 **192 kHz** 확정. 192k가 여유 있게 통과해 [R-01](3-Risk-Assessment.md#a-실시간-성능-rpi)의 192k 우려는 해소(격하 불필요). 96 kHz는 미측정이나 48k·192k 사이라 지원 가능으로 본다.
+- **한계**: Rate/Scope 탭·latency/drop·miss 기준 판정. CPU/RAM, 이미지 탭(Spectrogram/Sound Print), 43200 실음향 Live는 별도 평가 필요.
 
 ### 목적
 
@@ -114,9 +112,9 @@ RPi5 Live 환경에서 입력 → 분석 → 표시 파이프라인이 실시간
 
 ### 실험 설명
 
-1. 21600 BPH @ 48 kHz, 43200 BPH @ 192 kHz 두 조건을 Simulation/Playback/Live 입력 모드로 실행해(43200 BPH는 Live 제외, 플랫폼당 5 run) 입력 → 분석 → 표시 경로의 지연과 안정성을 측정한다. Raspberry Pi 5(주)와 Windows(참고)에서 각각 수행한다.
-2. 조건·입력 모드·플랫폼별 total latency(avg/p95/p99/worst), block drop, missed beat를 비교한다. 길이는 비교 대상 CSV의 공통 최소 프레임 수로 맞춰 통계를 낸다.
-3. SAP 기준으로 worst-case E2E ≤ 비트 주기와 무드롭(drop=0, miss=0) 조건 충족 여부를 Raspberry Pi 5 기준으로 판정한다(Windows는 참고).
+1. 두 조건(21600@48k·43200@192k)을 Simulation/Playback/Live로 측정한다 — 43200은 Live 제외, 플랫폼당 5 run, Raspberry Pi 5(주)·Windows(참고).
+2. 조건·입력 모드·플랫폼별 total latency(avg/p95/p99/worst)·block drop·missed beat를 비교한다. 길이는 CSV 공통 최소 프레임 수로 맞춘다.
+3. worst-case E2E ≤ 비트 주기, drop=0·miss=0 충족 여부를 Raspberry Pi 5 기준으로 판정한다(Windows 참고).
 
 ### 기간
 
