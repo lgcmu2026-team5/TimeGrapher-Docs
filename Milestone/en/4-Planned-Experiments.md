@@ -34,7 +34,8 @@ The terms used in this document are defined in the consolidated [Glossary](6-Glo
 **FPS by backend (Raspberry Pi 5, higher is better)**
 
 ```mermaid
-xychart-beta
+%%{init: {"themeVariables": {"xyChart": {"plotColorPalette": "#e60000"}}}}%%
+xychart-beta horizontal
     title "RPi5 FPS by rendering backend (display ceiling ~60 Hz)"
     x-axis ["GLX(GPU)", "EGL(GPU)", "Software(CPU)"]
     y-axis "FPS" 0 --> 70
@@ -104,7 +105,8 @@ Complete — GPU acceleration confirmed faster than Software; keep the default (
 **Worst-case E2E latency as % of beat-period budget (Raspberry Pi 5, lower is better, 100% = budget)**
 
 ```mermaid
-xychart-beta
+%%{init: {"themeVariables": {"xyChart": {"plotColorPalette": "#e60000"}}}}%%
+xychart-beta horizontal
     title "RPi5 worst-case latency / budget per run (%)"
     x-axis ["21600@48k Sim", "21600@48k Play", "21600@48k Live", "43200@192k Sim", "43200@192k Play"]
     y-axis "Budget usage (%)" 0 --> 100

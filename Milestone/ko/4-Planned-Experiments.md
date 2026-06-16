@@ -34,7 +34,8 @@
 **백엔드별 FPS (Raspberry Pi 5, 높을수록 좋음)**
 
 ```mermaid
-xychart-beta
+%%{init: {"themeVariables": {"xyChart": {"plotColorPalette": "#e60000"}}}}%%
+xychart-beta horizontal
     title "RPi5 렌더링 백엔드별 FPS (디스플레이 한계 ~60 Hz)"
     x-axis ["GLX(GPU)", "EGL(GPU)", "Software(CPU)"]
     y-axis "FPS" 0 --> 70
@@ -104,7 +105,8 @@ C# 경로 채택 시 Avalonia Github의 다수 이슈처럼 RPi5에서 GPU 가�
 **worst-case E2E 지연의 비트 주기 예산 사용률 (Raspberry Pi 5, 낮을수록 여유, 100% = 예산)**
 
 ```mermaid
-xychart-beta
+%%{init: {"themeVariables": {"xyChart": {"plotColorPalette": "#e60000"}}}}%%
+xychart-beta horizontal
     title "RPi5 run별 worst-case 지연 / 예산 (%)"
     x-axis ["21600@48k Sim", "21600@48k Play", "21600@48k Live", "43200@192k Sim", "43200@192k Play"]
     y-axis "예산 사용률 (%)" 0 --> 100
