@@ -34,7 +34,7 @@ The terms used in this document are defined in the consolidated [Glossary](6-Glo
 **FPS by backend (Raspberry Pi 5, higher is better)**
 
 ```mermaid
-%%{init: {"themeVariables": {"xyChart": {"plotColorPalette": "#e60000"}}}}%%
+%%{init: {"themeVariables": {"xyChart": {"plotColorPalette": "#A50034"}}}}%%
 xychart-beta horizontal
     title "RPi5 FPS by rendering backend (display ceiling ~60 Hz)"
     x-axis ["GLX(GPU)", "EGL(GPU)", "Software(CPU)"]
@@ -105,7 +105,7 @@ Complete — GPU acceleration confirmed faster than Software; keep the default (
 **Worst-case E2E latency as % of beat-period budget (Raspberry Pi 5, lower is better, 100% = budget)**
 
 ```mermaid
-%%{init: {"themeVariables": {"xyChart": {"plotColorPalette": "#e60000"}}}}%%
+%%{init: {"themeVariables": {"xyChart": {"plotColorPalette": "#A50034"}}}}%%
 xychart-beta horizontal
     title "RPi5 worst-case latency / budget per run (%)"
     x-axis ["21600@48k Sim", "21600@48k Play", "21600@48k Live", "43200@192k Sim", "43200@192k Play"]
@@ -273,7 +273,7 @@ In progress
 > Data collected during the 24-hour continuous run, shown as 30-minute segment means.
 
 ```mermaid
-%%{init: {"themeVariables": {"xyChart": {"plotColorPalette": "#e60000"}}}}%%
+%%{init: {"themeVariables": {"xyChart": {"plotColorPalette": "#A50034"}}}}%%
 xychart-beta
     title "Process CPU usage trend (0–24h, 4 cores = 400%)"
     x-axis "Elapsed time (h)" 0 --> 24
@@ -282,7 +282,7 @@ xychart-beta
 ```
 
 ```mermaid
-%%{init: {"themeVariables": {"xyChart": {"plotColorPalette": "#e60000"}}}}%%
+%%{init: {"themeVariables": {"xyChart": {"plotColorPalette": "#A50034"}}}}%%
 xychart-beta
     title "Process memory (RSS) trend (0–24h, no leak → flat)"
     x-axis "Elapsed time (h)" 0 --> 24

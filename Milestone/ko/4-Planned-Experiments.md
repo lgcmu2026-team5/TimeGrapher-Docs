@@ -34,7 +34,7 @@
 **백엔드별 FPS (Raspberry Pi 5, 높을수록 좋음)**
 
 ```mermaid
-%%{init: {"themeVariables": {"xyChart": {"plotColorPalette": "#e60000"}}}}%%
+%%{init: {"themeVariables": {"xyChart": {"plotColorPalette": "#A50034"}}}}%%
 xychart-beta horizontal
     title "RPi5 렌더링 백엔드별 FPS (디스플레이 한계 ~60 Hz)"
     x-axis ["GLX(GPU)", "EGL(GPU)", "Software(CPU)"]
@@ -105,7 +105,7 @@ C# 경로 채택 시 Avalonia Github의 다수 이슈처럼 RPi5에서 GPU 가�
 **worst-case E2E 지연의 비트 주기 예산 사용률 (Raspberry Pi 5, 낮을수록 여유, 100% = 예산)**
 
 ```mermaid
-%%{init: {"themeVariables": {"xyChart": {"plotColorPalette": "#e60000"}}}}%%
+%%{init: {"themeVariables": {"xyChart": {"plotColorPalette": "#A50034"}}}}%%
 xychart-beta horizontal
     title "RPi5 run별 worst-case 지연 / 예산 (%)"
     x-axis ["21600@48k Sim", "21600@48k Play", "21600@48k Live", "43200@192k Sim", "43200@192k Play"]
@@ -273,7 +273,7 @@ TinyML 기반 분류(예: signal-quality, bad-data-rejection)를 RPi 온디바�
 > 24시간 연속 실행 동안 수집한 데이터를 30분 단위 구간 평균으로 표시.
 
 ```mermaid
-%%{init: {"themeVariables": {"xyChart": {"plotColorPalette": "#e60000"}}}}%%
+%%{init: {"themeVariables": {"xyChart": {"plotColorPalette": "#A50034"}}}}%%
 xychart-beta
     title "프로세스 CPU 사용률 추세 (0–24h, 4코어 = 400%)"
     x-axis "경과 시간 (h)" 0 --> 24
@@ -282,7 +282,7 @@ xychart-beta
 ```
 
 ```mermaid
-%%{init: {"themeVariables": {"xyChart": {"plotColorPalette": "#e60000"}}}}%%
+%%{init: {"themeVariables": {"xyChart": {"plotColorPalette": "#A50034"}}}}%%
 xychart-beta
     title "프로세스 메모리(RSS) 추세 (0–24h, 누수 없음 → 평탄)"
     x-axis "경과 시간 (h)" 0 --> 24
