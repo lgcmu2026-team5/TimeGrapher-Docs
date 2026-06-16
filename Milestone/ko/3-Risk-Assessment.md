@@ -68,14 +68,14 @@ Risk ID | 리스크 타이틀 | 구분 | QAS | P | I
   - **코멘트**: 4개 동시 뷰 / 1개씩 뷰는 성능 확인 후 결정
 
 - **🔴 R-03 — 분석·표시가 비트 주기 예산(83.3 ms @ 43200 BPH)을 넘겨 backlog·stale 표시·block drop·missed beat가 발생한다**
-  - **근거**: [QAS-2](2-Architectural-Drivers.md#qas-2--performance-latency--소리-입력에서-화면-표시까지) — 최고 목표 43200 BPH의 한 비트 주기는 83.3 ms(21600 BPH는 166.7 ms)
+  - **근거**: [QAS-2](2-Architectural-Drivers.md#qas-2--performance-latency--소리-입력에서-화면-표시까지) — 한 비트 주기 = 3600 s ÷ BPH (43200 BPH: 83.3 ms · 21600 BPH: 166.7 ms)
   - **발생 확률 / 영향**: Medium / High
   - **등급 근거**
-    - P-Medium: 처리·렌더링 부하는 샘플레이트·BPH·활성 탭·그래프 비용에 따라 변하며, 43200 BPH @ 192 kHz는 팀 목표 중 가장 공격적인 조건이라 예산을 넘길 수 있음.
-    - I-High: 비트 주기를 지속적으로 넘기면 backlog가 쌓여 오래된 데이터가 표시되고, 최악에는 block drop·missed beat로 측정값 자체가 오염됨.
-  - **완화 방향**: 세 지연 구간 CSV 계측(record/monitor), 분석/UI 스레드 분리 + 최신 프레임만 렌더링(latest-wins), bounded buffer/queue, 지속 초과 시 시각 품질 단계적 저하
-  - **Tradeoff point**: 높은 샘플레이트·더 많은 그래프 렌더링은 측정 정밀도/진단 가시성↔RPi5 부하·표시 지연의 tradeoff point
-  - **코멘트**: 21600 BPH @ 48 kHz, 43200 BPH @ 192 kHz 두 조건을 Live/Playback/Simulation 입력 모드로 재측정 완료([EXP-02](4-Planned-Experiments.md#exp-02-rpi5-실시간-샘플레이트-상한) 참조) — Raspberry Pi 5(주)·Windows(참고) 모두 비트 주기 예산 안에서 Pass(drop=0, miss=0). 43200 BPH는 하이비트 무브먼트 미보유로 Live 제외·Playback은 합성 WAV
+    - P-Medium: 처리·렌더 부하가 샘플레이트·BPH·활성 탭·그래프 수에 따라 커져 예산을 넘길 수 있음.
+    - I-High: 예산 초과가 지속되면 backlog·stale 표시, 최악엔 block drop·missed beat로 측정값이 오염됨.
+  - **완화 방향**: 세 지연 구간 CSV 계측, 분석/UI 스레드 분리 + latest-wins 렌더링, bounded buffer/queue, 지속 초과 시 시각 품질 단계적 저하
+  - **Tradeoff point**: 높은 샘플레이트·많은 그래프 = 측정 정밀도/진단 가시성 ↔ RPi5 부하·표시 지연
+  - **코멘트**: 21600 BPH @ 48 kHz·43200 BPH @ 192 kHz를 Live/Playback/Simulation으로 재측정 완료([EXP-02](4-Planned-Experiments.md#exp-02-rpi5-실시간-샘플레이트-상한)) — Pi(주)·Windows(참고) 모두 예산 내 Pass(drop=0, miss=0). 새 연산·필터·그래프·AI Feature가 추가 구현될 때마다 동일 기준으로 재측정 예정.
 
 - **🔴 R-04 — 장시간(24h+) 연속 실행 시 메모리가 새서 느려지거나 죽는다**
   - **근거**: [FR-07-10](2-Architectural-Drivers.md#g07--long-term-performance-graph), [QAS-2](2-Architectural-Drivers.md#qas-2--performance-latency--소리-입력에서-화면-표시까지)

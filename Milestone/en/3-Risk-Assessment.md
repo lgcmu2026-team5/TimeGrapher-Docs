@@ -68,14 +68,14 @@ Risk ID | Risk Title | Type | QAS | P | I
   - **Comment**: Decide 4 simultaneous views vs one-at-a-time after the performance check
 
 - **🔴 R-03 — Analysis + display exceed the beat-period budget (83.3 ms @ 43200 BPH), causing backlog, stale display, block drop, and missed beats**
-  - **Evidence**: [QAS-2](2-Architectural-Drivers.md#qas-2--performance-latency--from-sound-input-to-screen-display) — one beat period at the top target 43200 BPH is 83.3 ms (166.7 ms at 21600 BPH)
+  - **Evidence**: [QAS-2](2-Architectural-Drivers.md#qas-2--performance-latency--from-sound-input-to-screen-display) — one beat period = 3600 s ÷ BPH (43200 BPH: 83.3 ms · 21600 BPH: 166.7 ms)
   - **Probability / Impact**: Medium / High
   - **Grading rationale**
-    - P-Medium: processing/rendering load varies with sample rate, BPH, active tab, and graph cost; 43200 BPH @ 192 kHz is the team's most aggressive target, so the budget may be exceeded.
-    - I-High: consistently exceeding the beat period builds a backlog and shows stale data; at worst, block drop / missed beats contaminate the measurements themselves.
-  - **Mitigation**: Instrument the three latency components to CSV (record/monitor); separate analysis/UI threads + render only the latest frame (latest-wins); bounded buffers/queues; degrade visual quality stepwise on sustained overrun
-  - **Tradeoff point**: higher sample rates and more graph rendering trade measurement precision / diagnostic visibility against RPi5 load and display latency
-  - **Comment**: Re-measured both 21600 BPH @ 48 kHz and 43200 BPH @ 192 kHz across Live/Playback/Simulation input modes (see [EXP-02](4-Planned-Experiments.md#exp-02-rpi5-real-time-sample-rate-ceiling)) — both pass within the beat-period budget on Raspberry Pi 5 (primary) and Windows (reference) with drop=0, miss=0; 43200 BPH excludes Live (no high-beat movement) and its Playback uses a synthetic WAV
+    - P-Medium: processing/rendering load grows with sample rate, BPH, active tab, and graph count, so the budget may be exceeded.
+    - I-High: sustained overrun builds backlog and stale display; at worst, block drop / missed beats contaminate the measurements.
+  - **Mitigation**: Instrument the three latency components to CSV; separate analysis/UI threads + latest-wins rendering; bounded buffers/queues; degrade visual quality stepwise on sustained overrun
+  - **Tradeoff point**: higher sample rate and more graphs = measurement precision / diagnostic visibility ↔ RPi5 load and display latency
+  - **Comment**: Re-measured 21600 BPH @ 48 kHz and 43200 BPH @ 192 kHz across Live/Playback/Simulation (see [EXP-02](4-Planned-Experiments.md#exp-02-rpi5-real-time-sample-rate-ceiling)) — both pass within budget on Raspberry Pi 5 (primary) and Windows (reference) with drop=0, miss=0. Re-measure on the same criteria whenever a new computation, filter, graph, or AI feature is added.
 
 - **🔴 R-04 — Long continuous runs (24h+) leak memory and degrade or crash**
   - **Evidence**: [FR-07-10](2-Architectural-Drivers.md#g07--long-term-performance-graph), [QAS-2](2-Architectural-Drivers.md#qas-2--performance-latency--from-sound-input-to-screen-display)
