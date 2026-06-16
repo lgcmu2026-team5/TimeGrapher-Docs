@@ -31,6 +31,16 @@
 - **권장**: Avalonia 기본값(GPU 우선, Software 폴백) 유지, 설정 변경 없음. SW는 더 느린 데다 tearing·CPU 경쟁(오디오 스레드)까지 있어 불리.
 - (참고) Windows는 세 백엔드 모두 ~60 Hz 한계로 차이 없음.
 
+**백엔드별 FPS (Raspberry Pi 5, 높을수록 좋음)**
+
+```mermaid
+xychart-beta
+    title "RPi5 렌더링 백엔드별 FPS (디스플레이 한계 ~60 Hz)"
+    x-axis ["GLX(GPU)", "EGL(GPU)", "Software(CPU)"]
+    y-axis "FPS" 0 --> 70
+    bar [59.2, 60.0, 43.6]
+```
+
 ### 목적
 
 C# 경로 채택 시 Avalonia Github의 다수 이슈처럼 RPi5에서 GPU 가속 렌더링의 버그로 SW 방식보다도 *느려* 실시간 그래프가 끊길 수 있는 리스크를 technical experiment로 해소한다. 핵심 질문:
@@ -90,6 +100,16 @@ C# 경로 채택 시 Avalonia Github의 다수 이슈처럼 RPi5에서 GPU 가�
 - **결과**: 두 조건 모두 예산 안 Pass, drop·miss 0. 가장 빡빡한 43200@192k도 Pi worst-case가 예산의 약 41%(34.6 / 83.3 ms). 43200 Playback은 실녹음이 없어 검증된 합성 WAV(`WatchSynthStream`)을 썼다.
 - **권장(Go)**: 기본 **48 kHz**, 최고 지원 **192 kHz** 확정. 192k가 여유 있게 통과해 [R-01](3-Risk-Assessment.md#a-실시간-성능-rpi)의 192k 우려는 해소(격하 불필요). 96 kHz는 미측정이나 48k·192k 사이라 지원 가능으로 본다.
 - **한계**: Rate/Scope 탭·latency/drop·miss 기준 판정. CPU/RAM, 이미지 탭(Spectrogram/Sound Print), 43200 실음향 Live는 별도 평가 필요.
+
+**worst-case E2E 지연의 비트 주기 예산 사용률 (Raspberry Pi 5, 낮을수록 여유, 100% = 예산)**
+
+```mermaid
+xychart-beta
+    title "RPi5 run별 worst-case 지연 / 예산 (%)"
+    x-axis ["21600@48k Sim", "21600@48k Play", "21600@48k Live", "43200@192k Sim", "43200@192k Play"]
+    y-axis "예산 사용률 (%)" 0 --> 100
+    bar [25.2, 26.4, 24.2, 40.8, 41.5]
+```
 
 ### 목적
 

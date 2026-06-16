@@ -31,6 +31,16 @@ The terms used in this document are defined in the consolidated [Glossary](6-Glo
 - **Recommendation**: keep Avalonia's default (GPU-first, Software fallback); no config change. Software is slower and also brings tearing and CPU contention with the audio thread.
 - (Reference) On Windows all three backends hit the ~60 Hz ceiling — no difference.
 
+**FPS by backend (Raspberry Pi 5, higher is better)**
+
+```mermaid
+xychart-beta
+    title "RPi5 FPS by rendering backend (display ceiling ~60 Hz)"
+    x-axis ["GLX(GPU)", "EGL(GPU)", "Software(CPU)"]
+    y-axis "FPS" 0 --> 70
+    bar [59.2, 60.0, 43.6]
+```
+
 ### Objective
 
 When adopting the C# path, use a technical experiment to resolve the risk that — as in numerous Avalonia GitHub issues — a bug makes GPU-accelerated rendering on the RPi5 *slower* than even SW rendering, stuttering the real-time graphs. Core question:
@@ -90,6 +100,16 @@ Complete — GPU acceleration confirmed faster than Software; keep the default (
 - **Result**: both conditions within budget, drop·miss 0. Even the tightest, 43200@192k, is ~41 % of budget on the Pi (worst 34.6 / 83.3 ms). The 43200 Playback used a verified synthetic WAV (`WatchSynthStream`) since no real recording exists.
 - **Recommendation (Go)**: fix the base at **48 kHz** and the top at **192 kHz**. 192k passes with margin, so [R-01](3-Risk-Assessment.md#a-real-time-performance-rpi)'s 192k concern is resolved (no longer a stretch). 96 kHz was not measured but is considered supportable as an in-between value.
 - **Limits**: verdict is on the Rate/Scope tab by latency/drop·miss. CPU/RAM, image tabs (Spectrogram/Sound Print), and the 43200 real-acoustic Live path need separate evaluation.
+
+**Worst-case E2E latency as % of beat-period budget (Raspberry Pi 5, lower is better, 100% = budget)**
+
+```mermaid
+xychart-beta
+    title "RPi5 worst-case latency / budget per run (%)"
+    x-axis ["21600@48k Sim", "21600@48k Play", "21600@48k Live", "43200@192k Sim", "43200@192k Play"]
+    y-axis "Budget usage (%)" 0 --> 100
+    bar [25.2, 26.4, 24.2, 40.8, 41.5]
+```
 
 ### Objective
 
