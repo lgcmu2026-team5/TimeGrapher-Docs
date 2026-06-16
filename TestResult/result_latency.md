@@ -1,12 +1,12 @@
-# QAS-1 Latency Experiment Plan & Results
+# QAS-2 Latency Experiment Plan & Results
 
-> 목적: 실제 GUI 실행에서 수집하는 `--analysis-log` CSV를 기반으로 QAS-1 latency를 재측정한다. **기존 측정 결과는 폐기했다.** 아래 2개 조건 × 입력 모드 매트릭스로 다시 측정한다.
+> 목적: 실제 GUI 실행에서 수집하는 `--analysis-log` CSV를 기반으로 QAS-2 latency를 재측정한다. **기존 측정 결과는 폐기했다.** 아래 2개 조건 × 입력 모드 매트릭스로 다시 측정한다.
 
 > **폐기 안내**: 이전 버전 문서는 28800 BPH @ 48 kHz(Sim), 43200 BPH @ 192 kHz(Sim), 21600 BPH @ 48 kHz(WAV), 28800 BPH @ 384 kHz(WAV) 네 건의 결과를 담고 있었다. 조건 집합이 설계 목표와 정합하지 않아 전부 폐기하고, 아래의 정리된 두 조건으로 재측정한다.
 
 ## 1. 실험 개요
 
-QAS-1은 오디오 입력 블록이 캡처된 시점부터 beat detection/measurement 처리 완료 시점, 그리고 대응 waveform/marker/computed reading이 GUI에 표시된 시점까지의 latency를 보고하도록 요구한다. 이번 실험은 TimeGrapher.App을 실제 디스플레이 GUI로 실행하고, `--analysis-log <csv>`로 각 GUI 표시 프레임의 latency를 수집한다.
+QAS-2은 오디오 입력 블록이 캡처된 시점부터 beat detection/measurement 처리 완료 시점, 그리고 대응 waveform/marker/computed reading이 GUI에 표시된 시점까지의 latency를 보고하도록 요구한다. 이번 실험은 TimeGrapher.App을 실제 디스플레이 GUI로 실행하고, `--analysis-log <csv>`로 각 GUI 표시 프레임의 latency를 수집한다.
 
 실험 목적은 다음 두 조건에서 total end-to-end latency가 비트 주기 예산 안에 들어오는지 확인하는 것이다.
 
@@ -21,7 +21,7 @@ QAS-1은 오디오 입력 블록이 캡처된 시점부터 beat detection/measur
 beat_period_ms = 3600 s / BPH * 1000 ms/s
 ```
 
-측정은 **Raspberry Pi 5(주 대상)** 와 **Windows(참고)** 두 플랫폼에서 각각 수행한다. QAS-1 판정의 기준 플랫폼은 배포 대상인 Raspberry Pi 5이며, Windows 결과는 개발 PC 참고치로만 기록한다.
+측정은 **Raspberry Pi 5(주 대상)** 와 **Windows(참고)** 두 플랫폼에서 각각 수행한다. QAS-2 판정의 기준 플랫폼은 배포 대상인 Raspberry Pi 5이며, Windows 결과는 개발 PC 참고치로만 기록한다.
 
 ## 2. 실험 환경
 
@@ -155,9 +155,9 @@ Windows 5 run은 모두 비트 주기 예산 안에 들어왔고 dropped audio s
 
 Raspberry Pi 5 결과표(§5.1)는 측정 후 같은 방식으로 채운다.
 
-## 6. QAS-1 판정
+## 6. QAS-2 판정
 
-QAS-1 판정은 배포 대상인 Raspberry Pi 5 결과를 기준으로 한다(Windows는 참고치). Raspberry Pi 5 기준 두 조건 모두 충족한다.
+QAS-2 판정은 배포 대상인 Raspberry Pi 5 결과를 기준으로 한다(Windows는 참고치). Raspberry Pi 5 기준 두 조건 모두 충족한다.
 
 | Requirement | 21600@48k (Sim/Playback/Live) | 43200@192k (Sim/Playback) |
 |---|---|---|
@@ -175,6 +175,6 @@ QAS-1 판정은 배포 대상인 Raspberry Pi 5 결과를 기준으로 한다(Wi
 
 ## 8. 결론
 
-Raspberry Pi 5(주 대상)에서 21600 BPH @ 48 kHz, 43200 BPH @ 192 kHz 두 조건을 Simulation/Playback/Live(43200 BPH는 Sim/Playback) 입력 모드로 측정한 결과, worst-case E2E latency가 모두 비트 주기 예산 안에 들어왔고 dropped audio samples·missed beat detections는 전부 0이었다. 가장 빡빡한 43200 BPH @ 192 kHz에서도 worst E2E는 34.562 ms로 예산 83.333 ms의 약 41.5% 수준이었다. Windows(참고) 5 run도 모두 예산 안에 들어왔다. 따라서 QAS-1 latency 목표는 두 조건·세 입력 모드에서 충족한다.
+Raspberry Pi 5(주 대상)에서 21600 BPH @ 48 kHz, 43200 BPH @ 192 kHz 두 조건을 Simulation/Playback/Live(43200 BPH는 Sim/Playback) 입력 모드로 측정한 결과, worst-case E2E latency가 모두 비트 주기 예산 안에 들어왔고 dropped audio samples·missed beat detections는 전부 0이었다. 가장 빡빡한 43200 BPH @ 192 kHz에서도 worst E2E는 34.562 ms로 예산 83.333 ms의 약 41.5% 수준이었다. Windows(참고) 5 run도 모두 예산 안에 들어왔다. 따라서 QAS-2 latency 목표는 두 조건·세 입력 모드에서 충족한다.
 
 입력 모드별로 보면, Pi에서 Live(21600 BPH)의 E2E avg가 3.908 ms로 Sim/Playback보다 낮았는데, 이는 processing-to-display 평균이 1.269 ms로 가장 짧았기 때문이다. 반면 capture-to-processing은 Live가 2.639 ms로 가장 높아, 실제 캡처 경로의 입력 지연이 반영된 것으로 보인다.

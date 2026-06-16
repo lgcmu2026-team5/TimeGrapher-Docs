@@ -1,6 +1,6 @@
 <#
 .SYNOPSIS
-  Reduce TimeGrapher --analysis-log CSVs to the QAS-1 latency result table.
+  Reduce TimeGrapher --analysis-log CSVs to the QAS-2 latency result table.
 
 .DESCRIPTION
   Reads one or more per-frame latency CSVs produced by TimeGrapher.App's
@@ -11,7 +11,7 @@
   (e.g. win_21600_48k_sim.csv -> 21600 BPH -> 166.667 ms).
 
   Outputs a Markdown table matching result_latency.md section 5, plus the
-  per-leg detail and the QAS-1 pass/fail verdict.
+  per-leg detail and the QAS-2 pass/fail verdict.
 
 .PARAMETER Csv
   CSV files to include in one comparison group (truncated to a shared frame
