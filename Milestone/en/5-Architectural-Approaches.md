@@ -75,7 +75,7 @@ Core → Nothing (zero dependencies)
 - **Core is UI-agnostic**: The Model (Core) has zero dependencies on the View or Controller. It communicates outward only via decoupled event notifications $\rightarrow$ highly portable and testable.
 - **App is mixed**: Views and Controllers may intertwine with Avalonia framework specifics, but they rely on the agnostic Model.
 
-![alt text](image-2.png)
+![alt text](image-2.webp)
 
 **Contents** — [The Architecture at a Glance](#the-architecture-at-a-glance) · [Software Architecture Tactics to Apply](#software-architecture-tactics-to-apply) · [Software Design Patterns to Apply](#software-design-patterns-to-apply)
 
