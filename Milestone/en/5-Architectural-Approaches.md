@@ -56,6 +56,9 @@ Core → Nothing (zero dependencies)
 ## 3. MVC VIEW – Responsibility Separation
 
 **Purpose:** Divides TimeGrapher into Model (data), View (display), and Controller (logic), clarifying who owns what and how they interact to maintain separation of concerns.
+- Loose Coupling & Parallel Development
+- Modifiability
+- Consistency
 
 **Key Roles:**
 
