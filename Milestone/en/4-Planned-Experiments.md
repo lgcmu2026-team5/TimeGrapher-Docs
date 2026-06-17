@@ -262,13 +262,13 @@ In progress
 24h+ continuous-run stability is judged **Pass**. On the RPi5 (`cmu.local`), `TimeGrapher.App` (PID 2111) was run continuously for 24 hours while logging the process CPU/memory at a 0.5 s interval, collecting roughly 172,800 samples.
 
 - **Memory (RSS): no leak.** RSS stayed flat at about **406 MB** across the whole run; all 48 thirty-minute segment means were within 405–408 MB (first 405.5 MB → last 403.9 MB, change **-1.6 MB**). A single transient peak of 447 MB occurred and recovered immediately. → **Q1 = not at a leak-suspect level.**
-- **CPU: no late-run degradation.** Instantaneous usage held nearly constant at about **144%** (≈1.4 of the RPi5's 4 cores). The rising curve in the graph is an artifact of `ps`'s **cumulative average** converging from its start value (111%) to steady state (~144%), not real degradation. Standard deviation was 6.5%. → **Q2 = no late-run latency/throughput degradation.**
+- **CPU: no late-run degradation.** Normalized instantaneous usage held nearly constant at about **36% of total 4-core capacity** (≈1.4 of the RPi5's 4 cores). The rising curve in the graph is an artifact of `ps`'s **cumulative average** converging from its start value (27.8%) to steady state (~36%), not real degradation. Standard deviation was 1.6 percentage points. → **Q2 = no late-run latency/throughput degradation.**
 
 **Recommended policy**
 
 - For the current version, memory operation can **stay as-is (no extra cap/aggregation)** and still meet 24h stability (flat RSS, no leak).
 - When new computations, filters, graphs, or AI Features are added, **re-measure** with the same procedure (0.5 s RSS/CPU long-term logging) to check for regression.
-- Since CPU stays at ~1.4 cores, manage the remaining core headroom (~2.6 cores) as a budget when introducing additional load.
+- Since CPU stays at ~36% of total 4-core capacity (~1.4 cores), manage the remaining headroom (~64%, ≈2.6 cores) as a budget when introducing additional load.
 
 **Trend over time (0–24h)**
 
@@ -277,11 +277,11 @@ In progress
 ```mermaid
 %%{init: {"themeVariables": {"xyChart": {"plotColorPalette": "#A50034, #999999"}}}}%%
 xychart-beta
-    title "Process CPU usage trend (0–24h, gray line = 4-core 400% ceiling)"
+    title "Process CPU usage trend (0–24h, gray line = 100% full 4-core capacity)"
     x-axis "Elapsed time (h)" 0 --> 24
-    y-axis "CPU usage (%)" 0 --> 420
-    line [127.5, 133.4, 134.0, 135.0, 136.0, 136.0, 137.0, 137.0, 138.0, 138.0, 138.7, 139.0, 139.0, 139.4, 140.0, 140.0, 140.0, 140.2, 141.0, 141.0, 141.0, 141.0, 141.0, 141.7, 142.0, 142.0, 142.0, 142.0, 142.0, 142.0, 142.0, 142.5, 143.0, 143.0, 143.0, 143.0, 143.0, 143.0, 143.0, 143.0, 143.0, 143.0, 143.0, 143.5, 144.0, 144.0, 144.0, 144.0]
-    line [400, 400, 400, 400, 400, 400, 400, 400, 400, 400, 400, 400, 400, 400, 400, 400, 400, 400, 400, 400, 400, 400, 400, 400, 400, 400, 400, 400, 400, 400, 400, 400, 400, 400, 400, 400, 400, 400, 400, 400, 400, 400, 400, 400, 400, 400, 400, 400]
+    y-axis "CPU usage (% of 4-core capacity)" 0 --> 100
+    line [31.9, 33.4, 33.5, 33.8, 34.0, 34.0, 34.3, 34.3, 34.5, 34.5, 34.7, 34.8, 34.8, 34.9, 35.0, 35.0, 35.0, 35.1, 35.3, 35.3, 35.3, 35.3, 35.3, 35.4, 35.5, 35.5, 35.5, 35.5, 35.5, 35.5, 35.5, 35.6, 35.8, 35.8, 35.8, 35.8, 35.8, 35.8, 35.8, 35.8, 35.8, 35.8, 35.8, 35.9, 36.0, 36.0, 36.0, 36.0]
+    line [100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100]
 ```
 
 ```mermaid
