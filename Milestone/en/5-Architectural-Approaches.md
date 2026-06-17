@@ -15,7 +15,7 @@
 1. **Layer 1 – Entry Points & UI**: App (Avalonia UI), Verify (console), Test Suites
 2. **Layer 2 – Platform Adapters**: WindowsAudio (NAudio), LinuxAudio (PipeWire/ALSA tools)
 3. **Layer 3 – Portable Core**: `TimeGrapher.Core` (analysis, detection, metrics – no external dependencies)
-- **Sidecar Layer – External Tech**: Avalonia, ScottPlot, NAudio, xUnit
+- **External dependancy – External Tech**: Avalonia, ScottPlot, NAudio, xUnit
 
 **Permission Rules:**
 ```text
