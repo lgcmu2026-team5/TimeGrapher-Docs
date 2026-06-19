@@ -162,39 +162,69 @@ Complete — both conditions measured over 5 runs each (Raspberry Pi 5 and Windo
 
 ### Results & Recommendations
 
-TO-DO: Record the priority and application scope of the design patterns chosen for GUI performance improvement.
+**Complete — adopted a Pipe-and-Filter flow + concurrency tactics (Producer–Consumer · Observer · Latest-Wins · fixed buffer pool).** Removed the single-threaded synchronous-call UI bottleneck.
+
+- **Structure**: formalized input → analysis → display as a one-way `Pipe-and-Filter` flow, and isolated `AnalysisWorker` on a dedicated thread (`ThreadPriority.Highest`) so the UI only renders.
+- **Result**: against the QAS-2 top target (**43200 BPH @ 192 kHz, beat period 83.3 ms**), at the measured load of **28800 BPH (125 ms per beat)** the capture → analysis → frame-routing chain converges within deadline with no UI blocking. Separate from the end-to-end beat budget (QAS-2), render-blocking time is held within the active-tab UI render-throttle budget (**33 ms / 100 ms**).
+- **Recommendation**: keep the verified isolation structure (worker-thread separation + bounded buffers + Latest-Wins) for the latency-critical rendering path and data-acquisition core, and follow the per-filter partitioning rule when extending the pipeline.
+
+> For the per-pattern/tactic benefits and trade-offs, see [Results & Analysis](#results--analysis) below.
 
 ### Objective
 
-Compare the candidate design patterns for the rendering/refresh path and decide which to apply first this milestone, to improve GUI real-time performance. Core questions:
+Resolve the bottleneck where, under the single-threaded synchronous call chain, processing load spilled onto the UI main thread and froze the screen. Grounded in Bass, Clements & Kazman's *Software Architecture in Practice (SAP)*, verify a pattern/tactic combination that secures real-time behavior without harming portability or modifiability. Core questions:
 
-- Q1. For the current GUI bottleneck, which pattern (e.g., Producer-Consumer, Double Buffering, Object Pool) is effective?
-- Q2. Once applied, how do the patterns rank in frame stability, latency, and implementation difficulty?
-- Q3. Can the team agree on a first-priority pattern set that fits the short schedule?
+- Q1. Under a 28800 BPH (125 ms per beat) load, what concurrency / data-copy structure keeps the UI thread unblocked?
+- Q2. Can we eliminate LOH pollution and GC spikes caused by large-snapshot churn (Sound Print ~2.67 MB, Spectrogram ~1.92 MB)?
+- Q3. What structure satisfies UI-render-cycle isolation and new-tab/graph extensibility (modifiability) at the same time?
 
 ### Status
 
-Planned
+Complete — design patterns verified and the pipeline implemented (reflected across the full source)
 
 ### Expected Deliverables
 
-- GUI-performance pattern comparison table (effect, application difficulty, schedule impact)
-- Priority pattern set (1st / 2nd) and the list of target modules
-- technical experiment scope and verification checklist for the pattern application
+- Pipe-and-Filter data-flow centered audio analysis-to-visualization pipeline architecture definition
+- Concurrency-isolation render scheduler (Latest-Wins) and data-copy buffering (fixed buffer pool) design
+- Long-run memory/aggregation bounding structure (`DecimatingSeries`) definition
+- Architecture trade-off analysis for the adopted patterns/tactics
 
 ### Resources Needed
 
-- TimeGrapher_v10.4 source code
-- Concurrency/rendering pattern references
-- Profiling / frame-time measurement tools
-- Code-review session participants (2–4 people)
-- Effort: 2.0 person-days
+- **Hardware**: Raspberry Pi 5 (CanaKit 16GB RAM), Windows 11 build PC
+- **Target source**: `AnalysisFrameRouter.cs`, `SoundPrintFrameProjector.cs`, `AnalysisWorker.cs`, `DecimatingSeries.cs` core modules
+- **Instrumentation**: Stopwatch-based real-time latency tracking (`--analysis-log`)
+- **Effort**: 2.0 person-days
 
 ### Experiment Description
 
-1. Identify the GUI refresh-path bottleneck and shortlist applicable design-pattern candidates.
-2. Compare candidate patterns with technical experiments, measuring latency, frame stability, and implementation difficulty.
-3. Per SAP criteria, finalize the first-priority pattern set and decide the milestone application scope.
+This technical experiment verifies the adopted architecture patterns/tactics for improving GUI real-time rendering, across three items.
+
+1. **Pipe-and-Filter data-flow verification** — the watch-sound signal follows a streaming flow of `Capture → Detection → Measurement → Visualization`. Build the pipeline where the audio capture buffer passes through each analysis stage into the final visualization artifacts (`SoundPrint`, `Spectrogram`) and test the stages' independent replaceability. (Maps to the design-pattern table: `Pipe-and-Filter` — overall flow, `Strategy` — input source / filter stages.)
+2. **Concurrency-isolation tactic verification** — isolate `AnalysisWorker` on a dedicated `ThreadPriority.Highest` thread so the UI thread only renders. Input↔analysis is delivered via a shared-buffer **Producer–Consumer**, and result frames via an **Observer** fan-out (`AnalysisFrameRouter`'s `ObserveFrame`/`RenderFrame`) that consumers (tabs) subscribe to. To prevent cross-thread interference, combine a **fixed buffer pool (PublishBufferCount = 3) rotation** with a **Latest-Wins scheduler** (`AnalysisFrameRenderScheduler`) that discards frames exceeding the refresh rate. Measure whether the analysis worker's deadline stays isolated from UI lag at 28800 BPH (125 ms).
+3. **DecimatingSeries data-bounding verification** — to stop the graph point count from accumulating in proportion to run time, analyze the normal operation of the aggregation structure that, on reaching the fixed capacity limit, merges adjacent point pairs to halve resolution while preserving each bucket's min/max.
+
+### Results & Analysis
+
+This experiment analyzes, from a benefits/trade-offs perspective, which quality attributes the adopted patterns/tactics gain (and how) and what is given up in return, grounded in SAP theory.
+
+#### 1. Pipe-and-Filter data flow — benefits and trade-offs
+
+- **Benefits**
+  - **Maximized modifiability/extensibility (QAS-5)**: each processing stage is encapsulated as an independent stage behind a standard interface (`IAnalysisFrameConsumer`, etc.), so a UI tab structure or a new analysis filter (e.g., a new measurement graph) can be injected without modifying existing code.
+  - **Improved reusability/portability**: the dependency between business logic and the GUI framework (Avalonia) is decoupled, making the backend analysis pipeline easy to reuse or port to another OS environment.
+- **Trade-offs**
+  - **Data-copy overhead**: each time data passes from stage to stage, a large signal snapshot (Sound Print ~2.67 MB, Spectrogram ~1.92 MB) is transferred, increasing copy cost.
+  - **Mitigation**: instead of allocating on the heap every time in normal execution, reuse fixed-size buffer blocks to fundamentally block GC spikes and LOH (Large Object Heap) pollution (Zero Churn).
+
+#### 2. Concurrency-isolation tactic — benefits and trade-offs
+
+- **Benefits**
+  - **Root-cause fix for UI blocking (QAS-2)**: even when heavy graphics computation or frame rendering runs, an asynchronous barrier is formed that never intrudes on the core analysis thread's cycle.
+  - **Performance defense via Latest-Wins**: even if the UI refresh rate slips, the previous frame held in the single slot is coalesced into / discarded for the latest frame, so no cascading delay from backlog accumulation occurs.
+- **Trade-offs**
+  - **Frame drop / recency bias**: because intermediate frames are discarded to match the UI render cycle and only the latest data is shown, momentary loss of intermediate frames occurs.
+  - **Mitigation and justification**: for a real-time monitoring system, expressing the "recency of the current state" without lag matters more than showing past frames with delay, which fits the key quality attributes (performance and usability), so this loss is an architecturally acceptable trade-off. The long-term metric history, however, is supplemented by separately combining a `DecimatingSeries` structure so it aggregates losslessly even across Latest-Wins coalescing.
 
 ### Duration
 
