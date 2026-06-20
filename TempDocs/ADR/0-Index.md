@@ -2,7 +2,8 @@
 
 > CMU-LG Software Architecture Course 2026 · Team 5 · TimeGrapherNet
 > 기준 교재: Bass·Clements·Kazman, *Software Architecture in Practice* (SAP).
-> 각 ADR은 [SAP_TACTICS_ANALYSIS.md](../../../04.TimeGrapher-Net/docs/architecture/SAP_TACTICS_ANALYSIS.md)의 코드 근거 검증 결과와 정합한다.
+> 각 ADR은 [SAP_TACTICS_ANALYSIS.md](../../../04.TimeGrapher-Net/docs/for-ai/SAP_TACTICS_ANALYSIS.md)의 코드 근거 검증 결과와 정합한다.
+> 새 ADR을 추가·수정할 때는 [ADR 작성 가이드](ADR_CREATE_GUIDE.md)를 먼저 읽고 기준에 맞춘다.
 
 ---
 
@@ -12,11 +13,11 @@
 | :---: | :--- | :--- | :---: | :---: | :--- |
 | **001** | C#/.NET + Avalonia Cross-Platform Stack | 단일 코드베이스로 Windows·RPi5 커버 (C-3) | `Layers` 기반 · Portability | Accepted | [ADR-001](ADR-001.md) |
 | **002** | Three-Layer Architecture (App / Platform / Core) | 하향 단방향·비순환 의존, Core 무의존 | `Layers` ✓ · 변경용이성 택틱군 ✓ | Accepted | [ADR-002](ADR-002.md) |
-| **003** | Concurrency Isolation for GUI Real-Time Performance | `AnalysisWorker` 전용 스레드(`ThreadPriority.Highest`) 격리, UI는 렌더링 전담 | `introduce concurrency` ✓ | Accepted | [ADR-003](ADR-003.md) |
-| **004** | Pipes and Filters for the Audio Processing Pipeline | 단계 분리 + `IAnalysisFrameConsumer` 캡슐화 (단일 스레드 동기 체인, 동시 경계 2곳) | Pipe-and-Filter **△** | Accepted | [ADR-004](ADR-004.md) |
+| **003** | Concurrency Isolation for GUI Real-Time Performance | 분석 엔진 전용 고우선순위 스레드 격리, UI는 렌더링 전담 | `introduce concurrency` ✓ | Accepted | [ADR-003](ADR-003.md) |
+| **004** | Pipes and Filters for the Audio Processing Pipeline | 단계 분리 + 표준 인터페이스 캡슐화 (단일 스레드 동기 체인, 동시 경계 2곳) | Pipe-and-Filter **△** | Accepted | [ADR-004](ADR-004.md) |
 | **005** | Zero-Allocation via Static Triple-Buffer Pool & Latest-Wins | 고정 3버퍼 풀(Double Buffering 구현) + Latest-Wins 스케줄러 | `maintain multiple copies`·`limit event response` ✓ | Accepted | [ADR-005](ADR-005.md) |
-| **006** | Strategy-Based Active Tab Routing & DecimatingSeries | 활성 탭만 `RenderFrame`(Strategy 라우팅) + 고정 용량 `DecimatingSeries` | `schedule resources`·`bound resource usage` ✓ | Accepted | [ADR-006](ADR-006.md) |
-| **007** | CI-Enforced Dependency Boundaries (fitness function) | CI grep으로 Core의 OS 의존 차단, 위반 시 빌드 실패 | `restrict dependencies` ✓ (§4-1) | Accepted | [ADR-007](ADR-007.md) |
+| **006** | Strategy-Based Active Tab Routing & Decimating Metrics Aggregation | 활성 탭만 렌더(Strategy 라우팅) + 고정 용량 감쇠 시계열 | `schedule resources`·`bound resource usage` ✓ | Accepted | [ADR-006](ADR-006.md) |
+| **007** | CI-Enforced Dependency Boundaries (fitness function) | CI 텍스트 검사로 Core의 OS 의존 차단, 위반 시 빌드 실패 | `restrict dependencies` ✓ (§4-1) | Accepted | [ADR-007](ADR-007.md) |
 | **008** | Run-Session Token & State-Based Lifecycle | 단조 토큰으로 stale-response 차단 + State 패턴 생명주기 | `timestamp`·`fault recovery`·State ✓ (§4-3) | Accepted | [ADR-008](ADR-008.md) |
 
 > **적용도 범례** — ✓ 완전 적용 · △ 유사하나 부분 적용. ADR 004는 단계 구조·캡슐화는 충족하나 완전한 비동기 파이프가 아니므로 SAP 기준 △로 정직하게 표기한다.
