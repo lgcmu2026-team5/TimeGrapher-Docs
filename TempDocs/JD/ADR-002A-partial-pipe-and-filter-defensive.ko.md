@@ -6,21 +6,25 @@ Proposed
 
 ## Context
 
-TimeGrapher는 시계 소리를 입력받아 rate, amplitude, beat error, beat-noise trace, graph output으로 변환한다. 전체 runtime 흐름은 worker-level에서 다음처럼 단계적으로 나뉜다.
+TimeGrapher는 시계 소리를 입력받아 rate, amplitude, beat error, beat-noise trace, graph output으로 변환한다. 전체 runtime 흐름은 worker-level에서 다음 Pipe-and-Filter-style 구조로 나뉜다.
 
 ```text
-Input worker
-  -> bounded ring buffer
-  -> Analysis worker
-  -> latest-wins UI/render path
+┌────────────────────┐       ╔══════════════════════╗       ┌────────────────────┐       ╔════════════════════════════╗       ┌────────────────────┐
+│      FILTER        │       ║        PIPE          ║       │      FILTER        │       ║            PIPE            ║       │   FILTER / SINK    │
+│                    │       ║                      ║       │                    │       ║                            ║       │                    │
+│   Input worker     │──────▶║  bounded ring buffer ║──────▶│  Analysis worker   │──────▶║ latest-wins frame scheduler║──────▶│  UI/render path    │
+│                    │       ║                      ║       │                    │       ║                            ║       │                    │
+└────────────────────┘       ╚══════════════════════╝       └────────────────────┘       ╚════════════════════════════╝       └────────────────────┘
 ```
 
-이 구조는 입력, 분석, 화면 표시가 서로를 직접 막지 않도록 concurrent boundary를 둔다. Input worker는 오디오를 계속 ring buffer에 적재하고, Analysis worker는 ring buffer에서 block을 읽어 분석하며, UI/render path는 최신 frame을 화면에 반영한다.
+이 구조에서 Input worker와 Analysis worker는 filter/component 역할을 한다. bounded ring buffer는 두 worker 사이에서 오디오 sample을 전달하고 속도 차이를 흡수하는 pipe/connector 역할을 한다. Analysis worker가 만든 frame은 latest-wins frame scheduler를 통해 UI/render path로 전달되며, 이 scheduler가 Analysis worker와 UI/render path 사이의 pipe/connector 역할을 한다. UI/render path는 최종 filter 또는 sink에 가깝다.
+
+이 worker-level 구조는 입력, 분석, 화면 표시가 서로를 직접 막지 않도록 concurrent boundary를 둔다. Input worker는 오디오를 계속 ring buffer에 적재하고, Analysis worker는 ring buffer에서 block을 읽어 분석하며, UI/render path는 최신 frame을 화면에 반영한다.
 
 따라서 Pipe-and-Filter를 판단할 때는 두 레벨을 구분해야 한다.
 
-- Worker 간 흐름: input, buffering, analysis, rendering이 분리된 staged runtime pipeline이다.
-- Worker 내부 흐름: 각 worker 내부 처리 단계는 별도 filter thread/queue로 다시 쪼개지 않는다.
+- Worker 간 흐름: filter 역할을 하는 worker/path와 pipe 역할을 하는 connector가 분리된 staged runtime pipeline이다.
+- Worker 내부 흐름: 각 worker 내부 처리 단계는 별도 pipe/connector, filter thread, queue로 다시 쪼개지 않는다.
 
 특히 Analysis worker 내부의 처리 흐름은 full Pipe-and-Filter가 아니라 synchronous staged chain이다.
 
