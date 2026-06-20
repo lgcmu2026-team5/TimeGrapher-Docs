@@ -8,58 +8,11 @@ Accepted
 
 TimeGrapher의 실시간 오디오 분석은 worker-level에서 Pipe-and-Filter-style runtime flow를 가진다. 여기서 worker/path는 filter 또는 sink에 가깝고, bounded connector는 pipe 역할을 한다.
 
-```mermaid
-flowchart LR
-    classDef filter fill:#e8f3ff,stroke:#2563eb,stroke-width:2px,color:#0f172a;
-    classDef pipe fill:#fff7ed,stroke:#f97316,stroke-width:2px,color:#0f172a;
-    classDef sink fill:#ecfdf5,stroke:#16a34a,stroke-width:2px,color:#0f172a;
-    classDef legend fill:#ffffff,stroke:#94a3b8,stroke-dasharray:4 3,color:#0f172a;
-
-    input["Input worker"]:::filter
-    ring{{"Bounded ring buffer"}}:::pipe
-    analysis["Analysis worker"]:::filter
-    scheduler{{"Latest-wins frame scheduler"}}:::pipe
-    ui["UI/render path"]:::sink
-
-    input ==>|concurrent handoff| ring
-    ring ==> analysis
-    analysis ==>|concurrent handoff| scheduler
-    scheduler ==> ui
-
-    subgraph legend[Legend]
-        lf["Filter / component"]:::filter
-        lp{{"Pipe / connector"}}:::pipe
-        ls["Filter / sink"]:::sink
-    end
-```
+![Worker-level partial Pipe-and-Filter](assets/worker-level-partial-pipe-and-filter.svg)
 
 Analysis worker 내부는 별도 pipe/queue/thread로 쪼개지지 않는다. 내부 DSP/metrics path는 같은 analysis thread에서 block 단위로 순차 실행되는 synchronous staged chain이다.
 
-```mermaid
-flowchart LR
-    classDef stage fill:#f8fafc,stroke:#64748b,stroke-width:1.5px,color:#0f172a;
-    classDef boundary fill:#fefce8,stroke:#ca8a04,stroke-width:1.5px,color:#0f172a;
-    classDef legend fill:#ffffff,stroke:#94a3b8,stroke-dasharray:4 3,color:#0f172a;
-
-    block["Audio block<br/>from ring buffer"]:::boundary
-    hpf["HPF"]:::stage
-    envelope["Envelope"]:::stage
-    detector["Detector"]:::stage
-    metrics["Metrics / Projectors"]:::stage
-    frame["Analysis frame"]:::boundary
-
-    block --> hpf --> envelope --> detector --> metrics --> frame
-
-    subgraph mode[Execution mode]
-        direction LR
-        sync["single Analysis worker thread<br/>synchronous staged chain"]:::legend
-    end
-
-    subgraph legend2[Legend]
-        lb["Boundary data"]:::boundary
-        ls2["Internal stage"]:::stage
-    end
-```
+Editable source: [worker-level-partial-pipe-and-filter.drawio](assets/worker-level-partial-pipe-and-filter.drawio)
 
 따라서 이 ADR은 worker-level flow에는 Pipe-and-Filter를 적용하고, worker 내부 hot path에는 적용하지 않는 결정을 기록한다.
 
