@@ -6,7 +6,7 @@ Accepted
 
 ## Context
 
-TimeGrapher의 실시간 오디오 분석은 worker-level에서 Pipe-and-Filter-style runtime flow를 가진다. 여기서 worker/path는 filter 또는 sink에 가깝고, bounded connector는 pipe 역할을 한다.
+TimeGrapher의 실시간 오디오 분석은 worker-level에서 Pipe-and-Filter-style runtime flow를 가진다. 여기서 worker/path는 filter 또는 final display consumer에 가깝고, bounded connector는 pipe 역할을 한다.
 
 ![Worker-level partial Pipe-and-Filter](assets/worker-level-partial-pipe-and-filter.svg)
 
@@ -23,8 +23,8 @@ TimeGrapher는 Pipe-and-Filter를 worker-level partial application으로 적용�
 Worker-level flow는 다음 filter/pipe 경계를 기준으로 설명한다.
 
 - Filter: Input worker -> Pipe: bounded ring buffer -> Filter: Analysis worker
-- Filter: Analysis worker -> Pipe: latest-wins frame scheduler -> Filter/Sink: UI/render path
-- Filter: Analysis worker -> Pipe: bounded recording queue -> Sink: recording writer
+- Filter: Analysis worker -> Pipe: latest-wins frame scheduler -> Final display consumer: UI/render path
+- Filter: Analysis worker -> Pipe: bounded recording queue -> Recording consumer: recording writer
 
 Analysis worker 내부의 HPF, envelope, detector, metrics/projectors는 worker-level filter/pipe boundary가 아니라 내부 synchronous staged chain으로 다룬다.
 
