@@ -6,9 +6,16 @@ This view shows compile-time uses relationships for TimeGrapher runtime source. 
 
 Notation:
 
-- `A --> B`: A uses B.
-- `-. RID conditional .->`: dependency included only for matching Runtime Identifiers.
-- `Core --> none`: `TimeGrapher.Core` has no project/package dependency at this level.
+```mermaid
+flowchart LR
+    A["A"] --> B["B"]
+    C["A"] -. "RID conditional" .-> D["B"]
+
+    subgraph Legend
+        L1["A --> B: A uses B"]
+        L2["-. RID conditional .->: RID-conditional dependency"]
+    end
+```
 
 ```mermaid
 flowchart TB
@@ -24,12 +31,6 @@ flowchart TB
     Win --> Core
     Linux --> Core
     Verify --> Core
-```
-
-Core dependency rule:
-
-```text
-TimeGrapher.Core -> no project reference, no package reference
 ```
 
 ## 2. Element Catalog

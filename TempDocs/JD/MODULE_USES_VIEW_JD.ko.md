@@ -6,9 +6,16 @@
 
 Notation:
 
-- `A --> B`: A가 B를 사용한다.
-- `-. RID conditional .->`: Runtime Identifier 조건에 따라 포함되는 dependency다.
-- `Core --> none`: `TimeGrapher.Core`가 project/package level에서 외부 dependency를 갖지 않는다는 뜻이다.
+```mermaid
+flowchart LR
+    A["A"] --> B["B"]
+    C["A"] -. "RID conditional" .-> D["B"]
+
+    subgraph Legend
+        L1["A --> B: A가 B를 사용"]
+        L2["-. RID conditional .->: RID 조건부 dependency"]
+    end
+```
 
 ```mermaid
 flowchart TB
@@ -24,12 +31,6 @@ flowchart TB
     Win --> Core
     Linux --> Core
     Verify --> Core
-```
-
-Core dependency rule:
-
-```text
-TimeGrapher.Core -> no project reference, no package reference
 ```
 
 ## 2. Element Catalog
