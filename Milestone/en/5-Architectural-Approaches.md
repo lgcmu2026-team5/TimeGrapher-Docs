@@ -26,7 +26,7 @@ App & Platform Adapters → External Tech
 Core → Nothing (zero dependencies)
 ```
 
-![alt text](image.png)
+![alt text](image/LAYER.png)
 
 
 
@@ -50,7 +50,7 @@ Core → Nothing (zero dependencies)
 
 *(Note: Internal folder and namespace usage details for Level 2 & 3 are documented in separate sub-module views.)*
 
-![alt text](image-1.png)
+![alt text](image/USE.png)
 
 
 ## 3. MVC VIEW – Responsibility Separation
@@ -78,7 +78,7 @@ Core → Nothing (zero dependencies)
 - **Core is UI-agnostic**: The Model (Core) has zero dependencies on the View or Controller. It communicates outward only via decoupled event notifications $\rightarrow$ highly portable and testable.
 - **App is mixed**: Views and Controllers may intertwine with Avalonia framework specifics, but they rely on the agnostic Model.
 
-![MVC responsibility flow](MVC.png)
+![MVC responsibility flow](image/MVC.png)
 
 **Contents** — [The Architecture at a Glance](#the-architecture-at-a-glance) · [Software Architecture Tactics to Apply](#software-architecture-tactics-to-apply) · [Software Design Patterns to Apply](#software-design-patterns-to-apply)
 

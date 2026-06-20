@@ -87,7 +87,7 @@ Risk ID | Risk Title | Type | QAS | P | I
   - **Comment**: [EXP-05](4-Planned-Experiments.md#exp-05-long-run-stability-24h) passes 24h+ stability — flat RSS (no leak), CPU at a steady ~1.4 cores. Re-measure with the same procedure (0.5 s RSS/CPU long-term logging) when new computations, filters, graphs, or AI Features are added.
 
 - **🔴 R-05 — Closed: .NET (C#) + Avalonia UI selected after RPi5 latency/rendering checks**
-  - **Evidence**: [QAS-2 latency result](../../result_latency.md) passed all Simulation and WAV replay conditions: worst-case E2E latency stayed inside the beat-period budget, dropped audio samples = 0, and missed beat detections = 0. The [rendering backend result](../../result_renderer.md) also did not reproduce the reported Avalonia-on-RPi5 slowdown: GLX/EGL GPU rendering reached about 60 FPS and SW rendering was slower.
+  - **Evidence**: [QAS-2 latency result](../../TestResult/result_latency.md) passed all Simulation and WAV replay conditions: worst-case E2E latency stayed inside the beat-period budget, dropped audio samples = 0, and missed beat detections = 0. The [rendering backend result](../../TestResult/result_renderer.md) also did not reproduce the reported Avalonia-on-RPi5 slowdown: GLX/EGL GPU rendering reached about 60 FPS and SW rendering was slower.
   - **Probability / Impact**: Low / Low
   - **Grading rationale**
     - P-Low: the current RPi5 app workload met the latency budget and the Avalonia GPU path did not show the reported slowdown.

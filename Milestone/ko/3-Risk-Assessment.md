@@ -87,7 +87,7 @@ Risk ID | 리스크 타이틀 | 구분 | QAS | P | I
   - **코멘트**: [EXP-05](4-Planned-Experiments.md#exp-05-장시간-24h-실행-안정성)에서 24h+ 안정성 **Pass** — RSS 평탄(누수 없음)·CPU ~1.4코어 정상상태. 신규 연산·필터·그래프·AI Feature 추가 시 동일 절차(0.5초 RSS/CPU 장기 로깅)로 재측정.
 
 - **🔴 R-05 — 종결: RPi5 latency/rendering 확인 후 .NET (C#) + Avalonia UI 개발 결정**
-  - **근거**: [QAS-2 latency 결과](../../result_latency.md)에서 Simulation 및 WAV 재생 조건이 모두 통과했다. worst-case E2E latency는 비트 주기 예산 안에 있었고, dropped audio samples와 missed beat detections는 모두 0이었다. [렌더링 백엔드 결과](../../result_renderer.md)에서도 Avalonia-on-RPi5 성능 저하 보고는 재현되지 않았고, GLX/EGL GPU 렌더링은 약 60 FPS에 도달했으며 SW 렌더링이 더 느렸다.
+  - **근거**: [QAS-2 latency 결과](../../TestResult/result_latency.md)에서 Simulation 및 WAV 재생 조건이 모두 통과했다. worst-case E2E latency는 비트 주기 예산 안에 있었고, dropped audio samples와 missed beat detections는 모두 0이었다. [렌더링 백엔드 결과](../../TestResult/result_renderer.md)에서도 Avalonia-on-RPi5 성능 저하 보고는 재현되지 않았고, GLX/EGL GPU 렌더링은 약 60 FPS에 도달했으며 SW 렌더링이 더 느렸다.
   - **발생 확률 / 영향**: Low / Low
   - **등급 근거**
     - P-Low: 현재 RPi5 앱 워크로드가 latency 예산을 충족했고 Avalonia GPU 경로에서도 보고된 성능 저하가 나타나지 않음.
