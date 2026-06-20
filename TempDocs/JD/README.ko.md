@@ -6,6 +6,8 @@
 
 - `MODULE_USES_VIEW_JD.ko.md`: TimeGrapher module uses / dependency view 한글 초안.
 - `ADR-002-partial-pipe-and-filter.ko.md`: TimeGrapher가 완전한 concurrent pipeline 대신 부분 Pipe-and-Filter 스타일을 사용하는 이유를 정리한 한글 ADR 초안.
+- `ADR-002A-partial-pipe-and-filter-defensive.ko.md`: 리뷰 방어를 우선한 정확한 partial Pipe-and-Filter ADR 버전.
+- `ADR-002B-pipe-and-filter-big-picture.ko.md`: 큰 runtime 흐름에서 Pipe-and-Filter 관점을 강조한 ADR 버전.
 
 ## 범위
 
