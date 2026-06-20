@@ -1,22 +1,22 @@
-# TimeGrapher Module Uses View - JD Draft
+# TimeGrapher Module Uses View - JD
 
 ## 1. Primary Presentation
 
-This view translates the homework-style source dependency diagram into the C#/.NET structure of TimeGrapher. The view should not enumerate every source file. It should show the architectural dependency direction first, then refine the major projects into folders/modules.
+This view shows compile-time uses relationships for TimeGrapher runtime source. The scope is runtime projects under `src/`; it does not enumerate every `.cs` file. The focus is architectural dependency direction and major Core-internal module dependencies.
 
 Notation:
 
 - `A --> B`: A uses B.
-- `-. RID conditional .->`: dependency included only for matching runtime identifiers.
-- `Core --> none`: Core has no UI, platform, or external package dependency.
+- `-. RID conditional .->`: dependency included only for matching Runtime Identifiers.
+- `Core --> none`: `TimeGrapher.Core` has no project/package dependency at this level.
 
 ```mermaid
 flowchart TB
-    App["TimeGrapher.App<br/>Avalonia UI / rendering / run control"]
-    Core["TimeGrapher.Core<br/>analysis engine / contracts"]
-    Win["TimeGrapher.Platform.WindowsAudio<br/>Windows live audio adapter"]
-    Linux["TimeGrapher.Platform.LinuxAudio<br/>Linux live audio adapter"]
-    Verify["TimeGrapher.Verify<br/>headless verification client"]
+    App["TimeGrapher.App<br/>UI / rendering / run control"]
+    Core["TimeGrapher.Core<br/>analysis domain / contracts"]
+    Win["TimeGrapher.Platform.WindowsAudio<br/>Windows audio adapter"]
+    Linux["TimeGrapher.Platform.LinuxAudio<br/>Linux audio adapter"]
+    Verify["TimeGrapher.Verify<br/>headless verification"]
 
     App --> Core
     App -. "RID conditional: win-*" .-> Win
@@ -32,75 +32,30 @@ Core dependency rule:
 TimeGrapher.Core -> no project reference, no package reference
 ```
 
-Evidence files:
-
-- `src/TimeGrapher.App/TimeGrapher.App.csproj`
-- `src/TimeGrapher.Core/TimeGrapher.Core.csproj`
-- `src/TimeGrapher.Platform.WindowsAudio/TimeGrapher.Platform.WindowsAudio.csproj`
-- `src/TimeGrapher.Platform.LinuxAudio/TimeGrapher.Platform.LinuxAudio.csproj`
-- `src/TimeGrapher.Verify/TimeGrapher.Verify.csproj`
-
 ## 2. Element Catalog
 
 | Element | Responsibility | Uses |
 |---|---|---|
-| `TimeGrapher.App` | Avalonia UI, graph rendering, tabs, run lifecycle, user settings | `Core`, platform audio adapters by RID, Avalonia, ScottPlot |
-| `TimeGrapher.Core` | detection, metrics, audio contracts, simulation, frame/projector logic | none at project/package level |
-| `TimeGrapher.Platform.WindowsAudio` | Windows audio capture implementation | `Core.Shared`, NAudio |
-| `TimeGrapher.Platform.LinuxAudio` | Linux/Pi audio capture implementation | `Core.Shared`, Linux audio CLI stack |
-| `TimeGrapher.Verify` | headless detector-quality verification | `Core` |
+| `TimeGrapher.App` | UI, rendering, run lifecycle, settings, runtime composition | `TimeGrapher.Core`, platform adapters by RID, Avalonia, ScottPlot |
+| `TimeGrapher.Core` | detection, metrics, analysis workers, audio contracts, simulation, frame/projector model | none at project/package level |
+| `TimeGrapher.Platform.WindowsAudio` | Windows live audio adapter | `TimeGrapher.Core`, NAudio |
+| `TimeGrapher.Platform.LinuxAudio` | Linux/Raspberry Pi live audio adapter | `TimeGrapher.Core` |
+| `TimeGrapher.Verify` | headless detector-quality verification | `TimeGrapher.Core` |
 
-## 3. Folder / Module-Level Refinement
+## 3. Core Internal Uses
 
-### App Internal Modules
-
-```mermaid
-flowchart TB
-    Program["Program / app startup"]
-    Views["Views"]
-    ViewModels["ViewModels"]
-    Services["Services"]
-    Audio["Audio"]
-    Tabs["Tabs"]
-    Rendering["Rendering"]
-    Assets["Assets"]
-    CoreModules["Core modules"]
-    PlatformAudio["Platform audio adapters"]
-
-    Program --> Views
-    Program --> Audio
-    Program --> Rendering
-    Program --> CoreModules
-    Views --> ViewModels
-    Views --> Services
-    Views --> Audio
-    Views --> Tabs
-    Views --> Rendering
-    Views --> Assets
-    ViewModels --> CoreModules
-    Services --> ViewModels
-    Services --> CoreModules
-    Audio --> CoreModules
-    Audio -. "RID conditional" .-> PlatformAudio
-    Tabs --> ViewModels
-    Tabs --> Rendering
-    Tabs --> CoreModules
-    Rendering --> Tabs
-    Rendering --> CoreModules
-```
-
-### Core Internal Modules
+Core is an external-dependency-free analysis domain project, but its internal modules use one another as follows.
 
 ```mermaid
 flowchart TB
-    Analysis["Analysis"]
-    Detection["Detection"]
-    Scoring["Detection.Scoring"]
-    Metrics["Metrics"]
-    Imaging["Imaging"]
-    AudioIo["AudioIo"]
-    Sim["Sim"]
-    Shared["Shared"]
+    Analysis["Analysis<br/>workers / projectors / engine glue"]
+    Detection["Detection<br/>DSP / detector / sync"]
+    Scoring["Detection.Scoring<br/>event gate / scoring contracts"]
+    Metrics["Metrics<br/>rate / amplitude / beat error"]
+    Imaging["Imaging<br/>sound image rendering model"]
+    AudioIo["AudioIo<br/>audio input / sample writer contracts"]
+    Sim["Sim<br/>synthetic input"]
+    Shared["Shared<br/>frames / DTOs / shared buffers"]
 
     Analysis --> Detection
     Analysis --> Scoring
@@ -109,48 +64,51 @@ flowchart TB
     Analysis --> AudioIo
     Analysis --> Shared
     Scoring --> Detection
-    AudioIo --> Shared
     Metrics --> Shared
     Imaging --> Shared
+    AudioIo --> Shared
     Sim --> Shared
 ```
 
-## 4. Context / Scope
+This diagram summarizes `using TimeGrapher.Core.*` relationships and major module responsibilities. It is not a complete file-level dependency graph.
+
+## 4. Scope
 
 Included:
 
 - Runtime source projects under `src/`.
-- Runtime-relevant folder/module dependencies.
-- `.csproj` project/package reference evidence.
+- Project-level uses from `.csproj` references.
+- Major Core-internal folder/module uses.
 
 Excluded:
 
-- `bin/`
-- `obj/`
-- generated files
-- publish output
-- full inventory of every individual `.cs` file
-- test project details unless a separate testability view is needed
+- `bin/`, `obj/`, generated files, publish outputs.
+- Full inventory of individual `.cs` files.
+- Test project detail.
+- App-internal UI folder dependencies. The UI layer has many collaborating files and is better handled by a separate UI view.
 
-## 5. Variability Guide
+## 5. Variability
 
-Platform audio is bound by RID:
+Platform audio adapters are bound by publish RID.
 
 | RID condition | Included adapter |
 |---|---|
-| development/no RID | WindowsAudio + LinuxAudio |
+| development / no RID | WindowsAudio + LinuxAudio |
 | `win-*` | WindowsAudio |
 | `linux-*` | LinuxAudio |
 
 This keeps OS-specific audio code outside `Core` while allowing one App project to publish for Windows and Raspberry Pi/Linux targets.
 
-## 6. Design Rationale / ADR Links
+## 6. Design Rationale / Related Decisions
 
-- `Core` remains dependency-free to preserve testability, portability, and modifiability.
-- Platform audio is isolated in adapter projects so OS APIs do not leak into `Core`.
-- The analysis flow is documented as partial Pipe-and-Filter; see `ADR-002-partial-pipe-and-filter.md`.
+- `Core` remains project/package dependency-free to preserve testability, portability, and modifiability.
+- Platform audio is isolated in adapter projects so OS APIs and external audio package dependencies do not leak into `Core`.
+- The worker-level Pipe-and-Filter decision is recorded in `TimeGrapher-Net/docs/ADR/ADR-002.md`.
 
-## 7. Related Views
+## 7. Evidence
 
-- `TempDocs/JD/ADR-002-partial-pipe-and-filter.md`
-- `TempDocs/ADR/ADR_CREATE_GUIDE.md`
+- `src/TimeGrapher.App/TimeGrapher.App.csproj`
+- `src/TimeGrapher.Core/TimeGrapher.Core.csproj`
+- `src/TimeGrapher.Platform.WindowsAudio/TimeGrapher.Platform.WindowsAudio.csproj`
+- `src/TimeGrapher.Platform.LinuxAudio/TimeGrapher.Platform.LinuxAudio.csproj`
+- `src/TimeGrapher.Verify/TimeGrapher.Verify.csproj`
