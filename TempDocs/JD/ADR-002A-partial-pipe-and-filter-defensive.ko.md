@@ -13,14 +13,24 @@ flowchart LR
     classDef filter fill:#e8f3ff,stroke:#2563eb,stroke-width:2px,color:#0f172a;
     classDef pipe fill:#fff7ed,stroke:#f97316,stroke-width:2px,color:#0f172a;
     classDef sink fill:#ecfdf5,stroke:#16a34a,stroke-width:2px,color:#0f172a;
+    classDef legend fill:#ffffff,stroke:#94a3b8,stroke-dasharray:4 3,color:#0f172a;
 
-    input["Input worker<br/>filter"]:::filter
-    ring{{"Bounded ring buffer<br/>pipe / connector"}}:::pipe
-    analysis["Analysis worker<br/>filter"]:::filter
-    scheduler{{"Latest-wins frame scheduler<br/>pipe / connector"}}:::pipe
-    ui["UI/render path<br/>filter / sink"]:::sink
+    input["Input worker"]:::filter
+    ring{{"Bounded ring buffer"}}:::pipe
+    analysis["Analysis worker"]:::filter
+    scheduler{{"Latest-wins frame scheduler"}}:::pipe
+    ui["UI/render path"]:::sink
 
-    input --> ring --> analysis --> scheduler --> ui
+    input ==>|concurrent handoff| ring
+    ring ==> analysis
+    analysis ==>|concurrent handoff| scheduler
+    scheduler ==> ui
+
+    subgraph legend[Legend]
+        lf["Filter / component"]:::filter
+        lp{{"Pipe / connector"}}:::pipe
+        ls["Filter / sink"]:::sink
+    end
 ```
 
 Analysis worker 내부는 별도 pipe/queue/thread로 쪼개지지 않는다. 내부 DSP/metrics path는 같은 analysis thread에서 block 단위로 순차 실행되는 synchronous staged chain이다.
@@ -29,6 +39,7 @@ Analysis worker 내부는 별도 pipe/queue/thread로 쪼개지지 않는다. �
 flowchart LR
     classDef stage fill:#f8fafc,stroke:#64748b,stroke-width:1.5px,color:#0f172a;
     classDef boundary fill:#fefce8,stroke:#ca8a04,stroke-width:1.5px,color:#0f172a;
+    classDef legend fill:#ffffff,stroke:#94a3b8,stroke-dasharray:4 3,color:#0f172a;
 
     block["Audio block<br/>from ring buffer"]:::boundary
     hpf["HPF"]:::stage
@@ -38,6 +49,16 @@ flowchart LR
     frame["Analysis frame"]:::boundary
 
     block --> hpf --> envelope --> detector --> metrics --> frame
+
+    subgraph mode[Execution mode]
+        direction LR
+        sync["single Analysis worker thread<br/>synchronous staged chain"]:::legend
+    end
+
+    subgraph legend2[Legend]
+        lb["Boundary data"]:::boundary
+        ls2["Internal stage"]:::stage
+    end
 ```
 
 따라서 이 ADR은 worker-level flow에는 Pipe-and-Filter를 적용하고, worker 내부 hot path에는 적용하지 않는 결정을 기록한다.
@@ -48,11 +69,11 @@ TimeGrapher는 Pipe-and-Filter를 worker-level partial application으로 적용�
 
 Worker-level flow는 다음 filter/pipe 경계를 기준으로 설명한다.
 
-- Input worker -> bounded ring buffer -> Analysis worker
-- Analysis worker -> latest-wins frame scheduler -> UI/render path
-- Analysis worker -> bounded recording queue
+- Filter: Input worker -> Pipe: bounded ring buffer -> Filter: Analysis worker
+- Filter: Analysis worker -> Pipe: latest-wins frame scheduler -> Filter/Sink: UI/render path
+- Filter: Analysis worker -> Pipe: bounded recording queue -> Sink: recording writer
 
-Analysis worker 내부의 HPF, envelope, detector, metrics/projectors는 별도 filter thread나 queue로 분리하지 않고 synchronous staged chain으로 유지한다.
+Analysis worker 내부의 HPF, envelope, detector, metrics/projectors는 worker-level filter/pipe boundary가 아니라 내부 synchronous staged chain으로 다룬다.
 
 ## Rationale
 
@@ -79,5 +100,5 @@ Positive:
 Negative / trade-offs:
 
 - worker 내부 stage는 parallel speedup을 제공하지 않는다.
-- Analysis worker 내부 stage는 독립 runtime filter가 아니다.
+- Analysis worker 내부 stage는 별도 pipe/connector를 가진 독립 runtime component가 아니다.
 - 이 결정은 full Pipe-and-Filter가 아니라 worker-level partial application으로 설명해야 한다.
