@@ -8,13 +8,15 @@ Proposed
 
 TimeGrapher는 시계 소리를 입력받아 rate, amplitude, beat error, beat-noise trace, graph output으로 변환한다. 전체 runtime 흐름은 worker-level에서 다음 Pipe-and-Filter-style 구조로 나뉜다.
 
-```text
-┌────────────────────┐       ╔══════════════════════╗       ┌────────────────────┐       ╔════════════════════════════╗       ┌────────────────────┐
-│      FILTER        │       ║        PIPE          ║       │      FILTER        │       ║            PIPE            ║       │   FILTER / SINK    │
-│                    │       ║                      ║       │                    │       ║                            ║       │                    │
-│   Input worker     │──────▶║  bounded ring buffer ║──────▶│  Analysis worker   │──────▶║ latest-wins frame scheduler║──────▶│  UI/render path    │
-│                    │       ║                      ║       │                    │       ║                            ║       │                    │
-└────────────────────┘       ╚══════════════════════╝       └────────────────────┘       ╚════════════════════════════╝       └────────────────────┘
+```mermaid
+flowchart LR
+    input["FILTER<br/>Input worker"]
+    ring{{"PIPE<br/>bounded ring buffer"}}
+    analysis["FILTER<br/>Analysis worker"]
+    scheduler{{"PIPE<br/>latest-wins frame scheduler"}}
+    ui["FILTER / SINK<br/>UI/render path"]
+
+    input --> ring --> analysis --> scheduler --> ui
 ```
 
 이 구조에서 Input worker와 Analysis worker는 filter/component 역할을 한다. bounded ring buffer는 두 worker 사이에서 오디오 sample을 전달하고 속도 차이를 흡수하는 pipe/connector 역할을 한다. Analysis worker가 만든 frame은 latest-wins frame scheduler를 통해 UI/render path로 전달되며, 이 scheduler가 Analysis worker와 UI/render path 사이의 pipe/connector 역할을 한다. UI/render path는 최종 filter 또는 sink에 가깝다.
