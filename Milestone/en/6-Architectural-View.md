@@ -62,7 +62,7 @@ Decomposes `TimeGrapher.Core` into its major domain modules and shows which Core
 | `Imaging` | builds sound-image and time-frequency spectrogram data for visualizing watch audio | `Shared` |
 | `AudioIo` | provides writer contracts and implementations for saving recordings as WAV files | `Shared` |
 | `Sim` | provides a synthetic input source | `Shared` |
-| `Shared` | provides common data types and contracts shared by Core-internal modules, such as `AnalysisFrame`, the shared audio buffer, analysis-worker input/output contracts, and sync/signal state types | none |
+| `Shared` | provides common data types and contracts shared by Core-internal modules. | none |
 
 
 ## 3. TIMEGRAPHER MVVM VIEW – Responsibility Separation
