@@ -9,6 +9,15 @@ Use this skill only inside the `D:\TimeGrapher-Docs` checkout. Keep the copied A
 
 This skill intentionally has no bundled sync script. Execute the workflow directly with ordinary Git/file operations available in the current shell, then verify the result.
 
+## Shell notes (read first)
+
+These avoid known trial-and-error in this environment:
+
+- **PowerShell variables do not persist between separate tool calls.** `$tmp`, `$src`, `$commit`, `$root` are lost across invocations, so run the clone → copy → header → verify steps that share them **inside a single PowerShell call**. Git-only steps (diff) can be a separate call.
+- **Keep deletions narrow.** Only ever remove the specific `*.md` files you are replacing, one file at a time. Never delete `Milestone\assets`, and do not run broad recursive deletes against the working tree.
+- **The temp clone lives under `%TEMP%`.** You may simply leave it for the OS to reclaim; cleaning it up is optional and not required for a correct sync.
+- Git may warn `LF will be replaced by CRLF` when it touches the synced Markdown. This is a line-ending normalization notice, not an error; ignore it.
+
 ## Layout
 
 The local layout differs from upstream `docs/ADR`. Upstream keeps `en/`, `ko/`, and `assets/` as siblings under `docs/ADR`; locally the ADRs are split by language and the assets are unified under `Milestone/assets`:
@@ -41,6 +50,8 @@ Target (only these are managed):
 
 ## Workflow
 
+Run steps 1–5 in a single PowerShell call (they share `$tmp` / `$src` / `$commit` / `$root`).
+
 1. Inspect the worktree before changing files.
 
 ```powershell
@@ -50,30 +61,32 @@ git -c safe.directory=D:/TimeGrapher-Docs status --short --branch --untracked-fi
 2. Clone the source repo to a temp directory with sparse checkout for `docs/ADR`, then record `HEAD`.
 
 ```powershell
-$tmp = Join-Path $env:TEMP ("tgnet-adr-" + [guid]::NewGuid().ToString("N"))
-git clone --depth=1 --filter=blob:none --branch main --sparse https://github.com/lgcmu2026-team5/TimeGrapher-Net.git $tmp
-git -C $tmp sparse-checkout set docs/ADR
+$root = "D:\TimeGrapher-Docs\Milestone"
+$tmp  = Join-Path $env:TEMP ("tgnet-adr-" + [guid]::NewGuid().ToString("N"))
+git clone --depth=1 --filter=blob:none --branch main --sparse https://github.com/lgcmu2026-team5/TimeGrapher-Net.git $tmp 2>&1 | Out-Null
+git -C $tmp sparse-checkout set docs/ADR 2>&1 | Out-Null
 $commit = (git -C $tmp rev-parse HEAD).Trim()
 $src = Join-Path $tmp "docs/ADR"
 ```
 
-3. Replace the managed targets. Clear and recopy the per-language ADR Markdown, but only **overlay** the assets.
+3. Replace the managed targets. Overwrite per-language ADR Markdown, remove only stale (upstream-removed) ADRs one file at a time, and **overlay** the assets.
 
 ```powershell
-$root = "D:\TimeGrapher-Docs\Milestone"
-
 foreach ($lang in @("en", "ko")) {
     $dir = Join-Path $root "$lang\ADR"
     New-Item -ItemType Directory -Path $dir -Force | Out-Null
-    Get-ChildItem $dir -Filter *.md -File | Remove-Item -Force
+    $upstream = @((Get-ChildItem (Join-Path $src $lang) -Filter *.md -File).Name)
+    foreach ($local in Get-ChildItem $dir -Filter *.md -File) {
+        if ($upstream -notcontains $local.Name) { Remove-Item -LiteralPath $local.FullName -Force }  # stale single file
+    }
     Copy-Item -Path (Join-Path $src "$lang\*.md") -Destination $dir -Force
 }
 
-# Shared assets: overlay only. Do NOT delete the directory — it also holds presentation images.
+# Shared assets: overlay only. Never delete this directory — it also holds presentation images.
 Copy-Item -Path (Join-Path $src "assets\*") -Destination (Join-Path $root "assets") -Recurse -Force
 ```
 
-Before running deletion commands, ensure `$root` is exactly `D:\TimeGrapher-Docs\Milestone` and that removals are scoped to `*.md` files inside `en\ADR` and `ko\ADR`. Do not use broad recursive deletes, and never recursively delete `Milestone\assets`.
+Ensure `$root` is exactly `D:\TimeGrapher-Docs\Milestone`, keep removals limited to individual `*.md` files under `en\ADR` / `ko\ADR`, and never delete `Milestone\assets`.
 
 4. Add sync headers and retarget asset links in each imported Markdown file. The header path uses the language subfolder, and `](../assets/` is rewritten to `](../../assets/` to match the local layout.
 
@@ -90,14 +103,38 @@ foreach ($lang in @("en", "ko")) {
 }
 ```
 
-5. Verify source parity manually:
+5. Verify source parity (still inside the same call, while `$src` exists):
 
-- For non-Markdown assets, compare SHA-256 hashes between each file under `$src/assets` and the matching file under `$root/assets`.
-- For Markdown files, verify the first two lines contain the current `$commit`, then compare the target body after the first blank line with the matching source file — accounting for the `](../assets/` → `](../../assets/` rewrite.
-- Confirm every `](../../assets/...)` link in the imported ADRs resolves to an existing file in `Milestone/assets`.
-- Re-run if any managed file is missing or differs.
+```powershell
+$assetBase = Join-Path $src "assets"; $tgtBase = Join-Path $root "assets"
+$assetOk = $true
+foreach ($a in Get-ChildItem -Recurse -File $assetBase) {
+    $rel = $a.FullName.Substring($assetBase.Length + 1)
+    $tgt = Join-Path $tgtBase $rel
+    if (-not (Test-Path $tgt)) { $assetOk = $false; "MISSING asset: $rel" }
+    elseif ((Get-FileHash $a.FullName -Algorithm SHA256).Hash -ne (Get-FileHash $tgt -Algorithm SHA256).Hash) { $assetOk = $false; "DIFFER asset: $rel" }
+}
+$hdrOk = $true; $bodyOk = $true; $linkOk = $true
+foreach ($lang in @("en", "ko")) {
+    $dir = Join-Path $root "$lang\ADR"
+    foreach ($file in Get-ChildItem $dir -Filter *.md -File) {
+        $full = [System.IO.File]::ReadAllText($file.FullName, $utf8)
+        $lines = $full -split "`n", 3
+        if (($lines[0] -notmatch [regex]::Escape($commit)) -or ($lines[1] -notmatch [regex]::Escape($commit))) { $hdrOk = $false; "BAD HEADER: $lang/$($file.Name)" }
+        $afterHeader = $full.Substring($full.IndexOf("`n`n") + 2).Replace("](../../assets/", "](../assets/")
+        $srcText = [System.IO.File]::ReadAllText((Join-Path $src "$lang\$($file.Name)"), $utf8)
+        if ($afterHeader.TrimEnd() -ne $srcText.TrimEnd()) { $bodyOk = $false; "BODY DIFFERS: $lang/$($file.Name)" }
+        foreach ($m in [regex]::Matches($full, '\]\((\.\./\.\./assets/[^)]+)\)')) {
+            if (-not (Test-Path (Join-Path $dir $m.Groups[1].Value))) { $linkOk = $false; "BROKEN LINK: $lang/$($file.Name) -> $($m.Groups[1].Value)" }
+        }
+    }
+}
+"asset=$assetOk header=$hdrOk body=$bodyOk link=$linkOk"
+```
 
-6. Inspect Git changes.
+Re-run if any managed file is missing or differs. (You may leave the `$tmp` clone in `%TEMP%` for the OS to reclaim.)
+
+6. Inspect Git changes (separate call is fine; no temp variables needed).
 
 ```powershell
 git -c safe.directory=D:/TimeGrapher-Docs diff --stat -- Milestone/en/ADR Milestone/ko/ADR Milestone/assets
