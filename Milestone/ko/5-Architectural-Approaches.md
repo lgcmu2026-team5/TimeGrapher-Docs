@@ -32,30 +32,36 @@ Core → Nothing (zero dependencies)
 
 ## 2. MODULE USES VIEW – 실제 의존성 구조
 
-**목적:** runtime source의 uses 관계를 project level과 Core internal level에서 보여준다. App 내부 UI 구조, build outputs, generated files, test project detail, 전체 file inventory는 이 view에서 제외한다.
+**목적:** 이 view는 runtime source projects와 `TimeGrapher.Core` 내부 주요 modules의 uses 관계를 보여준다. `TimeGrapher.Core`는 domain decomposition을 담고 있어 project-level view에서 한 단계 더 확장한다. App 내부 UI 구조, build outputs, generated files, test project detail, 전체 file inventory는 이 view에서 제외한다.
 
 **핵심 원칙:**
 - Layered View는 허용되는 의존성을 정의한다.
 - Module Uses View는 현재 source structure의 의존성 그래프를 정의한다.
 - 의존성이 없으면 연결선을 그리지 않는다.
 
-**2-1 Project-Level Uses:**
+**2-1 Project-Level Module View:**
 
 이 view는 runtime source projects 사이의 uses 관계를 보여준다. Platform adapters는 OS-specific audio dependency가 Core로 들어오지 않게 하는 경계이고, `TimeGrapher.Core`는 외부 project/package에 의존하지 않는다.
 
-- `TimeGrapher.App` → `TimeGrapher.Core`
-- `TimeGrapher.App` → `WindowsAudio` / `LinuxAudio`
-- `TimeGrapher.Verify` → `TimeGrapher.Core`
-- `WindowsAudio` / `LinuxAudio` → `TimeGrapher.Core`
-- `TimeGrapher.Core` → 없음
-
 ![Module Uses View - Project-level modules](../assets/USE.png)
 
-**2-2 Core Internal Uses:**
+Element Catalog:
 
-이 view는 `TimeGrapher.Core` 내부의 주요 domain modules와 그 uses 관계를 보여준다. Core는 system behavior의 중심 domain logic을 담고 있어 project-level view보다 한 단계 더 확장한다.
+| Element | 책임 | Uses |
+|---|---|---|
+| `TimeGrapher.App` | UI 실행과 화면 구성을 담당한다. | `TimeGrapher.Core`, `WindowsAudio` / `LinuxAudio` |
+| `TimeGrapher.Core` | 분석 domain을 담당한다. | 없음 |
+| `WindowsAudio` | Windows audio adapter를 담당한다. | `TimeGrapher.Core` |
+| `LinuxAudio` | Linux/Raspberry Pi audio adapter를 담당한다. | `TimeGrapher.Core` |
+| `TimeGrapher.Verify` | headless detector verification을 담당한다. | `TimeGrapher.Core` |
 
-| Core module | 책임 | Uses |
+**2-2 TimeGrapher.Core Decomposition Module View:**
+
+이 view는 `TimeGrapher.Core`를 주요 domain modules로 분해하고, 각 module이 어떤 Core 내부 module을 사용하는지 보여준다.
+
+Element Catalog:
+
+| Element | 책임 | Uses |
 |---|---|---|
 | `Analysis` | 분석 worker와 결과 frame 생성을 조정한다. | `Detection`, `Detection.Scoring`, `Metrics`, `Imaging`, `AudioIo`, `Shared` |
 | `Detection` | watch signal event와 sync 상태를 검출한다. | `Shared` |
