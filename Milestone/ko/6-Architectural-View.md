@@ -67,7 +67,7 @@ App, Core, platform adapters, Verify 사이의 module uses 관계를 보여준�
 | `Imaging` | 시계 소리의 시각화용 sound image와 시간-주파수 spectrogram 데이터를 만든다. | `Shared` |
 | `AudioIo` | 오디오 녹음을 WAV 파일로 저장하는 writer 계약과 구현을 제공한다. | `Shared` |
 | `Sim` | synthetic input source를 제공한다. | `Shared` |
-| `Shared` | Core 내부 모듈들이 함께 쓰는 공통 데이터 타입과 계약을 제공한다. 예: `AnalysisFrame`, 공유 오디오 버퍼, 분석 worker 입출력 계약, sync/signal 상태 타입. | 없음 |
+| `Shared` | Core 내부 모듈들이 함께 쓰는 공통 데이터 타입과 계약을 제공한다. | 없음 |
 
 
 ## 3. TIMEGRAPHER MVVM VIEW – 책임 분리
