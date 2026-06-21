@@ -1,0 +1,4 @@
+interface:
+  display_name: "Check Doc"
+  short_description: "Check a document against DocRules.md (Seven Rules)."
+  default_prompt: "Check whether the document I specify follows DocRules/DocRules.md (the Seven Rules for Sound Technical Documentation). If I did not name a target document, ask me which document to check and stop until I provide it."

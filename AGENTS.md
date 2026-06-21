@@ -9,6 +9,7 @@
 ## Project-local Skills
 
 - For syncing the copied TimeGrapher-Net ADR set into `Milestone/en/ADR`, `Milestone/ko/ADR`, and the shared `Milestone/assets`, use the `sync-adr` skill. Codex reads `.codex/skills/sync-adr/SKILL.md`; Claude Code reads `.claude/skills/sync-adr/SKILL.md`. Keep the two skill files in sync.
+- For checking whether a document follows `DocRules/DocRules.md` (the Seven Rules for Sound Technical Documentation), use the `check-doc` skill. It requires the target document as an argument and, if invoked with none, asks which document to check and stops. Codex reads `.codex/skills/check-doc/SKILL.md`; Claude Code reads `.claude/skills/check-doc/SKILL.md`. Keep the two skill files in sync.
 
 ## Terminology
 
