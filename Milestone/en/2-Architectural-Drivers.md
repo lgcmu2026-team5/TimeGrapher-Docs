@@ -149,33 +149,31 @@ Status: 🟢 Implemented · 🟡 Partially Implemented · 🔴 Needs Implementat
 ### G10 · Waveform Comparison Display with Timing Markers
 | ID | Status | Grade | Requirement |
 |:---:|:------:|:-----:|:------------|
-| FR-10-01 |  | mandatory | The Waveform Comparison Display with Timing Markers shall provide the user with multiple beat waveforms presented in aligned lanes. |
-| FR-10-02 |  | mandatory | The Waveform Comparison Display with Timing Markers shall provide the user with the ability to compare waveform shape across beats. |
-| FR-10-03 |  | mandatory | The Waveform Comparison Display with Timing Markers shall provide the user with the ability to compare waveform spacing across beats. |
-| FR-10-04 |  | mandatory | The Waveform Comparison Display with Timing Markers shall provide the user with the ability to compare waveform consistency across beats. |
-| FR-10-05 |  | recommended | The Waveform Comparison Display with Timing Markers should provide the user with overlaid waveform displays that include vertical guide markers. |
-| FR-10-06 |  | recommended | The Waveform Comparison Display with Timing Markers should provide the user with the rate value. |
-| FR-10-07 |  | recommended | The Waveform Comparison Display with Timing Markers should provide the user with the beat error value. |
-| FR-10-08 |  | recommended | The Waveform Comparison Display with Timing Markers should provide the user with the beats per hour value. |
-| FR-10-09 |  | recommended | The Waveform Comparison Display with Timing Markers should provide the user with the ability to compare successive beats. |
-| FR-10-10 |  | recommended | The Waveform Comparison Display with Timing Markers should provide the user with the ability to identify landmarks in the waveform signal. |
-| FR-10-11 |  | recommended | The Waveform Comparison Display with Timing Markers should provide the user with the ability to inspect changes in waveform structure between beats. |
-| FR-10-12 |  | recommended | The Waveform Comparison Display with Timing Markers should provide the user with the ability to decompose the waveform signal. |
-| FR-10-13 |  | recommended | The Waveform Comparison Display with Timing Markers should provide the user with signal envelopes for each beat. |
-| FR-10-14 |  | optional | The Waveform Comparison Display with Timing Markers may provide the user with degree-based reference markers. |
-| FR-10-15 |  | optional | The Waveform Comparison Display with Timing Markers may provide the user with time-based reference markers. |
+| FR-10-01 | 🟢 | mandatory | The Waveform Comparison Display with Timing Markers shall provide the user with multiple beat waveforms presented in aligned lanes. |
+| FR-10-02 | 🟢 | mandatory | The Waveform Comparison Display with Timing Markers shall provide the user with the ability to compare waveform shape across beats. |
+| FR-10-03 | 🟢 | mandatory | The Waveform Comparison Display with Timing Markers shall provide the user with the ability to compare waveform spacing across beats. |
+| FR-10-04 | 🟢 | mandatory | The Waveform Comparison Display with Timing Markers shall provide the user with the ability to compare waveform consistency across beats. |
+| FR-10-05 | 🔴 | recommended | The Waveform Comparison Display with Timing Markers should provide the user with overlaid waveform displays that include vertical guide markers. |
+| FR-10-06 | 🟢 | recommended | The Waveform Comparison Display with Timing Markers should provide the user with the rate value. |
+| FR-10-07 | 🟢 | recommended | The Waveform Comparison Display with Timing Markers should provide the user with the beat error value. |
+| FR-10-08 | 🟢 | recommended | The Waveform Comparison Display with Timing Markers should provide the user with the beats per hour value. |
+| FR-10-10 | 🟢 | recommended | The Waveform Comparison Display with Timing Markers should provide the user with the ability to identify landmarks in the waveform signal. |
+| FR-10-11 | 🔴 | recommended | The Waveform Comparison Display with Timing Markers should provide the user with the ability to inspect changes in waveform structure between beats. |
+| FR-10-13 | 🟢 | recommended | The Waveform Comparison Display with Timing Markers should provide the user with signal envelopes for each beat. |
+| FR-10-14 | 🟢 | optional | The Waveform Comparison Display with Timing Markers may provide the user with degree-based reference markers. |
+| FR-10-15 | 🟢 | optional | The Waveform Comparison Display with Timing Markers may provide the user with time-based reference markers. |
 
 ### G11 · Scope Mode with Synchronized Sweep Display
 | ID | Status | Grade | Requirement |
 |:---:|:------:|:-----:|:------------|
-| FR-11-01 |  | mandatory | The Scope Mode with Synchronized Sweep Display shall provide the user with a display of the watch's acoustic signal in a fixed sweep window, similar to an oscilloscope. |
-| FR-11-02 |  | recommended | The Scope Mode with Synchronized Sweep Display should provide the user with a display of the processed signal that combines the upper and lower halves of the waveform. |
-| FR-11-03 |  | recommended | The Scope Mode with Synchronized Sweep Display should provide the user with the ability to configure the sweep time as a multiple of the watch's tick interval. |
-| FR-11-04 |  | recommended | The Scope Mode with Synchronized Sweep Display should provide the user with a synchronized display in which the beat pattern stays visually stable near the nominal rate and drifts when the watch is fast or slow. |
-| FR-11-05 |  | optional | The Scope Mode with Synchronized Sweep Display may provide the user with the daily rate reference value from the most recent timing test. |
-| FR-11-06 |  | optional | The Scope Mode with Synchronized Sweep Display may provide the user with the amplitude reference value from the most recent timing test. |
-| FR-11-07 |  | optional | The Scope Mode with Synchronized Sweep Display may provide the user with the beat error reference value from the most recent timing test. |
-| FR-11-08 |  | optional | The Scope Mode with Synchronized Sweep Display may provide the user with the nominal beat rate reference value from the most recent timing test. |
+| FR-11-01 | 🟢 | mandatory | The Scope Mode with Synchronized Sweep Display shall provide the user with a display of the watch's acoustic signal in a fixed sweep window, similar to an oscilloscope. |
+| FR-11-02 | 🟢 | recommended | The Scope Mode with Synchronized Sweep Display should provide the user with a display of the processed signal that combines the upper and lower halves of the waveform. |
+| FR-11-03 | 🟢 | recommended | The Scope Mode with Synchronized Sweep Display should provide the user with the ability to configure the sweep time as a multiple of the watch's tick interval. |
+| FR-11-04 | 🔴 | recommended | The Scope Mode with Synchronized Sweep Display should provide the user with a synchronized display in which the beat pattern stays visually stable near the nominal rate and drifts when the watch is fast or slow. |
+| FR-11-05 | 🟢 | optional | The Scope Mode with Synchronized Sweep Display may provide the user with the daily rate reference value from the most recent timing test. |
+| FR-11-06 | 🟢 | optional | The Scope Mode with Synchronized Sweep Display may provide the user with the amplitude reference value from the most recent timing test. |
+| FR-11-07 | 🟢 | optional | The Scope Mode with Synchronized Sweep Display may provide the user with the beat error reference value from the most recent timing test. |
+| FR-11-08 | 🔴 | optional | The Scope Mode with Synchronized Sweep Display may provide the user with the nominal beat rate reference value from the most recent timing test. |
 
 ### G12 · Scope Function with Multiple Filter Views
 | ID | Status | Grade | Requirement |
