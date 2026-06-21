@@ -33,18 +33,13 @@ Core → Nothing (zero dependencies)
 ---
 ## 2. MODULE USES VIEW – Actual Dependency Structure
 
-**Purpose:** This view shows uses relations among runtime source projects and the major internal modules of `TimeGrapher.Core`. `TimeGrapher.Core` contains the domain decomposition, so it is expanded one level below the project-level view. App-internal UI structure, build outputs, generated files, test project detail, and full file inventory are outside this view.
-
-**Key Principle:**
-- The Layered View defines permitted dependencies.
-- The Module Uses View defines the dependency graph of the current source structure.
-- Zero dependencies mean no connection lines are drawn.
+**Purpose:** This view consists of a project-level module view and a `TimeGrapher.Core` decomposition view. The project-level view shows uses relations among App, Core, platform adapters, and Verify; the Core decomposition view shows uses relations among Core-internal domain modules. App-internal UI structure, build outputs, generated files, test project detail, and full file inventory are outside this view.
 
 **2-1 Project-Level Module View:**
 
-This view shows uses relations among runtime source projects. Platform adapters form the boundary that keeps OS-specific audio dependencies out of Core, and `TimeGrapher.Core` has no outward project/package dependency.
+Shows module uses relations among App, Core, platform adapters, and Verify. Platform adapters form the boundary that keeps OS-specific audio dependencies out of Core, and `TimeGrapher.Core` has no outward project/package dependency.
 
-![Module Uses View - Project-level modules](../assets/USE.png)
+![Module Uses View - Project-level modules](../assets/module-uses-project.en.svg)
 
 Element Catalog:
 
@@ -58,7 +53,9 @@ Element Catalog:
 
 **2-2 TimeGrapher.Core Decomposition Module View:**
 
-This view decomposes `TimeGrapher.Core` into its major domain modules and shows which Core-internal modules each one uses.
+Decomposes `TimeGrapher.Core` into its major domain modules and shows which Core-internal modules each one uses.
+
+![Module Uses View - Core internal modules](../assets/module-uses-core.en.svg)
 
 Element Catalog:
 

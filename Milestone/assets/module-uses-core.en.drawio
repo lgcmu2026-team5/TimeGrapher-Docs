@@ -1,0 +1,80 @@
+﻿<mxfile host="app.diagrams.net">
+  <diagram name="module-uses-core" id="0">
+    <mxGraphModel dx="2302" dy="1237" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1120" pageHeight="520" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="legend" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fffde7;strokeColor=#c6c15a;fontSize=15;align=left;" value="&lt;b&gt;Legend&lt;/b&gt;&lt;br&gt;A → B : A uses B" vertex="1">
+          <mxGeometry height="82" width="190" x="780" y="620" as="geometry" />
+        </mxCell>
+        <mxCell id="analysis" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ece9ff;strokeColor=#8b5cf6;fontSize=18;" value="&lt;b&gt;Analysis&lt;/b&gt;" vertex="1">
+          <mxGeometry height="64" width="180" x="500" y="140" as="geometry" />
+        </mxCell>
+        <mxCell id="detection" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ece9ff;strokeColor=#8b5cf6;fontSize=18;" value="&lt;b&gt;Detection&lt;/b&gt;" vertex="1">
+          <mxGeometry height="60" width="190" x="-10" y="530" as="geometry" />
+        </mxCell>
+        <mxCell id="scoring" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ece9ff;strokeColor=#8b5cf6;fontSize=18;" value="&lt;b&gt;Detection.Scoring&lt;/b&gt;" vertex="1">
+          <mxGeometry height="60" width="190" x="-10" y="370" as="geometry" />
+        </mxCell>
+        <mxCell id="imaging" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ece9ff;strokeColor=#8b5cf6;fontSize=18;" value="&lt;b&gt;Imaging&lt;/b&gt;" vertex="1">
+          <mxGeometry height="60" width="170" x="654" y="370" as="geometry" />
+        </mxCell>
+        <mxCell id="audioio" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ece9ff;strokeColor=#8b5cf6;fontSize=18;" value="&lt;b&gt;AudioIo&lt;/b&gt;" vertex="1">
+          <mxGeometry height="60" width="170" x="234" y="370" as="geometry" />
+        </mxCell>
+        <mxCell id="sim" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ece9ff;strokeColor=#8b5cf6;fontSize=18;" value="&lt;b&gt;Sim&lt;/b&gt;" vertex="1">
+          <mxGeometry height="60" width="170" x="860" y="370" as="geometry" />
+        </mxCell>
+        <mxCell id="shared" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ece9ff;strokeColor=#8b5cf6;fontSize=18;" value="&lt;b&gt;Shared&lt;/b&gt;" vertex="1">
+          <mxGeometry height="60" width="150" x="485" y="670" as="geometry" />
+        </mxCell>
+        <mxCell id="e1" edge="1" parent="1" source="analysis" style="endArrow=block;html=1;rounded=1;strokeColor=#4b5563;strokeWidth=2;" target="detection">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="-150" y="370" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e2" edge="1" parent="1" source="analysis" style="endArrow=block;html=1;rounded=1;strokeColor=#4b5563;strokeWidth=2;" target="scoring">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e3" edge="1" parent="1" source="analysis" style="endArrow=block;html=1;rounded=1;strokeColor=#4b5563;strokeWidth=2;" target="metrics">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e4" edge="1" parent="1" source="analysis" style="endArrow=block;html=1;rounded=1;strokeColor=#4b5563;strokeWidth=2;" target="imaging">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e5" edge="1" parent="1" source="analysis" style="endArrow=block;html=1;rounded=1;strokeColor=#4b5563;strokeWidth=2;" target="audioio">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e6" edge="1" parent="1" source="metrics" style="endArrow=block;html=1;rounded=1;strokeColor=#4b5563;strokeWidth=2;" target="shared">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e7" edge="1" parent="1" source="scoring" style="endArrow=block;html=1;rounded=1;strokeColor=#4b5563;strokeWidth=2;" target="detection">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e8" edge="1" parent="1" source="metrics" style="endArrow=block;html=1;rounded=1;strokeColor=#4b5563;strokeWidth=2;" target="shared">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e9" edge="1" parent="1" source="imaging" style="endArrow=block;html=1;rounded=1;strokeColor=#4b5563;strokeWidth=2;" target="shared">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e10" edge="1" parent="1" source="audioio" style="endArrow=block;html=1;rounded=1;strokeColor=#4b5563;strokeWidth=2;" target="shared">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e11" edge="1" parent="1" source="sim" style="endArrow=block;html=1;rounded=1;strokeColor=#4b5563;strokeWidth=2;" target="shared">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="FWW2Hl433CtSNLvzIeV4-1" edge="1" parent="1" source="analysis" style="endArrow=block;html=1;rounded=1;strokeColor=#4b5563;strokeWidth=2;" target="metrics" value="">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="622" y="600" as="sourcePoint" />
+            <mxPoint x="512" y="130" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="metrics" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ece9ff;strokeColor=#8b5cf6;fontSize=18;" value="&lt;b&gt;Metrics&lt;/b&gt;" vertex="1">
+          <mxGeometry height="60" width="190" x="434" y="370" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

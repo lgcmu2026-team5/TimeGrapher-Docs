@@ -1,0 +1,50 @@
+<mxfile host="app.diagrams.net">
+  <diagram name="module-uses-project" id="0">
+    <mxGraphModel dx="1013" dy="1060" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1120" pageHeight="520" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="legend" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fffde7;strokeColor=#c6c15a;fontSize=15;" value="&lt;b&gt;Legend&lt;/b&gt;&lt;br&gt;&lt;br&gt;&lt;div style=&quot;text-align: left;&quot;&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;A → B : A가 B를 사용&amp;nbsp;&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;div style=&quot;text-align: left;&quot;&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;A ⇢ B :&lt;/span&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;&amp;nbsp;A가 runtime target에 따라 B를 조건부 사용&lt;/span&gt;&lt;/div&gt;&lt;div style=&quot;text-align: left;&quot;&gt;&lt;br&gt;&lt;/div&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="100" width="362" x="720" y="470" as="geometry" />
+        </mxCell>
+        <mxCell id="app" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ece9ff;strokeColor=#8b5cf6;fontSize=18;" value="&lt;b&gt;TimeGrapher.App&lt;/b&gt;" vertex="1">
+          <mxGeometry height="68" width="230" x="600" y="60" as="geometry" />
+        </mxCell>
+        <mxCell id="core" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ece9ff;strokeColor=#8b5cf6;fontSize=18;" value="&lt;b&gt;TimeGrapher.Core&lt;/b&gt;" vertex="1">
+          <mxGeometry height="68" width="230" x="460" y="520" as="geometry" />
+        </mxCell>
+        <mxCell id="win" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ece9ff;strokeColor=#8b5cf6;fontSize=18;" value="&lt;b&gt;WindowsAudio&lt;/b&gt;" vertex="1">
+          <mxGeometry height="68" width="240" x="390" y="260" as="geometry" />
+        </mxCell>
+        <mxCell id="linux" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ece9ff;strokeColor=#8b5cf6;fontSize=18;" value="&lt;b&gt;LinuxAudio&lt;/b&gt;" vertex="1">
+          <mxGeometry height="68" width="240" x="130" y="260" as="geometry" />
+        </mxCell>
+        <mxCell id="verify" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ece9ff;strokeColor=#8b5cf6;fontSize=18;" value="&lt;b&gt;TimeGrapher.Verify&lt;/b&gt;" vertex="1">
+          <mxGeometry height="68" width="230" x="650" y="260" as="geometry" />
+        </mxCell>
+        <mxCell id="e1" edge="1" parent="1" source="app" style="endArrow=block;html=1;rounded=0;strokeColor=#4b5563;strokeWidth=2;" target="core">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1020" y="290" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e2" edge="1" parent="1" source="verify" style="endArrow=block;html=1;rounded=0;strokeColor=#4b5563;strokeWidth=2;" target="core">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e3" edge="1" parent="1" source="win" style="endArrow=block;html=1;rounded=1;strokeColor=#4b5563;strokeWidth=2;" target="core">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e4" edge="1" parent="1" source="linux" style="endArrow=block;html=1;rounded=1;strokeColor=#4b5563;strokeWidth=2;" target="core">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e5" edge="1" parent="1" source="app" style="endArrow=block;html=1;rounded=1;dashed=1;strokeColor=#4b5563;strokeWidth=2;" target="win" value="target: win-*">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e6" edge="1" parent="1" source="app" style="endArrow=block;html=1;rounded=1;dashed=1;strokeColor=#4b5563;strokeWidth=2;" target="linux" value="target: linux-*">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
