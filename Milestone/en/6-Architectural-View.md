@@ -67,35 +67,35 @@ Decomposes `TimeGrapher.Core` into its major domain modules and shows which Core
 
 ## 3. TIMEGRAPHER MVVM VIEW – Responsibility Separation
 
-**Purpose:** Splits the App's UI into three layers — **View** (display), **ViewModel** (UI state & presentation logic), **Model** (domain/data). Dependencies flow one way, **View → ViewModel → Model**, so a lower layer never knows the layer above it.
+**Purpose:** Splits the App's UI into three layers — **View Layer**, **ViewModel Layer**, **Model Layer**. Dependencies flow one way, **View Layer → ViewModel Layer → Model Layer**, so a lower layer never knows the layer above it.
 - Loose Coupling & Parallel Development
 - Modifiability
 - Testability (the ViewModel runs without the UI)
 
-**Notation:** Each layer is colored (View / ViewModel / Model); a gray box is a **module** (a group of related classes). Every dependency is a dotted **«use»** arrow drawn from the *using* module to the *used* one.
+**Notation:** Each layer is colored (View Layer / ViewModel Layer / Model Layer); a gray box is a **module** (a group of related classes). Every dependency is a dotted **«use»** arrow drawn from the *using* module to the *used* one.
 
 **Modules (as in the figure):**
 
 | Layer | Module | What it does |
 |---|---|---|
-| **View** (Avalonia) | Main Window | The main window — overall layout, controls, and window lifecycle. |
+| **View Layer** | Main Window | The main window — overall layout, controls, and window lifecycle. |
 | | Graph Tabs Window | Hosts the measurement tabs and routes each analysis frame to the active tab. |
 | | Graph Rendering | Draws the graphs and numeric readouts from the frame data. |
-| **ViewModel** (Avalonia-free) | MainWindowViewModel | Holds the UI state and binding properties the View binds to, and exposes the commands. |
+| **ViewModel Layer** | MainWindowViewModel | Holds the UI state and binding properties the View binds to, and exposes the commands. |
 | | Run · session coordination | Drives start / stop / pause and the analysis-session lifecycle (`RunCommandService`, `RunSessionController`). |
 | | Input · display coordination | Enumerates and selects audio input devices and prepares display state (`AudioDeviceController`). |
-| **Model** (domain · data) | Core.Analysis · Detection | The analysis engine — detects tick/tock beats and computes BPH and sync. |
+| **Model Layer** | Core.Analysis · Detection | The analysis engine — detects tick/tock beats and computes BPH and sync. |
 | | Core.Metrics · AudioIo · Imaging | Computes rate / amplitude / beat error, reads & writes WAV, and builds sound images. |
 | | Core.Shared | Common contracts and data types (frames, buffers) shared by every module. |
 | | Platform.WindowsAudio · LinuxAudio | Captures live audio from the OS (WASAPI on Windows, ALSA / PipeWire on Linux). |
 
 **Dependency Flow («use» arrows):**
-- The three View modules **use** `MainWindowViewModel`.
+- The three View Layer modules **use** `MainWindowViewModel`.
 - `MainWindowViewModel` **uses** the two coordination modules.
 - The coordination modules **use** the Core modules; `Core.Analysis · Detection` and `Platform.*` ultimately **use** `Core.Shared`.
 
 **Key Constraint:**
-- **One-way dependency:** View → ViewModel → Model. The ViewModel holds no Avalonia/View type (locked by `ViewModelPurityTests`), and the Model (`Core`) has zero dependencies, so it builds and tests without the UI.
-- **Binding inverts control, not dependency:** at runtime UI updates flow Model → ViewModel → View through events and binding, but that is *data flow*, not a compile-time dependency — so the «use» graph stays acyclic and downward.
+- **One-way dependency:** View Layer → ViewModel Layer → Model Layer. The ViewModel holds no Avalonia/View type (locked by `ViewModelPurityTests`), and the Model (`Core`) has zero dependencies, so it builds and tests without the UI.
+- **Binding inverts control, not dependency:** at runtime UI updates flow Model Layer → ViewModel Layer → View Layer through events and binding, but that is *data flow*, not a compile-time dependency — so the «use» graph stays acyclic and downward.
 
 ![MVVM responsibility flow](../assets/MVVM.png)

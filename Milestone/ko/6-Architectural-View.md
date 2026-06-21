@@ -72,36 +72,36 @@ App, Core, platform adapters, Verify 사이의 module uses 관계를 보여준�
 
 ## 3. TIMEGRAPHER MVVM VIEW – 책임 분리
 
-**목적:** App의 UI를 세 계층 — **View**(표시), **ViewModel**(UI 상태·표현 로직), **Model**(도메인/데이터) — 으로 나눈다. 의존성은 **View → ViewModel → Model** 한 방향으로만 흐르며, 하위 계층은 상위 계층을 모른다.
+**목적:** App의 UI를 세 계층 — **View Layer**, **ViewModel Layer**, **Model Layer** — 으로 나눈다. 의존성은 **View Layer → ViewModel Layer → Model Layer** 한 방향으로만 흐르며, 하위 계층은 상위 계층을 모른다.
 - Loose Coupling & Parallel Development
 - Modifiability
 - Testability (ViewModel은 UI 없이 동작)
 
-**표기:** 계층마다 색을 칠하고(View / ViewModel / Model), 회색 상자는 **모듈**(관련 클래스 묶음)이다. 모든 의존성은 *사용하는* 모듈에서 *사용되는* 모듈로 향하는 점선 **«use»** 화살표로 그린다.
+**표기:** 계층마다 색을 칠하고(View Layer / ViewModel Layer / Model Layer), 회색 상자는 **모듈**(관련 클래스 묶음)이다. 모든 의존성은 *사용하는* 모듈에서 *사용되는* 모듈로 향하는 점선 **«use»** 화살표로 그린다.
 
 **모듈 (그림 기준):**
 
 | 계층 | 모듈 | 하는 일 |
 |---|---|---|
-| **View** (Avalonia) | Main Window | 메인 창 — 전체 레이아웃·컨트롤, 창 열고 닫기. |
+| **View Layer** | Main Window | 메인 창 — 전체 레이아웃·컨트롤, 창 열고 닫기. |
 | | Graph Tabs Window | 측정 탭을 호스팅하고 분석 프레임을 활성 탭으로 보낸다. |
 | | Graph Rendering | 프레임 데이터로 그래프와 수치 표시를 그린다. |
-| **ViewModel** (Avalonia 무의존) | MainWindowViewModel | View가 바인딩하는 UI 상태·바인딩 속성을 보유하고 커맨드를 노출한다. |
+| **ViewModel Layer** | MainWindowViewModel | View가 바인딩하는 UI 상태·바인딩 속성을 보유하고 커맨드를 노출한다. |
 | | Run · session coordination | 분석을 시작·정지·일시정지하고, 시작부터 끝까지 진행을 관리한다(`RunCommandService`, `RunSessionController`). |
 | | Input · display coordination | 오디오 입력 장치를 열거·선택하고 표시 상태를 준비한다(`AudioDeviceController`). |
-| **Model** (도메인 · 데이터) | Core.Analysis · Detection | 분석 엔진 — tick/tock 비트를 검출하고 BPH·sync를 계산한다. |
+| **Model Layer** | Core.Analysis · Detection | 분석 엔진 — tick/tock 비트를 검출하고 BPH·sync를 계산한다. |
 | | Core.Metrics · AudioIo · Imaging | 일오차/진폭/비트에러 계산, WAV 입출력, 사운드 이미지 생성. |
 | | Core.Shared | 모든 모듈이 공유하는 공통 계약·데이터 타입(프레임, 버퍼). |
 | | Platform.WindowsAudio · LinuxAudio | OS에서 라이브 오디오를 캡처한다(Windows WASAPI, Linux ALSA/PipeWire). |
 
 **의존 흐름(«use» 화살표):**
-- View의 세 모듈은 `MainWindowViewModel`을 **사용**한다.
+- View Layer의 세 모듈은 `MainWindowViewModel`을 **사용**한다.
 - `MainWindowViewModel`은 두 조정 모듈을 **사용**한다.
 - 조정 모듈은 Core 모듈을 **사용**하고, `Core.Analysis · Detection`과 `Platform.*`은 결국 `Core.Shared`를 **사용**한다.
 
 **핵심 제약:**
-- **단방향 의존:** View → ViewModel → Model. ViewModel은 Avalonia/View 타입을 갖지 않으며(`ViewModelPurityTests`가 잠금), Model(`Core`)은 의존성이 0이라 UI 없이 빌드·테스트된다.
-- **바인딩은 의존이 아니라 제어를 역전한다:** 런타임에 UI 갱신은 Model → ViewModel → View로 흐르지만 이는 이벤트·바인딩을 통한 *데이터 흐름*이지 컴파일 의존이 아니므로, «use» 그래프는 비순환·하향을 유지한다.
+- **단방향 의존:** View Layer → ViewModel Layer → Model Layer. ViewModel은 Avalonia/View 타입을 갖지 않으며(`ViewModelPurityTests`가 잠금), Model(`Core`)은 의존성이 0이라 UI 없이 빌드·테스트된다.
+- **바인딩은 의존이 아니라 제어를 역전한다:** 런타임에 UI 갱신은 Model Layer → ViewModel Layer → View Layer로 흐르지만 이는 이벤트·바인딩을 통한 *데이터 흐름*이지 컴파일 의존이 아니므로, «use» 그래프는 비순환·하향을 유지한다.
 
 ![MVVM responsibility flow](../assets/MVVM.png)
 
