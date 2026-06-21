@@ -15,39 +15,42 @@ The terms used in this document are defined in the consolidated [Glossary](7-Glo
 > **P** = Probability, **I** = Impact (**H** = High, M = Medium, L = Low)
 >
 > 🔴 = risk has a planned experiment (see [Planned Experiments](4-Planned-Experiments.md))
+>
+> **Status** — Resolved / In progress / Low impact
 
-Risk ID | Risk Title | Type | QAS | P | I
---------|-----------|------|-----|---|---
-[R-01](#a-real-time-performance-rpi) 🔴 | RPi5 fails to keep up with high sample rates (96k/192k) and loses sound data | T | [QAS-2](2-Architectural-Drivers.md#qas-2--performance-latency--from-sound-input-to-screen-display) | **L** | **H**
-[R-02](#a-real-time-performance-rpi) 🔴 | Rendering four filters + multiple graphs at once makes the screen stutter | T | [QAS-2](2-Architectural-Drivers.md#qas-2--performance-latency--from-sound-input-to-screen-display)<br>[QAS-6](2-Architectural-Drivers.md#qas-6--usability--reading-and-operating-on-the-touchscreen) | M | **H**
-[R-03](#a-real-time-performance-rpi) 🔴 | Analysis + display exceed the beat-period budget (83.3 ms @ 43200 BPH) — backlog, stale display, block drop, missed beats | T | [QAS-2](2-Architectural-Drivers.md#qas-2--performance-latency--from-sound-input-to-screen-display) | M | **H**
-[R-04](#a-real-time-performance-rpi) 🔴 | Long continuous runs (24h+) leak memory and degrade or crash | T | [QAS-2](2-Architectural-Drivers.md#qas-2--performance-latency--from-sound-input-to-screen-display) | **L** | M
-[R-05](#a-real-time-performance-rpi) 🔴 | Closed: .NET (C#) + Avalonia UI selected after RPi5 latency/rendering checks | T | [QAS-2](2-Architectural-Drivers.md#qas-2--performance-latency--from-sound-input-to-screen-display) | L | L
-[R-06](#b-signal-processing--measurement-trustworthiness) 🔴 | A/C event positions not found to 0.1 ms — rate, beat error, amplitude all contaminated | T | [QAS-1](2-Architectural-Drivers.md#qas-1--accuracy--from-acoustic-event-detection-to-computed-watch-metrics)<br>[QAS-3](2-Architectural-Drivers.md#qas-3)<br>[QAS-4](2-Architectural-Drivers.md#qas-4--consistency--consistent-values-across-displays) | **H** | **H**
-[R-07](#b-signal-processing--measurement-trustworthiness) | Noisy/weak signals produce misleading values instead of a graceful "signal weak" | T | [QAS-3](2-Architectural-Drivers.md#qas-3) | M | **H**
-[R-08](#c-architecture--extensibility) | No up-front filter/marker extension design — late-stage cost soars | T | [QAS-5](2-Architectural-Drivers.md#qas-5--modifiability-extensibility--adding-a-new-measurementfiltergraph) | M | M
-[R-09](#d-hardware--platform) | AGC left on or poor microphone coupling distorts the signal | T | [QAS-3](2-Architectural-Drivers.md#qas-3) | M | **H**
-[R-10](#d-hardware--platform) | Platform differences (WASAPI/ALSA) between Windows dev and RPi demo surface late | T | [QAS-2](2-Architectural-Drivers.md#qas-2--performance-latency--from-sound-input-to-screen-display) | M | M
-[R-11](#d-hardware--platform) | Supporting three sample rates (48/96/192k) adds timing complexity | T | [QAS-2](2-Architectural-Drivers.md#qas-2--performance-latency--from-sound-input-to-screen-display) | M | M
-[R-12](#e-usability--ui-1280800) | Small screen can't legibly hold summary bar + graphs + scope strip | T | [QAS-6](2-Architectural-Drivers.md#qas-6--usability--reading-and-operating-on-the-touchscreen) | M | M
-[R-13](#e-usability--ui-1280800) | Touch accuracy or recognition may be poor | T | [QAS-6](2-Architectural-Drivers.md#qas-6--usability--reading-and-operating-on-the-touchscreen) | L | L
-[R-14](#f-project--process) | Everything (12 features + AI) can't fit in 3 weeks — prioritization failure drops essentials | NT | QAS-ALL | M | **H**
-[R-15](#f-project--process) | Understanding the baseline code takes time and delays the start | NT | [QAS-5](2-Architectural-Drivers.md#qas-5--modifiability-extensibility--adding-a-new-measurementfiltergraph) | L | M
-[R-16](#f-project--process) | Qt/C++·DSP·RPi learning curve shakes implementation quality | NT | [QAS-2](2-Architectural-Drivers.md#qas-2--performance-latency--from-sound-input-to-screen-display)<br>[QAS-3](2-Architectural-Drivers.md#qas-3) | L | M
-[R-17](#f-project--process) 🔴 | Attempting the AI/TinyML feature raises on-device uncertainty | T | [QAS-2](2-Architectural-Drivers.md#qas-2--performance-latency--from-sound-input-to-screen-display)<br>[QAS-3](2-Architectural-Drivers.md#qas-3) | M | M
-[R-18](#f-project--process) | Accepting GenAI-generated code unverified lets in plausible-but-wrong code | NT | [QAS-2](2-Architectural-Drivers.md#qas-2--performance-latency--from-sound-input-to-screen-display)<br>[QAS-3](2-Architectural-Drivers.md#qas-3)<br>[QAS-4](2-Architectural-Drivers.md#qas-4--consistency--consistent-values-across-displays) | M | M
-[R-19](#f-project--process) | Only one test RPi5 — real-use verification doesn't fit the schedule | NT | [QAS-2](2-Architectural-Drivers.md#qas-2--performance-latency--from-sound-input-to-screen-display) | **H** | **H**
-[R-20](#g-other--uncategorized) | Communication — meaning may be lost between stakeholders when conversing in English | NT | - | L | L
-[R-21](#g-other--uncategorized) | Insufficient test environment — one device, no test room, no unit tests; regressions may slip through | NT | - | L | L
-[R-22](#g-other--uncategorized) | Long-run verification difficulty — items like 24-hour continuous runs are hard to actually verify | NT | - | L | L
-[R-23](#g-other--uncategorized) | Growing storage — long recordings make files large | T | - | L | L
-[R-24](#g-other--uncategorized) | RPi5 debugging difficulty — hard to inspect state or debug | T | - | L | L
-[R-25](#g-other--uncategorized) | Uncertain data structures — audio buffer and measurement-data storage structures are undecided | T | - | L | L
-[R-26](#g-other--uncategorized) | Storage-speed bottleneck — SD-card writes may be slower than recording generation | T | - | L | L
+Risk ID | Status | Risk Title | Type | QAS | P | I
+--------|--------|-----------|------|-----|---|---
+[R-01](#a-real-time-performance-rpi) 🔴 | Resolved | RPi5 fails to keep up with high sample rates (96k/192k) and loses sound data | T | [QAS-2](2-Architectural-Drivers.md#qas-2--performance-latency--from-sound-input-to-screen-display) | **L** | **H**
+[R-02](#a-real-time-performance-rpi) 🔴 | Resolved | Rendering four filters + multiple graphs at once makes the screen stutter | T | [QAS-2](2-Architectural-Drivers.md#qas-2--performance-latency--from-sound-input-to-screen-display)<br>[QAS-6](2-Architectural-Drivers.md#qas-6--usability--reading-and-operating-on-the-touchscreen) | M | **H**
+[R-03](#a-real-time-performance-rpi) 🔴 | Resolved | Analysis + display exceed the beat-period budget (83.3 ms @ 43200 BPH) — backlog, stale display, block drop, missed beats | T | [QAS-2](2-Architectural-Drivers.md#qas-2--performance-latency--from-sound-input-to-screen-display) | M | **H**
+[R-04](#a-real-time-performance-rpi) 🔴 | Resolved | Long continuous runs (24h+) leak memory and degrade or crash | T | [QAS-2](2-Architectural-Drivers.md#qas-2--performance-latency--from-sound-input-to-screen-display) | **L** | M
+[R-05](#a-real-time-performance-rpi) 🔴 | Resolved | Closed: .NET (C#) + Avalonia UI selected after RPi5 latency/rendering checks | T | [QAS-2](2-Architectural-Drivers.md#qas-2--performance-latency--from-sound-input-to-screen-display) | L | L
+[R-06](#b-signal-processing--measurement-trustworthiness) 🔴 | In progress | A/C event positions not found to 0.1 ms — rate, beat error, amplitude all contaminated | T | [QAS-1](2-Architectural-Drivers.md#qas-1--accuracy--from-acoustic-event-detection-to-computed-watch-metrics)<br>[QAS-3](2-Architectural-Drivers.md#qas-3)<br>[QAS-4](2-Architectural-Drivers.md#qas-4--consistency--consistent-values-across-displays) | **H** | **H**
+[R-07](#b-signal-processing--measurement-trustworthiness) | In progress | Noisy/weak signals produce misleading values instead of a graceful "signal weak" | T | [QAS-3](2-Architectural-Drivers.md#qas-3) | M | **H**
+[R-08](#c-architecture--extensibility) | In progress | No up-front filter/marker extension design — late-stage cost soars | T | [QAS-5](2-Architectural-Drivers.md#qas-5--modifiability-extensibility--adding-a-new-measurementfiltergraph) | M | M
+[R-09](#d-hardware--platform) | In progress | AGC left on or poor microphone coupling distorts the signal | T | [QAS-3](2-Architectural-Drivers.md#qas-3) | M | **H**
+[R-10](#d-hardware--platform) | Resolved | Platform differences (WASAPI/ALSA) between Windows dev and RPi demo surface late | T | [QAS-2](2-Architectural-Drivers.md#qas-2--performance-latency--from-sound-input-to-screen-display) | M | M
+[R-11](#d-hardware--platform) | Resolved | Supporting three sample rates (48/96/192k) adds timing complexity | T | [QAS-2](2-Architectural-Drivers.md#qas-2--performance-latency--from-sound-input-to-screen-display) | M | M
+[R-12](#e-usability--ui-1280800) | Resolved | Small screen can't legibly hold summary bar + graphs + scope strip | T | [QAS-6](2-Architectural-Drivers.md#qas-6--usability--reading-and-operating-on-the-touchscreen) | M | M
+[R-13](#e-usability--ui-1280800) | Low impact | Touch accuracy or recognition may be poor | T | [QAS-6](2-Architectural-Drivers.md#qas-6--usability--reading-and-operating-on-the-touchscreen) | L | L
+[R-14](#f-project--process) | Resolved | Everything (12 features + AI) can't fit in 3 weeks — prioritization failure drops essentials | NT | QAS-ALL | M | **H**
+[R-15](#f-project--process) | Resolved | Understanding the baseline code takes time and delays the start | NT | [QAS-5](2-Architectural-Drivers.md#qas-5--modifiability-extensibility--adding-a-new-measurementfiltergraph) | L | M
+[R-16](#f-project--process) | Resolved | Qt/C++·DSP·RPi learning curve shakes implementation quality | NT | [QAS-2](2-Architectural-Drivers.md#qas-2--performance-latency--from-sound-input-to-screen-display)<br>[QAS-3](2-Architectural-Drivers.md#qas-3) | L | M
+[R-17](#f-project--process) 🔴 | In progress | Attempting the AI/TinyML feature raises on-device uncertainty | T | [QAS-2](2-Architectural-Drivers.md#qas-2--performance-latency--from-sound-input-to-screen-display)<br>[QAS-3](2-Architectural-Drivers.md#qas-3) | M | M
+[R-18](#f-project--process) | Low impact | Accepting GenAI-generated code unverified lets in plausible-but-wrong code | NT | [QAS-2](2-Architectural-Drivers.md#qas-2--performance-latency--from-sound-input-to-screen-display)<br>[QAS-3](2-Architectural-Drivers.md#qas-3)<br>[QAS-4](2-Architectural-Drivers.md#qas-4--consistency--consistent-values-across-displays) | M | M
+[R-19](#f-project--process) | Low impact | Only one test RPi5 — real-use verification doesn't fit the schedule | NT | [QAS-2](2-Architectural-Drivers.md#qas-2--performance-latency--from-sound-input-to-screen-display) | **H** | **H**
+[R-20](#g-other--uncategorized) | Low impact | Communication — meaning may be lost between stakeholders when conversing in English | NT | - | L | L
+[R-21](#g-other--uncategorized) | Low impact | Insufficient test environment — one device, no test room, no unit tests; regressions may slip through | NT | - | L | L
+[R-22](#g-other--uncategorized) | Low impact | Long-run verification difficulty — items like 24-hour continuous runs are hard to actually verify | NT | - | L | L
+[R-23](#g-other--uncategorized) | Low impact | Growing storage — long recordings make files large | T | - | L | L
+[R-24](#g-other--uncategorized) | Low impact | RPi5 debugging difficulty — hard to inspect state or debug | T | - | L | L
+[R-25](#g-other--uncategorized) | Low impact | Uncertain data structures — audio buffer and measurement-data storage structures are undecided | T | - | L | L
+[R-26](#g-other--uncategorized) | Low impact | Storage-speed bottleneck — SD-card writes may be slower than recording generation | T | - | L | L
 
 ## A. Real-Time Performance (RPi)
 
 - **🔴 R-01 — The RPi5 fails to keep up with high sample rates (96k/192k) in real time and loses sound data (block drop / missed beat)**
+  - **Status**: Resolved
   - **Evidence**: pdf (p.25 Real Time Performance), [QAS-2](2-Architectural-Drivers.md#qas-2--performance-latency--from-sound-input-to-screen-display), [C-1](2-Architectural-Drivers.md#design-constraints)
   - **Probability / Impact**: Low / High
   - **Grading rationale**
@@ -58,6 +61,7 @@ Risk ID | Risk Title | Type | QAS | P | I
   - **Comment**: Measurement was on the Rate/Scope tab using latency and drop/miss criteria; direct 96 kHz measurement, CPU/RAM headroom, and image-centric tabs remain to be checked separately
 
 - **🔴 R-02 — Rendering four filters (F0→F3) plus multiple graphs at once makes the screen stutter (<20 FPS · UI freeze)**
+  - **Status**: Resolved
   - **Evidence**: [FR-12-01](2-Architectural-Drivers.md#g12--scope-function-with-multiple-filter-views), [FR-12-04](2-Architectural-Drivers.md#g12--scope-function-with-multiple-filter-views), [QAS-2](2-Architectural-Drivers.md#qas-2--performance-latency--from-sound-input-to-screen-display), [QAS-6](2-Architectural-Drivers.md#qas-6--usability--reading-and-operating-on-the-touchscreen)
   - **Probability / Impact**: Medium / High
   - **Grading rationale**
@@ -68,6 +72,7 @@ Risk ID | Risk Title | Type | QAS | P | I
   - **Comment**: Decide 4 simultaneous views vs one-at-a-time after the performance check
 
 - **🔴 R-03 — Analysis + display exceed the beat-period budget (83.3 ms @ 43200 BPH), causing backlog, stale display, block drop, and missed beats**
+  - **Status**: Resolved
   - **Evidence**: [QAS-2](2-Architectural-Drivers.md#qas-2--performance-latency--from-sound-input-to-screen-display) — one beat period = 3600 s ÷ BPH (43200 BPH: 83.3 ms · 21600 BPH: 166.7 ms)
   - **Probability / Impact**: Medium / High
   - **Grading rationale**
@@ -78,6 +83,7 @@ Risk ID | Risk Title | Type | QAS | P | I
   - **Comment**: Measured 21600 BPH @ 48 kHz and 43200 BPH @ 192 kHz across Live/Playback/Simulation (see [EXP-02](4-Planned-Experiments.md#exp-02-rpi5-real-time-sample-rate-ceiling)) — both pass within budget on Raspberry Pi 5 (primary) and Windows (reference) with drop=0, miss=0. Re-measure on the same criteria whenever a new computation, filter, graph, or AI feature is added.
 
 - **🔴 R-04 — Long continuous runs (24h+) leak memory and degrade or crash**
+  - **Status**: Resolved
   - **Evidence**: [FR-07-10](2-Architectural-Drivers.md#g07--long-term-performance-graph), [QAS-2](2-Architectural-Drivers.md#qas-2--performance-latency--from-sound-input-to-screen-display)
   - **Probability / Impact**: Low / Medium
   - **Grading rationale**
@@ -87,6 +93,7 @@ Risk ID | Risk Title | Type | QAS | P | I
   - **Comment**: [EXP-05](4-Planned-Experiments.md#exp-05-long-run-stability-24h) passes 24h+ stability — flat RSS (no leak), CPU at a steady ~1.4 cores. Re-measure with the same procedure (0.5 s RSS/CPU long-term logging) when new computations, filters, graphs, or AI Features are added.
 
 - **🔴 R-05 — Closed: .NET (C#) + Avalonia UI selected after RPi5 latency/rendering checks**
+  - **Status**: Resolved
   - **Evidence**: [QAS-2 latency result](../../TestResult/result_latency.md) passed all Simulation and WAV replay conditions: worst-case E2E latency stayed inside the beat-period budget, dropped audio samples = 0, and missed beat detections = 0. The [rendering backend result](../../TestResult/result_renderer.md) also did not reproduce the reported Avalonia-on-RPi5 slowdown: GLX/EGL GPU rendering reached about 60 FPS and SW rendering was slower.
   - **Probability / Impact**: Low / Low
   - **Grading rationale**
@@ -99,6 +106,7 @@ Risk ID | Risk Title | Type | QAS | P | I
 ## B. Signal Processing / Measurement Trustworthiness
 
 - **🔴 R-06 — If A/C event positions can't be found to 0.1 ms, rate, beat error, and amplitude are all contaminated**
+  - **Status**: In progress
   - **Evidence**: [FR-08-04…06](2-Architectural-Drivers.md#g08--escapement-analyzer-and-marker-line-display), [FR-06-01…04](2-Architectural-Drivers.md#g06--beat-error-display-and-diagnostic-trace), [QAS-1](2-Architectural-Drivers.md#qas-1--accuracy--from-acoustic-event-detection-to-computed-watch-metrics), [QAS-3](2-Architectural-Drivers.md#qas-3), [QAS-4](2-Architectural-Drivers.md#qas-4--consistency--consistent-values-across-displays)
   - **Probability / Impact**: High / High
   - **Grading rationale**
@@ -108,6 +116,7 @@ Risk ID | Risk Title | Type | QAS | P | I
   - **Comment**: Confirm the current logic works; improve if needed
 
 - **R-07 — Noisy or weak signals may produce misleading values instead of a graceful "signal weak" response**
+  - **Status**: In progress
   - **Evidence**: [QAS-3](2-Architectural-Drivers.md#qas-3)
   - **Probability / Impact**: Medium / High
   - **Grading rationale**
@@ -119,6 +128,7 @@ Risk ID | Risk Title | Type | QAS | P | I
 ## C. Architecture / Extensibility
 
 - **R-08 — Without up-front design of the filter/marker extension structure (e.g., adding F4), late-stage cost soars**
+  - **Status**: In progress
   - **Evidence**: [FR-12-01](2-Architectural-Drivers.md#g12--scope-function-with-multiple-filter-views), [QAS-5](2-Architectural-Drivers.md#qas-5--modifiability-extensibility--adding-a-new-measurementfiltergraph)
   - **Probability / Impact**: Medium / Medium
   - **Grading rationale**
@@ -130,6 +140,7 @@ Risk ID | Risk Title | Type | QAS | P | I
 ## D. Hardware / Platform
 
 - **R-09 — If AGC stays on or the microphone couples poorly, the signal distorts and every measurement collapses**
+  - **Status**: In progress
   - **Evidence**: pdf (p.29 Raspberry Pi OS — Auto Gain Control), [QAS-3](2-Architectural-Drivers.md#qas-3), [C-4](2-Architectural-Drivers.md#design-constraints)
   - **Probability / Impact**: Medium / High
   - **Grading rationale**
@@ -139,6 +150,7 @@ Risk ID | Risk Title | Type | QAS | P | I
   - **Comment**: Must be stated in the user guide
 
 - **R-10 — Developing on Windows, demoing on RPi — platform differences (WASAPI/ALSA audio backends) surface late**
+  - **Status**: Resolved
   - **Evidence**: pdf (p.29 System Software), [QAS-2](2-Architectural-Drivers.md#qas-2--performance-latency--from-sound-input-to-screen-display), [C-3](2-Architectural-Drivers.md#design-constraints)
   - **Probability / Impact**: Medium / Medium
   - **Grading rationale**
@@ -148,6 +160,7 @@ Risk ID | Risk Title | Type | QAS | P | I
   - **Comment**: The RPi runs in parallel throughout the project, so risk is low
 
 - **R-11 — Supporting three sample rates (48/96/192k) adds timing complexity**
+  - **Status**: Resolved
   - **Evidence**: pdf (p.25 Real Time Performance), [QAS-2](2-Architectural-Drivers.md#qas-2--performance-latency--from-sound-input-to-screen-display)
   - **Probability / Impact**: Medium / Medium
   - **Grading rationale**
@@ -159,6 +172,7 @@ Risk ID | Risk Title | Type | QAS | P | I
 ## E. Usability / UI (1280×800)
 
 - **R-12 — The small screen can't legibly hold the summary bar + multiple graphs + scope strip (letters ≥ 2.9 mm · touch ≥ 9 mm)**
+  - **Status**: Resolved
   - **Evidence**: pdf (p.27 8 Inch Touchscreen for Raspberry Pi), [QAS-6](2-Architectural-Drivers.md#qas-6--usability--reading-and-operating-on-the-touchscreen), [C-2](2-Architectural-Drivers.md#design-constraints)
   - **Probability / Impact**: Medium / Medium
   - **Grading rationale**
@@ -168,6 +182,7 @@ Risk ID | Risk Title | Type | QAS | P | I
   - **Comment**: Run size-adjustment tests
 
 - **R-13 — Touch accuracy or recognition may be poor**
+  - **Status**: Low impact
   - **Evidence**: [QAS-6](2-Architectural-Drivers.md#qas-6--usability--reading-and-operating-on-the-touchscreen)
   - **Probability / Impact**: Low / Low
   - **Grading rationale**
@@ -179,6 +194,7 @@ Risk ID | Risk Title | Type | QAS | P | I
 ## F. Project / Process
 
 - **R-14 — Everything (12 features + AI) can't fit in 3 weeks — failing to prioritize drops the essentials**
+  - **Status**: Resolved
   - **Evidence**: pdf (p.5 Objective — "feasible, well-architected subset"), QAS-ALL
   - **Probability / Impact**: Medium / High
   - **Grading rationale**
@@ -188,6 +204,7 @@ Risk ID | Risk Title | Type | QAS | P | I
   - **Comment**: Plan well and drop what must be dropped
 
 - **R-15 — Understanding the provided baseline code (TimeGrapher_v10.4) takes time and delays the start**
+  - **Status**: Resolved
   - **Evidence**: pdf (p.29 GUI Code), [QAS-5](2-Architectural-Drivers.md#qas-5--modifiability-extensibility--adding-a-new-measurementfiltergraph)
   - **Probability / Impact**: Low / Medium
   - **Grading rationale**
@@ -197,6 +214,7 @@ Risk ID | Risk Title | Type | QAS | P | I
   - **Comment**: Risk lowered by using AI
 
 - **R-16 — The Qt/C++·DSP·RPi learning curve shakes implementation quality**
+  - **Status**: Resolved
   - **Evidence**: pdf (p.29 Qt and Qt Creator), [QAS-2](2-Architectural-Drivers.md#qas-2--performance-latency--from-sound-input-to-screen-display), [QAS-3](2-Architectural-Drivers.md#qas-3)
   - **Probability / Impact**: Low / Medium
   - **Grading rationale**
@@ -206,6 +224,7 @@ Risk ID | Risk Title | Type | QAS | P | I
   - **Comment**: Risk lowered by using AI
 
 - **🔴 R-17 — Attempting the AI/TinyML feature raises on-device uncertainty**
+  - **Status**: In progress
   - **Evidence**: pdf (p.12 AI Feature), [QAS-2](2-Architectural-Drivers.md#qas-2--performance-latency--from-sound-input-to-screen-display), [QAS-3](2-Architectural-Drivers.md#qas-3)
   - **Probability / Impact**: Medium / Medium
   - **Grading rationale**
@@ -215,6 +234,7 @@ Risk ID | Risk Title | Type | QAS | P | I
   - **Comment**: Windows first, then assess operability on the RPi5 before adopting
 
 - **R-18 — Accepting GenAI-generated code unverified lets in plausible-but-wrong code (esp. DSP / concurrency / real-time)**
+  - **Status**: Low impact
   - **Evidence**: pdf (p.30 Project Deliverables), [QAS-2](2-Architectural-Drivers.md#qas-2--performance-latency--from-sound-input-to-screen-display), [QAS-3](2-Architectural-Drivers.md#qas-3), [QAS-4](2-Architectural-Drivers.md#qas-4--consistency--consistent-values-across-displays)
   - **Probability / Impact**: Medium / Medium
   - **Grading rationale**
@@ -224,6 +244,7 @@ Risk ID | Risk Title | Type | QAS | P | I
   - **Comment**: See mitigation (code review, whole team understands the algorithms)
 
 - **R-19 — Only one test RPi5 — real-use verification doesn't fit the schedule**
+  - **Status**: Low impact
   - **Evidence**: pdf (p.26 System Hardware — Raspberry Pi), [QAS-2](2-Architectural-Drivers.md#qas-2--performance-latency--from-sound-input-to-screen-display)
   - **Probability / Impact**: High / High
   - **Grading rationale**
