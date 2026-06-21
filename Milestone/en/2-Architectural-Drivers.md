@@ -89,9 +89,9 @@ Status: 🟢 Implemented · 🟡 Partially Implemented · 🔴 Needs Implementat
 | FR-05-17 | 🟢 | mandatory | Scope 2 shall provide the user with an averaging toggle (ON/OFF) via a Σ control. |
 | FR-05-18 | 🟢 | mandatory | Scope 2 shall provide the user with combined beat noises that reduce random noise and improve signal clarity when averaging is ON. |
 | FR-05-19 | 🟢 | mandatory | Scope 2 shall provide the user with a measurement cycle, determined by the watch's beat number and selected interval, that completes when each trace reaches 50 intervals. |
-| FR-05-20 | 🟢 | mandatory | Scope 2 shall provide the user with the average signal level on each horizontal axis at the end of the cycle. |
-| FR-05-21 | 🟢 | recommended | Scope 2 should provide the user with the two averaged beat-noise traces without assuming a fixed tick/tock axis assignment. |
-| FR-05-22 | 🟢 | optional | Scope 2 may provide the user with intermediate averaging results, such as after 10 or 20 intervals. |
+| FR-05-20 | 🟡 | mandatory | Scope 2 shall provide the user with the average signal level on each horizontal axis at the end of the cycle. |
+| FR-05-21 | 🟡 | recommended | Scope 2 should provide the user with the two averaged beat-noise traces without assuming a fixed tick/tock axis assignment. |
+| FR-05-22 | 🟡 | optional | Scope 2 may provide the user with intermediate averaging results, such as after 10 or 20 intervals. |
 
 ### G06 · Beat Error Display and Diagnostic Trace
 | ID | Status | Grade | Requirement |
@@ -104,11 +104,11 @@ Status: 🟢 Implemented · 🟡 Partially Implemented · 🔴 Needs Implementat
 | FR-06-06 | 🟢 | mandatory | The Beat Error Display and Diagnostic Trace shall provide the user with the measurement values (rate, amplitude, beat error, BPH) and the tick/tock trace lines simultaneously. |
 | FR-06-07 | 🟢 | mandatory | The Beat Error Display and Diagnostic Trace shall provide the user with the tick and tock trace lines as visually distinguished elements. |
 | FR-06-08 | 🟢 | mandatory | The Beat Error Display and Diagnostic Trace shall provide the user with the spacing between the tick/tock trace lines. |
-| FR-06-09 | 🟢 | optional | The Beat Error Display and Diagnostic Trace may provide the user with the ability to configure the acceptable range of the trace-line spacing. |
-| FR-06-10 | 🟢 | mandatory | The Beat Error Display and Diagnostic Trace shall provide the user with a defined acceptable range for the trace-line spacing. |
-| FR-06-11 | 🟢 | mandatory | The Beat Error Display and Diagnostic Trace shall provide the user with a warning when the trace-line spacing exceeds the acceptable range. |
-| FR-06-12 | 🟢 | mandatory | The Beat Error Display and Diagnostic Trace shall provide the user with the slope of the trace lines. |
-| FR-06-13 | 🟢 | mandatory | The Beat Error Display and Diagnostic Trace shall provide the user with a fault-state indication when the trace-line slope reaches 45 degrees or more. |
+| FR-06-09 | 🟡 | optional | The Beat Error Display and Diagnostic Trace may provide the user with the ability to configure the acceptable range of the trace-line spacing. |
+| FR-06-10 | 🟡 | mandatory | The Beat Error Display and Diagnostic Trace shall provide the user with a defined acceptable range for the trace-line spacing. |
+| FR-06-11 | 🟡 | mandatory | The Beat Error Display and Diagnostic Trace shall provide the user with a warning when the trace-line spacing exceeds the acceptable range. |
+| FR-06-12 | 🟡 | mandatory | The Beat Error Display and Diagnostic Trace shall provide the user with the slope of the trace lines. |
+| FR-06-13 | 🟡 | mandatory | The Beat Error Display and Diagnostic Trace shall provide the user with a fault-state indication when the trace-line slope reaches 45 degrees or more. |
 
 ### G07 · Long-Term Performance Graph
 | ID | Status | Grade | Requirement |
