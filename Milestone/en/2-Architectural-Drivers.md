@@ -4,7 +4,7 @@
 
 ## Glossary
 
-The domain terms used throughout the functional requirements below are defined in the consolidated [Glossary](6-Glossary.md) — see **Domain Terms**.
+The domain terms used throughout the functional requirements below are defined in the consolidated [Glossary](7-Glossary.md) — see **Domain Terms**.
 
 ## Functional Requirements
 
@@ -203,7 +203,7 @@ Status: 🟢 Implemented · 🟡 Partially Implemented · 🔴 Needs Implementat
 
 ### Terminology
 
-The metric, unit, and standard terms used in the scenarios below are defined in the consolidated [Glossary](6-Glossary.md) — see **Quality-Attribute & Measurement Terms**.
+The metric, unit, and standard terms used in the scenarios below are defined in the consolidated [Glossary](7-Glossary.md) — see **Quality-Attribute & Measurement Terms**.
 
 ### QAS-1 · Accuracy — From Acoustic Event Detection to Computed Watch Metrics
 **Prioritization** — Rank 1 · Importance: H · Difficulty: H · Rationale: All watch metrics are derived from precisely timed acoustic events; any detection error propagates into every computed output.

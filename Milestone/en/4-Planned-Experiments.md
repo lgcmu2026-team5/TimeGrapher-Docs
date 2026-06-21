@@ -4,7 +4,7 @@
 
 ## Terminology
 
-The terms used in this document are defined in the consolidated [Glossary](6-Glossary.md).
+The terms used in this document are defined in the consolidated [Glossary](7-Glossary.md).
 
 ## Risk-to-Experiment Map
 

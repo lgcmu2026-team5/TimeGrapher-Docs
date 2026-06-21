@@ -6,7 +6,7 @@
 
 ## Terminology
 
-The terms used in this document are defined in the consolidated [Glossary](6-Glossary.md) — see **Platform & Engineering Terms** (and the Domain / Quality-Attribute sections).
+The terms used in this document are defined in the consolidated [Glossary](7-Glossary.md) — see **Platform & Engineering Terms** (and the Domain / Quality-Attribute sections).
 
 ## Risk Summary
 

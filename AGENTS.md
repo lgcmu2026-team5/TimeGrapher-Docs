@@ -4,7 +4,7 @@
 
 - The milestone presentation documents live under `Milestone/en` and `Milestone/ko`.
 - Keep English and Korean versions aligned when editing paired files under `Milestone/en` and `Milestone/ko`.
-- For local Markdown links inside those directories, use the current numbered filenames such as `1-Project-Plan.md`, `2-Architectural-Drivers.md`, and `6-Glossary.md`.
+- For local Markdown links inside those directories, use the current numbered filenames such as `1-Project-Plan.md`, `2-Architectural-Drivers.md`, `6-Architectural-View.md`, and `7-Glossary.md`.
 
 ## Project-local Skills
 
