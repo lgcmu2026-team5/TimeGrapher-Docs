@@ -33,24 +33,41 @@ Core → Nothing (zero dependencies)
 ---
 ## 2. MODULE USES VIEW – Project Level Actual Dependencies
 
-**Purpose:** Documents real `ProjectReference` and `using` statements at the project level. Shows what code actually couples to what.
+**Purpose:** Shows actual uses relations among runtime source modules.
 
 **Key Principle:**
-- Graph is **code-based**: every arrow represents an existing syntactic reference in .csproj or .cs files.
-- Defines the concrete dependency graph; whereas the Layered View defines design permissions.
+- The Layered View defines permitted dependencies.
+- The Module Uses View defines the dependency graph of the current source structure.
 - Zero dependencies mean no connection lines are drawn.
 
 **Project-Level Uses:**
-- `App` → `Core` (required)
-- `App` → `WindowsAudio` / `LinuxAudio` (conditional on OS)
-- `Verify` → `Core`
-- Platform adapters → `Core`
-- `App` & Platform adapters → `External Libs`
-- `Core` has no dependencies on other projects or external libraries.
+- `TimeGrapher.App` → `TimeGrapher.Core`
+- `TimeGrapher.App` → `WindowsAudio` / `LinuxAudio`
+- `TimeGrapher.Verify` → `TimeGrapher.Core`
+- `WindowsAudio` / `LinuxAudio` → `TimeGrapher.Core`
+- `TimeGrapher.Core` → none
 
-*(Note: Internal folder and namespace usage details for Level 2 & 3 are documented in separate sub-module views.)*
+![Module Uses View - Project-level modules](../assets/USE.png)
 
-![alt text](../assets/USE.png)
+**Core Internal Uses:**
+
+| Core module | Responsibility | Uses |
+|---|---|---|
+| `Analysis` | coordinates the analysis worker and result-frame creation | `Detection`, `Detection.Scoring`, `Metrics`, `Imaging`, `AudioIo`, `Shared` |
+| `Detection` | detects watch-signal events and sync state | `Shared` |
+| `Detection.Scoring` | provides candidate-event acceptance criteria | `Detection` |
+| `Metrics` | computes rate, amplitude, and beat error | `Shared` |
+| `Imaging` | builds sound-image and spectrogram models | `Shared` |
+| `AudioIo` | provides recording-writer contracts and implementations | `Shared` |
+| `Sim` | provides a synthetic input source | `Shared` |
+| `Shared` | provides frames, snapshots, buffers, worker contracts, and common state types | none |
+
+**Scope / Rationale:**
+- Includes: runtime source projects and major `TimeGrapher.Core` internal modules.
+- Excludes: build outputs, generated files, full file inventory, test project detail, App-internal UI structure.
+- `TimeGrapher.Core` contains the domain decomposition, so its internal uses are summarized separately.
+- App structure belongs in the MVVM/UI view; Platform and Verify remain project-level elements.
+- Platform adapters keep OS-specific audio dependencies out of Core.
 
 
 ## 3. MVC VIEW – Responsibility Separation

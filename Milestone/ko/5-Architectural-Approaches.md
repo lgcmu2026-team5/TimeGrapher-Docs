@@ -32,24 +32,42 @@ Core → Nothing (zero dependencies)
 
 ## 2. MODULE USES VIEW – 프로젝트 수준 실제 의존성
 
-**목적:** 프로젝트 수준의 실제 `ProjectReference`와 `using` 문을 문서화한다. 어떤 코드가 무엇에 실제로 결합되어 있는지 보여준다.
+**목적:** runtime source module 사이의 실제 uses 관계를 보여준다.
 
 **핵심 원칙:**
-- 그래프는 **코드 기반**이다. 모든 화살표는 `.csproj` 또는 `.cs` 파일에 존재하는 문법적 참조를 나타낸다.
-- Layered View가 설계상 허용 범위를 정의한다면, Module Uses View는 구체적인 의존성 그래프를 정의한다.
-- 의존성이 0이면 연결선을 그리지 않는다.
+- Layered View는 허용되는 의존성을 정의한다.
+- Module Uses View는 현재 source structure의 의존성 그래프를 정의한다.
+- 의존성이 없으면 연결선을 그리지 않는다.
 
 **프로젝트 수준 Uses:**
-- `App` → `Core`(필수)
-- `App` → `WindowsAudio` / `LinuxAudio`(OS별 조건부)
-- `Verify` → `Core`
-- Platform adapters → `Core`
-- `App` & Platform adapters → `External Libs`
-- `Core`는 다른 프로젝트나 외부 라이브러리에 의존하지 않는다.
+- `TimeGrapher.App` → `TimeGrapher.Core`
+- `TimeGrapher.App` → `WindowsAudio` / `LinuxAudio`
+- `TimeGrapher.Verify` → `TimeGrapher.Core`
+- `WindowsAudio` / `LinuxAudio` → `TimeGrapher.Core`
+- `TimeGrapher.Core` → 없음
 
-*(참고: Level 2 & 3의 내부 폴더 및 namespace 사용 세부사항은 별도 하위 모듈 뷰에 문서화한다.)*
+![Module Uses View - Project-level modules](../assets/USE.png)
 
-![alt text](../assets/USE.png)
+**Core 내부 Uses:**
+
+| Core module | 책임 | Uses |
+|---|---|---|
+| `Analysis` | 분석 worker와 결과 frame 생성을 조정한다. | `Detection`, `Detection.Scoring`, `Metrics`, `Imaging`, `AudioIo`, `Shared` |
+| `Detection` | watch signal event와 sync 상태를 검출한다. | `Shared` |
+| `Detection.Scoring` | candidate event의 채택/거절 기준을 제공한다. | `Detection` |
+| `Metrics` | rate, amplitude, beat error를 계산한다. | `Shared` |
+| `Imaging` | sound image와 spectrogram model을 만든다. | `Shared` |
+| `AudioIo` | recording writer 계약과 구현을 제공한다. | `Shared` |
+| `Sim` | synthetic input source를 제공한다. | `Shared` |
+| `Shared` | frame, snapshot, buffer, worker contract, 공통 상태 type을 제공한다. | 없음 |
+
+**Scope / Rationale:**
+- 포함: runtime source projects와 `TimeGrapher.Core` 내부 주요 modules.
+- 제외: build outputs, generated files, 전체 file inventory, test project detail, App 내부 UI 구조.
+- `TimeGrapher.Core`는 domain decomposition을 담고 있어 내부 uses를 별도로 요약한다.
+- App 구조는 MVVM/UI view에서 다루고, Platform/Verify는 project-level element로 둔다.
+- Platform adapters는 OS-specific audio dependency가 Core로 들어오지 않게 한다.
+
 
 ## 3. MVC VIEW – 책임 분리
 
