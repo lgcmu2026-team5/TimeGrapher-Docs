@@ -6,6 +6,10 @@
 - Keep English and Korean versions aligned when editing paired files under `Milestone/en` and `Milestone/ko`.
 - For local Markdown links inside those directories, use the current numbered filenames such as `1-Project-Plan.md`, `2-Architectural-Drivers.md`, and `6-Glossary.md`.
 
+## Project-local Skills
+
+- For syncing the copied TimeGrapher-Net ADR set into `Milestone/en/ADR`, `Milestone/ko/ADR`, and the shared `Milestone/assets`, use the `sync-adr` skill. Codex reads `.codex/skills/sync-adr/SKILL.md`; Claude Code reads `.claude/skills/sync-adr/SKILL.md`. Keep the two skill files in sync.
+
 ## Terminology
 
 - Use `technical experiment` as the canonical term for focused engineering checks that probe a technical limit before implementation.

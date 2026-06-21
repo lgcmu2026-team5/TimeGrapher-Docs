@@ -26,7 +26,7 @@ App & Platform Adapters → External Tech
 Core → Nothing (zero dependencies)
 ```
 
-![alt text](image/LAYER.png)
+![alt text](../assets/LAYER.png)
 
 ---
 
@@ -49,7 +49,7 @@ Core → Nothing (zero dependencies)
 
 *(참고: Level 2 & 3의 내부 폴더 및 namespace 사용 세부사항은 별도 하위 모듈 뷰에 문서화한다.)*
 
-![alt text](image/USE.png)
+![alt text](../assets/USE.png)
 
 ## 3. MVC VIEW – 책임 분리
 
@@ -76,7 +76,7 @@ Core → Nothing (zero dependencies)
 - **Core is UI-agnostic**: Model(Core)은 View 또는 Controller에 대한 의존성이 0이다. 분리된 이벤트 알림으로만 바깥과 통신한다 → 이식성과 테스트 용이성이 높다.
 - **App is mixed**: View와 Controller는 Avalonia 프레임워크 세부사항과 섞일 수 있지만, UI에 독립적인 Model에 의존한다.
 
-![MVC responsibility flow](image/MVC.png)
+![MVC responsibility flow](../assets/MVC.png)
 
 **목차** — [한 장으로 보는 아키텍처](#한-장으로-보는-아키텍처) · [적용할 소프트웨어 아키텍처 택틱](#적용할-소프트웨어-아키텍처-택틱) · [적용할 소프트웨어 디자인 패턴](#적용할-소프트웨어-디자인-패턴)
 

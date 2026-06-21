@@ -1,0 +1,5 @@
+interface:
+  display_name: "Sync ADR"
+  short_description: "Sync copied ADR docs from TimeGrapher-Net."
+  default_prompt: "Sync the project-local ADR copy from the latest TimeGrapher-Net docs/ADR source."
+
