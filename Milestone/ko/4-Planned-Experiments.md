@@ -165,11 +165,9 @@ RPi5 Live 환경에서 입력 → 분석 → 표시 파이프라인이 실시간
 
 단일 스레드 동기 구조의 UI 병목을 제거했다.
 
-- **결정 사항**: Pipe-and-Filter 흐름 + 동시성 택틱(Producer–Consumer · Observer · Latest-Wins · 고정 버퍼 풀) 채택한다.
-- **분석**: 입력 → 분석 → 표시를 `Pipe-and-Filter` 단방향 흐름으로 정형화하고, `AnalysisWorker`를 전용 스레드(`ThreadPriority.Highest`)로 격리해 UI는 렌더링만 전단 하도록 한.
-- **실험 결과**: QAS-2의 최고 목표 조건(**43200 BPH @ 192 kHz, 비트 주기 83.3 ms**) 대비, 실측 부하 조건인 **28800 BPH(비트당 125 ms)** 에서 UI 차단 없이 캡처 → 분석 → 프레임 라우팅 연쇄가 마감 시간 내에 안정 수렴확인함. end-to-end 비트 예산(QAS-2)과 별개로 활성 탭 UI 렌더 스로틀 예산(**33 ms / 100 ms**) 내에서 렌더링 블로킹 타임 통제됨.
-- **조치 사항**: 실시간성이 중요한 렌더링 경로·데이터 수집 코어는 검증된 격리 구조(워커 스레드 분리 + 유한 버퍼 + Latest-Wins)를 유지하고, 파이프라인 확장 시 필터 단위 분할 규칙을 준수한다.
-
+- **결정 사항** : Pipe-and-Filter 흐름 + 동시성 택틱(Producer–Consumer · Observer · Latest-Wins · 고정 버퍼 풀) 채택한다.
+- **Data 흐름**: 입력 → 분석 → 표시를 `Pipe-and-Filter` 단방향 흐름으로 정형화하고, `AnalysisWorker`를 전용 스레드(`ThreadPriority.Highest`)로 격리해 UI는 렌더링만 전단 하도록 한다.
+- **실험 결과** : [하단 실험 결과 및 분석](#실험-결과-및-분석) 참조
 
 ### 목적
 
