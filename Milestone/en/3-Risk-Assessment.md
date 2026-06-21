@@ -92,7 +92,7 @@ Risk ID | Status | Risk Title | Type | QAS | P | I
   - **Grading rationale**
     - P-Low: the current RPi5 app workload met the latency budget and the Avalonia GPU path did not show the reported slowdown.
     - I-Low: no remaining architecture risk is identified for choosing Avalonia; the default GPU-first rendering path is acceptable.
-  - **Result**: Latency ([result_latency.md](../../TestResult/result_latency.md)) passed within budget (drop/miss = 0) and rendering ([result_renderer.md](../../TestResult/result_renderer.md)) did not reproduce the reported GPU slowdown (GLX/EGL ~60 FPS) → **closed as no remaining risk**, fixing implementation on .NET (C#) + Avalonia UI (GPU-first). Re-test only if the deployment or rendering workload changes substantially.
+  - **Result**: Latency ([EXP-02](4-Planned-Experiments.md#exp-02-rpi5-real-time-sample-rate-ceiling) · [result_latency.md](../../TestResult/result_latency.md)) passed within budget (drop/miss = 0) and rendering ([EXP-01](4-Planned-Experiments.md#exp-01-avalonia-rendering-backend-on-the-rpi5) · [result_renderer.md](../../TestResult/result_renderer.md)) did not reproduce the reported GPU slowdown (GLX/EGL ~60 FPS) → **closed as no remaining risk**, fixing implementation on .NET (C#) + Avalonia UI (GPU-first). Re-test only if the deployment or rendering workload changes substantially.
 
 ## B. Signal Processing / Measurement Trustworthiness
 

@@ -92,7 +92,7 @@ Risk ID | 상태 | 리스크 타이틀 | 구분 | QAS | P | I
   - **등급 근거**
     - P-Low: 현재 RPi5 앱 워크로드가 latency 예산을 충족했고 Avalonia GPU 경로에서도 보고된 성능 저하가 나타나지 않음.
     - I-Low: Avalonia 선택에 대해 남은 아키텍처 리스크가 확인되지 않았고, 기본 GPU 우선 렌더링 경로를 사용할 수 있음.
-  - **결과**: latency([result_latency.md](../../TestResult/result_latency.md))가 예산 내 Pass(drop·miss 0)이고 렌더링([result_renderer.md](../../TestResult/result_renderer.md))에서 보고된 GPU 저하가 미재현(GLX/EGL ~60 FPS) → **리스크 없음으로 종결**, .NET (C#) + Avalonia UI(GPU 우선)로 확정. 배포·렌더 워크로드가 크게 바뀔 때만 재측정.
+  - **결과**: latency([EXP-02](4-Planned-Experiments.md#exp-02-rpi5-실시간-샘플레이트-상한) · [result_latency.md](../../TestResult/result_latency.md))가 예산 내 Pass(drop·miss 0)이고 렌더링([EXP-01](4-Planned-Experiments.md#exp-01-rpi5-avalonia-렌더링-백엔드) · [result_renderer.md](../../TestResult/result_renderer.md))에서 보고된 GPU 저하가 미재현(GLX/EGL ~60 FPS) → **리스크 없음으로 종결**, .NET (C#) + Avalonia UI(GPU 우선)로 확정. 배포·렌더 워크로드가 크게 바뀔 때만 재측정.
 
 ## B. 신호처리 / 측정 신뢰성
 
