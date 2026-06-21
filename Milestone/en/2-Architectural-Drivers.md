@@ -153,12 +153,12 @@ Status: 🟢 Implemented · 🟡 Partially Implemented · 🔴 Needs Implementat
 | FR-10-02 | 🟢 | mandatory | The Waveform Comparison Display with Timing Markers shall provide the user with the ability to compare waveform shape across beats. |
 | FR-10-03 | 🟢 | mandatory | The Waveform Comparison Display with Timing Markers shall provide the user with the ability to compare waveform spacing across beats. |
 | FR-10-04 | 🟢 | mandatory | The Waveform Comparison Display with Timing Markers shall provide the user with the ability to compare waveform consistency across beats. |
-| FR-10-05 | 🔴 | recommended | The Waveform Comparison Display with Timing Markers should provide the user with overlaid waveform displays that include vertical guide markers. |
+| FR-10-05 | 🟢 | recommended | The Waveform Comparison Display with Timing Markers should provide the user with overlaid waveform displays that include vertical guide markers. |
 | FR-10-06 | 🟢 | recommended | The Waveform Comparison Display with Timing Markers should provide the user with the rate value. |
 | FR-10-07 | 🟢 | recommended | The Waveform Comparison Display with Timing Markers should provide the user with the beat error value. |
 | FR-10-08 | 🟢 | recommended | The Waveform Comparison Display with Timing Markers should provide the user with the beats per hour value. |
 | FR-10-10 | 🟢 | recommended | The Waveform Comparison Display with Timing Markers should provide the user with the ability to identify landmarks in the waveform signal. |
-| FR-10-11 | 🔴 | recommended | The Waveform Comparison Display with Timing Markers should provide the user with the ability to inspect changes in waveform structure between beats. |
+| FR-10-11 | 🟢 | recommended | The Waveform Comparison Display with Timing Markers should provide the user with the ability to inspect changes in waveform structure between beats. |
 | FR-10-13 | 🟢 | recommended | The Waveform Comparison Display with Timing Markers should provide the user with signal envelopes for each beat. |
 | FR-10-14 | 🟢 | optional | The Waveform Comparison Display with Timing Markers may provide the user with degree-based reference markers. |
 | FR-10-15 | 🟢 | optional | The Waveform Comparison Display with Timing Markers may provide the user with time-based reference markers. |
