@@ -65,32 +65,40 @@ Decomposes `TimeGrapher.Core` into its major domain modules and shows which Core
 | `Shared` | provides frames, snapshots, buffers, worker contracts, and common state types | none |
 
 
-## 3. MVC VIEW – Responsibility Separation
+## 3. MVVM VIEW – Responsibility Separation
 
-**Purpose:** Divides TimeGrapher into Model (data), View (display), and Controller (logic), clarifying who owns what and how they interact to maintain separation of concerns.
+**Purpose:** Splits the App's UI into three layers — **View** (display), **ViewModel** (UI state & presentation logic), **Model** (domain/data). Dependencies flow one way, **View → ViewModel → Model**, so a lower layer never knows the layer above it.
 - Loose Coupling & Parallel Development
 - Modifiability
-- Consistency
+- Testability (the ViewModel runs without the UI)
 
-**Key Roles:**
+**Notation:** Each layer is colored (View / ViewModel / Model); a gray box is a **module** (a group of related classes). Every dependency is a dotted **«use»** arrow drawn from the *using* module to the *used* one.
 
-| MVC Component | Owns | Example |
+**Modules (as in the figure):**
+
+| Layer | Module | What it does |
 |---|---|---|
-| **Model** | Application state & domain logic. Responds to state queries and notifies views of changes. | Core analysis engine, MainWindowViewModel, BeatMetricsHistorySnapshot |
-| **View** | Renders the model and captures user input. | MainWindow.axaml, renderers, plot controls |
-| **Controller** | Defines application behavior. Maps user gestures to model updates. | MainWindow code-behind, RunCommandService, AudioBackend selection |
+| **View** (Avalonia) | Main Window | The main window — overall layout, controls, and window lifecycle. |
+| | Graph Tabs Window | Hosts the measurement tabs and routes each analysis frame to the active tab. |
+| | Graph Rendering | Draws the graphs and numeric readouts from the frame data. |
+| **ViewModel** (Avalonia-free) | MainWindowViewModel | Holds the UI state and binding properties the View binds to, and exposes the commands. |
+| | Run · session coordination | Drives start / stop / pause and the analysis-session lifecycle (`RunCommandService`, `RunSessionController`). |
+| | Input · display coordination | Enumerates and selects audio input devices and prepares display state (`AudioDeviceController`). |
+| **Model** (domain · data) | Core.Analysis · Detection | The analysis engine — detects tick/tock beats and computes BPH and sync. |
+| | Core.Metrics · AudioIo · Imaging | Computes rate / amplitude / beat error, reads & writes WAV, and builds sound images. |
+| | Core.Shared | Common contracts and data types (frames, buffers) shared by every module. |
+| | Platform.WindowsAudio · LinuxAudio | Captures live audio from the OS (WASAPI on Windows, ALSA / PipeWire on Linux). |
 
-**Interaction Flow (Control Flow):**
-1. **User Gestures:** View captures user input and invokes the Controller.
-2. **State Change:** Controller translates actions into method invocations to update the Model's state.
-3. **Change Notification:** Model fires an event/notification to the View that its state has changed (typically via Observer pattern).
-4. **State Query:** View synchronously queries the Model for the updated data to render the display.
+**Dependency Flow («use» arrows):**
+- The three View modules **use** `MainWindowViewModel`.
+- `MainWindowViewModel` **uses** the two coordination modules.
+- The coordination modules **use** the Core modules; `Core.Analysis · Detection` and `Platform.*` ultimately **use** `Core.Shared`.
 
 **Key Constraint:**
-- **Core is UI-agnostic**: The Model (Core) has zero dependencies on the View or Controller. It communicates outward only via decoupled event notifications $\rightarrow$ highly portable and testable.
-- **App is mixed**: Views and Controllers may intertwine with Avalonia framework specifics, but they rely on the agnostic Model.
+- **One-way dependency:** View → ViewModel → Model. The ViewModel holds no Avalonia/View type (locked by `ViewModelPurityTests`), and the Model (`Core`) has zero dependencies, so it builds and tests without the UI.
+- **Binding inverts control, not dependency:** at runtime UI updates flow Model → ViewModel → View through events and binding, but that is *data flow*, not a compile-time dependency — so the «use» graph stays acyclic and downward.
 
-![MVC responsibility flow](../assets/MVC.png)
+![MVVM responsibility flow](../assets/MVVM.png)
 
 **Contents** — [The Architecture at a Glance](#the-architecture-at-a-glance) · [Software Architecture Tactics to Apply](#software-architecture-tactics-to-apply) · [Software Design Patterns to Apply](#software-design-patterns-to-apply)
 

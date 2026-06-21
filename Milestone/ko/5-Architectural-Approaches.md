@@ -70,32 +70,40 @@ App, Core, platform adapters, Verify 사이의 module uses 관계를 보여준�
 | `Shared` | frame, snapshot, buffer, worker contract, 공통 상태 type을 제공한다. | 없음 |
 
 
-## 3. MVC VIEW – 책임 분리
+## 3. MVVM VIEW – 책임 분리
 
-**목적:** TimeGrapher를 Model(데이터), View(표시), Controller(로직)로 나누어 누가 무엇을 소유하고 어떻게 상호작용하는지 명확히 하며 관심사 분리를 유지한다.
+**목적:** App의 UI를 세 계층 — **View**(표시), **ViewModel**(UI 상태·표현 로직), **Model**(도메인/데이터) — 으로 나눈다. 의존성은 **View → ViewModel → Model** 한 방향으로만 흐르며, 하위 계층은 상위 계층을 모른다.
 - Loose Coupling & Parallel Development
 - Modifiability
-- Consistency
+- Testability (ViewModel은 UI 없이 동작)
 
-**핵심 역할:**
+**표기:** 계층마다 색을 칠하고(View / ViewModel / Model), 회색 상자는 **모듈**(관련 클래스 묶음)이다. 모든 의존성은 *사용하는* 모듈에서 *사용되는* 모듈로 향하는 점선 **«use»** 화살표로 그린다.
 
-| MVC Component | 소유 책임 | 예시 |
+**모듈 (그림 기준):**
+
+| 계층 | 모듈 | 하는 일 |
 |---|---|---|
-| **Model** | 애플리케이션 상태와 도메인 로직. 상태 질의에 응답하고 변경을 View에 알린다. | Core analysis engine, MainWindowViewModel, BeatMetricsHistorySnapshot |
-| **View** | Model을 렌더링하고 사용자 입력을 수집한다. | MainWindow.axaml, renderers, plot controls |
-| **Controller** | 애플리케이션 동작을 정의한다. 사용자 제스처를 Model 업데이트로 매핑한다. | MainWindow code-behind, RunCommandService, AudioBackend selection |
+| **View** (Avalonia) | Main Window | 메인 창 — 전체 레이아웃·컨트롤, 창 열고 닫기. |
+| | Graph Tabs Window | 측정 탭을 호스팅하고 분석 프레임을 활성 탭으로 보낸다. |
+| | Graph Rendering | 프레임 데이터로 그래프와 수치 표시를 그린다. |
+| **ViewModel** (Avalonia 무의존) | MainWindowViewModel | View가 바인딩하는 UI 상태·바인딩 속성을 보유하고 커맨드를 노출한다. |
+| | Run · session coordination | 분석을 시작·정지·일시정지하고, 시작부터 끝까지 진행을 관리한다(`RunCommandService`, `RunSessionController`). |
+| | Input · display coordination | 오디오 입력 장치를 열거·선택하고 표시 상태를 준비한다(`AudioDeviceController`). |
+| **Model** (도메인 · 데이터) | Core.Analysis · Detection | 분석 엔진 — tick/tock 비트를 검출하고 BPH·sync를 계산한다. |
+| | Core.Metrics · AudioIo · Imaging | 일오차/진폭/비트에러 계산, WAV 입출력, 사운드 이미지 생성. |
+| | Core.Shared | 모든 모듈이 공유하는 공통 계약·데이터 타입(프레임, 버퍼). |
+| | Platform.WindowsAudio · LinuxAudio | OS에서 라이브 오디오를 캡처한다(Windows WASAPI, Linux ALSA/PipeWire). |
 
-**상호작용 흐름(Control Flow):**
-1. **User Gestures:** View가 사용자 입력을 수집하고 Controller를 호출한다.
-2. **State Change:** Controller가 동작을 Model 상태 업데이트 메서드 호출로 변환한다.
-3. **Change Notification:** Model이 상태 변경 이벤트/알림을 View에 보낸다(일반적으로 Observer 패턴).
-4. **State Query:** View가 갱신된 데이터를 동기적으로 Model에 질의해 화면을 렌더링한다.
+**의존 흐름(«use» 화살표):**
+- View의 세 모듈은 `MainWindowViewModel`을 **사용**한다.
+- `MainWindowViewModel`은 두 조정 모듈을 **사용**한다.
+- 조정 모듈은 Core 모듈을 **사용**하고, `Core.Analysis · Detection`과 `Platform.*`은 결국 `Core.Shared`를 **사용**한다.
 
 **핵심 제약:**
-- **Core is UI-agnostic**: Model(Core)은 View 또는 Controller에 대한 의존성이 0이다. 분리된 이벤트 알림으로만 바깥과 통신한다 → 이식성과 테스트 용이성이 높다.
-- **App is mixed**: View와 Controller는 Avalonia 프레임워크 세부사항과 섞일 수 있지만, UI에 독립적인 Model에 의존한다.
+- **단방향 의존:** View → ViewModel → Model. ViewModel은 Avalonia/View 타입을 갖지 않으며(`ViewModelPurityTests`가 잠금), Model(`Core`)은 의존성이 0이라 UI 없이 빌드·테스트된다.
+- **바인딩은 의존이 아니라 제어를 역전한다:** 런타임에 UI 갱신은 Model → ViewModel → View로 흐르지만 이는 이벤트·바인딩을 통한 *데이터 흐름*이지 컴파일 의존이 아니므로, «use» 그래프는 비순환·하향을 유지한다.
 
-![MVC responsibility flow](../assets/MVC.png)
+![MVVM responsibility flow](../assets/MVVM.png)
 
 **목차** — [한 장으로 보는 아키텍처](#한-장으로-보는-아키텍처) · [적용할 소프트웨어 아키텍처 택틱](#적용할-소프트웨어-아키텍처-택틱) · [적용할 소프트웨어 디자인 패턴](#적용할-소프트웨어-디자인-패턴)
 
