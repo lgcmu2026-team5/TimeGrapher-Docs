@@ -129,12 +129,12 @@ Status: 🟢 Implemented · 🟡 Partially Implemented · 🔴 Needs Implementat
 ### G08 · Escapement Analyzer and Marker-Line Display
 | ID | Status | Grade | Requirement |
 |:---:|:------:|:-----:|:------------|
-| FR-08-01 |  | mandatory | The Escapement Analyzer and Marker-Line Display shall provide the user with a visualization of real-time microphone input. |
-| FR-08-02 |  | mandatory | The Escapement Analyzer and Marker-Line Display shall provide the user with a visualization of stored recording files. |
-| FR-08-03 |  | recommended | The Escapement Analyzer and Marker-Line Display should provide the user with a pause/capture mode for analysis. |
-| FR-08-04 |  | mandatory | The Escapement Analyzer and Marker-Line Display shall provide the user with markers at the A and C event points to be analyzed. |
-| FR-08-05 |  | mandatory | The Escapement Analyzer and Marker-Line Display shall provide the user with the elapsed time between markers in milliseconds. |
-| FR-08-06 |  | recommended | The Escapement Analyzer and Marker-Line Display should provide the user with the ability to change the marker measurement reference based on signal feature points (Onset, Peak, etc.). |
+| FR-08-01 | 🟢 | mandatory | The Escapement Analyzer and Marker-Line Display shall provide the user with a visualization of real-time microphone input. |
+| FR-08-02 | 🟢 | mandatory | The Escapement Analyzer and Marker-Line Display shall provide the user with a visualization of stored recording files. |
+| FR-08-03 | 🟢 | recommended | The Escapement Analyzer and Marker-Line Display should provide the user with a pause/capture mode for analysis. |
+| FR-08-04 | 🟢 | mandatory | The Escapement Analyzer and Marker-Line Display shall provide the user with markers at the A and C event points to be analyzed. |
+| FR-08-05 | 🟢 | mandatory | The Escapement Analyzer and Marker-Line Display shall provide the user with the elapsed time between markers in milliseconds. |
+| FR-08-06 | 🟢 | recommended | The Escapement Analyzer and Marker-Line Display should provide the user with the ability to change the marker measurement reference based on signal feature points (Onset, Peak, etc.). |
 
 ### G09 · Time-Frequency Spectrogram Display
 | ID | Status | Grade | Requirement |
