@@ -139,12 +139,12 @@ Status: 🟢 Implemented · 🟡 Partially Implemented · 🔴 Needs Implementat
 ### G09 · Time-Frequency Spectrogram Display
 | ID | Status | Grade | Requirement |
 |:---:|:------:|:-----:|:------------|
-| FR-09-01 |  | mandatory | The Time-Frequency Spectrogram Display shall provide the user with a time-frequency spectrogram that shows how the watch's acoustic energy is distributed across time and frequency. |
-| FR-09-02 |  | mandatory | The Time-Frequency Spectrogram Display shall present the spectrogram to the user with time on the horizontal axis, frequency on the vertical axis, and signal strength as color intensity. |
-| FR-09-03 |  | recommended | The Time-Frequency Spectrogram Display should provide the user with the ability to inspect either the most recent beat or a selected recent time window. |
-| FR-09-04 |  | recommended | The Time-Frequency Spectrogram Display should provide the user with the ability to view recurring energy structures at characteristic frequency ranges. |
-| FR-09-05 |  | recommended | The Time-Frequency Spectrogram Display should provide the user with the ability to compare one beat with the next. |
-| FR-09-06 |  | recommended | The Time-Frequency Spectrogram Display should provide the user with a color scale or legend for interpreting relative signal strength. |
+| FR-09-01 | 🟢 | mandatory | The Time-Frequency Spectrogram Display shall provide the user with a time-frequency spectrogram that shows how the watch's acoustic energy is distributed across time and frequency. |
+| FR-09-02 | 🟢 | mandatory | The Time-Frequency Spectrogram Display shall present the spectrogram to the user with time on the horizontal axis, frequency on the vertical axis, and signal strength as color intensity. |
+| FR-09-03 | 🟢 | recommended | The Time-Frequency Spectrogram Display should provide the user with the ability to inspect either the most recent beat or a selected recent time window. |
+| FR-09-04 | 🟡 | recommended | The Time-Frequency Spectrogram Display should provide the user with the ability to view recurring energy structures at characteristic frequency ranges. |
+| FR-09-05 | 🟡 | recommended | The Time-Frequency Spectrogram Display should provide the user with the ability to compare one beat with the next. |
+| FR-09-06 | 🟢 | recommended | The Time-Frequency Spectrogram Display should provide the user with a color scale or legend for interpreting relative signal strength. |
 
 ### G10 · Waveform Comparison Display with Timing Markers
 | ID | Status | Grade | Requirement |
@@ -178,24 +178,24 @@ Status: 🟢 Implemented · 🟡 Partially Implemented · 🔴 Needs Implementat
 ### G12 · Scope Function with Multiple Filter Views
 | ID | Status | Grade | Requirement |
 |:---:|:------:|:-----:|:------------|
-| FR-12-01 |  | mandatory | The Scope Function with Multiple Filter Views shall provide the user with four filter views — F0, F1, F2, F3 — over the same watch signal. |
-| FR-12-02 |  | recommended | The Scope Function with Multiple Filter Views should provide the user with the ability to compare how each filter changes the waveform. |
-| FR-12-03 |  | recommended | The Scope Function with Multiple Filter Views should provide the user with the ability to compare how each filter changes the visibility of key events (T1, T2, T3). |
-| FR-12-04 |  | mandatory | The Scope Function with Multiple Filter Views shall provide the user with updates of all filter views as measurements are acquired and processed. |
-| FR-12-05 |  | mandatory | The Scope Function with Multiple Filter Views shall provide the user with all filter views rendered from the same input signal data and the same time axis. |
-| FR-12-06 |  | mandatory | F0 shall provide the user with the signal as captured, formatted to fit the screen, treated as the closest available representation of the raw watch signal. |
-| FR-12-07 |  | mandatory | F0 shall provide the user with the signal mirrored symmetrically around its average value. |
-| FR-12-08 |  | mandatory | F1 shall provide the user with a moving-average-filtered view of the F0 signal that smooths the waveform envelope and removes a large portion of background noise. |
-| FR-12-09 |  | mandatory | F2 shall provide the user with a view that builds on F1 by emphasizing rising slopes and attenuating falling slopes to make beat features stand out, especially T3 (and to some extent T2). |
-| FR-12-10 |  | optional | F2 may provide the user with an attenuation function that decays after a local rise. |
-| FR-12-11 |  | mandatory | F3 shall provide the user with a view of only the upper portion of the signal relative to its average value, applying emphasis to rising edges and attenuation to falling portions, to support identification of T1 and especially T3. |
-| FR-12-12 |  | mandatory | Each filter view shall provide the user with its filter label (F0/F1/F2/F3). |
-| FR-12-13 |  | recommended | The Scope Function with Multiple Filter Views should provide the user with a UI to display the four filters simultaneously or switch between them for comparison. |
-| FR-12-14 |  | mandatory | The filter views shall provide the user with a Live mode. |
-| FR-12-15 |  | mandatory | The filter views shall provide the user with a Playback mode. |
-| FR-12-16 |  | mandatory | The filter views shall provide the user with a Sim mode. |
-| FR-12-17 |  | recommended | The filter views should provide the user with a pause control. |
-| FR-12-18 |  | recommended | The filter views should provide the user with navigation through captured data. |
+| FR-12-01 | 🟢 | mandatory | The Scope Function with Multiple Filter Views shall provide the user with four filter views — F0, F1, F2, F3 — over the same watch signal. |
+| FR-12-02 | 🟢 | recommended | The Scope Function with Multiple Filter Views should provide the user with the ability to compare how each filter changes the waveform. |
+| FR-12-03 | 🟢 | recommended | The Scope Function with Multiple Filter Views should provide the user with the ability to compare how each filter changes the visibility of key events (T1, T2, T3). |
+| FR-12-04 | 🟢 | mandatory | The Scope Function with Multiple Filter Views shall provide the user with updates of all filter views as measurements are acquired and processed. |
+| FR-12-05 | 🟢 | mandatory | The Scope Function with Multiple Filter Views shall provide the user with all filter views rendered from the same input signal data and the same time axis. |
+| FR-12-06 | 🟢 | mandatory | F0 shall provide the user with the signal as captured, formatted to fit the screen, treated as the closest available representation of the raw watch signal. |
+| FR-12-07 | 🟢 | mandatory | F0 shall provide the user with the signal mirrored symmetrically around its average value. |
+| FR-12-08 | 🟢 | mandatory | F1 shall provide the user with a moving-average-filtered view of the F0 signal that smooths the waveform envelope and removes a large portion of background noise. |
+| FR-12-09 | 🟢 | mandatory | F2 shall provide the user with a view that builds on F1 by emphasizing rising slopes and attenuating falling slopes to make beat features stand out, especially T3 (and to some extent T2). |
+| FR-12-10 | 🟢 | optional | F2 may provide the user with an attenuation function that decays after a local rise. |
+| FR-12-11 | 🟢 | mandatory | F3 shall provide the user with a view of only the upper portion of the signal relative to its average value, applying emphasis to rising edges and attenuation to falling portions, to support identification of T1 and especially T3. |
+| FR-12-12 | 🟢 | mandatory | Each filter view shall provide the user with its filter label (F0/F1/F2/F3). |
+| FR-12-13 | 🟢 | recommended | The Scope Function with Multiple Filter Views should provide the user with a UI to display the four filters simultaneously or switch between them for comparison. |
+| FR-12-14 | 🟢 | mandatory | The filter views shall provide the user with a Live mode. |
+| FR-12-15 | 🟢 | mandatory | The filter views shall provide the user with a Playback mode. |
+| FR-12-16 | 🟢 | mandatory | The filter views shall provide the user with a Sim mode. |
+| FR-12-17 | 🟢 | recommended | The filter views should provide the user with a pause control. |
+| FR-12-18 | 🟢 | recommended | The filter views should provide the user with navigation through captured data. |
 
 ## Quality Attribute Scenarios
 
