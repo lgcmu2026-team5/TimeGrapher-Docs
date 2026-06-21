@@ -30,35 +30,29 @@ Core → Nothing (zero dependencies)
 
 ---
 
-## 2. MODULE USES VIEW – 실제 의존성 구조
+## 2. TIMEGRAPHER MODULE USES VIEW – 모듈 사용 관계
 
-**목적:** 이 view는 project-level module view와 `TimeGrapher.Core` decomposition view로 구성된다. Project-level view는 App, Core, platform adapters, Verify 사이의 uses 관계를 보여주고, Core decomposition view는 Core 내부 domain modules 사이의 uses 관계를 보여준다. App 내부 UI 구조, build outputs, generated files, test project detail, 전체 file inventory는 이 view에서 제외한다.
+**목적:** 이 view는 TimeGrapher의 module uses 관계를 두 수준에서 보여준다. 2-1은 project-level module uses를, 2-2는 `TimeGrapher.Core` 내부 decomposition을 보여준다. App 내부 UI 구조는 MVVM/MVC View에서 다루고, 이 view는 project-level module uses와 Core 내부 module uses에 집중한다.
 
-**2-1 Project-Level Module View:**
+**2-1 Project-Level Module Uses:**
 
-App, Core, platform adapters, Verify 사이의 module uses 관계를 보여준다. Platform adapters는 OS-specific audio dependency가 Core로 들어오지 않게 하는 경계이고, `TimeGrapher.Core`는 외부 project/package에 의존하지 않는다.
+App, Core, platform adapters, Verify 사이의 module uses 관계를 보여준다. 여기서 platform adapters는 그림의 `WindowsAudio`와 `LinuxAudio`를 의미하며, OS-specific audio dependency가 `TimeGrapher.Core`로 들어오지 않도록 분리된 modules이다.
 
 ![Module Uses View - Project-level modules](../assets/module-uses-project.ko.svg)
 
-Element Catalog:
+- `TimeGrapher.App` uses `TimeGrapher.Core`.
+- `TimeGrapher.App` conditionally uses `WindowsAudio` or `LinuxAudio`.
+- `WindowsAudio`와 `LinuxAudio`는 `TimeGrapher.Core`를 사용한다.
+- `TimeGrapher.Verify` uses `TimeGrapher.Core`.
+- `TimeGrapher.Core`는 App, Verify, platform adapters를 사용하지 않는다.
 
-| Element | 책임 | Uses |
-|---|---|---|
-| `TimeGrapher.App` | UI 실행과 화면 구성을 담당한다. | `TimeGrapher.Core`, `WindowsAudio` / `LinuxAudio` |
-| `TimeGrapher.Core` | 분석 domain을 담당한다. | 없음 |
-| `WindowsAudio` | Windows audio adapter를 담당한다. | `TimeGrapher.Core` |
-| `LinuxAudio` | Linux/Raspberry Pi audio adapter를 담당한다. | `TimeGrapher.Core` |
-| `TimeGrapher.Verify` | headless detector verification을 담당한다. | `TimeGrapher.Core` |
-
-**2-2 TimeGrapher.Core Decomposition Module View:**
+**2-2 TimeGrapher.Core Decomposition:**
 
 `TimeGrapher.Core`를 주요 domain modules로 분해하고, 각 module이 어떤 Core 내부 module을 사용하는지 보여준다.
 
 ![Module Uses View - Core internal modules](../assets/module-uses-core.ko.svg)
 
-Element Catalog:
-
-| Element | 책임 | Uses |
+| Module | 책임 | Uses |
 |---|---|---|
 | `Analysis` | 분석 worker와 결과 frame 생성을 조정한다. | `Detection`, `Detection.Scoring`, `Metrics`, `Imaging`, `AudioIo`, `Shared` |
 | `Detection` | watch signal event와 sync 상태를 검출한다. | `Shared` |

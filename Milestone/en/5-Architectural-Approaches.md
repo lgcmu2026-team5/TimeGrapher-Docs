@@ -31,35 +31,29 @@ Core → Nothing (zero dependencies)
 
 
 ---
-## 2. MODULE USES VIEW – Actual Dependency Structure
+## 2. TIMEGRAPHER MODULE USES VIEW – Module Uses Relations
 
-**Purpose:** This view consists of a project-level module view and a `TimeGrapher.Core` decomposition view. The project-level view shows uses relations among App, Core, platform adapters, and Verify; the Core decomposition view shows uses relations among Core-internal domain modules. App-internal UI structure, build outputs, generated files, test project detail, and full file inventory are outside this view.
+**Purpose:** This view shows TimeGrapher module uses relations at two levels. Section 2-1 shows project-level module uses; Section 2-2 shows the internal decomposition of `TimeGrapher.Core`. App-internal UI structure is covered by the MVVM/MVC View; this view focuses on project-level module uses and Core-internal module uses.
 
-**2-1 Project-Level Module View:**
+**2-1 Project-Level Module Uses:**
 
-Shows module uses relations among App, Core, platform adapters, and Verify. Platform adapters form the boundary that keeps OS-specific audio dependencies out of Core, and `TimeGrapher.Core` has no outward project/package dependency.
+Shows module uses relations among App, Core, platform adapters, and Verify. Here, platform adapters refer to `WindowsAudio` and `LinuxAudio` in the diagram; they isolate OS-specific audio dependencies from `TimeGrapher.Core`.
 
 ![Module Uses View - Project-level modules](../assets/module-uses-project.en.svg)
 
-Element Catalog:
+- `TimeGrapher.App` uses `TimeGrapher.Core`.
+- `TimeGrapher.App` conditionally uses `WindowsAudio` or `LinuxAudio`.
+- `WindowsAudio` and `LinuxAudio` use `TimeGrapher.Core`.
+- `TimeGrapher.Verify` uses `TimeGrapher.Core`.
+- `TimeGrapher.Core` does not use App, Verify, or platform adapters.
 
-| Element | Responsibility | Uses |
-|---|---|---|
-| `TimeGrapher.App` | UI execution and screen composition | `TimeGrapher.Core`, `WindowsAudio` / `LinuxAudio` |
-| `TimeGrapher.Core` | analysis domain | none |
-| `WindowsAudio` | Windows audio adapter | `TimeGrapher.Core` |
-| `LinuxAudio` | Linux/Raspberry Pi audio adapter | `TimeGrapher.Core` |
-| `TimeGrapher.Verify` | headless detector verification | `TimeGrapher.Core` |
-
-**2-2 TimeGrapher.Core Decomposition Module View:**
+**2-2 TimeGrapher.Core Decomposition:**
 
 Decomposes `TimeGrapher.Core` into its major domain modules and shows which Core-internal modules each one uses.
 
 ![Module Uses View - Core internal modules](../assets/module-uses-core.en.svg)
 
-Element Catalog:
-
-| Element | Responsibility | Uses |
+| Module | Responsibility | Uses |
 |---|---|---|
 | `Analysis` | coordinates the analysis worker and result-frame creation | `Detection`, `Detection.Scoring`, `Metrics`, `Imaging`, `AudioIo`, `Shared` |
 | `Detection` | detects watch-signal events and sync state | `Shared` |
