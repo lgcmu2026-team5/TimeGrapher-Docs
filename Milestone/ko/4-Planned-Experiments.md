@@ -25,14 +25,15 @@
 
 ### 결과 및 결정 사항
 
-**완료 — 기본값(GPU 우선) 유지 권장.** 보고된 "GPU 가속 ~80 ms 저하"는 우리 앱에서 재현되지 않았다(상세: [result_renderer.md](../../TestResult/result_renderer.md)).
+- **결정 사항**: GPU 가속이 SW보다 빠름을 확인함, Avalonia 기본값(GPU 우선, Software 폴백)을 유지 한다
+- **Pi5 측정 결과**: GLX 59.2 FPS(평균 16.9 ms) · EGL 60.0 FPS(16.7 ms) · Software 43.6 FPS(22.9 ms). GPU 두 백엔드는 화면 주사율(~60 Hz, vsync 16.7 ms) 한계까지 도달했고 SW가 오히려 더 느려짐.
+- **하드웨어 가속 확인 결과**: GL 렌더러가 `V3D 7.1.10.2`(RPi5 GPU)로 기록 — llvmpipe 폴백 아님.
 
-- **Pi5 측정**: GLX 59.2 FPS(평균 16.9 ms) · EGL 60.0 FPS(16.7 ms) · Software 43.6 FPS(22.9 ms). GPU 두 백엔드는 화면 주사율(~60 Hz, vsync 16.7 ms) 한계까지 도달했고 SW가 오히려 더 느렸다.
-- **하드웨어 가속 확인**: GL 렌더러가 `V3D 7.1.10.2`(RPi5 GPU)로 기록 — llvmpipe 폴백 아님.
-- **권장**: Avalonia 기본값(GPU 우선, Software 폴백) 유지, 설정 변경 없음. SW는 더 느린 데다 tearing·CPU 경쟁(오디오 스레드)까지 있어 불리.
-- (참고) Windows는 세 백엔드 모두 ~60 Hz 한계로 차이 없음.
 
-**백엔드별 FPS (Raspberry Pi 5, 높을수록 좋음)**
+
+
+- **실험 결과**
+ -> 백엔드별 FPS (Raspberry Pi 5, 높을수록 좋음)
 
 ```mermaid
 %%{init: {"themeVariables": {"xyChart": {"plotColorPalette": "#A50034, #999999"}}}}%%
@@ -43,27 +44,31 @@ xychart-beta horizontal
     bar [59.2, 60.0, 43.6]
     line [60, 60, 60]
 ```
+- 상세: [result_renderer.md](../../TestResult/result_renderer.md).
+- (참고) Windows는 세 백엔드 모두 ~60 Hz 한계로 차이 없음.
 
 ### 목적
 
-C# 경로 채택 시 Avalonia Github의 다수 이슈처럼 RPi5에서 GPU 가속 렌더링의 버그로 SW 방식보다도 *느려* 실시간 그래프가 끊길 수 있는 리스크를 technical experiment로 해소한다. 핵심 질문:
+C# 경로 채택 시 Avalonia Github의 다수 이슈처럼 RPi5에서 GPU 가속 렌더링의 버그로 SW 방식보다도 *느려* 실시간 그래프가 끊길 수 있는 리스크를 technical experiment로 해소한다. 
+
+**핵심 질문**:
 
 - RPi5에서 GPU 가속 렌더링(GLX/EGL)이 소프트웨어 렌더링보다 느린가? (커뮤니티 보고: 가속 약 80 ms vs 소프트웨어 6–12 ms — 사실이면 실시간 그래프가 끊긴다.)
 
-이 답으로 **"RPi5 배포 시 Avalonia 렌더링 백엔드를 무엇으로 고정할 것인가"** 라는 설계 결정이 내려진다. 영향 범위: 앱 시작 설정, RPi 배포 가이드.
 
-**실험 배경:** RPi/임베디드 Linux에서 GPU 가속 렌더링 성능 저하 보고가 여러 건 있으나(Avalonia GitHub `#18807, #18942, #19288, #18127`) 원인이 제각각(앱 측 버그, 해상도, 드라이버 경로)이고 우리 워크로드와 같은 조건의 측정은 없다. 따라서 실기기에서 직접 측정해야 백엔드를 확정할 수 있다.
+**영향 범위**: 앱 시작 설정, RPi 배포 가이드.
+
+**실험 배경:** RPi/임베디드 Linux에서 GPU 가속 렌더링 성능 저하 보고가 여러 건 있으나(Avalonia GitHub `#18807, #18942, #19288, #18127`) 원인이 제각각(앱 측 버그, 해상도, 드라이버 경로)이고 우리 워크로드와 같은 조건의 측정은 없다. 따라서 실제 기기에서 직접 측정해야 백엔드를 확정할 수 있다.
 
 ### 상태
 
-완료 — GPU 가속이 SW보다 빠름을 확인, 렌더링 기본값(GPU 우선) 유지 권장
+완료
 
 ### 산출물
 
-- 재사용 가능한 벤치마크 테스트
 - 백엔드별(GLX / EGL / Software) 프레임타임 비교표(FPS, 평균, p95, p99)
 - 실제 활성 렌더러 기준 HW 가속 여부(가속 vs SW 폴백) 판별 결과
-- 렌더링 백엔드 선택 권장안(기본값 유지 또는 Software 강제)
+- 렌더링 백엔드 선택 결(기본값 유지 또는 Software 강제)
 
 ### 필요한 자원
 
@@ -78,11 +83,12 @@ C# 경로 채택 시 Avalonia Github의 다수 이슈처럼 RPi5에서 GPU 가�
 3. **RPi5 배포 및 측정** — 실기기에 배포해 3개 백엔드를 각각 워밍업 후 약 30초 측정한다.
 4. **결과 비교 → 백엔드 권장안 도출** — 본 문서와 [Risk Assessment(R-05)](3-Risk-Assessment.md#a-실시간-성능-rpi)에 기록한다.
 
-**완료 기준(충족):** ① 3개 백엔드 모두 측정, ② GL 렌더러 정보로 HW 가속 여부 확인, ③ 백엔드 선택 권장안 도출 — 세 조건이 모두 충족되어 실험을 완료했다.
 
 ### 기간
+- 6/9 - 6-10 수행
 
-- D1–D2 (약 1 person-day)
+
+
 
 ### 링크 및 참고 자료
 
