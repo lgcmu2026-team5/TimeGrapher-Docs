@@ -99,3 +99,17 @@ Decomposes `TimeGrapher.Core` into its major domain modules and shows which Core
 - **Binding inverts control, not dependency:** at runtime UI updates flow Model Layer → ViewModel Layer → View Layer through events and binding, but that is *data flow*, not a compile-time dependency — so the «use» graph stays acyclic and downward.
 
 ![MVVM responsibility flow](../assets/MVVM.png)
+
+## 4. TIMEGRAPHER SYSTEM DEPLOYMENT VIEW
+
+**Purpose:** Shows both the deployment path — artifacts flowing from the development environment through the Git server to the target nodes (Windows PC, Raspberry Pi) — and the external signal path, where the watch's acoustic beat enters each node through a microphone at runtime.
+
+**Deployment Flow (3 stages):**
+
+1. **Develop & Share** — Multiple developers work on their own PCs in C#/.NET and collect the code on the Git server via `git push`.
+2. **Verify & Build** — On each push the Git server runs build/test verification through CI/CD, and on `tag v*` it builds per-target (Windows / Raspberry Pi) deploy Targets.
+3. **Deploy & Install** — The built Targets are distributed and installed onto each connected node over the Git server network (LAN).
+
+At runtime there is a separate external input path: the **acoustic beat signal** of a mechanical watch is converted to an electrical signal through a microphone/pickup and enters each node's audio input via **USB audio**.
+
+![Deployment view diagram](../assets/deployment-view-detailed-en.svg)
