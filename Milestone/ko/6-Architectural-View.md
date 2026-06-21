@@ -50,13 +50,13 @@ App, Core, platform adapters, Verify 사이의 module uses 관계를 보여준�
 - `TimeGrapher.Verify` uses `TimeGrapher.Core`.
 - `TimeGrapher.Core`는 App, Verify, platform adapters를 사용하지 않는다.
 
-**2-2 TimeGrapher.Core Decomposition:**
+**2-2 TimeGrapher.Core Uses:**
 
 `TimeGrapher.Core`를 주요 domain modules로 분해하고, 각 module이 어떤 Core 내부 module을 사용하는지 보여준다.
 
 ![Module Uses View - Core internal modules](../assets/module-uses-core.ko.svg)
 
-> **발표 스크립트:** 두 번째 그림은 Core만 확대해서 본 것입니다. Analysis가 분석 흐름을 조정하고, Detection, Metrics, Imaging, AudioIo 같은 도메인 모듈을 사용합니다. Shared는 이 내부 모듈들이 공유하는 frame, buffer, 상태 type을 제공하는 공통 계약 영역입니다.
+> **발표 스크립트:** 두 번째 그림은 Core만 확대해서 본 것입니다. Analysis가 분석 흐름을 조정하고, Detection, Metrics, Imaging, AudioIo 같은 도메인 모듈을 사용합니다. Shared는 Core 내부 모듈들이 함께 쓰는 공통 타입과 계약을 모아둔 영역입니다. 예를 들어 분석 결과를 한 번에 전달하는 AnalysisFrame, 입력과 분석을 분리하는 공유 오디오 버퍼, 분석 worker 입출력 계약, sync/signal 상태 타입이 여기에 해당합니다.
 
 | Module | 책임 | Uses |
 |---|---|---|
@@ -64,10 +64,10 @@ App, Core, platform adapters, Verify 사이의 module uses 관계를 보여준�
 | `Detection` | watch signal event와 sync 상태를 검출한다. | `Shared` |
 | `Detection.Scoring` | candidate event의 채택/거절 기준을 제공한다. | `Detection` |
 | `Metrics` | rate, amplitude, beat error를 계산한다. | `Shared` |
-| `Imaging` | sound image와 spectrogram model을 만든다. | `Shared` |
-| `AudioIo` | recording writer 계약과 구현을 제공한다. | `Shared` |
+| `Imaging` | 시계 소리의 시각화용 sound image와 시간-주파수 spectrogram 데이터를 만든다. | `Shared` |
+| `AudioIo` | 오디오 녹음을 WAV 파일로 저장하는 writer 계약과 구현을 제공한다. | `Shared` |
 | `Sim` | synthetic input source를 제공한다. | `Shared` |
-| `Shared` | frame, snapshot, buffer, worker contract, 공통 상태 type을 제공한다. | 없음 |
+| `Shared` | Core 내부 모듈들이 함께 쓰는 공통 데이터 타입과 계약을 제공한다. 예: `AnalysisFrame`, 공유 오디오 버퍼, 분석 worker 입출력 계약, sync/signal 상태 타입. | 없음 |
 
 
 ## 3. TIMEGRAPHER MVVM VIEW – 책임 분리

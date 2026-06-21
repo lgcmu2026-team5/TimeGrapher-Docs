@@ -47,7 +47,7 @@ Shows module uses relations among App, Core, platform adapters, and Verify. Here
 - `TimeGrapher.Verify` uses `TimeGrapher.Core`.
 - `TimeGrapher.Core` does not use App, Verify, or platform adapters.
 
-**2-2 TimeGrapher.Core Decomposition:**
+**2-2 TimeGrapher.Core Uses:**
 
 Decomposes `TimeGrapher.Core` into its major domain modules and shows which Core-internal modules each one uses.
 
@@ -59,10 +59,10 @@ Decomposes `TimeGrapher.Core` into its major domain modules and shows which Core
 | `Detection` | detects watch-signal events and sync state | `Shared` |
 | `Detection.Scoring` | provides candidate-event acceptance criteria | `Detection` |
 | `Metrics` | computes rate, amplitude, and beat error | `Shared` |
-| `Imaging` | builds sound-image and spectrogram models | `Shared` |
-| `AudioIo` | provides recording-writer contracts and implementations | `Shared` |
+| `Imaging` | builds sound-image and time-frequency spectrogram data for visualizing watch audio | `Shared` |
+| `AudioIo` | provides writer contracts and implementations for saving recordings as WAV files | `Shared` |
 | `Sim` | provides a synthetic input source | `Shared` |
-| `Shared` | provides frames, snapshots, buffers, worker contracts, and common state types | none |
+| `Shared` | provides common data types and contracts shared by Core-internal modules, such as `AnalysisFrame`, the shared audio buffer, analysis-worker input/output contracts, and sync/signal state types | none |
 
 
 ## 3. TIMEGRAPHER MVVM VIEW – Responsibility Separation
