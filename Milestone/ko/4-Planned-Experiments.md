@@ -44,7 +44,6 @@ xychart-beta horizontal
     bar [59.2, 60.0, 43.6]
     line [60, 60, 60]
 ```
-- 상세: [result_renderer.md](../../TestResult/result_renderer.md).
 - (참고) Windows는 세 백엔드 모두 ~60 Hz 한계로 차이 없음.
 
 ### 목적
@@ -103,14 +102,15 @@ C# 경로 채택 시 Avalonia Github의 다수 이슈처럼 RPi5에서 GPU 가�
 
 ### 결과 및 결정 사항
 
-**두 조건 모두 Pass.** 두 조건을 입력 모드별로 측정했다(상세: [result_latency.md](../../TestResult/result_latency.md)).
 
-- **조건·매트릭스**: 21600 BPH @ 48 kHz(166.7 ms), 43200 BPH @ 192 kHz(83.3 ms) × Simulation/Playback/Live = 플랫폼당 5 run(43200은 하이비트 무브먼트가 없어 Live 제외). Raspberry Pi 5(주)·Windows(참고)에서 각각 측정.
-- **결과**: 두 조건 모두 예산 안 Pass, drop·miss 0. 가장 빡빡한 43200@192k도 Pi worst-case가 예산의 약 41%(34.6 / 83.3 ms). 43200 Playback은 실녹음이 없어 검증된 합성 WAV(`WatchSynthStream`)을 썼다.
-- **권장(Go)**: 기본 **48 kHz**, 최고 지원 **192 kHz** 확정. 192k가 여유 있게 통과해 [R-01](3-Risk-Assessment.md#a-실시간-성능-rpi)의 192k 우려는 해소(격하 불필요). 96 kHz는 미측정이나 48k·192k 사이라 지원 가능으로 본다.
-- **한계**: Rate/Scope 탭·latency/drop·miss 기준 판정. CPU/RAM, 이미지 탭(Spectrogram/Sound Print), 43200 실음향 Live는 별도 평가 필요.
 
-**worst-case E2E 지연의 비트 주기 예산 사용률 (Raspberry Pi 5, 낮을수록 여유, 100% = 예산)**
+- **결정 사항** : 샘플레이트의 경우 기본 48 kHz, 최고 지원 192kHz으로  확정한다
+- **측정 결과** : Worst-case E2E 지연의 비트 주기 예산 사용률이 약 41%(34.6 / 83.3 ms)이므로 요구사항 구현(192khz 샘플레이트 지원)에 문제 없음을 확인함
+  -> 43200@192k Pi . 43200 Playback은 실녹음이 없어 검증된 합성 WAV(`WatchSynthStream`)을 사용함
+
+
+- **시험 결과**
+ : 비트 주기 예산 사용률 (Raspberry Pi 5, 낮을수록 여유, 100% = 예산)
 
 ```mermaid
 %%{init: {"themeVariables": {"xyChart": {"plotColorPalette": "#A50034, #999999"}}}}%%
@@ -121,24 +121,24 @@ xychart-beta horizontal
     bar [25.2, 26.4, 24.2, 40.8, 41.5]
     line [100, 100, 100, 100, 100]
 ```
+- 한계 : Rate/Scope 탭·latency/drop·miss 기준 판정. CPU/RAM, 이미지 탭(Spectrogram/Sound Print), 43200 실음향 Live는 별도 평가 필요하나, 추가 시험은 진행하지 않음
 
 ### 목적
 
-RPi5 Live 환경에서 입력 → 분석 → 표시 파이프라인이 실시간 요구를 만족하는지 확인한다. 핵심 질문은 다음과 같다.
+RPi5 Live 환경에서 입력 → 분석 → 표시 파이프라인이 실시간 요구를 만족하는지 확인한다.
 
 - Q1. 어떤 샘플레이트가 block drop 없이 안정적으로 동작하는가?
 - Q2. total end-to-end latency의 worst-case가 한 비트 주기 안에 들어오는가? (43200 BPH: 83.3 ms · 21600 BPH: 166.7 ms)
 
 ### 상태
 
-완료 — 두 조건 5 run 측정(Raspberry Pi 5·Windows 모두 Pass), 권장 샘플레이트 확정(48 kHz 기본 / 192 kHz 최고 지원)
+완료
 
 ### 산출물
 
 - 조건·입력 모드·플랫폼별 latency 비교표(avg/p95/p99/worst)
-- block drop / missed beat 통계표
 - 입력 모드(Sim/Playback/Live)·플랫폼(Pi/Windows) 비교 결과표
-- 샘플레이트 목표안(Go/No-Go)
+- 샘플레이트 목표 설정
 
 ### 필요한 자원
 
@@ -155,9 +155,9 @@ RPi5 Live 환경에서 입력 → 분석 → 표시 파이프라인이 실시간
 
 ### 기간
 
-- D1–D2: 계측 코드 준비
-- D3: 측정 실행
-- D4: 결과 분석 및 권고안 도출
+- 6/9–6/10: 계측 코드 준비
+- 6/11: 측정 실행
+- 6/12-6/13: 결과 분석 및 권고안 도출
 
 ### 링크 및 참고 자료
 
