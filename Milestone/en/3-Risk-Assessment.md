@@ -16,7 +16,7 @@ The terms used in this document are defined in the consolidated [Glossary](7-Glo
 >
 > 🔴 = risk has a planned experiment (see [Planned Experiments](4-Planned-Experiments.md))
 >
-> **Status** — Resolved / In progress / Low impact
+> **Status** — Resolved / In progress / Accepted
 
 Risk ID | Status | Risk Title | Type | QAS | P | I
 --------|--------|-----------|------|-----|---|---
@@ -32,20 +32,20 @@ Risk ID | Status | Risk Title | Type | QAS | P | I
 [R-10](#d-hardware--platform) | Resolved | Platform differences (WASAPI/ALSA) between Windows dev and RPi demo surface late | T | [QAS-2](2-Architectural-Drivers.md#qas-2--performance-latency--from-sound-input-to-screen-display) | M | M
 [R-11](#d-hardware--platform) | Resolved | Supporting three sample rates (48/96/192k) adds timing complexity | T | [QAS-2](2-Architectural-Drivers.md#qas-2--performance-latency--from-sound-input-to-screen-display) | M | M
 [R-12](#e-usability--ui-1280800) | Resolved | Small screen can't legibly hold summary bar + graphs + scope strip | T | [QAS-6](2-Architectural-Drivers.md#qas-6--usability--reading-and-operating-on-the-touchscreen) | M | M
-[R-13](#e-usability--ui-1280800) | Low impact | Touch accuracy or recognition may be poor | T | [QAS-6](2-Architectural-Drivers.md#qas-6--usability--reading-and-operating-on-the-touchscreen) | L | L
+[R-13](#e-usability--ui-1280800) | Accepted | Touch accuracy or recognition may be poor | T | [QAS-6](2-Architectural-Drivers.md#qas-6--usability--reading-and-operating-on-the-touchscreen) | L | L
 [R-14](#f-project--process) | Resolved | Everything (12 features + AI) can't fit in 3 weeks — prioritization failure drops essentials | NT | QAS-ALL | M | **H**
 [R-15](#f-project--process) | Resolved | Understanding the baseline code takes time and delays the start | NT | [QAS-5](2-Architectural-Drivers.md#qas-5--modifiability-extensibility--adding-a-new-measurementfiltergraph) | L | M
 [R-16](#f-project--process) | Resolved | Qt/C++·DSP·RPi learning curve shakes implementation quality | NT | [QAS-2](2-Architectural-Drivers.md#qas-2--performance-latency--from-sound-input-to-screen-display)<br>[QAS-3](2-Architectural-Drivers.md#qas-3) | L | M
 [R-17](#f-project--process) 🔴 | In progress | Attempting the AI/TinyML feature raises on-device uncertainty | T | [QAS-2](2-Architectural-Drivers.md#qas-2--performance-latency--from-sound-input-to-screen-display)<br>[QAS-3](2-Architectural-Drivers.md#qas-3) | M | M
-[R-18](#f-project--process) | Low impact | Accepting GenAI-generated code unverified lets in plausible-but-wrong code | NT | [QAS-2](2-Architectural-Drivers.md#qas-2--performance-latency--from-sound-input-to-screen-display)<br>[QAS-3](2-Architectural-Drivers.md#qas-3)<br>[QAS-4](2-Architectural-Drivers.md#qas-4--consistency--consistent-values-across-displays) | M | M
-[R-19](#f-project--process) | Low impact | Only one test RPi5 — real-use verification doesn't fit the schedule | NT | [QAS-2](2-Architectural-Drivers.md#qas-2--performance-latency--from-sound-input-to-screen-display) | **H** | **H**
-[R-20](#g-other--uncategorized) | Low impact | Communication — meaning may be lost between stakeholders when conversing in English | NT | - | L | L
-[R-21](#g-other--uncategorized) | Low impact | Insufficient test environment — one device, no test room, no unit tests; regressions may slip through | NT | - | L | L
-[R-22](#g-other--uncategorized) | Low impact | Long-run verification difficulty — items like 24-hour continuous runs are hard to actually verify | NT | - | L | L
-[R-23](#g-other--uncategorized) | Low impact | Growing storage — long recordings make files large | T | - | L | L
-[R-24](#g-other--uncategorized) | Low impact | RPi5 debugging difficulty — hard to inspect state or debug | T | - | L | L
-[R-25](#g-other--uncategorized) | Low impact | Uncertain data structures — audio buffer and measurement-data storage structures are undecided | T | - | L | L
-[R-26](#g-other--uncategorized) | Low impact | Storage-speed bottleneck — SD-card writes may be slower than recording generation | T | - | L | L
+[R-18](#f-project--process) | Accepted | Accepting GenAI-generated code unverified lets in plausible-but-wrong code | NT | [QAS-2](2-Architectural-Drivers.md#qas-2--performance-latency--from-sound-input-to-screen-display)<br>[QAS-3](2-Architectural-Drivers.md#qas-3)<br>[QAS-4](2-Architectural-Drivers.md#qas-4--consistency--consistent-values-across-displays) | M | M
+[R-19](#f-project--process) | Accepted | Only one test RPi5 — real-use verification doesn't fit the schedule | NT | [QAS-2](2-Architectural-Drivers.md#qas-2--performance-latency--from-sound-input-to-screen-display) | **H** | **H**
+[R-20](#g-other--uncategorized) | Accepted | Communication — meaning may be lost between stakeholders when conversing in English | NT | - | L | L
+[R-21](#g-other--uncategorized) | Accepted | Insufficient test environment — one device, no test room, no unit tests; regressions may slip through | NT | - | L | L
+[R-22](#g-other--uncategorized) | Accepted | Long-run verification difficulty — items like 24-hour continuous runs are hard to actually verify | NT | - | L | L
+[R-23](#g-other--uncategorized) | Accepted | Growing storage — long recordings make files large | T | - | L | L
+[R-24](#g-other--uncategorized) | Accepted | RPi5 debugging difficulty — hard to inspect state or debug | T | - | L | L
+[R-25](#g-other--uncategorized) | Accepted | Uncertain data structures — audio buffer and measurement-data storage structures are undecided | T | - | L | L
+[R-26](#g-other--uncategorized) | Accepted | Storage-speed bottleneck — SD-card writes may be slower than recording generation | T | - | L | L
 
 ## A. Real-Time Performance (RPi)
 
@@ -174,7 +174,7 @@ Risk ID | Status | Risk Title | Type | QAS | P | I
   - **Result**: Spread information via a key-readings-first layout + tab-based split (≤ 2-tap navigation) and verified the legibility criteria (letters ≥ 2.9 mm · touch ≥ 9 mm) with size-adjustment tests. As a display problem that loses no data, it is closed by the layout decision.
 
 - **R-13 — Touch accuracy or recognition may be poor**
-  - **Status**: Low impact
+  - **Status**: Accepted
   - **Risk evidence**: [QAS-6](2-Architectural-Drivers.md#qas-6--usability--reading-and-operating-on-the-touchscreen)
   - **Probability / Impact**: Low / Low
   - **Grading rationale**
@@ -223,7 +223,7 @@ Risk ID | Status | Risk Title | Type | QAS | P | I
   - **Comment**: Windows first, then assess operability on the RPi5 before adopting
 
 - **R-18 — Accepting GenAI-generated code unverified lets in plausible-but-wrong code (esp. DSP / concurrency / real-time)**
-  - **Status**: Low impact
+  - **Status**: Accepted
   - **Risk evidence**: pdf (p.30 Project Deliverables), [QAS-2](2-Architectural-Drivers.md#qas-2--performance-latency--from-sound-input-to-screen-display), [QAS-3](2-Architectural-Drivers.md#qas-3), [QAS-4](2-Architectural-Drivers.md#qas-4--consistency--consistent-values-across-displays)
   - **Probability / Impact**: Medium / Medium
   - **Grading rationale**
@@ -232,7 +232,7 @@ Risk ID | Status | Risk Title | Type | QAS | P | I
   - **Result**: The mentor recommends using GenAI, and mandatory verification (unit tests, synthetic-signal bench + code review) blocks bad code before it ships while the whole team understands the core algorithms, so no extra response is needed.
 
 - **R-19 — Only one test RPi5 — real-use verification doesn't fit the schedule**
-  - **Status**: Low impact
+  - **Status**: Accepted
   - **Risk evidence**: pdf (p.26 System Hardware — Raspberry Pi), [QAS-2](2-Architectural-Drivers.md#qas-2--performance-latency--from-sound-input-to-screen-display)
   - **Probability / Impact**: High / High
   - **Grading rationale**

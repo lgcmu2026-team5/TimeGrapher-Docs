@@ -16,7 +16,7 @@
 >
 > 🔴 = 계획된 실험이 있는 리스크([Planned Experiments](4-Planned-Experiments.md) 참조)
 >
-> **상태** — 해결 / 진행중 / 영향 미미함
+> **상태** — 해결 / 진행중 / 수용
 
 Risk ID | 상태 | 리스크 타이틀 | 구분 | QAS | P | I
 --------|------|--------------|------|-----|---|---
@@ -32,20 +32,20 @@ Risk ID | 상태 | 리스크 타이틀 | 구분 | QAS | P | I
 [R-10](#d-하드웨어--플랫폼) | 해결 | Windows 개발–RPi 데모 간 플랫폼 차이(WASAPI/ALSA)가 늦게 드러난다 | T | [QAS-2](2-Architectural-Drivers.md#qas-2--performance-latency--소리-입력에서-화면-표시까지) | M | M
 [R-11](#d-하드웨어--플랫폼) | 해결 | 샘플레이트 3종(48/96/192k) 지원이 타이밍 복잡도를 키운다 | T | [QAS-2](2-Architectural-Drivers.md#qas-2--performance-latency--소리-입력에서-화면-표시까지) | M | M
 [R-12](#e-사용성--ui-1280800) | 해결 | 작은 화면에 요약바 + 그래프 + 스코프 스트립을 가독성 있게 다 못 담는다 | T | [QAS-6](2-Architectural-Drivers.md#qas-6--usability--터치스크린에서-읽기조작) | M | M
-[R-13](#e-사용성--ui-1280800) | 영향 미미함 | 터치 정확도·인식률이 떨어질 수 있다 | T | [QAS-6](2-Architectural-Drivers.md#qas-6--usability--터치스크린에서-읽기조작) | L | L
+[R-13](#e-사용성--ui-1280800) | 수용 | 터치 정확도·인식률이 떨어질 수 있다 | T | [QAS-6](2-Architectural-Drivers.md#qas-6--usability--터치스크린에서-읽기조작) | L | L
 [R-14](#f-프로젝트--프로세스) | 해결 | 3주 안에 12개 기능 + AI 전부 불가능 — 우선순위 실패 시 핵심이 빠진다 | NT | QAS-ALL | M | **H**
 [R-15](#f-프로젝트--프로세스) | 해결 | 베이스라인 코드 이해에 시간이 걸려 착수가 늦어진다 | NT | [QAS-5](2-Architectural-Drivers.md#qas-5--modifiability-extensibility--새-측정필터그래프-추가) | L | M
 [R-16](#f-프로젝트--프로세스) | 해결 | Qt/C++·DSP·RPi 학습곡선으로 구현 품질이 흔들린다 | NT | [QAS-2](2-Architectural-Drivers.md#qas-2--performance-latency--소리-입력에서-화면-표시까지)<br>[QAS-3](2-Architectural-Drivers.md#qas-3) | L | M
 [R-17](#f-프로젝트--프로세스) 🔴 | 진행중 | AI/TinyML 기능 시도 시 on-device 불확실성이 커진다 | T | [QAS-2](2-Architectural-Drivers.md#qas-2--performance-latency--소리-입력에서-화면-표시까지)<br>[QAS-3](2-Architectural-Drivers.md#qas-3) | M | M
-[R-18](#f-프로젝트--프로세스) | 영향 미미함 | GenAI 생성 코드를 검증 없이 수용하면 그럴듯하지만 틀린 코드가 들어온다 | NT | [QAS-2](2-Architectural-Drivers.md#qas-2--performance-latency--소리-입력에서-화면-표시까지)<br>[QAS-3](2-Architectural-Drivers.md#qas-3)<br>[QAS-4](2-Architectural-Drivers.md#qas-4--consistency--표시-간-값-일치) | M | M
-[R-19](#f-프로젝트--프로세스) | 영향 미미함 | 테스트용 RPi5가 한 대뿐이라 실사용 검증 일정이 안 나온다 | NT | [QAS-2](2-Architectural-Drivers.md#qas-2--performance-latency--소리-입력에서-화면-표시까지) | **H** | **H**
-[R-20](#g-기타-또는-카테고리화-되지-않음) | 영향 미미함 | 의사소통 — 영어 대화 시 이해관계자 간 정확한 의사전달이 안 될 수 있다 | NT | - | L | L
-[R-21](#g-기타-또는-카테고리화-되지-않음) | 영향 미미함 | 테스트 환경 부족 — 장비 1대, 테스트룸·unit test 없음으로 로직 변경 시 regression을 놓칠 수 있다 | NT | - | L | L
-[R-22](#g-기타-또는-카테고리화-되지-않음) | 영향 미미함 | 장시간 검증 곤란 — 24시간 연속 같은 항목은 실제 검증·평가가 어렵다 | NT | - | L | L
-[R-23](#g-기타-또는-카테고리화-되지-않음) | 영향 미미함 | 저장량 증가 — 장시간 녹음 시 파일 크기가 커진다 | T | - | L | L
-[R-24](#g-기타-또는-카테고리화-되지-않음) | 영향 미미함 | RPi5 디버깅 곤란 — 상태 파악·디버깅이 어렵다 | T | - | L | L
-[R-25](#g-기타-또는-카테고리화-되지-않음) | 영향 미미함 | 데이터 구조 불확실 — 음성 버퍼·측정 데이터 저장 구조가 미정이다 | T | - | L | L
-[R-26](#g-기타-또는-카테고리화-되지-않음) | 영향 미미함 | 저장 속도 병목 — SD 카드 쓰기가 녹음 생성 속도보다 느릴 수 있다 | T | - | L | L
+[R-18](#f-프로젝트--프로세스) | 수용 | GenAI 생성 코드를 검증 없이 수용하면 그럴듯하지만 틀린 코드가 들어온다 | NT | [QAS-2](2-Architectural-Drivers.md#qas-2--performance-latency--소리-입력에서-화면-표시까지)<br>[QAS-3](2-Architectural-Drivers.md#qas-3)<br>[QAS-4](2-Architectural-Drivers.md#qas-4--consistency--표시-간-값-일치) | M | M
+[R-19](#f-프로젝트--프로세스) | 수용 | 테스트용 RPi5가 한 대뿐이라 실사용 검증 일정이 안 나온다 | NT | [QAS-2](2-Architectural-Drivers.md#qas-2--performance-latency--소리-입력에서-화면-표시까지) | **H** | **H**
+[R-20](#g-기타-또는-카테고리화-되지-않음) | 수용 | 의사소통 — 영어 대화 시 이해관계자 간 정확한 의사전달이 안 될 수 있다 | NT | - | L | L
+[R-21](#g-기타-또는-카테고리화-되지-않음) | 수용 | 테스트 환경 부족 — 장비 1대, 테스트룸·unit test 없음으로 로직 변경 시 regression을 놓칠 수 있다 | NT | - | L | L
+[R-22](#g-기타-또는-카테고리화-되지-않음) | 수용 | 장시간 검증 곤란 — 24시간 연속 같은 항목은 실제 검증·평가가 어렵다 | NT | - | L | L
+[R-23](#g-기타-또는-카테고리화-되지-않음) | 수용 | 저장량 증가 — 장시간 녹음 시 파일 크기가 커진다 | T | - | L | L
+[R-24](#g-기타-또는-카테고리화-되지-않음) | 수용 | RPi5 디버깅 곤란 — 상태 파악·디버깅이 어렵다 | T | - | L | L
+[R-25](#g-기타-또는-카테고리화-되지-않음) | 수용 | 데이터 구조 불확실 — 음성 버퍼·측정 데이터 저장 구조가 미정이다 | T | - | L | L
+[R-26](#g-기타-또는-카테고리화-되지-않음) | 수용 | 저장 속도 병목 — SD 카드 쓰기가 녹음 생성 속도보다 느릴 수 있다 | T | - | L | L
 
 ## A. 실시간 성능 (RPi)
 
@@ -174,7 +174,7 @@ Risk ID | 상태 | 리스크 타이틀 | 구분 | QAS | P | I
   - **결과**: 핵심값 우선 레이아웃 + 탭 분할(≤2탭)로 정보를 분산하고 가독성 기준(글자 ≥2.9 mm·터치 ≥9 mm)을 크기 테스트로 확인. 데이터 손실 없는 표시 문제라 레이아웃 결정으로 종결.
 
 - **R-13 — 터치 정확도·인식률이 떨어질 수 있다**
-  - **상태**: 영향 미미함
+  - **상태**: 수용
   - **리스크 근거**: [QAS-6](2-Architectural-Drivers.md#qas-6--usability--터치스크린에서-읽기조작)
   - **발생 확률 / 영향**: Low / Low
   - **등급 근거**
@@ -223,7 +223,7 @@ Risk ID | 상태 | 리스크 타이틀 | 구분 | QAS | P | I
   - **코멘트**: 우선 Windows 진행 후 RPi5에서 동작성 검토 후 반영 결정
 
 - **R-18 — GenAI 생성 코드를 검증 없이 수용하면 그럴듯하지만 틀린 코드가 들어온다 (특히 DSP/동시성/실시간 영역)**
-  - **상태**: 영향 미미함
+  - **상태**: 수용
   - **리스크 근거**: pdf (p.30 Project Deliverables), [QAS-2](2-Architectural-Drivers.md#qas-2--performance-latency--소리-입력에서-화면-표시까지), [QAS-3](2-Architectural-Drivers.md#qas-3), [QAS-4](2-Architectural-Drivers.md#qas-4--consistency--표시-간-값-일치)
   - **발생 확률 / 영향**: Medium / Medium
   - **등급 근거**
@@ -232,7 +232,7 @@ Risk ID | 상태 | 리스크 타이틀 | 구분 | QAS | P | I
   - **결과**: 멘토가 GenAI 사용을 권장하며, 의무 검증(단위테스트·합성신호 벤치 + 코드리뷰)으로 반영 전 차단되고 팀 전원이 핵심 알고리즘을 이해하므로 추가 대응이 불필요.
 
 - **R-19 — 테스트용 RPi5가 한 대뿐이라 실사용 검증 일정이 안 나온다**
-  - **상태**: 영향 미미함
+  - **상태**: 수용
   - **리스크 근거**: pdf (p.26 System Hardware — Raspberry Pi), [QAS-2](2-Architectural-Drivers.md#qas-2--performance-latency--소리-입력에서-화면-표시까지)
   - **발생 확률 / 영향**: High / High
   - **등급 근거**
