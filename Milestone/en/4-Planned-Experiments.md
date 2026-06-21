@@ -25,14 +25,11 @@ The terms used in this document are defined in the consolidated [Glossary](7-Glo
 
 ### Results & Decisions
 
-**Complete — keep the default (GPU-first).** The reported "~80 ms GPU-acceleration slowdown" did not reproduce in our app (details: [result_renderer.md](../../TestResult/result_renderer.md)).
-
-- **Pi5 measurement**: GLX 59.2 FPS (mean 16.9 ms) · EGL 60.0 FPS (16.7 ms) · Software 43.6 FPS (22.9 ms). Both GPU backends hit the display refresh ceiling (~60 Hz, 16.7 ms vsync), and Software was actually slower.
+- **Decision**: keep the default (GPU-first). GPU acceleration is faster than Software.
+- **Pi5 measurement**: GLX 59.2 FPS (mean 16.9 ms) · EGL 60.0 FPS (16.7 ms) · Software 43.6 FPS (22.9 ms). Both GPU backends hit the display refresh ceiling (~60 Hz, 16.7 ms vsync), and Software was slower.
 - **HW acceleration confirmed**: the GL renderer logged as `V3D 7.1.10.2` (the RPi5 GPU) — not an llvmpipe fallback.
-- **Recommendation**: keep Avalonia's default (GPU-first, Software fallback); no config change. Software is slower and also brings tearing and CPU contention with the audio thread.
-- (Reference) On Windows all three backends hit the ~60 Hz ceiling — no difference.
 
-**FPS by backend (Raspberry Pi 5, higher is better)**
+**FPS by backend (RPi5, higher is better)**
 
 ```mermaid
 %%{init: {"themeVariables": {"xyChart": {"plotColorPalette": "#A50034, #999999"}}}}%%
@@ -56,7 +53,7 @@ The answer drives the design decision **"which Avalonia rendering backend to loc
 
 ### Status
 
-Complete — GPU acceleration confirmed faster than Software; keep the default (GPU-first) rendering
+Complete
 
 ### Deliverables
 
@@ -67,7 +64,7 @@ Complete — GPU acceleration confirmed faster than Software; keep the default (
 
 ### Resources Needed
 
-- Raspberry Pi 5 (monitor connected, SSH access) — shared team device
+- RPi5 (monitor connected, SSH access) — shared team device
 - Windows dev PC (cross-build for the RPi)
 - Effort: ~1.0 person-day
 
@@ -82,14 +79,14 @@ Complete — GPU acceleration confirmed faster than Software; keep the default (
 
 ### Duration
 
-- D1–D2 (~1 person-day)
+- 6/9–6/10
 
 ### Links & References
 
 - [Rendering-backend A/B measurement results — result_renderer.md](../../TestResult/result_renderer.md)
 - Original report: [Avalonia Discussion #18807 — Poor Linux performance when using hardware acceleration](https://github.com/AvaloniaUI/Avalonia/discussions/18807)
 - Related case: [Discussion #18942 — RPi high-resolution full-repaint degradation](https://github.com/AvaloniaUI/Avalonia/discussions/18942)
-- [Avalonia docs — Running on Raspberry Pi via DRM](https://docs.avaloniaui.net/docs/guides/platforms/rpi/running-on-raspbian-lite-via-drm)
+- [Avalonia docs — Running on RPi5 via DRM](https://docs.avaloniaui.net/docs/guides/platforms/rpi/running-on-raspbian-lite-via-drm)
 
 ## EXP-02: RPi5 real-time sample-rate ceiling
 
@@ -97,14 +94,10 @@ Complete — GPU acceleration confirmed faster than Software; keep the default (
 
 ### Results & Decisions
 
-**Both conditions pass.** The two conditions were measured across input modes (details: [result_latency.md](../../TestResult/result_latency.md)).
+- **Decision**: Base at 48 kHz, top support at 192 kHz.
+- **Results**: Both conditions pass. Worst-case E2E latency at 43200@192k is ~41 % of budget (34.6 / 83.3 ms) on the RPi5. The 43200 Playback used a verified synthetic WAV (`WatchSynthStream`) since no real recording exists.
 
-- **Conditions & matrix**: 21600 BPH @ 48 kHz (166.7 ms), 43200 BPH @ 192 kHz (83.3 ms) × Simulation/Playback/Live = 5 runs per platform (43200 excludes Live — no high-beat movement). Measured on Raspberry Pi 5 (primary) and Windows (reference).
-- **Result**: both conditions within budget, drop·miss 0. Even the tightest, 43200@192k, is ~41 % of budget on the Pi (worst 34.6 / 83.3 ms). The 43200 Playback used a verified synthetic WAV (`WatchSynthStream`) since no real recording exists.
-- **Recommendation (Go)**: fix the base at **48 kHz** and the top at **192 kHz**. 192k passes with margin, so [R-01](3-Risk-Assessment.md#a-real-time-performance-rpi)'s 192k concern is resolved (no longer a stretch). 96 kHz was not measured but is considered supportable as an in-between value.
-- **Limits**: verdict is on the Rate/Scope tab by latency/drop·miss. CPU/RAM, image tabs (Spectrogram/Sound Print), and the 43200 real-acoustic Live path need separate evaluation.
-
-**Worst-case E2E latency as % of beat-period budget (Raspberry Pi 5, lower is better, 100% = budget)**
+**Worst-case E2E latency as % of beat-period budget (RPi5, lower is better, 100% = budget)**
 
 ```mermaid
 %%{init: {"themeVariables": {"xyChart": {"plotColorPalette": "#A50034, #999999"}}}}%%
@@ -118,14 +111,14 @@ xychart-beta horizontal
 
 ### Objective
 
-Confirm whether the input → analysis → display pipeline meets real-time requirements in the RPi5 Live environment. Core questions:
+Confirm whether the input → analysis → display pipeline meets real-time requirements on the RPi5 Live environment.
 
 - Q1. Which sample rate runs stably without block drop?
-- Q2. Does worst-case total end-to-end latency stay within one beat period? (83.3 ms at 43200 BPH · 166.7 ms at 21600 BPH)
+- Q2. Does worst-case total end-to-end latency stay within one beat period? (43200 BPH: 83.3 ms · 21600 BPH: 166.7 ms)
 
 ### Status
 
-Complete — both conditions measured over 5 runs each (Raspberry Pi 5 and Windows both pass); recommended sample rate fixed (48 kHz base / 192 kHz top)
+Complete
 
 ### Deliverables
 
@@ -136,22 +129,22 @@ Complete — both conditions measured over 5 runs each (Raspberry Pi 5 and Windo
 
 ### Resources Needed
 
-- 1× Raspberry Pi 5 (primary), Windows dev PC (reference)
+- 1× RPi5 (primary), Windows dev PC (reference)
 - Live input (real movement + USB microphone), Playback WAV (21600 BPH from the Live recording, 43200 BPH synthetic)
 - Latency/drop logging code
 - Effort: 1.5 person-days
 
 ### Experiment Description
 
-1. Measure both conditions (21600@48k, 43200@192k) across Simulation/Playback/Live — 43200 excludes Live, 5 runs per platform, on Raspberry Pi 5 (primary) and Windows (reference).
+1. Measure both conditions (21600@48k, 43200@192k) across Simulation/Playback/Live — 43200 excludes Live, 5 runs per platform, on RPi5 (primary) and Windows (reference).
 2. Compare total latency (avg/p95/p99/worst), block drop, and missed beat per condition / input mode / platform. Truncate to the common-minimum frame count across CSVs.
-3. Judge worst-case E2E ≤ one beat period and drop=0 / miss=0 on the Raspberry Pi 5 (Windows is reference).
+3. Judge worst-case E2E ≤ one beat period and drop=0 / miss=0 on the RPi5 (Windows is reference).
 
 ### Duration
 
-- D1–D2: Prepare instrumentation code
-- D3: Run measurements
-- D4: Analyze results and derive the recommendation
+- 6/9–6/10: Prepare instrumentation code
+- 6/11: Run measurements
+- 6/12–6/13: Analyze results and derive the recommendation
 
 ### Links & References
 
@@ -163,17 +156,14 @@ Complete — both conditions measured over 5 runs each (Raspberry Pi 5 and Windo
 
 ### Results & Decisions
 
-**Complete — adopted a Pipe-and-Filter flow + concurrency tactics (Producer–Consumer · Observer · Latest-Wins · fixed buffer pool).** Removed the single-threaded synchronous-call UI bottleneck.
-
-- **Structure**: formalized input → analysis → display as a one-way `Pipe-and-Filter` flow, and isolated `AnalysisWorker` on a dedicated thread (`ThreadPriority.Highest`) so the UI only renders.
-- **Result**: against the QAS-2 top target (**43200 BPH @ 192 kHz, beat period 83.3 ms**), at the measured load of **28800 BPH (125 ms per beat)** the capture → analysis → frame-routing chain converges within deadline with no UI blocking. Separate from the end-to-end beat budget (QAS-2), render-blocking time is held within the active-tab UI render-throttle budget (**33 ms / 100 ms**).
-- **Recommendation**: keep the verified isolation structure (worker-thread separation + bounded buffers + Latest-Wins) for the latency-critical rendering path and data-acquisition core, and follow the per-filter partitioning rule when extending the pipeline.
-
-> For the per-pattern/tactic benefits and trade-offs, see [Results & Analysis](#results--analysis) below.
+- **Decision**: adopt a Pipe-and-Filter flow + concurrency tactics (Producer–Consumer · Observer · Latest-Wins · fixed buffer pool).
+- **Results**: [see Results & Analysis below](#results--analysis)
 
 ### Objective
 
-Resolve the bottleneck where, under the single-threaded synchronous call chain, processing load spilled onto the UI main thread and froze the screen. Grounded in Bass, Clements & Kazman's *Software Architecture in Practice (SAP)*, verify a pattern/tactic combination that secures real-time behavior without harming portability or modifiability. Core questions:
+Resolve the bottleneck where, under the single-threaded synchronous call chain, processing load spilled onto the UI main thread and froze the screen. Grounded in Bass, Clements & Kazman's *Software Architecture in Practice (SAP)*, verify a pattern/tactic combination that secures real-time behavior without harming portability (Portability) or modifiability (Modifiability).
+
+- Core questions:
 
 - Q1. Under a 28800 BPH (125 ms per beat) load, what concurrency / data-copy structure keeps the UI thread unblocked?
 - Q2. Can we eliminate LOH pollution and GC spikes caused by large-snapshot churn (Sound Print ~2.67 MB, Spectrogram ~1.92 MB)?
@@ -181,7 +171,7 @@ Resolve the bottleneck where, under the single-threaded synchronous call chain, 
 
 ### Status
 
-Complete — design patterns verified and the pipeline implemented (reflected across the full source)
+Complete
 
 ### Deliverables
 
@@ -192,14 +182,14 @@ Complete — design patterns verified and the pipeline implemented (reflected ac
 
 ### Resources Needed
 
-- **Hardware**: Raspberry Pi 5 (CanaKit 16GB RAM), Windows 11 build PC
+- **Hardware**: RPi5 (CanaKit 16GB RAM), Windows 11 build PC
 - **Target source**: `AnalysisFrameRouter.cs`, `SoundPrintFrameProjector.cs`, `AnalysisWorker.cs`, `DecimatingSeries.cs` core modules
 - **Instrumentation**: Stopwatch-based real-time latency tracking (`--analysis-log`)
 - **Effort**: 2.0 person-days
 
 ### Experiment Description
 
-This technical experiment verifies the adopted architecture patterns/tactics for improving GUI real-time rendering, across three items.
+This technical experiment verifies the adopted architecture patterns/tactics for improving GUI real-time rendering across three items.
 
 1. **Pipe-and-Filter data-flow verification** — the watch-sound signal follows a streaming flow of `Capture → Detection → Measurement → Visualization`. Build the pipeline where the audio capture buffer passes through each analysis stage into the final visualization artifacts (`SoundPrint`, `Spectrogram`) and test the stages' independent replaceability. (Maps to the design-pattern table: `Pipe-and-Filter` — overall flow, `Strategy` — input source / filter stages.)
 2. **Concurrency-isolation tactic verification** — isolate `AnalysisWorker` on a dedicated `ThreadPriority.Highest` thread so the UI thread only renders. Input↔analysis is delivered via a shared-buffer **Producer–Consumer**, and result frames via an **Observer** fan-out (`AnalysisFrameRouter`'s `ObserveFrame`/`RenderFrame`) that consumers (tabs) subscribe to. To prevent cross-thread interference, combine a **fixed buffer pool (PublishBufferCount = 3) rotation** with a **Latest-Wins scheduler** (`AnalysisFrameRenderScheduler`) that discards frames exceeding the refresh rate. Measure whether the analysis worker's deadline stays isolated from UI lag at 28800 BPH (125 ms).
@@ -210,6 +200,8 @@ This technical experiment verifies the adopted architecture patterns/tactics for
 This experiment analyzes, from a benefits/trade-offs perspective, which quality attributes the adopted patterns/tactics gain (and how) and what is given up in return, grounded in SAP theory.
 
 #### 1. Pipe-and-Filter data flow — benefits and trade-offs
+
+- **Applied structure**: formalize input → analysis → display as a one-way `Pipe-and-Filter` flow, and isolate `AnalysisWorker` on a dedicated thread (`ThreadPriority.Highest`) so the UI only renders.
 
 - **Benefits**
   - **Maximized modifiability/extensibility (QAS-5)**: each processing stage is encapsulated as an independent stage behind a standard interface (`IAnalysisFrameConsumer`, etc.), so a UI tab structure or a new analysis filter (e.g., a new measurement graph) can be injected without modifying existing code.
@@ -229,9 +221,9 @@ This experiment analyzes, from a benefits/trade-offs perspective, which quality 
 
 ### Duration
 
-- D1–D2: Bottleneck analysis and candidate-pattern shortlist
-- D3–D4: Pattern technical experiment and comparative measurement
-- D5: SAP judgment and application-priority finalization
+- 6/8–6/9: Bottleneck analysis and candidate-pattern shortlist
+- 6/10–6/13: Pattern technical experiment and comparative measurement
+- 6/15: SAP judgment and application-priority finalization
 
 ### Links & References
 
@@ -264,7 +256,7 @@ In progress
 
 ### Resources Needed
 
-- 1× Raspberry Pi 5 (physical device)
+- 1× RPi5 (physical device)
 - TinyML inference runtime (TFLite or equivalent)
 - Labeled validation dataset (Sim/Playback)
 - Performance logging tools (latency, frame time, CPU/RAM)
@@ -278,7 +270,7 @@ In progress
 
 ### Duration
 
-- D7–D8
+- TBD
 
 ### Links & References
 
@@ -290,16 +282,11 @@ In progress
 
 ### Results & Decisions
 
-24h+ continuous-run stability is judged **Pass**. On the RPi5 (`cmu.local`), `TimeGrapher.App` (PID 2111) was run continuously for 24 hours while logging the process CPU/memory at a 0.5 s interval, collecting roughly 172,800 samples.
-
-- **Memory (RSS): no leak.** RSS stayed flat at about **406 MB** across the whole run; all 48 thirty-minute segment means were within 405–408 MB (first 405.5 MB → last 403.9 MB, change **-1.6 MB**). A single transient peak of 447 MB occurred and recovered immediately. → **Q1 = not at a leak-suspect level.**
-- **CPU: no late-run degradation.** Normalized instantaneous usage held nearly constant at about **36% of total 4-core capacity** (≈1.4 of the RPi5's 4 cores). The rising curve in the graph is an artifact of `ps`'s **cumulative average** converging from its start value (27.8%) to steady state (~36%), not real degradation. Standard deviation was 1.6 percentage points. → **Q2 = no late-run latency/throughput degradation.**
-
-**Recommended policy**
-
-- For the current version, memory operation can **stay as-is (no extra cap/aggregation)** and still meet 24h stability (flat RSS, no leak).
-- When new computations, filters, graphs, or AI Features are added, **re-measure** with the same procedure (0.5 s RSS/CPU long-term logging) to check for regression.
-- Since CPU stays at ~36% of total 4-core capacity (~1.4 cores), manage the remaining headroom (~64%, ≈2.6 cores) as a budget when introducing additional load.
+- **Decision**: keep the current architecture design (no degradation observed in 24-hour measurement on RPi5).
+- **Results**: 
+  - Memory (RSS) no leak: RSS stayed flat at about **406 MB** across the run. All 48 thirty-minute segment means were within 405–408 MB range. A single transient peak of 447 MB recovered immediately.
+  - CPU no late-run degradation: normalized instantaneous usage held nearly constant at about **36%** of total 4-core capacity (~1.4 of the RPi5's 4 cores). The rising curve is a `ps` artifact (cumulative average converging from 27.8% to steady-state ~36%), not real degradation. Standard deviation was 1.6 percentage points.
+- **Policy**: For new computations, filters, graphs, or AI features, perform the same long-term measurement to check for regression. CPU stays at ~36% of 4-core capacity (~1.4 cores), so the remaining headroom (~64%, ≈2.6 cores) is available for additional load.
 
 **Trend over time (0–24h)**
 
@@ -333,7 +320,7 @@ Check for memory growth, latency degradation, and crash risk under long continuo
 
 ### Status
 
-Done (Pass)
+Complete
 
 ### Deliverables
 
@@ -355,7 +342,8 @@ Done (Pass)
 
 ### Duration
 
-- D8–D10
+- 6/16–6/17: Long-run performance data collection
+- 6/18: Results analysis
 
 ### Links & References
 
@@ -378,7 +366,7 @@ Verify detection/computation accuracy on signals with a known reference, as a ch
 
 ### Status
 
-In progress — first pass (Realistic-off simulation) done; commercial comparison test to follow
+In progress — first pass (Realistic-off simulation) complete; commercial comparison test to follow
 
 ### Deliverables
 
@@ -387,7 +375,7 @@ In progress — first pass (Realistic-off simulation) done; commercial compariso
 
 ### Resources Needed
 
-- Raspberry Pi 5 (primary), Windows PC (reference)
+- RPi5 (primary), Windows PC (reference)
 - Sim generator (Realistic off), reference values
 - A Weishi Timegrapher + the same watch, for the comparison
 - Error-logging code
@@ -397,14 +385,14 @@ In progress — first pass (Realistic-off simulation) done; commercial compariso
 
 Confirm with a known-reference simulation first, then compare against the commercial unit. Pass/Fail uses the same tolerances in both stages (rate ±1 s/d, amplitude ±1°, beat error ±0.1 ms).
 
-1. **Realistic-off simulation (first pass):** measure rate, amplitude, and beat error on a clean synthetic signal over ≥ 1,000 beats and judge Pass/Fail against the tolerances.
-2. **Commercial comparison (follow-up):** measure the same watch on both the Weishi Timegrapher and this system, and judge whether the two readings agree within the same tolerances.
+1. **Realistic-off simulation (first pass)**: measure rate, amplitude, and beat error on a clean synthetic signal over ≥1,000 beats and judge Pass/Fail against the tolerances.
+2. **Commercial comparison (follow-up)**: measure the same watch on both the Weishi Timegrapher and this system, and judge whether the two readings agree within the same tolerances.
 
-Judge each stage on the Raspberry Pi 5 (Windows is reference) and record the results in [R-06](3-Risk-Assessment.md#b-signal-processing--measurement-trustworthiness).
+Judge each stage on the RPi5 (Windows is reference) and record the results in [R-06](3-Risk-Assessment.md#b-signal-processing--measurement-trustworthiness).
 
 ### Duration
 
-- D1–D2: first pass (Realistic-off simulation) / follow-up: commercial comparison test
+- D1–D2: First pass (Realistic-off simulation) / Follow-up: commercial comparison test
 
 ### Links & References
 
