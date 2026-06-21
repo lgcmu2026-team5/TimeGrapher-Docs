@@ -32,7 +32,7 @@ Core → Nothing (zero dependencies)
 
 ## 2. TIMEGRAPHER MODULE USES VIEW
 
-**목적:** 이 view는 TimeGrapher의 module uses 관계를 두 수준에서 보여준다. 2-1은 project-level module uses를, 2-2는 `TimeGrapher.Core` 내부 decomposition을 보여준다. App 내부 UI 구조는 MVVM View에서 다루고, 이 view는 project-level module uses와 Core 내부 module uses에 집중한다.
+**목적:** 이 view는 TimeGrapher의 module uses 관계를 두 수준에서 보여준다. 2-1은 project-level module uses를, 2-2는 `TimeGrapher.Core` 내부 decomposition을 보여준다. App 내부 UI 구조는 TIMEGRAPHER MVVM View에서 다루고, 이 view는 project-level module uses와 Core 내부 module uses에 집중한다.
 
 > **발표 스크립트:** 이 view는 실행 중 데이터가 흐르는 순서가 아니라, 어떤 모듈이 어떤 모듈을 사용하도록 구조화되어 있는지를 보여줍니다. 먼저 전체 프로젝트 수준에서 App, Core, 플랫폼 오디오 어댑터, Verify의 관계를 보고, 다음으로 Core 내부를 한 단계 확대해서 분석 도메인의 분해 구조를 설명하겠습니다.
 
@@ -70,7 +70,7 @@ App, Core, platform adapters, Verify 사이의 module uses 관계를 보여준�
 | `Shared` | frame, snapshot, buffer, worker contract, 공통 상태 type을 제공한다. | 없음 |
 
 
-## 3. MVVM VIEW – 책임 분리
+## 3. TIMEGRAPHER MVVM VIEW – 책임 분리
 
 **목적:** App의 UI를 세 계층 — **View**(표시), **ViewModel**(UI 상태·표현 로직), **Model**(도메인/데이터) — 으로 나눈다. 의존성은 **View → ViewModel → Model** 한 방향으로만 흐르며, 하위 계층은 상위 계층을 모른다.
 - Loose Coupling & Parallel Development

@@ -33,7 +33,7 @@ Core → Nothing (zero dependencies)
 ---
 ## 2. TIMEGRAPHER MODULE USES VIEW
 
-**Purpose:** This view shows TimeGrapher module uses relations at two levels. Section 2-1 shows project-level module uses; Section 2-2 shows the internal decomposition of `TimeGrapher.Core`. App-internal UI structure is covered by the MVVM View; this view focuses on project-level module uses and Core-internal module uses.
+**Purpose:** This view shows TimeGrapher module uses relations at two levels. Section 2-1 shows project-level module uses; Section 2-2 shows the internal decomposition of `TimeGrapher.Core`. App-internal UI structure is covered by the TIMEGRAPHER MVVM View; this view focuses on project-level module uses and Core-internal module uses.
 
 **2-1 Project-Level Module Uses:**
 
@@ -65,7 +65,7 @@ Decomposes `TimeGrapher.Core` into its major domain modules and shows which Core
 | `Shared` | provides frames, snapshots, buffers, worker contracts, and common state types | none |
 
 
-## 3. MVVM VIEW – Responsibility Separation
+## 3. TIMEGRAPHER MVVM VIEW – Responsibility Separation
 
 **Purpose:** Splits the App's UI into three layers — **View** (display), **ViewModel** (UI state & presentation logic), **Model** (domain/data). Dependencies flow one way, **View → ViewModel → Model**, so a lower layer never knows the layer above it.
 - Loose Coupling & Parallel Development
