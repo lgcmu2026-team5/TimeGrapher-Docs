@@ -30,16 +30,19 @@ Core → Nothing (zero dependencies)
 
 ---
 
-## 2. MODULE USES VIEW – 프로젝트 수준 실제 의존성
+## 2. MODULE USES VIEW – 실제 의존성 구조
 
-**목적:** runtime source module 사이의 실제 uses 관계를 보여준다.
+**목적:** runtime source의 uses 관계를 project level과 Core internal level에서 보여준다. App 내부 UI 구조, build outputs, generated files, test project detail, 전체 file inventory는 이 view에서 제외한다.
 
 **핵심 원칙:**
 - Layered View는 허용되는 의존성을 정의한다.
 - Module Uses View는 현재 source structure의 의존성 그래프를 정의한다.
 - 의존성이 없으면 연결선을 그리지 않는다.
 
-**프로젝트 수준 Uses:**
+**2-1 Project-Level Uses:**
+
+이 view는 runtime source projects 사이의 uses 관계를 보여준다. Platform adapters는 OS-specific audio dependency가 Core로 들어오지 않게 하는 경계이고, `TimeGrapher.Core`는 외부 project/package에 의존하지 않는다.
+
 - `TimeGrapher.App` → `TimeGrapher.Core`
 - `TimeGrapher.App` → `WindowsAudio` / `LinuxAudio`
 - `TimeGrapher.Verify` → `TimeGrapher.Core`
@@ -48,7 +51,9 @@ Core → Nothing (zero dependencies)
 
 ![Module Uses View - Project-level modules](../assets/USE.png)
 
-**Core 내부 Uses:**
+**2-2 Core Internal Uses:**
+
+이 view는 `TimeGrapher.Core` 내부의 주요 domain modules와 그 uses 관계를 보여준다. Core는 system behavior의 중심 domain logic을 담고 있어 project-level view보다 한 단계 더 확장한다.
 
 | Core module | 책임 | Uses |
 |---|---|---|
@@ -60,13 +65,6 @@ Core → Nothing (zero dependencies)
 | `AudioIo` | recording writer 계약과 구현을 제공한다. | `Shared` |
 | `Sim` | synthetic input source를 제공한다. | `Shared` |
 | `Shared` | frame, snapshot, buffer, worker contract, 공통 상태 type을 제공한다. | 없음 |
-
-**Scope / Rationale:**
-- 포함: runtime source projects와 `TimeGrapher.Core` 내부 주요 modules.
-- 제외: build outputs, generated files, 전체 file inventory, test project detail, App 내부 UI 구조.
-- `TimeGrapher.Core`는 domain decomposition을 담고 있어 내부 uses를 별도로 요약한다.
-- App 구조는 MVVM/UI view에서 다루고, Platform/Verify는 project-level element로 둔다.
-- Platform adapters는 OS-specific audio dependency가 Core로 들어오지 않게 한다.
 
 
 ## 3. MVC VIEW – 책임 분리

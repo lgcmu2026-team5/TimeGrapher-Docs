@@ -31,16 +31,19 @@ Core → Nothing (zero dependencies)
 
 
 ---
-## 2. MODULE USES VIEW – Project Level Actual Dependencies
+## 2. MODULE USES VIEW – Actual Dependency Structure
 
-**Purpose:** Shows actual uses relations among runtime source modules.
+**Purpose:** Shows runtime-source uses relations at the project level and Core internal level. App-internal UI structure, build outputs, generated files, test project detail, and full file inventory are outside this view.
 
 **Key Principle:**
 - The Layered View defines permitted dependencies.
 - The Module Uses View defines the dependency graph of the current source structure.
 - Zero dependencies mean no connection lines are drawn.
 
-**Project-Level Uses:**
+**2-1 Project-Level Uses:**
+
+This view shows uses relations among runtime source projects. Platform adapters form the boundary that keeps OS-specific audio dependencies out of Core, and `TimeGrapher.Core` has no outward project/package dependency.
+
 - `TimeGrapher.App` → `TimeGrapher.Core`
 - `TimeGrapher.App` → `WindowsAudio` / `LinuxAudio`
 - `TimeGrapher.Verify` → `TimeGrapher.Core`
@@ -49,7 +52,9 @@ Core → Nothing (zero dependencies)
 
 ![Module Uses View - Project-level modules](../assets/USE.png)
 
-**Core Internal Uses:**
+**2-2 Core Internal Uses:**
+
+This view shows the major domain modules inside `TimeGrapher.Core` and their uses relations. Core contains the central domain logic, so it is expanded one level below the project-level view.
 
 | Core module | Responsibility | Uses |
 |---|---|---|
@@ -61,13 +66,6 @@ Core → Nothing (zero dependencies)
 | `AudioIo` | provides recording-writer contracts and implementations | `Shared` |
 | `Sim` | provides a synthetic input source | `Shared` |
 | `Shared` | provides frames, snapshots, buffers, worker contracts, and common state types | none |
-
-**Scope / Rationale:**
-- Includes: runtime source projects and major `TimeGrapher.Core` internal modules.
-- Excludes: build outputs, generated files, full file inventory, test project detail, App-internal UI structure.
-- `TimeGrapher.Core` contains the domain decomposition, so its internal uses are summarized separately.
-- App structure belongs in the MVVM/UI view; Platform and Verify remain project-level elements.
-- Platform adapters keep OS-specific audio dependencies out of Core.
 
 
 ## 3. MVC VIEW – Responsibility Separation
