@@ -32,7 +32,7 @@
 
 
 
-- **실험 결과**
+- **실험 결과 Data**
  -> 백엔드별 FPS (Raspberry Pi 5, 높을수록 좋음)
 
 ```mermaid
@@ -109,7 +109,7 @@ C# 경로 채택 시 Avalonia Github의 다수 이슈처럼 RPi5에서 GPU 가�
   -> 43200@192k Pi . 43200 Playback은 실녹음이 없어 검증된 합성 WAV(`WatchSynthStream`)을 사용함
 
 
-- **시험 결과**
+- **실험 결과 Data**
  : 비트 주기 예산 사용률 (Raspberry Pi 5, 낮을수록 여유, 100% = 예산)
 
 ```mermaid
@@ -169,17 +169,18 @@ RPi5 Live 환경에서 입력 → 분석 → 표시 파이프라인이 실시간
 
 ### 결과 및 결정 사항
 
-**완료 — Pipe-and-Filter 흐름 + 동시성 택틱(Producer–Consumer · Observer · Latest-Wins · 고정 버퍼 풀) 채택.** 단일 스레드 동기 구조의 UI 병목을 제거했다.
+단일 스레드 동기 구조의 UI 병목을 제거했다.
 
-- **구조**: 입력 → 분석 → 표시를 `Pipe-and-Filter` 단방향 흐름으로 정형화하고, `AnalysisWorker`를 전용 스레드(`ThreadPriority.Highest`)로 격리해 UI는 렌더링만 전담.
-- **결과**: QAS-2의 최고 목표 조건(**43200 BPH @ 192 kHz, 비트 주기 83.3 ms**) 대비, 실측 부하 조건인 **28800 BPH(비트당 125 ms)** 에서 UI 차단 없이 캡처 → 분석 → 프레임 라우팅 연쇄가 마감 시간 내에 안정 수렴. end-to-end 비트 예산(QAS-2)과 별개로 활성 탭 UI 렌더 스로틀 예산(**33 ms / 100 ms**) 내에서 렌더링 블로킹 타임 통제.
-- **권장 조치**: 실시간성이 중요한 렌더링 경로·데이터 수집 코어는 검증된 격리 구조(워커 스레드 분리 + 유한 버퍼 + Latest-Wins)를 유지하고, 파이프라인 확장 시 필터 단위 분할 규칙을 준수한다.
+- **결정 사항** : Pipe-and-Filter 흐름 + 동시성 택틱(Producer–Consumer · Observer · Latest-Wins · 고정 버퍼 풀) 채택한다.
+- **분석**: 입력 → 분석 → 표시를 `Pipe-and-Filter` 단방향 흐름으로 정형화하고, `AnalysisWorker`를 전용 스레드(`ThreadPriority.Highest`)로 격리해 UI는 렌더링만 전단 하도록 한.
+- **실험 결과**: QAS-2의 최고 목표 조건(**43200 BPH @ 192 kHz, 비트 주기 83.3 ms**) 대비, 실측 부하 조건인 **28800 BPH(비트당 125 ms)** 에서 UI 차단 없이 캡처 → 분석 → 프레임 라우팅 연쇄가 마감 시간 내에 안정 수렴확인함. end-to-end 비트 예산(QAS-2)과 별개로 활성 탭 UI 렌더 스로틀 예산(**33 ms / 100 ms**) 내에서 렌더링 블로킹 타임 통제됨.
+- **조치 사항** : 실시간성이 중요한 렌더링 경로·데이터 수집 코어는 검증된 격리 구조(워커 스레드 분리 + 유한 버퍼 + Latest-Wins)를 유지하고, 파이프라인 확장 시 필터 단위 분할 규칙을 준수한다.
 
 > 각 패턴·택틱의 이점과 트레이드오프 상세는 아래 [실험 결과 및 분석](#실험-결과-및-분석) 참조.
 
 ### 목적
 
-기존 단일 스레드 동기 호출 구조로 인해 데이터 처리 부하가 UI 주 스레드로 전이되어 화면이 얼어붙던 성능 병목을 해결한다. Bass·Clements·Kazman의 *Software Architecture in Practice (SAP)* 이론을 기반으로, 이식성(Portability)과 변경용이성(Modifiability)을 해치지 않으면서 실시간성을 확보하는 패턴·택틱 조합을 검증한다. 핵심 질문은 다음과 같다.
+ 기존 단일 스레드 동기 호출 구조로 인해 데이터 처리 부하가 UI 주 스레드로 전이되어 화면이 얼어붙던 성능 병목을 해결하고자 한다. Bass·Clements·Kazman의 *Software Architecture in Practice (SAP)* 이론을 기반으로, 이식성(Portability)과 변경용이성(Modifiability)을 해치지 않으면서 실시간성을 확보하는 패턴·택틱 조합을 검증한다. 
 
 - Q1. 28800 BPH(비트당 125 ms) 부하에서 UI 스레드를 차단하지 않는 동시성·데이터 복사 구조는 무엇인가?
 - Q2. 대용량 스냅샷(사운드프린트 ~2.67 MB, 스펙트로그램 ~1.92 MB) churn으로 인한 LOH 오염·GC 스파이크를 원천 차단할 수 있는가?
@@ -187,7 +188,7 @@ RPi5 Live 환경에서 입력 → 분석 → 표시 파이프라인이 실시간
 
 ### 상태
 
-완료 — 핵심 디자인 패턴 검증 및 파이프라인 구현 완료(전체 소스 반영)
+완료
 
 ### 산출물
 
@@ -207,7 +208,7 @@ RPi5 Live 환경에서 입력 → 분석 → 표시 파이프라인이 실시간
 
 본 technical experiment에서는 GUI 실시간 렌더링 속도 개선을 위해 적용한 아키텍처 패턴·택틱의 유효성을 다음 세 항목으로 검증한다.
 
-1. **Pipe-and-Filter 데이터 흐름 검증** — 시계 소리 신호는 `입력(Capture) → 검출(Detection) → 측정(Measurement) → 화면 표시(Visualization)` 순서의 스트리밍 흐름을 가진다. 오디오 캡처 버퍼가 각 분석 단계를 거쳐 최종 시각화 아티팩트(`SoundPrint`, `Spectrogram`)로 전달되는 파이프라인을 빌드하고 단계의 독립적 교체 가능성을 테스트한다. (설계 패턴 표의 `Pipe-and-Filter` — 전체 흐름, `Strategy` — 입력 소스·필터 단계에 대응)
+1. **Pipe-and-Filter 데이터 흐름 검증** — 시계 소리 신호는 `입력(Capture) → 검출(Detection) → 측정(Measurement) → 화면 표시(Visualization)` 순서의 스트리밍 흐름을 가진다. 오디오 캡처 버퍼가 각 분석 단계를 거쳐 최종 시각화 아티팩트(`SoundPrint`, `Spectrogram`)로 전달되는 파이프라인을 빌드하고 단계의 독립적 교체 가능성을 테스트한다. 
 2. **동시성 격리 택틱 검증** — `AnalysisWorker`를 `ThreadPriority.Highest` 전용 스레드로 격리하고 UI 스레드는 렌더링만 전담하도록 분리한다. 입력↔분석은 공유 버퍼 기반 **Producer–Consumer**로, 결과 프레임은 소비자(탭)들이 구독하는 **Observer**(`AnalysisFrameRouter`의 `ObserveFrame`/`RenderFrame` 팬아웃)로 전달한다. 스레드 간 간섭 방지를 위해 **고정 버퍼 풀(PublishBufferCount = 3) 로테이션**과 주사율 초과 프레임을 폐기하는 **Latest-Wins 스케줄러**(`AnalysisFrameRenderScheduler`)를 결합 적용한다. 28800 BPH(125 ms) 부하에서 분석 워커의 마감 시간이 UI 지연에 종속되지 않고 격리되는지 계측한다.
 3. **DecimatingSeries 데이터 바운딩 검증** — 실행 시간에 비례해 그래프 점 개수가 누적되는 문제를 막기 위해, 고정 용량 한계 도달 시 인접 포인트 쌍을 병합해 해상도를 반감하되 버킷의 min/max를 보존하는 집계 구조의 정상 동작을 분석한다.
 
@@ -235,12 +236,11 @@ RPi5 Live 환경에서 입력 → 분석 → 표시 파이프라인이 실시간
 
 ### 기간
 
-- D1–D2: 병목 분석 및 패턴 후보 도출
-- D3–D4: 패턴 technical experiment 및 비교 측정
-- D5: SAP 판정 및 적용 우선순위 확정
+- 6/8–6/9: 병목 분석 및 패턴 후보 도출
+- 6/10–6/13: 패턴 technical experiment 및 비교 측정
+- 6/15: SAP 판정 및 적용 우선순위 확정
 
 ### 링크 및 참고 자료
-
 - NA
 
 ## EXP-04: 온디바이스 TinyML 추론 타당성
@@ -253,7 +253,7 @@ TO-DO: TinyML 기능 채택 여부(채택/조건부 채택/보류)와 채택 조
 
 ### 목적
 
-TinyML 기반 분류(예: signal-quality, bad-data-rejection)를 RPi 온디바이스로 추가했을 때 실시간성과 측정 신뢰성을 유지할 수 있는지 검증한다. 핵심 질문은 다음과 같다.
+TinyML 기반 분류(예: signal-quality, bad-data-rejection)를 RPi 온디바이스로 추가했을 때 실시간성과 측정 신뢰성을 유지할 수 있는지 검증한다.
 
 - Q1. TinyML 추론 추가 후에도 end-to-end 지연과 프레임 갱신 안정성이 허용 범위에 있는가?
 - Q2. TinyML 분류가 약신호/잡음 구간의 오표시를 줄이는 데 기여하는가?
