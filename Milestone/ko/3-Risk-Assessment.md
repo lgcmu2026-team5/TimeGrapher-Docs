@@ -54,7 +54,7 @@ Risk ID | 상태 | 리스크 타이틀 | 구분 | QAS | P | I
   - **리스크 근거**: pdf (p.25 Real Time Performance), [QAS-2](2-Architectural-Drivers.md#qas-2--performance-latency--소리-입력에서-화면-표시까지), [C-1](2-Architectural-Drivers.md#설계-제약사항)
   - **발생 확률 / 영향**: Low / High
   - **등급 근거**
-    - P-Low: [EXP-02](4-Planned-Experiments.md#exp-02-rpi5-실시간-샘플레이트-상한) 측정에서 43200 BPH @ 192 kHz가 Raspberry Pi 5에서 worst-case E2E 예산의 약 41% 수준으로 동작했고 block drop·missed beat가 0이었다. 고속 샘플레이트 실시간 처리가 실측으로 확인됨.
+    - P-Low: [EXP-02](4-Planned-Experiments.md#exp-02-rpi5-실시간-샘플레이트-상한) 측정에서 43200 BPH @ 192 kHz가 RPi5에서 worst-case E2E 예산의 약 41% 수준으로 동작했고 block drop·missed beat가 0이었다. 고속 샘플레이트 실시간 처리가 실측으로 확인됨.
     - I-High: 소리 데이터 손실은 핵심 측정 자체를 망가뜨림(발생 시 영향은 그대로 큼).
   - **결과**: 48k 기본 / 192k 최고로 확정. [EXP-02](4-Planned-Experiments.md#exp-02-rpi5-실시간-샘플레이트-상한)에서 최악 조건 43200 BPH @ 192 kHz가 예산 약 41%(drop·miss 0)로 통과해 192k를 정식 지원으로 격상. 96k 직접 측정·CPU/RAM·이미지 탭은 추가 확인이 남은 조건부 해결.
 
@@ -74,7 +74,7 @@ Risk ID | 상태 | 리스크 타이틀 | 구분 | QAS | P | I
   - **등급 근거**
     - P-Medium: 처리·렌더 부하가 샘플레이트·BPH·활성 탭·그래프 수에 따라 커져 예산을 넘길 수 있음.
     - I-High: 예산 초과가 지속되면 backlog·stale 표시, 최악엔 block drop·missed beat로 측정값이 오염됨.
-  - **결과**: 분석/UI 스레드 분리 + latest-wins·bounded buffer로 대응. [EXP-02](4-Planned-Experiments.md#exp-02-rpi5-실시간-샘플레이트-상한)의 21600@48k·43200@192k × Live/Playback/Sim 측정에서 Pi·Windows 모두 예산 내 Pass(drop 0, miss 0)로 backlog/stale 위험 통제. 신규 연산·필터·그래프·AI Feature 추가 시 동일 기준 재측정.
+  - **결과**: 분석/UI 스레드 분리 + Latest-Wins·bounded buffer로 대응. [EXP-02](4-Planned-Experiments.md#exp-02-rpi5-실시간-샘플레이트-상한)의 21600@48k·43200@192k × Live/Playback/Simulation 측정에서 RPi5·Windows 모두 예산 내 Pass(drop 0, miss 0)로 backlog/stale 위험 통제. 신규 연산·필터·그래프·AI Feature 추가 시 동일 기준 재측정.
 
 - **🔴 R-04 — 장시간(24h+) 연속 실행 시 메모리가 새서 느려지거나 죽는다**
   - **상태**: 해결
@@ -104,7 +104,7 @@ Risk ID | 상태 | 리스크 타이틀 | 구분 | QAS | P | I
     - P-High: 실제 잡음 신호에서 0.1 ms 정밀 A·C 이벤트 검출은 본질적으로 어려움.
     - I-High: 일오차·비트 에러·진폭 세 핵심 지표를 전부 오염.
   - **완화 방향**: 합성신호(정답 known) 벤치로 검출 알고리즘 조기 검증([EXP-06](4-Planned-Experiments.md#exp-06-측정-정확도)에서 Realistic Off 시뮬레이션으로 1차 확인 후 상용 Weishi Timegrapher 비교 예정)
-  - **현 상태**: A·C 검출(서브샘플 보간 — C-peak 포물선·A-onset 선형)·beat error·amplitude가 `Detector.cs`·`WatchMetrics.cs`에 구현됐고, 합성신호 테스트(`SyntheticDetectorTests`, `AdverseScenarios`)로 1차 동작을 확인(EXP-06 Realistic Off). 명시적 0.1 ms 허용오차 검증과 상용 Weishi 비교는 미완.
+  - **현 상태**: A·C 검출(서브샘플 보간 — C-peak 포물선·A-onset 선형)·비트 에러·진폭이 `Detector.cs`·`WatchMetrics.cs`에 구현됐고, 합성신호 테스트(`SyntheticDetectorTests`, `AdverseScenarios`)로 1차 동작을 확인(EXP-06 Realistic Off). 명시적 0.1 ms 허용오차 검증과 상용 Weishi 비교는 미완.
   - **코멘트**: 현 로직 기준으로 정상동작 확인 및 필요 시 로직 개선 필요
 
 - **R-07 — 시끄럽거나 약한 신호에서 "신호 약함" 대신 오해를 부르는 값을 표시할 수 있다**
@@ -151,7 +151,7 @@ Risk ID | 상태 | 리스크 타이틀 | 구분 | QAS | P | I
   - **등급 근거**
     - P-Medium: WASAPI/ALSA 차이는 가능성 있으나 RPi 병행 구동으로 조기 발견.
     - I-Medium: 재작업을 유발할 뿐 영구 실패는 아님.
-  - **결과**: 오디오 I/O를 포트-어댑터로 격리하고 RPi를 처음부터 병행 검증(EXP-02/05 실제 Pi 수행)해 "늦게 드러남"을 차단. 차이는 어댑터 한정 재작업으로 봉쇄돼 리스크 낮음으로 종결.
+  - **결과**: 오디오 I/O를 포트-어댑터로 격리하고 RPi를 처음부터 병행 검증(EXP-02/05 실제 RPi5 수행)해 "늦게 드러남"을 차단. 차이는 어댑터 한정 재작업으로 봉쇄돼 리스크 낮음으로 종결.
 
 - **R-11 — 샘플레이트 3종(48/96/192k) 지원이 타이밍 복잡도를 키운다**
   - **상태**: 해결
@@ -238,7 +238,7 @@ Risk ID | 상태 | 리스크 타이틀 | 구분 | QAS | P | I
   - **등급 근거**
     - P-High: RPi5 한 대를 팀이 공유해 일정 충돌이 거의 확실.
     - I-High: 실기기 검증 부재는 RPi 의존 주장 전체의 신뢰를 떨어뜨림.
-  - **결과**: 검증 대부분을 Sim/Playback 기반(하드웨어 불요)으로 설계해 RPi5 의존을 최소화하고 실기기는 성능 측정 등 필수 항목에만 배정하므로, 장비 1대 제약에 대한 추가 대응이 불필요. 추가로 RPi5 1대를 확보해 장비를 2대로 운용할 수 있어 일정 충돌 여지가 더 줄었다.
+  - **결과**: 검증 대부분을 Simulation/Playback 기반(하드웨어 불요)으로 설계해 RPi5 의존을 최소화하고 실기기는 성능 측정 등 필수 항목에만 배정하므로, 장비 1대 제약에 대한 추가 대응이 불필요. 추가로 RPi5 1대를 확보해 장비를 2대로 운용할 수 있어 일정 충돌 여지가 더 줄었다.
 
 ## G. 기타 또는 카테고리화 되지 않음
 

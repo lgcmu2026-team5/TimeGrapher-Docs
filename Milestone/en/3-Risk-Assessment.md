@@ -54,7 +54,7 @@ Risk ID | Status | Risk Title | Type | QAS | P | I
   - **Risk evidence**: pdf (p.25 Real Time Performance), [QAS-2](2-Architectural-Drivers.md#qas-2--performance-latency--from-sound-input-to-screen-display), [C-1](2-Architectural-Drivers.md#design-constraints)
   - **Probability / Impact**: Low / High
   - **Grading rationale**
-    - P-Low: [EXP-02](4-Planned-Experiments.md#exp-02-rpi5-real-time-sample-rate-ceiling) measured 43200 BPH @ 192 kHz running at about 41% of the worst-case E2E budget on the Raspberry Pi 5 with zero block drop / missed beats. High-rate real-time processing is confirmed by measurement.
+    - P-Low: [EXP-02](4-Planned-Experiments.md#exp-02-rpi5-real-time-sample-rate-ceiling) measured 43200 BPH @ 192 kHz running at about 41% of the worst-case E2E budget on the RPi5 with zero block drop / missed beats. High-rate real-time processing is confirmed by measurement.
     - I-High: lost audio data breaks the core measurement outright (the impact, if it occurs, remains high).
   - **Result**: Fixed at 48 kHz base / 192 kHz top. [EXP-02](4-Planned-Experiments.md#exp-02-rpi5-real-time-sample-rate-ceiling) measured the tightest case (43200 BPH @ 192 kHz) at ~41% of the worst-case budget with drop/miss = 0, promoting 192k to a fully supported rate. Conditional resolution: direct 96 kHz measurement, CPU/RAM headroom, and image tabs remain to be checked.
 
@@ -74,7 +74,7 @@ Risk ID | Status | Risk Title | Type | QAS | P | I
   - **Grading rationale**
     - P-Medium: processing/rendering load grows with sample rate, BPH, active tab, and graph count, so the budget may be exceeded.
     - I-High: sustained overrun builds backlog and stale display; at worst, block drop / missed beats contaminate the measurements.
-  - **Result**: Addressed with separated analysis/UI threads + latest-wins rendering and bounded buffers/queues. [EXP-02](4-Planned-Experiments.md#exp-02-rpi5-real-time-sample-rate-ceiling) measured 21600 BPH @ 48 kHz and 43200 BPH @ 192 kHz across Live/Playback/Simulation, both passing within budget on Pi and Windows (drop=0, miss=0), so backlog/stale risk is controlled. Re-measure on the same criteria when a new computation, filter, graph, or AI feature is added.
+  - **Result**: Addressed with separated analysis/UI threads + Latest-Wins rendering and bounded buffers/queues. [EXP-02](4-Planned-Experiments.md#exp-02-rpi5-real-time-sample-rate-ceiling) measured 21600 BPH @ 48 kHz and 43200 BPH @ 192 kHz across Live/Playback/Simulation, both passing within budget on RPi5 and Windows (drop=0, miss=0), so backlog/stale risk is controlled. Re-measure on the same criteria when a new computation, filter, graph, or AI Feature is added.
 
 - **🔴 R-04 — Long continuous runs (24h+) leak memory and degrade or crash**
   - **Status**: Resolved
@@ -151,7 +151,7 @@ Risk ID | Status | Risk Title | Type | QAS | P | I
   - **Grading rationale**
     - P-Medium: WASAPI/ALSA divergence is likely but caught early by running the RPi in parallel.
     - I-Medium: it causes rework, not a permanent failure.
-  - **Result**: Isolated audio I/O behind a port-adapter and verified the RPi in parallel from the start (EXP-02/05 were run on the Pi), preventing late surfacing. Any divergence is contained as adapter-only rework, so the risk is closed as low.
+  - **Result**: Isolated audio I/O behind a port-adapter and verified the RPi in parallel from the start (EXP-02/05 were run on the RPi5), preventing late surfacing. Any divergence is contained as adapter-only rework, so the risk is closed as low.
 
 - **R-11 — Supporting three sample rates (48/96/192k) adds timing complexity**
   - **Status**: Resolved
@@ -238,7 +238,7 @@ Risk ID | Status | Risk Title | Type | QAS | P | I
   - **Grading rationale**
     - P-High: one shared RPi5 makes a scheduling clash near-certain.
     - I-High: missing real-device verification undermines every RPi-dependent claim.
-  - **Result**: Most verification is designed to run Sim/Playback-based (no hardware required), minimizing RPi5 dependence, and the real device is scheduled only for must-have items such as performance measurement, so the single-device constraint needs no extra response. An additional RPi5 unit has also been obtained, allowing two devices to run in parallel and further reducing scheduling contention.
+  - **Result**: Most verification is designed to run Simulation/Playback-based (no hardware required), minimizing RPi5 dependence, and the real device is scheduled only for must-have items such as performance measurement, so the single-device constraint needs no extra response. An additional RPi5 unit has also been obtained, allowing two devices to run in parallel and further reducing scheduling contention.
 
 ## G. Other / Uncategorized
 
