@@ -30,15 +30,19 @@ Core → Nothing (zero dependencies)
 
 ---
 
-## 2. TIMEGRAPHER MODULE USES VIEW – 모듈 사용 관계
+## 2. TIMEGRAPHER MODULE USES VIEW
 
-**목적:** 이 view는 TimeGrapher의 module uses 관계를 두 수준에서 보여준다. 2-1은 project-level module uses를, 2-2는 `TimeGrapher.Core` 내부 decomposition을 보여준다. App 내부 UI 구조는 MVVM/MVC View에서 다루고, 이 view는 project-level module uses와 Core 내부 module uses에 집중한다.
+**목적:** 이 view는 TimeGrapher의 module uses 관계를 두 수준에서 보여준다. 2-1은 project-level module uses를, 2-2는 `TimeGrapher.Core` 내부 decomposition을 보여준다. App 내부 UI 구조는 MVVM View에서 다루고, 이 view는 project-level module uses와 Core 내부 module uses에 집중한다.
+
+> **발표 스크립트:** 이 view는 실행 중 데이터가 흐르는 순서가 아니라, 어떤 모듈이 어떤 모듈을 사용하도록 구조화되어 있는지를 보여줍니다. 먼저 전체 프로젝트 수준에서 App, Core, 플랫폼 오디오 어댑터, Verify의 관계를 보고, 다음으로 Core 내부를 한 단계 확대해서 분석 도메인의 분해 구조를 설명하겠습니다.
 
 **2-1 Project-Level Module Uses:**
 
 App, Core, platform adapters, Verify 사이의 module uses 관계를 보여준다. 여기서 platform adapters는 그림의 `WindowsAudio`와 `LinuxAudio`를 의미하며, OS-specific audio dependency가 `TimeGrapher.Core`로 들어오지 않도록 분리된 modules이다.
 
 ![Module Uses View - Project-level modules](../assets/module-uses-project.ko.svg)
+
+> **발표 스크립트:** 이 그림에서 핵심은 Core가 중심에 있고, App과 Verify, WindowsAudio, LinuxAudio가 Core를 사용한다는 점입니다. WindowsAudio와 LinuxAudio가 여기서 말하는 platform adapters이며, OS별 오디오 의존성이 Core 안으로 들어오지 않게 경계를 만듭니다.
 
 - `TimeGrapher.App` uses `TimeGrapher.Core`.
 - `TimeGrapher.App` conditionally uses `WindowsAudio` or `LinuxAudio`.
@@ -51,6 +55,8 @@ App, Core, platform adapters, Verify 사이의 module uses 관계를 보여준�
 `TimeGrapher.Core`를 주요 domain modules로 분해하고, 각 module이 어떤 Core 내부 module을 사용하는지 보여준다.
 
 ![Module Uses View - Core internal modules](../assets/module-uses-core.ko.svg)
+
+> **발표 스크립트:** 두 번째 그림은 Core만 확대해서 본 것입니다. Analysis가 분석 흐름을 조정하고, Detection, Metrics, Imaging, AudioIo 같은 도메인 모듈을 사용합니다. Shared는 이 내부 모듈들이 공유하는 frame, buffer, 상태 type을 제공하는 공통 계약 영역입니다.
 
 | Module | 책임 | Uses |
 |---|---|---|

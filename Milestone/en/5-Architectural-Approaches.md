@@ -31,9 +31,9 @@ Core → Nothing (zero dependencies)
 
 
 ---
-## 2. TIMEGRAPHER MODULE USES VIEW – Module Uses Relations
+## 2. TIMEGRAPHER MODULE USES VIEW
 
-**Purpose:** This view shows TimeGrapher module uses relations at two levels. Section 2-1 shows project-level module uses; Section 2-2 shows the internal decomposition of `TimeGrapher.Core`. App-internal UI structure is covered by the MVVM/MVC View; this view focuses on project-level module uses and Core-internal module uses.
+**Purpose:** This view shows TimeGrapher module uses relations at two levels. Section 2-1 shows project-level module uses; Section 2-2 shows the internal decomposition of `TimeGrapher.Core`. App-internal UI structure is covered by the MVVM View; this view focuses on project-level module uses and Core-internal module uses.
 
 **2-1 Project-Level Module Uses:**
 
