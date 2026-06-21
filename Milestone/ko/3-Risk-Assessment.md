@@ -27,8 +27,8 @@ Risk ID | 상태 | 리스크 타이틀 | 구분 | QAS | P | I
 [R-05](#a-실시간-성능-rpi) 🔴 | 해결 | 종결: RPi5 latency/rendering 확인 후 .NET (C#) + Avalonia UI 개발 결정 | T | [QAS-2](2-Architectural-Drivers.md#qas-2--performance-latency--소리-입력에서-화면-표시까지) | L | L
 [R-06](#b-신호처리--측정-신뢰성) 🔴 | 진행중 | A·C 이벤트 위치를 0.1 ms 정밀도로 못 찾아 일오차·비트 에러·진폭 전부 오염된다 | T | [QAS-1](2-Architectural-Drivers.md#qas-1--accuracy--음향-이벤트-검출에서-시계-지표-계산까지의-정확도)<br>[QAS-3](2-Architectural-Drivers.md#qas-3)<br>[QAS-4](2-Architectural-Drivers.md#qas-4--consistency--표시-간-값-일치) | **H** | **H**
 [R-07](#b-신호처리--측정-신뢰성) | 진행중 | 시끄럽거나 약한 신호에서 "신호 약함" 대신 오해를 부르는 값을 표시한다 | T | [QAS-3](2-Architectural-Drivers.md#qas-3) | M | **H**
-[R-08](#c-아키텍처--확장성) | 진행중 | 필터/마커 확장 구조를 미리 설계하지 않아 후반 비용이 급증한다 | T | [QAS-5](2-Architectural-Drivers.md#qas-5--modifiability-extensibility--새-측정필터그래프-추가) | M | M
-[R-09](#d-하드웨어--플랫폼) | 진행중 | AGC를 끄지 않거나 마이크 결합이 나빠 신호가 왜곡된다 | T | [QAS-3](2-Architectural-Drivers.md#qas-3) | M | **H**
+[R-08](#c-아키텍처--확장성) | 해결 | 필터/마커 확장 구조를 미리 설계하지 않아 후반 비용이 급증한다 | T | [QAS-5](2-Architectural-Drivers.md#qas-5--modifiability-extensibility--새-측정필터그래프-추가) | M | M
+[R-09](#d-하드웨어--플랫폼) | 해결 | AGC를 끄지 않거나 마이크 결합이 나빠 신호가 왜곡된다 | T | [QAS-3](2-Architectural-Drivers.md#qas-3) | M | **H**
 [R-10](#d-하드웨어--플랫폼) | 해결 | Windows 개발–RPi 데모 간 플랫폼 차이(WASAPI/ALSA)가 늦게 드러난다 | T | [QAS-2](2-Architectural-Drivers.md#qas-2--performance-latency--소리-입력에서-화면-표시까지) | M | M
 [R-11](#d-하드웨어--플랫폼) | 해결 | 샘플레이트 3종(48/96/192k) 지원이 타이밍 복잡도를 키운다 | T | [QAS-2](2-Architectural-Drivers.md#qas-2--performance-latency--소리-입력에서-화면-표시까지) | M | M
 [R-12](#e-사용성--ui-1280800) | 해결 | 작은 화면에 요약바 + 그래프 + 스코프 스트립을 가독성 있게 다 못 담는다 | T | [QAS-6](2-Architectural-Drivers.md#qas-6--usability--터치스크린에서-읽기조작) | M | M
@@ -121,28 +121,24 @@ Risk ID | 상태 | 리스크 타이틀 | 구분 | QAS | P | I
 ## C. 아키텍처 / 확장성
 
 - **R-08 — 필터/마커 확장 구조(예: F4 추가)를 미리 설계하지 않으면 후반 비용이 급증한다**
-  - **상태**: 진행중
+  - **상태**: 해결
   - **리스크 근거**: [FR-12-01](2-Architectural-Drivers.md#g12--scope-function-with-multiple-filter-views), [QAS-5](2-Architectural-Drivers.md#qas-5--modifiability-extensibility--새-측정필터그래프-추가)
   - **발생 확률 / 영향**: Medium / Medium
   - **등급 근거**
     - P-Medium: 선설계가 없으면 확장 구조를 놓칠 수 있음.
     - I-Medium: 후반 비용은 늘지만 리팩터링으로 한정되고 기능 실패는 없음.
-  - **완화 방향**: Filter 인터페이스(strategy)·plug-in 등록 방식 선설계
-  - **현 상태**: F0~F3 4개 필터가 `ScopeFilters.cs`·`MultiFilterScopeLanes.cs`에 고정 구현(FR-12 충족). Filter 인터페이스(strategy)·plug-in 등록 구조는 아직 없어 F4 추가 시 데이터 모델·렌더·UI를 동시 수정해야 함. (ML 게이트 확장 소켓은 별도로 존재)
-  - **코멘트**: 모듈화를 더 잘 하면 될 듯함
+  - **결과**: 측정 필터는 F0~F3 4종으로 스코프가 고정 구현돼 있고(`ScopeFilters.cs`·`MultiFilterScopeLanes.cs`, FR-12 충족), F4 등 신규 필터를 추가하는 시나리오 자체가 없으므로 확장 구조 미선설계로 인한 후반 비용이 발생하지 않음 → 종결. 향후 확장이 실제로 필요해지면 Filter 인터페이스(strategy)·plug-in 등록 선설계를 재검토.
 
 ## D. 하드웨어 / 플랫폼
 
 - **R-09 — AGC를 끄지 않거나 마이크 결합이 나쁘면 신호가 왜곡돼 모든 측정이 망가진다**
-  - **상태**: 진행중
+  - **상태**: 해결
   - **리스크 근거**: pdf (p.29 Raspberry Pi OS — Auto Gain Control), [QAS-3](2-Architectural-Drivers.md#qas-3), [C-4](2-Architectural-Drivers.md#설계-제약사항)
   - **발생 확률 / 영향**: Medium / High
   - **등급 근거**
     - P-Medium: AGC는 기본값 켜짐+잊기 쉬운 수동 단계지만 체크리스트로 충분히 예방 가능.
     - I-High: 신호 왜곡 시 모든 측정이 무너짐.
-  - **완화 방향**: 착수 즉시 AGC off·커플링 검증을 환경 체크리스트화
-  - **현 상태**: 앱은 AGC를 직접 끄지 못하고(NAudio 한계, `SystemAudioControl.cs`) 수동 Gain 슬라이더만 제공(`manual/controls.html`). AGC off·커플링 검증을 안내하는 환경 체크리스트/사용자 가이드는 아직 없음. (Linux는 `pw-record`/`arecord`로 기본 AGC 미적용)
-  - **코멘트**: 사용자 가이드 문서에 명시 필요
+  - **결과**: 앱이 AGC를 직접 끄지 못하므로(NAudio 한계, `SystemAudioControl.cs`) 사용자 매뉴얼(`manual/controls.html` — "마이크 설정(AGC·결합)")에 AGC off·커플링 검증을 환경 체크리스트로 명시해 종결. Live 입력에만 해당하며(Playback/Simulation 무관, Linux는 기본 AGC 미적용), 측정 전 점검 단계로 예방 가능.
 
 - **R-10 — Windows에서 개발하고 RPi에서 데모 — 오디오 백엔드(WASAPI/ALSA) 등 플랫폼 차이가 늦게 드러난다**
   - **상태**: 해결

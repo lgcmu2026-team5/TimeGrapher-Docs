@@ -27,8 +27,8 @@ Risk ID | Status | Risk Title | Type | QAS | P | I
 [R-05](#a-real-time-performance-rpi) 🔴 | Resolved | Closed: .NET (C#) + Avalonia UI selected after RPi5 latency/rendering checks | T | [QAS-2](2-Architectural-Drivers.md#qas-2--performance-latency--from-sound-input-to-screen-display) | L | L
 [R-06](#b-signal-processing--measurement-trustworthiness) 🔴 | In progress | A/C event positions not found to 0.1 ms — rate, beat error, amplitude all contaminated | T | [QAS-1](2-Architectural-Drivers.md#qas-1--accuracy--from-acoustic-event-detection-to-computed-watch-metrics)<br>[QAS-3](2-Architectural-Drivers.md#qas-3)<br>[QAS-4](2-Architectural-Drivers.md#qas-4--consistency--consistent-values-across-displays) | **H** | **H**
 [R-07](#b-signal-processing--measurement-trustworthiness) | In progress | Noisy/weak signals produce misleading values instead of a graceful "signal weak" | T | [QAS-3](2-Architectural-Drivers.md#qas-3) | M | **H**
-[R-08](#c-architecture--extensibility) | In progress | No up-front filter/marker extension design — late-stage cost soars | T | [QAS-5](2-Architectural-Drivers.md#qas-5--modifiability-extensibility--adding-a-new-measurementfiltergraph) | M | M
-[R-09](#d-hardware--platform) | In progress | AGC left on or poor microphone coupling distorts the signal | T | [QAS-3](2-Architectural-Drivers.md#qas-3) | M | **H**
+[R-08](#c-architecture--extensibility) | Resolved | No up-front filter/marker extension design — late-stage cost soars | T | [QAS-5](2-Architectural-Drivers.md#qas-5--modifiability-extensibility--adding-a-new-measurementfiltergraph) | M | M
+[R-09](#d-hardware--platform) | Resolved | AGC left on or poor microphone coupling distorts the signal | T | [QAS-3](2-Architectural-Drivers.md#qas-3) | M | **H**
 [R-10](#d-hardware--platform) | Resolved | Platform differences (WASAPI/ALSA) between Windows dev and RPi demo surface late | T | [QAS-2](2-Architectural-Drivers.md#qas-2--performance-latency--from-sound-input-to-screen-display) | M | M
 [R-11](#d-hardware--platform) | Resolved | Supporting three sample rates (48/96/192k) adds timing complexity | T | [QAS-2](2-Architectural-Drivers.md#qas-2--performance-latency--from-sound-input-to-screen-display) | M | M
 [R-12](#e-usability--ui-1280800) | Resolved | Small screen can't legibly hold summary bar + graphs + scope strip | T | [QAS-6](2-Architectural-Drivers.md#qas-6--usability--reading-and-operating-on-the-touchscreen) | M | M
@@ -121,28 +121,24 @@ Risk ID | Status | Risk Title | Type | QAS | P | I
 ## C. Architecture / Extensibility
 
 - **R-08 — Without up-front design of the filter/marker extension structure (e.g., adding F4), late-stage cost soars**
-  - **Status**: In progress
+  - **Status**: Resolved
   - **Risk evidence**: [FR-12-01](2-Architectural-Drivers.md#g12--scope-function-with-multiple-filter-views), [QAS-5](2-Architectural-Drivers.md#qas-5--modifiability-extensibility--adding-a-new-measurementfiltergraph)
   - **Probability / Impact**: Medium / Medium
   - **Grading rationale**
     - P-Medium: without up-front design the extension structure can be missed.
     - I-Medium: it raises later cost but is contained by refactoring and breaks no function.
-  - **Mitigation**: Pre-design a Filter interface (strategy) and a plug-in registration scheme
-  - **Current status**: The four filters F0–F3 are hard-coded in `ScopeFilters.cs` and `MultiFilterScopeLanes.cs` (FR-12 met). No Filter interface (strategy) or plug-in registration exists yet, so adding F4 requires simultaneous changes to the data model, rendering, and UI. (A separate ML-gate extension socket does exist.)
-  - **Comment**: Better modularization should cover it
+  - **Result**: The measurement filters are fixed at four (F0–F3) in scope (`ScopeFilters.cs`, `MultiFilterScopeLanes.cs`, FR-12 met), and there is no scenario to add a new filter such as F4, so the late-stage cost of an unplanned extension does not arise → closed. If extension genuinely becomes needed later, revisit pre-designing a Filter interface (strategy) and a plug-in registration scheme.
 
 ## D. Hardware / Platform
 
 - **R-09 — If AGC stays on or the microphone couples poorly, the signal distorts and every measurement collapses**
-  - **Status**: In progress
+  - **Status**: Resolved
   - **Risk evidence**: pdf (p.29 Raspberry Pi OS — Auto Gain Control), [QAS-3](2-Architectural-Drivers.md#qas-3), [C-4](2-Architectural-Drivers.md#design-constraints)
   - **Probability / Impact**: Medium / High
   - **Grading rationale**
     - P-Medium: AGC defaults on and is an easily-forgotten manual step, yet fully preventable by checklist.
     - I-High: a distorted signal collapses every measurement.
-  - **Mitigation**: From day one, make AGC-off and coupling verification an environment checklist
-  - **Current status**: The app cannot turn AGC off directly (NAudio limitation, `SystemAudioControl.cs`) and offers only a manual gain slider (`manual/controls.html`). An environment checklist / user guide instructing AGC-off and coupling verification does not exist yet. (On Linux, `pw-record`/`arecord` apply no AGC by default.)
-  - **Comment**: Must be stated in the user guide
+  - **Result**: Since the app cannot turn AGC off directly (NAudio limitation, `SystemAudioControl.cs`), the user manual (`manual/controls.html` — "Microphone setup (AGC & coupling)") now states AGC-off and coupling verification as an environment checklist, closing the risk. It applies to the Live input only (Playback/Simulation unaffected; Linux applies no AGC by default) and is preventable as a pre-measurement check.
 
 - **R-10 — Developing on Windows, demoing on RPi — platform differences (WASAPI/ALSA audio backends) surface late**
   - **Status**: Resolved
