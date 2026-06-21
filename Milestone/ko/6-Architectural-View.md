@@ -104,3 +104,20 @@ App, Core, platform adapters, Verify 사이의 module uses 관계를 보여준�
 - **바인딩은 의존이 아니라 제어를 역전한다:** 런타임에 UI 갱신은 Model → ViewModel → View로 흐르지만 이는 이벤트·바인딩을 통한 *데이터 흐름*이지 컴파일 의존이 아니므로, «use» 그래프는 비순환·하향을 유지한다.
 
 ![MVVM responsibility flow](../assets/MVVM.png)
+
+## 4. TIMEGRAPHER SYSTEM DEPLOYMENT VIEW
+
+**목적:** 개발 환경에서 Git 서버를 거쳐 타겟 노드(Windows PC, Raspberry Pi)로 산출물이 전달되는 배포 경로와, 런타임에 시계 음향이 마이크를 통해 각 노드에 입력되는 외부 신호 경로를 함께 보여준다.
+
+**배포 흐름 (3단계):**
+
+1. **개발·공유** — 다수 개발자가 각 PC에서 C#/.NET으로 개발하고, `git push`로 Git 서버에 코드를 모은다.
+2. **검증·생성** — Git 서버는 push된 사항에 대해 CI/CD로 build/test를 검증하고, `tag v*`에서 타겟별(Windows / Raspberry Pi) 배포 Target을 생성한다.
+3. **배포·설치** — 생성된 Target을 Git 서버 네트워크(LAN)를 통해 연결된 각 노드로 배포·설치한다.
+
+런타임에는 별도의 외부 입력 경로가 있다: 기계식 시계의 **음향 비트 신호**가 마이크/픽업을 거쳐 전기신호로 변환되고, **USB 오디오**로 각 노드의 오디오 입력에 들어간다.
+
+![배포 뷰 다이어그램](../assets/deployment-view-detailed.svg)
+
+
+
