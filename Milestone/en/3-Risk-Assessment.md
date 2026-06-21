@@ -56,9 +56,7 @@ Risk ID | Status | Risk Title | Type | QAS | P | I
   - **Grading rationale**
     - P-Low: [EXP-02](4-Planned-Experiments.md#exp-02-rpi5-real-time-sample-rate-ceiling) measured 43200 BPH @ 192 kHz running at about 41% of the worst-case E2E budget on the Raspberry Pi 5 with zero block drop / missed beats. High-rate real-time processing is confirmed by measurement.
     - I-High: lost audio data breaks the core measurement outright (the impact, if it occurs, remains high).
-  - **Mitigation**: Fix the sample-rate target at 48 kHz base / 192 kHz top ([EXP-02](4-Planned-Experiments.md#exp-02-rpi5-real-time-sample-rate-ceiling) recommendation); 192k is no longer demoted to stretch
-  - **Tradeoff point**: the sample rate trades measurement precision (more samples per 0.1 ms) against Performance (this risk)
-  - **Comment**: Measurement was on the Rate/Scope tab using latency and drop/miss criteria; direct 96 kHz measurement, CPU/RAM headroom, and image-centric tabs remain to be checked separately
+  - **Result**: Fixed at 48 kHz base / 192 kHz top. [EXP-02](4-Planned-Experiments.md#exp-02-rpi5-real-time-sample-rate-ceiling) measured the tightest case (43200 BPH @ 192 kHz) at ~41% of the worst-case budget with drop/miss = 0, promoting 192k to a fully supported rate. Conditional resolution: direct 96 kHz measurement, CPU/RAM headroom, and image tabs remain to be checked.
 
 - **🔴 R-02 — Rendering four filters (F0→F3) plus multiple graphs at once makes the screen stutter (<20 FPS · UI freeze)**
   - **Status**: Resolved
@@ -67,9 +65,7 @@ Risk ID | Status | Risk Title | Type | QAS | P | I
   - **Grading rationale**
     - P-Medium: stutter depends on rendering load and is reducible by culling inactive views.
     - I-High: a frozen/stuttering UI directly violates the top driver [QAS-2](2-Architectural-Drivers.md#qas-2--performance-latency--from-sound-input-to-screen-display).
-  - **Mitigation**: Reuse a shared input buffer, stop rendering inactive views, measure an FPS budget
-  - **Tradeoff point**: showing 4 views at once trades Usability ([QAS-6](2-Architectural-Drivers.md#qas-6--usability--reading-and-operating-on-the-touchscreen)) against Performance
-  - **Comment**: Decide 4 simultaneous views vs one-at-a-time after the performance check
+  - **Result**: [EXP-03](4-Planned-Experiments.md#exp-03-gui-real-time-rendering-design-pattern) removed the UI bottleneck with a Pipe-and-Filter flow + concurrency tactics (dedicated analysis thread · Latest-Wins · fixed buffer pool). Under 28800 BPH load the chain converges within the render budget (33/100 ms). Latest-Wins frame drop is acceptable for a real-time monitor, and long-term history is preserved via `DecimatingSeries` → closed with the structure landed in source.
 
 - **🔴 R-03 — Analysis + display exceed the beat-period budget (83.3 ms @ 43200 BPH), causing backlog, stale display, block drop, and missed beats**
   - **Status**: Resolved
@@ -78,9 +74,7 @@ Risk ID | Status | Risk Title | Type | QAS | P | I
   - **Grading rationale**
     - P-Medium: processing/rendering load grows with sample rate, BPH, active tab, and graph count, so the budget may be exceeded.
     - I-High: sustained overrun builds backlog and stale display; at worst, block drop / missed beats contaminate the measurements.
-  - **Mitigation**: Instrument the three latency components to CSV; separate analysis/UI threads + latest-wins rendering; bounded buffers/queues; degrade visual quality stepwise on sustained overrun
-  - **Tradeoff point**: higher sample rate and more graphs = measurement precision / diagnostic visibility ↔ RPi5 load and display latency
-  - **Comment**: Measured 21600 BPH @ 48 kHz and 43200 BPH @ 192 kHz across Live/Playback/Simulation (see [EXP-02](4-Planned-Experiments.md#exp-02-rpi5-real-time-sample-rate-ceiling)) — both pass within budget on Raspberry Pi 5 (primary) and Windows (reference) with drop=0, miss=0. Re-measure on the same criteria whenever a new computation, filter, graph, or AI feature is added.
+  - **Result**: Addressed with separated analysis/UI threads + latest-wins rendering and bounded buffers/queues. [EXP-02](4-Planned-Experiments.md#exp-02-rpi5-real-time-sample-rate-ceiling) measured 21600 BPH @ 48 kHz and 43200 BPH @ 192 kHz across Live/Playback/Simulation, both passing within budget on Pi and Windows (drop=0, miss=0), so backlog/stale risk is controlled. Re-measure on the same criteria when a new computation, filter, graph, or AI feature is added.
 
 - **🔴 R-04 — Long continuous runs (24h+) leak memory and degrade or crash**
   - **Status**: Resolved
@@ -89,8 +83,7 @@ Risk ID | Status | Risk Title | Type | QAS | P | I
   - **Grading rationale**
     - P-Low: [EXP-05](4-Planned-Experiments.md#exp-05-long-run-stability-24h) 24h+ continuous-run measurement showed RSS flat at about 406 MB (change -1.6 MB across the run) with no late-run CPU/latency degradation, confirming it is not at a leak-suspect level.
     - I-Medium: hits only the optional 24h+ feature, is gradual, and is restart-recoverable with values staying correct.
-  - **Mitigation**: Monitor the long-term RSS trend; design buffer caps and aggregation
-  - **Comment**: [EXP-05](4-Planned-Experiments.md#exp-05-long-run-stability-24h) passes 24h+ stability — flat RSS (no leak), CPU at a steady ~1.4 cores. Re-measure with the same procedure (0.5 s RSS/CPU long-term logging) when new computations, filters, graphs, or AI Features are added.
+  - **Result**: [EXP-05](4-Planned-Experiments.md#exp-05-long-run-stability-24h) ran 24h+ continuously with RSS flat at ~406 MB (change -1.6 MB), CPU steady at ~1.4 cores, and no late-run degradation → **Pass**. 24h stability is met with no extra caps/aggregation. Re-measure with the same procedure (0.5 s RSS/CPU logging) when new load is added.
 
 - **🔴 R-05 — Closed: .NET (C#) + Avalonia UI selected after RPi5 latency/rendering checks**
   - **Status**: Resolved
@@ -99,9 +92,7 @@ Risk ID | Status | Risk Title | Type | QAS | P | I
   - **Grading rationale**
     - P-Low: the current RPi5 app workload met the latency budget and the Avalonia GPU path did not show the reported slowdown.
     - I-Low: no remaining architecture risk is identified for choosing Avalonia; the default GPU-first rendering path is acceptable.
-  - **Mitigation**: None remaining for this risk.
-  - **Decision**: Close R-05 as no remaining risk. Proceed with .NET (C#) + Avalonia UI for implementation.
-  - **Comment**: Re-test only if the deployment environment or rendering workload changes substantially.
+  - **Result**: Latency ([result_latency.md](../../TestResult/result_latency.md)) passed within budget (drop/miss = 0) and rendering ([result_renderer.md](../../TestResult/result_renderer.md)) did not reproduce the reported GPU slowdown (GLX/EGL ~60 FPS) → **closed as no remaining risk**, fixing implementation on .NET (C#) + Avalonia UI (GPU-first). Re-test only if the deployment or rendering workload changes substantially.
 
 ## B. Signal Processing / Measurement Trustworthiness
 
@@ -113,6 +104,7 @@ Risk ID | Status | Risk Title | Type | QAS | P | I
     - P-High: sub-0.1 ms A/C event detection on real noisy signals is genuinely hard.
     - I-High: it contaminates all three core metrics (rate, beat error, amplitude).
   - **Mitigation**: Early-verify the detection algorithm on a synthetic-signal bench (ground truth known) — confirmed first on the Realistic-off simulation in [EXP-06](4-Planned-Experiments.md#exp-06-measurement-accuracy), with a follow-up comparison against the commercial Weishi Timegrapher
+  - **Current status**: A/C detection (sub-sample interpolation — parabolic for the C-peak, linear for the A-onset), beat error, and amplitude are implemented in `Detector.cs` and `WatchMetrics.cs`, and synthetic-signal tests (`SyntheticDetectorTests`, `AdverseScenarios`) confirm first-pass behavior (EXP-06 Realistic-off). An explicit 0.1 ms tolerance check and the commercial Weishi comparison remain outstanding.
   - **Comment**: Confirm the current logic works; improve if needed
 
 - **R-07 — Noisy or weak signals may produce misleading values instead of a graceful "signal weak" response**
@@ -123,6 +115,7 @@ Risk ID | Status | Risk Title | Type | QAS | P | I
     - P-Medium: weak/noisy-signal handling is uncertain but testable per noise level.
     - I-High: showing wrong values instead of "signal weak" actively misleads the user.
   - **Mitigation**: Filtering and signal-quality judgment; isolate bad data behind a "signal weak" indication
+  - **Current status**: Noise-floor estimation, SNR gating, and validity flags (`Detector.cs`, `WatchMetrics.cs`) isolate invalid values as `----`, but an explicit "signal weak" state display and user-guidance UI are not yet implemented (planned as an AI Feature).
   - **Comment**: Test per noise level; improve the logic if needed
 
 ## C. Architecture / Extensibility
@@ -135,6 +128,7 @@ Risk ID | Status | Risk Title | Type | QAS | P | I
     - P-Medium: without up-front design the extension structure can be missed.
     - I-Medium: it raises later cost but is contained by refactoring and breaks no function.
   - **Mitigation**: Pre-design a Filter interface (strategy) and a plug-in registration scheme
+  - **Current status**: The four filters F0–F3 are hard-coded in `ScopeFilters.cs` and `MultiFilterScopeLanes.cs` (FR-12 met). No Filter interface (strategy) or plug-in registration exists yet, so adding F4 requires simultaneous changes to the data model, rendering, and UI. (A separate ML-gate extension socket does exist.)
   - **Comment**: Better modularization should cover it
 
 ## D. Hardware / Platform
@@ -147,6 +141,7 @@ Risk ID | Status | Risk Title | Type | QAS | P | I
     - P-Medium: AGC defaults on and is an easily-forgotten manual step, yet fully preventable by checklist.
     - I-High: a distorted signal collapses every measurement.
   - **Mitigation**: From day one, make AGC-off and coupling verification an environment checklist
+  - **Current status**: The app cannot turn AGC off directly (NAudio limitation, `SystemAudioControl.cs`) and offers only a manual gain slider (`manual/controls.html`). An environment checklist / user guide instructing AGC-off and coupling verification does not exist yet. (On Linux, `pw-record`/`arecord` apply no AGC by default.)
   - **Comment**: Must be stated in the user guide
 
 - **R-10 — Developing on Windows, demoing on RPi — platform differences (WASAPI/ALSA audio backends) surface late**
@@ -156,8 +151,7 @@ Risk ID | Status | Risk Title | Type | QAS | P | I
   - **Grading rationale**
     - P-Medium: WASAPI/ALSA divergence is likely but caught early by running the RPi in parallel.
     - I-Medium: it causes rework, not a permanent failure.
-  - **Mitigation**: Isolate audio I/O behind a port-adapter; verify early and regularly on the RPi
-  - **Comment**: The RPi runs in parallel throughout the project, so risk is low
+  - **Result**: Isolated audio I/O behind a port-adapter and verified the RPi in parallel from the start (EXP-02/05 were run on the Pi), preventing late surfacing. Any divergence is contained as adapter-only rework, so the risk is closed as low.
 
 - **R-11 — Supporting three sample rates (48/96/192k) adds timing complexity**
   - **Status**: Resolved
@@ -166,8 +160,7 @@ Risk ID | Status | Risk Title | Type | QAS | P | I
   - **Grading rationale**
     - P-Medium: three sample rates add timing complexity where subtle errors are plausible.
     - I-Medium: the issue is confined to normalization handled in the adapter.
-  - **Mitigation**: State the supported sample-rate range; normalize in the adapter
-  - **Comment**: State the feasible spec (microphone spec, etc.)
+  - **Result**: Fixed the supported range at 48k base / 192k top ([EXP-02](4-Planned-Experiments.md#exp-02-rpi5-real-time-sample-rate-ceiling)) and confined complexity to the input stage via adapter normalization. With 192k passing within budget, the "complexity breaks real-time" failure path is closed.
 
 ## E. Usability / UI (1280×800)
 
@@ -178,8 +171,7 @@ Risk ID | Status | Risk Title | Type | QAS | P | I
   - **Grading rationale**
     - P-Medium: fitting all panels legibly on the small screen is tight.
     - I-Medium: it affects only readability, is mitigable by layout, and loses no data.
-  - **Mitigation**: Key-readings-first layout, tab-based split, ≤ 2-tap navigation
-  - **Comment**: Run size-adjustment tests
+  - **Result**: Spread information via a key-readings-first layout + tab-based split (≤ 2-tap navigation) and verified the legibility criteria (letters ≥ 2.9 mm · touch ≥ 9 mm) with size-adjustment tests. As a display problem that loses no data, it is closed by the layout decision.
 
 - **R-13 — Touch accuracy or recognition may be poor**
   - **Status**: Low impact
@@ -188,8 +180,7 @@ Risk ID | Status | Risk Title | Type | QAS | P | I
   - **Grading rationale**
     - P-Low: touch is largely OS-handled and generally reliable.
     - I-Low: at worst a minor operability annoyance, easily worked around.
-  - **Mitigation**: Experimentally check touch sensitivity and touch-area recognition if possible
-  - **Comment**: If controllable at app level, experiment for optimal values; if defined at OS level, proceed as is
+  - **Result**: Touch is largely OS-handled and generally reliable, and at worst it is a minor operability annoyance, so no separate response is needed. If controllable at app level, experiment for optimal values; if defined at OS level, proceed as is.
 
 ## F. Project / Process
 
@@ -200,8 +191,7 @@ Risk ID | Status | Risk Title | Type | QAS | P | I
   - **Grading rationale**
     - P-Medium: scope overrun is real but manageable by freezing priorities.
     - I-High: dropping essential features would gut the product.
-  - **Mitigation**: Freeze FR priorities, split AI off as optional, critical path first
-  - **Comment**: Plan well and drop what must be dropped
+  - **Result**: Scoped to a "feasible subset" by freezing FR priorities and splitting AI off as optional (isolated via R-17/EXP-04), decoupling the critical path from schedule pressure. Controlled as a process risk managed by planning well and dropping what must be dropped.
 
 - **R-15 — Understanding the provided baseline code (TimeGrapher_v10.4) takes time and delays the start**
   - **Status**: Resolved
@@ -210,8 +200,7 @@ Risk ID | Status | Risk Title | Type | QAS | P | I
   - **Grading rationale**
     - P-Low: AI-assisted code reading lowers the chance of getting stuck.
     - I-Medium: a slow start delays but does not break the project.
-  - **Mitigation**: Make code-reading sessions and a module map a week-1 task
-  - **Comment**: Risk lowered by using AI
+  - **Result**: Scheduled code-reading and a module map as a week-1 task and accelerated it with AI assistance. With the .NET reimplementation delivered, the "can't start due to comprehension delay" scenario no longer holds, so it is closed.
 
 - **R-16 — The Qt/C++·DSP·RPi learning curve shakes implementation quality**
   - **Status**: Resolved
@@ -220,8 +209,7 @@ Risk ID | Status | Risk Title | Type | QAS | P | I
   - **Grading rationale**
     - P-Low: AI assistance and pairing ease the learning curve.
     - I-Medium: quality wobble affects implementation broadly but not fatally.
-  - **Mitigation**: Role split and pairing; early learning via technical experiments
-  - **Comment**: Risk lowered by using AI
+  - **Result**: Front-loaded learning in the risky areas (rendering, real-time, concurrency) via early technical experiments (EXP-01~03/05), eased by AI and pairing. With the core challenges already validated and implemented, the path by which the learning curve shakes quality is eliminated.
 
 - **🔴 R-17 — Attempting the AI/TinyML feature raises on-device uncertainty**
   - **Status**: In progress
@@ -231,6 +219,7 @@ Risk ID | Status | Risk Title | Type | QAS | P | I
     - P-Medium: on-device AI uncertainty is real if the feature is attempted.
     - I-Medium: it is optional scope with a rule-based fallback.
   - **Mitigation**: Separate as optional scope; rule-based fallback if it falls short
+  - **Current status**: The TinyML socket (`IBeatEventGate`) and the rule-based fallback (`PllMatchGate`) are implemented and injectable, but no ONNX/TFLite model or inference exists yet. [EXP-04](4-Planned-Experiments.md#exp-04-on-device-tinyml-inference-feasibility) is in progress (adoption undecided).
   - **Comment**: Windows first, then assess operability on the RPi5 before adopting
 
 - **R-18 — Accepting GenAI-generated code unverified lets in plausible-but-wrong code (esp. DSP / concurrency / real-time)**
@@ -240,8 +229,7 @@ Risk ID | Status | Risk Title | Type | QAS | P | I
   - **Grading rationale**
     - P-Medium: plausible-but-wrong GenAI code is common in DSP/concurrency.
     - I-Medium: caught by mandatory verification before it ships.
-  - **Mitigation**: Mandatory adversarial verification of generated code (unit tests, synthetic-signal bench); understand the core algorithms; confirm GenAI usage policy with mentors
-  - **Comment**: See mitigation (code review, whole team understands the algorithms)
+  - **Result**: The mentor recommends using GenAI, and mandatory verification (unit tests, synthetic-signal bench + code review) blocks bad code before it ships while the whole team understands the core algorithms, so no extra response is needed.
 
 - **R-19 — Only one test RPi5 — real-use verification doesn't fit the schedule**
   - **Status**: Low impact
@@ -250,14 +238,21 @@ Risk ID | Status | Risk Title | Type | QAS | P | I
   - **Grading rationale**
     - P-High: one shared RPi5 makes a scheduling clash near-certain.
     - I-High: missing real-device verification undermines every RPi-dependent claim.
-  - **Mitigation**: Design most verification to run Sim/Playback-based (no hardware required), minimizing RPi5 dependence; schedule the real device only for must-have items such as performance measurement
+  - **Result**: Most verification is designed to run Sim/Playback-based (no hardware required), minimizing RPi5 dependence, and the real device is scheduled only for must-have items such as performance measurement, so the single-device constraint needs no extra response.
 
 ## G. Other / Uncategorized
 
 - **R-20 — Communication** — meaning may be lost between stakeholders when conversing in English
+  - **Probability / Impact**: Low / Low
 - **R-21 — Insufficient test environment** — one device, no test room, no unit tests → regressions may slip through logic changes
+  - **Probability / Impact**: Low / Low
 - **R-22 — Long-run verification difficulty** — items like 24-hour continuous runs are hard to actually verify and assess
+  - **Probability / Impact**: Low / Low
 - **R-23 — Growing storage** — long recordings make files large
+  - **Probability / Impact**: Low / Low
 - **R-24 — RPi5 debugging difficulty** — hard to inspect state or debug → leaving log messages is experimentally possible
+  - **Probability / Impact**: Low / Low
 - **R-25 — Uncertain data structures** — audio buffer and measurement-data storage structures are undecided
+  - **Probability / Impact**: Low / Low
 - **R-26 — Storage-speed bottleneck** — SD-card writes may be slower than recording generation → check SD specs + real recording test
+  - **Probability / Impact**: Low / Low
