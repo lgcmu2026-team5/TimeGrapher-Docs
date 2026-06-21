@@ -1,6 +1,6 @@
 # Planned Experiments
 
-**목차** — [리스크-실험 매핑](#리스크-실험-매핑) · [EXP-01](#exp-01-rpi5-avalonia-렌더링-백엔드) · [EXP-02](#exp-02-rpi5-실시간-샘플레이트-상한) · [EXP-03](#exp-03-gui-실시간-렌더링-디자인-패턴) · [EXP-04](#exp-04-온디바이스-tinyml-추론-타당성) · [EXP-05](#exp-05-장시간-24h-실행-안정성) · [통합 일정](#통합-일정) · [공통 승인 기준](#공통-승인-기준)
+**목차** — [리스크-실험 매핑](#리스크-실험-매핑) · [EXP-01](#exp-01-rpi5-avalonia-렌더링-백엔드) · [EXP-02](#exp-02-rpi5-실시간-샘플레이트-상한) · [EXP-03](#exp-03-gui-실시간-렌더링-디자인-패턴) · [EXP-04](#exp-04-온디바이스-tinyml-추론-타당성) · [EXP-05](#exp-05-장시간-24h-실행-안정성) · [EXP-06](#exp-06-측정-정확도) · [통합 일정](#통합-일정) · [공통 승인 기준](#공통-승인-기준)
 
 ## 용어 설명
 
@@ -17,12 +17,13 @@
 | [EXP-03](#exp-03-gui-실시간-렌더링-디자인-패턴) | [R-02](3-Risk-Assessment.md#a-실시간-성능-rpi) | [QAS-2](2-Architectural-Drivers.md#qas-2--performance-latency--소리-입력에서-화면-표시까지), [QAS-5](2-Architectural-Drivers.md#qas-5--modifiability-extensibility--새-측정필터그래프-추가) | **High** | GUI 실시간 성능 개선을 위해 어떤 디자인 패턴을 우선 적용할 것인가? |
 | [EXP-04](#exp-04-온디바이스-tinyml-추론-타당성) | [R-17](3-Risk-Assessment.md#f-프로젝트--프로세스) | [QAS-2](2-Architectural-Drivers.md#qas-2--performance-latency--소리-입력에서-화면-표시까지), [QAS-3](2-Architectural-Drivers.md#qas-3) | Mid | TinyML 추론을 추가해도 실시간성과 신뢰성을 유지할 수 있는가? |
 | [EXP-05](#exp-05-장시간-24h-실행-안정성) | [R-04](3-Risk-Assessment.md#a-실시간-성능-rpi) | [QAS-2](2-Architectural-Drivers.md#qas-2--performance-latency--소리-입력에서-화면-표시까지) | Mid | 장시간 실행에서 메모리/지연 열화가 발생하는가? |
+| [EXP-06](#exp-06-측정-정확도) | [R-06](3-Risk-Assessment.md#b-신호처리--측정-신뢰성) | [QAS-1](2-Architectural-Drivers.md#qas-1--accuracy--음향-이벤트-검출에서-시계-지표-계산까지의-정확도) | **High** | Realistic Off 시뮬레이션으로 1차 확인한 측정 정확도가 상용 Weishi Timegrapher 비교에서도 허용오차 이내로 일치하는가? |
 
 ## EXP-01: RPi5 Avalonia 렌더링 백엔드
 
 **리스크:** [R-05](3-Risk-Assessment.md#a-실시간-성능-rpi) · **QAS:** [QAS-2](2-Architectural-Drivers.md#qas-2--performance-latency--소리-입력에서-화면-표시까지) · **우선순위:** High
 
-### 결과 및 권장 사항
+### 결과 및 결정 사항
 
 **완료 — 기본값(GPU 우선) 유지 권장.** 보고된 "GPU 가속 ~80 ms 저하"는 우리 앱에서 재현되지 않았다(상세: [result_renderer.md](../../TestResult/result_renderer.md)).
 
@@ -57,7 +58,7 @@ C# 경로 채택 시 Avalonia Github의 다수 이슈처럼 RPi5에서 GPU 가�
 
 완료 — GPU 가속이 SW보다 빠름을 확인, 렌더링 기본값(GPU 우선) 유지 권장
 
-### 예상 산출물
+### 산출물
 
 - 재사용 가능한 벤치마크 테스트
 - 백엔드별(GLX / EGL / Software) 프레임타임 비교표(FPS, 평균, p95, p99)
@@ -77,7 +78,7 @@ C# 경로 채택 시 Avalonia Github의 다수 이슈처럼 RPi5에서 GPU 가�
 3. **RPi5 배포 및 측정** — 실기기에 배포해 3개 백엔드를 각각 워밍업 후 약 30초 측정한다.
 4. **결과 비교 → 백엔드 권장안 도출** — 본 문서와 [Risk Assessment(R-05)](3-Risk-Assessment.md#a-실시간-성능-rpi)에 기록한다.
 
-**완료 기준:** ① 3개 백엔드 모두 측정, ② GL 렌더러 정보로 HW 가속 여부 확인, ③ 백엔드 선택 권장안 도출 — 세 조건이 모두 충족되면 실험을 완료한다.
+**완료 기준(충족):** ① 3개 백엔드 모두 측정, ② GL 렌더러 정보로 HW 가속 여부 확인, ③ 백엔드 선택 권장안 도출 — 세 조건이 모두 충족되어 실험을 완료했다.
 
 ### 기간
 
@@ -94,7 +95,7 @@ C# 경로 채택 시 Avalonia Github의 다수 이슈처럼 RPi5에서 GPU 가�
 
 **리스크:** [R-01](3-Risk-Assessment.md#a-실시간-성능-rpi), [R-03](3-Risk-Assessment.md#a-실시간-성능-rpi) · **QAS:** [QAS-2](2-Architectural-Drivers.md#qas-2--performance-latency--소리-입력에서-화면-표시까지) · **우선순위:** High
 
-### 결과 및 권장 사항
+### 결과 및 결정 사항
 
 **두 조건 모두 Pass.** 두 조건을 입력 모드별로 측정했다(상세: [result_latency.md](../../TestResult/result_latency.md)).
 
@@ -126,7 +127,7 @@ RPi5 Live 환경에서 입력 → 분석 → 표시 파이프라인이 실시간
 
 완료 — 두 조건 5 run 측정(Raspberry Pi 5·Windows 모두 Pass), 권장 샘플레이트 확정(48 kHz 기본 / 192 kHz 최고 지원)
 
-### 예상 산출물
+### 산출물
 
 - 조건·입력 모드·플랫폼별 latency 비교표(avg/p95/p99/worst)
 - block drop / missed beat 통계표
@@ -160,7 +161,7 @@ RPi5 Live 환경에서 입력 → 분석 → 표시 파이프라인이 실시간
 
 **리스크:** [R-02](3-Risk-Assessment.md#a-실시간-성능-rpi) · **QAS:** [QAS-2](2-Architectural-Drivers.md#qas-2--performance-latency--소리-입력에서-화면-표시까지), [QAS-5](2-Architectural-Drivers.md#qas-5--modifiability-extensibility--새-측정필터그래프-추가) · **우선순위:** High
 
-### 결과 및 권장 사항
+### 결과 및 결정 사항
 
 **완료 — Pipe-and-Filter 흐름 + 동시성 택틱(Producer–Consumer · Observer · Latest-Wins · 고정 버퍼 풀) 채택.** 단일 스레드 동기 구조의 UI 병목을 제거했다.
 
@@ -182,7 +183,7 @@ RPi5 Live 환경에서 입력 → 분석 → 표시 파이프라인이 실시간
 
 완료 — 핵심 디자인 패턴 검증 및 파이프라인 구현 완료(전체 소스 반영)
 
-### 예상 산출물
+### 산출물
 
 - Pipe-and-Filter 데이터 흐름 중심의 오디오 분석-시각화 파이프라인 아키텍처 정의
 - 동시성 격리용 렌더링 스케줄러(Latest-Wins) 및 데이터 복사 버퍼링(고정 버퍼 풀) 구조 설계안
@@ -240,7 +241,7 @@ RPi5 Live 환경에서 입력 → 분석 → 표시 파이프라인이 실시간
 
 **리스크:** [R-17](3-Risk-Assessment.md#f-프로젝트--프로세스) · **QAS:** [QAS-2](2-Architectural-Drivers.md#qas-2--performance-latency--소리-입력에서-화면-표시까지), [QAS-3](2-Architectural-Drivers.md#qas-3) · **우선순위:** Mid
 
-### 결과 및 권장 사항
+### 결과 및 결정 사항
 
 TO-DO: TinyML 기능 채택 여부(채택/조건부 채택/보류)와 채택 조건을 기록한다.
 
@@ -255,7 +256,7 @@ TinyML 기반 분류(예: signal-quality, bad-data-rejection)를 RPi 온디바�
 
 진행 중
 
-### 예상 산출물
+### 산출물
 
 - 모델 크기/추론시간/CPU 점유율 비교표
 - TinyML on/off 성능 비교표(지연, 프레임타임, 오표시율, confusion matrix)
@@ -287,7 +288,7 @@ TinyML 기반 분류(예: signal-quality, bad-data-rejection)를 RPi 온디바�
 
 **리스크:** [R-04](3-Risk-Assessment.md#a-실시간-성능-rpi) · **QAS:** [QAS-2](2-Architectural-Drivers.md#qas-2--performance-latency--소리-입력에서-화면-표시까지) · **우선순위:** Mid
 
-### 결과 및 권장 사항
+### 결과 및 결정 사항
 
 24h+ 연속 실행 안정성을 **Pass**로 판정한다. RPi5(`cmu.local`)에서 `TimeGrapher.App`(PID 2111)을 24시간 연속 가동하며 프로세스 CPU/메모리를 0.5초 간격으로 장기 로깅했고, 약 172,800개 샘플을 수집했다.
 
@@ -334,7 +335,7 @@ xychart-beta
 
 완료 (Pass)
 
-### 예상 산출물
+### 산출물
 
 - 6h/24h 자원 사용 추세 그래프 ✓ (위 시간대별 추세 그래프)
 - 장시간 안정성 리포트 ✓ (RSS 평탄·누수 없음, CPU 열화 없음)
@@ -360,9 +361,58 @@ xychart-beta
 
 - NA
 
+## EXP-06: 측정 정확도
+
+**리스크:** [R-06](3-Risk-Assessment.md#b-신호처리--측정-신뢰성) · **QAS:** [QAS-1](2-Architectural-Drivers.md#qas-1--accuracy--음향-이벤트-검출에서-시계-지표-계산까지의-정확도) · **우선순위:** High
+
+### 결과 및 결정 사항
+
+1차로 **Realistic Off** 시뮬레이션(깨끗한 신호)에서 일오차·진폭·비트 에러가 정상 측정됨을 확인했다. 추후 상용 제품 **Weishi Timegrapher**와의 비교 테스트로 측정값을 검증할 예정이다.
+
+### 목적
+
+기준값을 아는 신호로 검출·계산 정확도를 검증해 [R-06](3-Risk-Assessment.md#b-신호처리--측정-신뢰성)(A·C 이벤트를 0.1 ms 정밀도로 못 찾으면 모든 지표가 오염됨)을 확인한다. **Realistic을 끄면** 합성 신호에 잡음·변동이 없어, 생성기에 설정한 일오차·진폭·비트 에러가 곧 기준값이 된다. Pass/Fail은 상용 Weishi Timegrapher의 오차범위를 기준으로 한다 — **일오차 ±1 s/d · 진폭 ±1° · 비트 에러 ±0.1 ms** (세 기준 모두 Weishi 스펙에서 가져왔으며, 일오차 ±1 s/d는 [QAS-1](2-Architectural-Drivers.md#qas-1--accuracy--음향-이벤트-검출에서-시계-지표-계산까지의-정확도) 목표와도 부합).
+
+- Q1. (1차) Realistic Off 시뮬레이션에서 일오차·진폭·비트 에러가 위 허용오차 이내인가?
+- Q2. (후속) 동일 시계를 상용 Weishi Timegrapher와 비교했을 때 같은 허용오차 이내로 일치하는가?
+
+### 상태
+
+진행 중 — 1차(Realistic Off 시뮬레이션) 확인 완료, 상용 비교 테스트 예정
+
+### 산출물
+
+- 지표별(일오차·진폭·비트 에러) 기준값 대비 오차표 + Pass/Fail
+- (후속) Weishi Timegrapher 비교 결과표
+
+### 필요한 자원
+
+- Raspberry Pi 5(주), Windows PC(참고)
+- Sim 생성기(Realistic Off), 측정 기준값
+- 상용 비교용 Weishi Timegrapher + 동일 시계
+- 오차 로깅 코드
+- 작업 공수: 약 1.5 person-days
+
+### 실험 설명
+
+기준값을 아는 시뮬레이션으로 1차 확인한 뒤 상용 제품과 비교한다. Pass/Fail은 두 단계 모두 동일 허용오차(일오차 ±1 s/d·진폭 ±1°·비트 에러 ±0.1 ms)로 판정한다.
+
+1. **Realistic Off 시뮬레이션 (1차):** 깨끗한 합성 신호로 1,000비트 이상 측정해 일오차·진폭·비트 에러가 각각 허용오차 이내인지 Pass/Fail을 판정한다.
+2. **상용 비교 (후속):** 동일 시계를 Weishi Timegrapher와 본 시스템으로 측정해, 같은 허용오차 기준으로 두 측정값의 일치 여부를 판정한다.
+
+각 단계를 Raspberry Pi 5에서 판정하고(Windows 참고) 결과를 [R-06](3-Risk-Assessment.md#b-신호처리--측정-신뢰성)에 기록한다.
+
+### 기간
+
+- D1–D2: 1차(Realistic Off 시뮬레이션) / 후속: 상용 비교 테스트
+
+### 링크 및 참고 자료
+
+- NA
+
 ## 통합 일정
 
-- Week 1: EXP-01, EXP-02, EXP-03
+- Week 1: EXP-01, EXP-02, EXP-03, EXP-06
 - Week 2: EXP-04
 - Week 3: EXP-05, 미해결 항목 재실험
 

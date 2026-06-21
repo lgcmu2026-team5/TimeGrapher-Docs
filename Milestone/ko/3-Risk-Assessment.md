@@ -23,7 +23,7 @@ Risk ID | 리스크 타이틀 | 구분 | QAS | P | I
 [R-03](#a-실시간-성능-rpi) 🔴 | 분석·표시가 비트 주기 예산(83.3 ms @ 43200 BPH)을 넘겨 backlog·stale 표시·block drop·missed beat가 발생한다 | T | [QAS-2](2-Architectural-Drivers.md#qas-2--performance-latency--소리-입력에서-화면-표시까지) | M | **H**
 [R-04](#a-실시간-성능-rpi) 🔴 | 장시간(24h+) 연속 실행 시 메모리가 새서 느려지거나 죽는다 | T | [QAS-2](2-Architectural-Drivers.md#qas-2--performance-latency--소리-입력에서-화면-표시까지) | **L** | M
 [R-05](#a-실시간-성능-rpi) 🔴 | 종결: RPi5 latency/rendering 확인 후 .NET (C#) + Avalonia UI 개발 결정 | T | [QAS-2](2-Architectural-Drivers.md#qas-2--performance-latency--소리-입력에서-화면-표시까지) | L | L
-[R-06](#b-신호처리--측정-신뢰성) | A·C 이벤트 위치를 0.1 ms 정밀도로 못 찾아 일오차·비트 에러·진폭 전부 오염된다 | T | [QAS-3](2-Architectural-Drivers.md#qas-3)<br>[QAS-4](2-Architectural-Drivers.md#qas-4--consistency--표시-간-값-일치) | **H** | **H**
+[R-06](#b-신호처리--측정-신뢰성) 🔴 | A·C 이벤트 위치를 0.1 ms 정밀도로 못 찾아 일오차·비트 에러·진폭 전부 오염된다 | T | [QAS-1](2-Architectural-Drivers.md#qas-1--accuracy--음향-이벤트-검출에서-시계-지표-계산까지의-정확도)<br>[QAS-3](2-Architectural-Drivers.md#qas-3)<br>[QAS-4](2-Architectural-Drivers.md#qas-4--consistency--표시-간-값-일치) | **H** | **H**
 [R-07](#b-신호처리--측정-신뢰성) | 시끄럽거나 약한 신호에서 "신호 약함" 대신 오해를 부르는 값을 표시한다 | T | [QAS-3](2-Architectural-Drivers.md#qas-3) | M | **H**
 [R-08](#c-아키텍처--확장성) | 필터/마커 확장 구조를 미리 설계하지 않아 후반 비용이 급증한다 | T | [QAS-5](2-Architectural-Drivers.md#qas-5--modifiability-extensibility--새-측정필터그래프-추가) | M | M
 [R-09](#d-하드웨어--플랫폼) | AGC를 끄지 않거나 마이크 결합이 나빠 신호가 왜곡된다 | T | [QAS-3](2-Architectural-Drivers.md#qas-3) | M | **H**
@@ -98,13 +98,13 @@ Risk ID | 리스크 타이틀 | 구분 | QAS | P | I
 
 ## B. 신호처리 / 측정 신뢰성
 
-- **R-06 — A·C 이벤트 위치를 0.1 ms 정밀도로 못 찾으면 일오차·비트 에러·진폭 전부가 오염된다**
-  - **근거**: [FR-08-04…06](2-Architectural-Drivers.md#g08--escapement-analyzer-and-marker-line-display), [FR-06-01…04](2-Architectural-Drivers.md#g06--beat-error-display-and-diagnostic-trace), [QAS-3](2-Architectural-Drivers.md#qas-3), [QAS-4](2-Architectural-Drivers.md#qas-4--consistency--표시-간-값-일치)
+- **🔴 R-06 — A·C 이벤트 위치를 0.1 ms 정밀도로 못 찾으면 일오차·비트 에러·진폭 전부가 오염된다**
+  - **근거**: [FR-08-04…06](2-Architectural-Drivers.md#g08--escapement-analyzer-and-marker-line-display), [FR-06-01…04](2-Architectural-Drivers.md#g06--beat-error-display-and-diagnostic-trace), [QAS-1](2-Architectural-Drivers.md#qas-1--accuracy--음향-이벤트-검출에서-시계-지표-계산까지의-정확도), [QAS-3](2-Architectural-Drivers.md#qas-3), [QAS-4](2-Architectural-Drivers.md#qas-4--consistency--표시-간-값-일치)
   - **발생 확률 / 영향**: High / High
   - **등급 근거**
     - P-High: 실제 잡음 신호에서 0.1 ms 정밀 A·C 이벤트 검출은 본질적으로 어려움.
     - I-High: 일오차·비트 에러·진폭 세 핵심 지표를 전부 오염.
-  - **완화 방향**: 합성신호(정답 known) 벤치로 검출 알고리즘 조기 검증
+  - **완화 방향**: 합성신호(정답 known) 벤치로 검출 알고리즘 조기 검증([EXP-06](4-Planned-Experiments.md#exp-06-측정-정확도)에서 Realistic Off 시뮬레이션으로 1차 확인 후 상용 Weishi Timegrapher 비교 예정)
   - **코멘트**: 현 로직 기준으로 정상동작 확인 및 필요 시 로직 개선 필요
 
 - **R-07 — 시끄럽거나 약한 신호에서 "신호 약함" 대신 오해를 부르는 값을 표시할 수 있다**

@@ -23,7 +23,7 @@ Risk ID | Risk Title | Type | QAS | P | I
 [R-03](#a-real-time-performance-rpi) 🔴 | Analysis + display exceed the beat-period budget (83.3 ms @ 43200 BPH) — backlog, stale display, block drop, missed beats | T | [QAS-2](2-Architectural-Drivers.md#qas-2--performance-latency--from-sound-input-to-screen-display) | M | **H**
 [R-04](#a-real-time-performance-rpi) 🔴 | Long continuous runs (24h+) leak memory and degrade or crash | T | [QAS-2](2-Architectural-Drivers.md#qas-2--performance-latency--from-sound-input-to-screen-display) | **L** | M
 [R-05](#a-real-time-performance-rpi) 🔴 | Closed: .NET (C#) + Avalonia UI selected after RPi5 latency/rendering checks | T | [QAS-2](2-Architectural-Drivers.md#qas-2--performance-latency--from-sound-input-to-screen-display) | L | L
-[R-06](#b-signal-processing--measurement-trustworthiness) | A/C event positions not found to 0.1 ms — rate, beat error, amplitude all contaminated | T | [QAS-3](2-Architectural-Drivers.md#qas-3)<br>[QAS-4](2-Architectural-Drivers.md#qas-4--consistency--consistent-values-across-displays) | **H** | **H**
+[R-06](#b-signal-processing--measurement-trustworthiness) 🔴 | A/C event positions not found to 0.1 ms — rate, beat error, amplitude all contaminated | T | [QAS-1](2-Architectural-Drivers.md#qas-1--accuracy--from-acoustic-event-detection-to-computed-watch-metrics)<br>[QAS-3](2-Architectural-Drivers.md#qas-3)<br>[QAS-4](2-Architectural-Drivers.md#qas-4--consistency--consistent-values-across-displays) | **H** | **H**
 [R-07](#b-signal-processing--measurement-trustworthiness) | Noisy/weak signals produce misleading values instead of a graceful "signal weak" | T | [QAS-3](2-Architectural-Drivers.md#qas-3) | M | **H**
 [R-08](#c-architecture--extensibility) | No up-front filter/marker extension design — late-stage cost soars | T | [QAS-5](2-Architectural-Drivers.md#qas-5--modifiability-extensibility--adding-a-new-measurementfiltergraph) | M | M
 [R-09](#d-hardware--platform) | AGC left on or poor microphone coupling distorts the signal | T | [QAS-3](2-Architectural-Drivers.md#qas-3) | M | **H**
@@ -98,13 +98,13 @@ Risk ID | Risk Title | Type | QAS | P | I
 
 ## B. Signal Processing / Measurement Trustworthiness
 
-- **R-06 — If A/C event positions can't be found to 0.1 ms, rate, beat error, and amplitude are all contaminated**
-  - **Evidence**: [FR-08-04…06](2-Architectural-Drivers.md#g08--escapement-analyzer-and-marker-line-display), [FR-06-01…04](2-Architectural-Drivers.md#g06--beat-error-display-and-diagnostic-trace), [QAS-3](2-Architectural-Drivers.md#qas-3), [QAS-4](2-Architectural-Drivers.md#qas-4--consistency--consistent-values-across-displays)
+- **🔴 R-06 — If A/C event positions can't be found to 0.1 ms, rate, beat error, and amplitude are all contaminated**
+  - **Evidence**: [FR-08-04…06](2-Architectural-Drivers.md#g08--escapement-analyzer-and-marker-line-display), [FR-06-01…04](2-Architectural-Drivers.md#g06--beat-error-display-and-diagnostic-trace), [QAS-1](2-Architectural-Drivers.md#qas-1--accuracy--from-acoustic-event-detection-to-computed-watch-metrics), [QAS-3](2-Architectural-Drivers.md#qas-3), [QAS-4](2-Architectural-Drivers.md#qas-4--consistency--consistent-values-across-displays)
   - **Probability / Impact**: High / High
   - **Grading rationale**
     - P-High: sub-0.1 ms A/C event detection on real noisy signals is genuinely hard.
     - I-High: it contaminates all three core metrics (rate, beat error, amplitude).
-  - **Mitigation**: Early-verify the detection algorithm on a synthetic-signal bench (ground truth known)
+  - **Mitigation**: Early-verify the detection algorithm on a synthetic-signal bench (ground truth known) — confirmed first on the Realistic-off simulation in [EXP-06](4-Planned-Experiments.md#exp-06-measurement-accuracy), with a follow-up comparison against the commercial Weishi Timegrapher
   - **Comment**: Confirm the current logic works; improve if needed
 
 - **R-07 — Noisy or weak signals may produce misleading values instead of a graceful "signal weak" response**

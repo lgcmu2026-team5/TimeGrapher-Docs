@@ -1,6 +1,6 @@
 # Planned Experiments
 
-**Contents** — [Risk-to-Experiment Map](#risk-to-experiment-map) · [EXP-01](#exp-01-avalonia-rendering-backend-on-the-rpi5) · [EXP-02](#exp-02-rpi5-real-time-sample-rate-ceiling) · [EXP-03](#exp-03-gui-real-time-rendering-design-patterns) · [EXP-04](#exp-04-on-device-tinyml-inference-feasibility) · [EXP-05](#exp-05-long-run-stability-24h) · [Integrated Schedule](#integrated-schedule) · [Common Approval Criteria](#common-approval-criteria)
+**Contents** — [Risk-to-Experiment Map](#risk-to-experiment-map) · [EXP-01](#exp-01-avalonia-rendering-backend-on-the-rpi5) · [EXP-02](#exp-02-rpi5-real-time-sample-rate-ceiling) · [EXP-03](#exp-03-gui-real-time-rendering-design-patterns) · [EXP-04](#exp-04-on-device-tinyml-inference-feasibility) · [EXP-05](#exp-05-long-run-stability-24h) · [EXP-06](#exp-06-measurement-accuracy) · [Integrated Schedule](#integrated-schedule) · [Common Approval Criteria](#common-approval-criteria)
 
 ## Terminology
 
@@ -17,12 +17,13 @@ The terms used in this document are defined in the consolidated [Glossary](7-Glo
 | [EXP-03](#exp-03-gui-real-time-rendering-design-patterns) | [R-02](3-Risk-Assessment.md#a-real-time-performance-rpi) | [QAS-2](2-Architectural-Drivers.md#qas-2--performance-latency--from-sound-input-to-screen-display), [QAS-5](2-Architectural-Drivers.md#qas-5--modifiability-extensibility--adding-a-new-measurementfiltergraph) | **High** | Which design patterns should we apply first to improve GUI real-time performance? |
 | [EXP-04](#exp-04-on-device-tinyml-inference-feasibility) | [R-17](3-Risk-Assessment.md#f-project--process) | [QAS-2](2-Architectural-Drivers.md#qas-2--performance-latency--from-sound-input-to-screen-display), [QAS-3](2-Architectural-Drivers.md#qas-3) | Mid | Can we add TinyML inference and still hold real-time behavior and trustworthiness? |
 | [EXP-05](#exp-05-long-run-stability-24h) | [R-04](3-Risk-Assessment.md#a-real-time-performance-rpi) | [QAS-2](2-Architectural-Drivers.md#qas-2--performance-latency--from-sound-input-to-screen-display) | Mid | Do memory/latency degrade over long runs? |
+| [EXP-06](#exp-06-measurement-accuracy) | [R-06](3-Risk-Assessment.md#b-signal-processing--measurement-trustworthiness) | [QAS-1](2-Architectural-Drivers.md#qas-1--accuracy--from-acoustic-event-detection-to-computed-watch-metrics) | **High** | Does measurement accuracy — confirmed first on the Realistic-off simulation — agree within tolerance with the commercial Weishi Timegrapher? |
 
 ## EXP-01: Avalonia rendering backend on the RPi5
 
 **Risks:** [R-05](3-Risk-Assessment.md#a-real-time-performance-rpi) · **QAS:** [QAS-2](2-Architectural-Drivers.md#qas-2--performance-latency--from-sound-input-to-screen-display) · **Priority:** High
 
-### Results & Recommendations
+### Results & Decisions
 
 **Complete — keep the default (GPU-first).** The reported "~80 ms GPU-acceleration slowdown" did not reproduce in our app (details: [result_renderer.md](../../TestResult/result_renderer.md)).
 
@@ -57,7 +58,7 @@ The answer drives the design decision **"which Avalonia rendering backend to loc
 
 Complete — GPU acceleration confirmed faster than Software; keep the default (GPU-first) rendering
 
-### Expected Deliverables
+### Deliverables
 
 - A reusable benchmark test
 - Per-backend (GLX / EGL / Software) frame-time comparison table (FPS, mean, p95, p99)
@@ -77,7 +78,7 @@ Complete — GPU acceleration confirmed faster than Software; keep the default (
 3. **Deploy to the RPi5 and measure** — run each of the three backends with a warmup followed by ~30 s of measurement.
 4. **Compare results → derive the backend recommendation** — record it here and in [Risk Assessment (R-05)](3-Risk-Assessment.md#a-real-time-performance-rpi).
 
-**Completion criteria:** the experiment will be complete once ① all three backends are measured, ② the active-renderer (HW-acceleration) status is confirmed, and ③ a backend recommendation is derived.
+**Completion criteria (met):** ① all three backends measured, ② the active-renderer (HW-acceleration) status confirmed, and ③ a backend recommendation derived — all three were met, completing the experiment.
 
 ### Duration
 
@@ -94,7 +95,7 @@ Complete — GPU acceleration confirmed faster than Software; keep the default (
 
 **Risks:** [R-01](3-Risk-Assessment.md#a-real-time-performance-rpi), [R-03](3-Risk-Assessment.md#a-real-time-performance-rpi) · **QAS:** [QAS-2](2-Architectural-Drivers.md#qas-2--performance-latency--from-sound-input-to-screen-display) · **Priority:** High
 
-### Results & Recommendations
+### Results & Decisions
 
 **Both conditions pass.** The two conditions were measured across input modes (details: [result_latency.md](../../TestResult/result_latency.md)).
 
@@ -126,7 +127,7 @@ Confirm whether the input → analysis → display pipeline meets real-time requ
 
 Complete — both conditions measured over 5 runs each (Raspberry Pi 5 and Windows both pass); recommended sample rate fixed (48 kHz base / 192 kHz top)
 
-### Expected Deliverables
+### Deliverables
 
 - Per-condition / per-input-mode / per-platform latency comparison table (avg/p95/p99/worst)
 - Block-drop / missed-beat statistics table
@@ -160,7 +161,7 @@ Complete — both conditions measured over 5 runs each (Raspberry Pi 5 and Windo
 
 **Risks:** [R-02](3-Risk-Assessment.md#a-real-time-performance-rpi) · **QAS:** [QAS-2](2-Architectural-Drivers.md#qas-2--performance-latency--from-sound-input-to-screen-display), [QAS-5](2-Architectural-Drivers.md#qas-5--modifiability-extensibility--adding-a-new-measurementfiltergraph) · **Priority:** High
 
-### Results & Recommendations
+### Results & Decisions
 
 **Complete — adopted a Pipe-and-Filter flow + concurrency tactics (Producer–Consumer · Observer · Latest-Wins · fixed buffer pool).** Removed the single-threaded synchronous-call UI bottleneck.
 
@@ -182,7 +183,7 @@ Resolve the bottleneck where, under the single-threaded synchronous call chain, 
 
 Complete — design patterns verified and the pipeline implemented (reflected across the full source)
 
-### Expected Deliverables
+### Deliverables
 
 - Pipe-and-Filter data-flow centered audio analysis-to-visualization pipeline architecture definition
 - Concurrency-isolation render scheduler (Latest-Wins) and data-copy buffering (fixed buffer pool) design
@@ -240,7 +241,7 @@ This experiment analyzes, from a benefits/trade-offs perspective, which quality 
 
 **Risks:** [R-17](3-Risk-Assessment.md#f-project--process) · **QAS:** [QAS-2](2-Architectural-Drivers.md#qas-2--performance-latency--from-sound-input-to-screen-display), [QAS-3](2-Architectural-Drivers.md#qas-3) · **Priority:** Mid
 
-### Results & Recommendations
+### Results & Decisions
 
 TO-DO: Record the TinyML feature decision (Adopt / Conditional / Hold) and the adoption conditions.
 
@@ -255,7 +256,7 @@ Verify whether adding TinyML-based classification (e.g., signal-quality, bad-dat
 
 In progress
 
-### Expected Deliverables
+### Deliverables
 
 - Model size / inference time / CPU-usage comparison table
 - TinyML on/off performance comparison table (latency, frame time, mis-display rate, confusion matrix)
@@ -287,7 +288,7 @@ In progress
 
 **Risks:** [R-04](3-Risk-Assessment.md#a-real-time-performance-rpi) · **QAS:** [QAS-2](2-Architectural-Drivers.md#qas-2--performance-latency--from-sound-input-to-screen-display) · **Priority:** Mid
 
-### Results & Recommendations
+### Results & Decisions
 
 24h+ continuous-run stability is judged **Pass**. On the RPi5 (`cmu.local`), `TimeGrapher.App` (PID 2111) was run continuously for 24 hours while logging the process CPU/memory at a 0.5 s interval, collecting roughly 172,800 samples.
 
@@ -334,7 +335,7 @@ Check for memory growth, latency degradation, and crash risk under long continuo
 
 Done (Pass)
 
-### Expected Deliverables
+### Deliverables
 
 - 6h/24h resource-usage trend graphs ✓ (trend graphs above)
 - Long-run stability report ✓ (flat RSS / no leak, no CPU degradation)
@@ -360,9 +361,58 @@ Done (Pass)
 
 - NA
 
+## EXP-06: Measurement accuracy
+
+**Risks:** [R-06](3-Risk-Assessment.md#b-signal-processing--measurement-trustworthiness) · **QAS:** [QAS-1](2-Architectural-Drivers.md#qas-1--accuracy--from-acoustic-event-detection-to-computed-watch-metrics) · **Priority:** High
+
+### Results & Decisions
+
+A first pass on the **Realistic-off** simulation (clean signal) confirmed that rate, amplitude, and beat error are measured normally. It will next be validated by a comparison test against a commercial unit, the **Weishi Timegrapher**.
+
+### Objective
+
+Verify detection/computation accuracy on signals with a known reference, as a check on [R-06](3-Risk-Assessment.md#b-signal-processing--measurement-trustworthiness) (if A/C events aren't found to 0.1 ms, every metric is contaminated). **Turning Realistic off** removes noise and variability from the synthetic signal, so the rate, amplitude, and beat error set on the generator become the reference. Pass/Fail uses the commercial Weishi Timegrapher's tolerances — **rate ±1 s/d · amplitude ±1° · beat error ±0.1 ms** (all three from the Weishi spec; the rate ±1 s/d also coincides with the [QAS-1](2-Architectural-Drivers.md#qas-1--accuracy--from-acoustic-event-detection-to-computed-watch-metrics) target).
+
+- Q1. (First pass) On the Realistic-off simulation, are rate, amplitude, and beat error within the tolerances above?
+- Q2. (Follow-up) Measuring the same watch on the commercial Weishi Timegrapher, do the readings agree within the same tolerances?
+
+### Status
+
+In progress — first pass (Realistic-off simulation) done; commercial comparison test to follow
+
+### Deliverables
+
+- Per-metric (rate, amplitude, beat error) error table vs reference + Pass/Fail
+- (Follow-up) Weishi Timegrapher comparison table
+
+### Resources Needed
+
+- Raspberry Pi 5 (primary), Windows PC (reference)
+- Sim generator (Realistic off), reference values
+- A Weishi Timegrapher + the same watch, for the comparison
+- Error-logging code
+- Effort: ~1.5 person-days
+
+### Experiment Description
+
+Confirm with a known-reference simulation first, then compare against the commercial unit. Pass/Fail uses the same tolerances in both stages (rate ±1 s/d, amplitude ±1°, beat error ±0.1 ms).
+
+1. **Realistic-off simulation (first pass):** measure rate, amplitude, and beat error on a clean synthetic signal over ≥ 1,000 beats and judge Pass/Fail against the tolerances.
+2. **Commercial comparison (follow-up):** measure the same watch on both the Weishi Timegrapher and this system, and judge whether the two readings agree within the same tolerances.
+
+Judge each stage on the Raspberry Pi 5 (Windows is reference) and record the results in [R-06](3-Risk-Assessment.md#b-signal-processing--measurement-trustworthiness).
+
+### Duration
+
+- D1–D2: first pass (Realistic-off simulation) / follow-up: commercial comparison test
+
+### Links & References
+
+- NA
+
 ## Integrated Schedule
 
-- Week 1: EXP-01, EXP-02, EXP-03
+- Week 1: EXP-01, EXP-02, EXP-03, EXP-06
 - Week 2: EXP-04
 - Week 3: EXP-05, and re-runs of unresolved items
 
