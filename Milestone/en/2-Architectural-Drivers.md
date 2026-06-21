@@ -70,45 +70,45 @@ Status: 🟢 Implemented · 🟡 Partially Implemented · 🔴 Needs Implementat
 ### G05 · Beat-Noise Scope Display
 | ID | Status | Grade | Requirement |
 |:---:|:------:|:-----:|:------------|
-| FR-05-01 |  | mandatory | The Beat-Noise Scope Display shall provide the user with a Beat-Noise Scope tab in the Tabbed Graph Panel that can be displayed without restarting the program. |
-| FR-05-02 |  | mandatory | The Beat-Noise Scope Display shall provide the user with two related views, Scope 1 and Scope 2. |
-| FR-05-03 |  | mandatory | The Beat-Noise Scope Display shall provide the user with a Live mode. |
-| FR-05-04 |  | mandatory | The Beat-Noise Scope Display shall provide the user with a Playback mode. |
-| FR-05-05 |  | mandatory | The Beat-Noise Scope Display shall provide the user with a Sim mode. |
-| FR-05-06 |  | recommended | The Beat-Noise Scope Display should provide the user with a pause control. |
-| FR-05-07 |  | recommended | The Beat-Noise Scope Display should provide the user with forward/backward navigation through captured data. |
-| FR-05-08 |  | mandatory | Scope 1 shall provide the user with a waveform display of the watch's alternating tick/tock beat noises. |
-| FR-05-09 |  | mandatory | Scope 1 shall provide the user with selectable time ranges of 20 ms, 200 ms, and 400 ms. |
-| FR-05-10 |  | mandatory | Scope 1 shall provide the user with the most recent beat noises as small strips beneath the current waveform after sufficient measurement time. |
-| FR-05-11 |  | recommended | Scope 1 should provide the user with the ability to select one of the accumulated prior beat strips for enlarged viewing. |
-| FR-05-12 |  | optional | Scope 1 may provide the user with an option to display the signal as its absolute value (\|x\|) for improved readability. |
-| FR-05-13 |  | mandatory | Scope 1 shall provide the user with identification of the relevant A and C events and a visual marker for the C event. |
-| FR-05-14 |  | mandatory | Scope 1 shall provide the user with the lift angle associated with the displayed beat pattern. |
-| FR-05-15 |  | mandatory | Scope 2 shall provide the user with tick and tock beat noises displayed on two horizontal axes. |
-| FR-05-16 |  | mandatory | Scope 2 shall provide the user with a fixed 20 ms time range. |
-| FR-05-17 |  | mandatory | Scope 2 shall provide the user with an averaging toggle (ON/OFF) via a Σ control. |
-| FR-05-18 |  | mandatory | Scope 2 shall provide the user with combined beat noises that reduce random noise and improve signal clarity when averaging is ON. |
-| FR-05-19 |  | mandatory | Scope 2 shall provide the user with a measurement cycle, determined by the watch's beat number and selected interval, that completes after 50 tick and 50 tock intervals. |
-| FR-05-20 |  | mandatory | Scope 2 shall provide the user with the average amplitude on each horizontal axis using arrows at the end of the cycle. |
-| FR-05-21 |  | recommended | Scope 2 should provide the user with the two averaged beat-noise traces without assuming a fixed tick/tock axis assignment. |
-| FR-05-22 |  | optional | Scope 2 may provide the user with intermediate averaging results, such as after 10 or 20 intervals. |
+| FR-05-01 | 🟢 | mandatory | The Beat-Noise Scope Display shall provide the user with a Beat-Noise Scope tab in the Tabbed Graph Panel that can be displayed without restarting the program. |
+| FR-05-02 | 🟢 | mandatory | The Beat-Noise Scope Display shall provide the user with two related views, Scope 1 and Scope 2. |
+| FR-05-03 | 🟢 | mandatory | The Beat-Noise Scope Display shall provide the user with a Live mode. |
+| FR-05-04 | 🟢 | mandatory | The Beat-Noise Scope Display shall provide the user with a Playback mode. |
+| FR-05-05 | 🟢 | mandatory | The Beat-Noise Scope Display shall provide the user with a Sim mode. |
+| FR-05-06 | 🟢 | recommended | The Beat-Noise Scope Display should provide the user with a pause control. |
+| FR-05-07 | 🟢 | recommended | The Beat-Noise Scope Display should provide the user with forward/backward navigation through captured data. |
+| FR-05-08 | 🟢 | mandatory | Scope 1 shall provide the user with a waveform display of the watch's alternating tick/tock beat noises. |
+| FR-05-09 | 🟢 | mandatory | Scope 1 shall provide the user with selectable time ranges of 20 ms, 200 ms, and 400 ms. |
+| FR-05-10 | 🟢 | mandatory | Scope 1 shall provide the user with the most recent beat noises as small strips beneath the current waveform after sufficient measurement time. |
+| FR-05-11 | 🟢 | recommended | Scope 1 should provide the user with the ability to select one of the accumulated prior beat strips for enlarged viewing. |
+| FR-05-12 | 🟢 | optional | Scope 1 may provide the user with an option to display the signal as its absolute value (\|x\|) for improved readability. |
+| FR-05-13 | 🟢 | mandatory | Scope 1 shall provide the user with identification of the relevant A and C events and a visual marker for the C event. |
+| FR-05-14 | 🟢 | mandatory | Scope 1 shall provide the user with the lift angle associated with the displayed beat pattern. |
+| FR-05-15 | 🟢 | mandatory | Scope 2 shall provide the user with phase-alternating beat-noise traces (Trace 1 / Trace 2) displayed on two horizontal axes. |
+| FR-05-16 | 🟢 | mandatory | Scope 2 shall provide the user with a fixed 20 ms time range. |
+| FR-05-17 | 🟢 | mandatory | Scope 2 shall provide the user with an averaging toggle (ON/OFF) via a Σ control. |
+| FR-05-18 | 🟢 | mandatory | Scope 2 shall provide the user with combined beat noises that reduce random noise and improve signal clarity when averaging is ON. |
+| FR-05-19 | 🟢 | mandatory | Scope 2 shall provide the user with a measurement cycle, determined by the watch's beat number and selected interval, that completes when each trace reaches 50 intervals. |
+| FR-05-20 | 🟢 | mandatory | Scope 2 shall provide the user with the average signal level on each horizontal axis at the end of the cycle. |
+| FR-05-21 | 🟢 | recommended | Scope 2 should provide the user with the two averaged beat-noise traces without assuming a fixed tick/tock axis assignment. |
+| FR-05-22 | 🟢 | optional | Scope 2 may provide the user with intermediate averaging results, such as after 10 or 20 intervals. |
 
 ### G06 · Beat Error Display and Diagnostic Trace
 | ID | Status | Grade | Requirement |
 |:---:|:------:|:-----:|:------------|
-| FR-06-01 |  | mandatory | The Beat Error Display and Diagnostic Trace shall provide the user with the rate value with numbers and units. |
-| FR-06-02 |  | mandatory | The Beat Error Display and Diagnostic Trace shall provide the user with the amplitude value with numbers and units. |
-| FR-06-03 |  | mandatory | The Beat Error Display and Diagnostic Trace shall provide the user with the beat error value with numbers and units. |
-| FR-06-04 |  | mandatory | The Beat Error Display and Diagnostic Trace shall provide the user with the BPH value with numbers and units. |
-| FR-06-05 |  | mandatory | The Beat Error Display and Diagnostic Trace shall provide the user with tick/tock trace lines that represent the watch's timing behavior. |
-| FR-06-06 |  | mandatory | The Beat Error Display and Diagnostic Trace shall provide the user with the measurement values (rate, amplitude, beat error, BPH) and the tick/tock trace lines simultaneously. |
-| FR-06-07 |  | mandatory | The Beat Error Display and Diagnostic Trace shall provide the user with the tick and tock trace lines as visually distinguished elements. |
-| FR-06-08 |  | mandatory | The Beat Error Display and Diagnostic Trace shall provide the user with the spacing between the tick/tock trace lines. |
-| FR-06-09 |  | optional | The Beat Error Display and Diagnostic Trace may provide the user with the ability to configure the acceptable range of the trace-line spacing. |
-| FR-06-10 |  | mandatory | The Beat Error Display and Diagnostic Trace shall provide the user with a defined acceptable range for the trace-line spacing. |
-| FR-06-11 |  | mandatory | The Beat Error Display and Diagnostic Trace shall provide the user with a warning when the trace-line spacing exceeds the acceptable range. |
-| FR-06-12 |  | mandatory | The Beat Error Display and Diagnostic Trace shall provide the user with the slope of the trace lines. |
-| FR-06-13 |  | mandatory | The Beat Error Display and Diagnostic Trace shall provide the user with a fault-state indication when the trace-line slope reaches 45 degrees or more. |
+| FR-06-01 | 🟢 | mandatory | The Beat Error Display and Diagnostic Trace shall provide the user with the rate value with numbers and units. |
+| FR-06-02 | 🟢 | mandatory | The Beat Error Display and Diagnostic Trace shall provide the user with the amplitude value with numbers and units. |
+| FR-06-03 | 🟢 | mandatory | The Beat Error Display and Diagnostic Trace shall provide the user with the beat error value with numbers and units. |
+| FR-06-04 | 🟢 | mandatory | The Beat Error Display and Diagnostic Trace shall provide the user with the BPH value with numbers and units. |
+| FR-06-05 | 🟢 | mandatory | The Beat Error Display and Diagnostic Trace shall provide the user with tick/tock trace lines that represent the watch's timing behavior. |
+| FR-06-06 | 🟢 | mandatory | The Beat Error Display and Diagnostic Trace shall provide the user with the measurement values (rate, amplitude, beat error, BPH) and the tick/tock trace lines simultaneously. |
+| FR-06-07 | 🟢 | mandatory | The Beat Error Display and Diagnostic Trace shall provide the user with the tick and tock trace lines as visually distinguished elements. |
+| FR-06-08 | 🟢 | mandatory | The Beat Error Display and Diagnostic Trace shall provide the user with the spacing between the tick/tock trace lines. |
+| FR-06-09 | 🟢 | optional | The Beat Error Display and Diagnostic Trace may provide the user with the ability to configure the acceptable range of the trace-line spacing. |
+| FR-06-10 | 🟢 | mandatory | The Beat Error Display and Diagnostic Trace shall provide the user with a defined acceptable range for the trace-line spacing. |
+| FR-06-11 | 🟢 | mandatory | The Beat Error Display and Diagnostic Trace shall provide the user with a warning when the trace-line spacing exceeds the acceptable range. |
+| FR-06-12 | 🟢 | mandatory | The Beat Error Display and Diagnostic Trace shall provide the user with the slope of the trace lines. |
+| FR-06-13 | 🟢 | mandatory | The Beat Error Display and Diagnostic Trace shall provide the user with a fault-state indication when the trace-line slope reaches 45 degrees or more. |
 
 ### G07 · Long-Term Performance Graph
 | ID | Status | Grade | Requirement |
