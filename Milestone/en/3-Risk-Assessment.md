@@ -115,7 +115,7 @@ Risk ID | Status | Risk Title | Type | QAS | P | I
     - P-Medium: weak/noisy-signal handling is uncertain but testable per noise level.
     - I-High: showing wrong values instead of "signal weak" actively misleads the user.
   - **Mitigation**: Filtering and signal-quality judgment; isolate bad data behind a "signal weak" indication
-  - **Current status**: Noise-floor estimation, SNR gating, and validity flags (`Detector.cs`, `WatchMetrics.cs`) isolate invalid values as `----`, but an explicit "signal weak" state display and user-guidance UI are not yet implemented (planned as an AI Feature).
+  - **Current status**: Implementation of an explicit "signal weak" state display and user-guidance UI is in progress.
   - **Comment**: Test per noise level; improve the logic if needed
 
 ## C. Architecture / Extensibility
