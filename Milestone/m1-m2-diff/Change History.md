@@ -1,8 +1,8 @@
 # Change History
 
-## Comment Follow-up Status
+## Follow-up Status
 
-| Comment excerpt | Follow-up | Milestone/en section |
+| Comment | Follow-up | File > Section |
 |---|---|---|
 | "The project plan is a very dynamic document. As progress is made it should (ideally) be updated. You have redundant plan information. There are mermaid segments, then there's the plan in Quire, and there's a text version in the md file. That creates excessive maintenance burden that can lead to inconsistencies. It also creates confusion to the reader. The plan should be in one place (e.g., quire)." | Kept the detailed WBS in Quire; kept only the Quire link and notation guide in the milestone document. | `1-Project-Plan.md` > `Legend (timeline-based)` |
 | "I'm looking at the quire WBS. You could keep it, but I suggest: please keep it English only, in the main doc give some explanation about the notation (colors, curved lines), make sure the user names are not in Korean." | Updated project-plan names/labels to English and also updated Quire assignee naming to `Jae-hong`. | `1-Project-Plan.md` > `Team Roles`<br>`1-Project-Plan.md` > `Legend (timeline-based)` |
