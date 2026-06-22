@@ -1,10 +1,10 @@
-# Planned Experiments
+﻿# Planned Experiments
 
 **Contents** — [Risk-to-Experiment Map](#risk-to-experiment-map) · [EXP-01](#exp-01-avalonia-rendering-backend-on-the-rpi5) · [EXP-02](#exp-02-rpi5-real-time-sample-rate-ceiling) · [EXP-03](#exp-03-gui-real-time-rendering-design-patterns) · [EXP-04](#exp-04-on-device-tinyml-inference-feasibility) · [EXP-05](#exp-05-long-run-stability-24h) · [EXP-06](#exp-06-measurement-accuracy) · [Integrated Schedule](#integrated-schedule) · [Common Approval Criteria](#common-approval-criteria)
 
 ## Terminology
 
-The terms used in this document are defined in the consolidated [Glossary](7-Glossary.md).
+The terms used in this document are defined in the consolidated [Glossary](6-Glossary.md).
 
 ## Risk-to-Experiment Map
 

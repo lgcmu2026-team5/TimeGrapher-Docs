@@ -1,4 +1,4 @@
-# Risk Assessment
+﻿# Risk Assessment
 
 > Risks threatening the project, grouped by area and rated by probability and impact (High/Medium/Low).
 
@@ -6,7 +6,7 @@
 
 ## Terminology
 
-The terms used in this document are defined in the consolidated [Glossary](7-Glossary.md) — see **Platform & Engineering Terms** (and the Domain / Quality-Attribute sections).
+The terms used in this document are defined in the consolidated [Glossary](6-Glossary.md) — see **Platform & Engineering Terms** (and the Domain / Quality-Attribute sections).
 
 ## Risk Summary
 
@@ -115,7 +115,7 @@ Risk ID | Status | Risk Title | Type | QAS | P | I
     - P-Medium: weak/noisy-signal handling is uncertain but testable per noise level.
     - I-High: showing wrong values instead of "signal weak" actively misleads the user.
   - **Mitigation**: Filtering and signal-quality judgment; isolate bad data behind a "signal weak" indication
-  - **Current status**: Noise-floor estimation, SNR gating, and validity flags (`Detector.cs`, `WatchMetrics.cs`) isolate invalid values as `----`, but an explicit "signal weak" state display and user-guidance UI are not yet implemented (planned as an AI Feature).
+  - **Current status**: Implementation of an explicit "signal weak" state display and user-guidance UI is in progress.
   - **Comment**: Test per noise level; improve the logic if needed
 
 ## C. Architecture / Extensibility
@@ -225,7 +225,7 @@ Risk ID | Status | Risk Title | Type | QAS | P | I
   - **Grading rationale**
     - P-Medium: plausible-but-wrong GenAI code is common in DSP/concurrency.
     - I-Medium: caught by mandatory verification before it ships.
-  - **Result**: The mentor recommends using GenAI, and mandatory verification (unit tests, synthetic-signal bench + code review) blocks bad code before it ships while the whole team understands the core algorithms, so no extra response is needed.
+  - **Result**: [ADR-004](ADR/ADR-004.md) established the App / test / verify module separation and mandated TDD with automated testing as a required gate before every commit, forming the structural safety net for AI-generated code. Plausible-but-wrong code is caught first by TDD-written unit tests and the verify module (synthetic-signal bench), then confirmed by team code review using test results as an objective merge criterion. With this two-layer gate in place, no additional response is needed.
 
 - **R-19 — Only one test RPi5 — real-use verification doesn't fit the schedule**
   - **Status**: Accepted
