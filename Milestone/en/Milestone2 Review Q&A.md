@@ -320,7 +320,7 @@ Yes, through multiple complementary mechanisms:
 
 2. **Automated structural tests** — `ViewModelPurityTests` enforces the one-way dependency rule at build time. `SyntheticDetectorTests` and `AdverseScenarios` unit tests verify algorithm behavior against known synthetic inputs ([EXP-06](4-Planned-Experiments.md#exp-06-measurement-accuracy) Step 1).
 
-3. **ADR-based documented rationale** — Four ADRs record the reasoning behind platform selection ([ADR-001](ADR/ADR-001.md), [ADR-002](ADR/ADR-002.md), [ADR-003](ADR/ADR-003.md), [ADR-004](ADR/ADR-004.md)), including rejected alternatives and rationale.
+3. **ADR-based documented rationale** — Four ADRs record the reasoning behind each architectural decision ([ADR-001](ADR/ADR-001.md), [ADR-002](ADR/ADR-002.md), [ADR-003](ADR/ADR-003.md), [ADR-004](ADR/ADR-004.md)), including rejected alternatives and rationale.
 
 4. **SAP trade-off analysis** — [EXP-03](4-Planned-Experiments.md#exp-03-gui-real-time-rendering-design-patterns)'s Results & Analysis section explicitly evaluates each applied pattern/tactic against SAP criteria, naming what is gained and what is given up.
 

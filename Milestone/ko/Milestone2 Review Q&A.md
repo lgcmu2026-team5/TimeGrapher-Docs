@@ -321,7 +321,7 @@ Stopped → Starting → Running ⇄ Paused → Stopping → StopFailed 간의 �
 
 2. **자동화된 구조 테스트** — `ViewModelPurityTests`가 빌드 타임에 단방향 의존성 규칙을 강제합니다. `SyntheticDetectorTests`와 `AdverseScenarios` 단위 테스트가 알고리즘 동작을 알려진 합성 입력에 대해 검증합니다([EXP-06](4-Planned-Experiments.md#exp-06-측정-정확도) 1단계).
 
-3. **ADR 기반 문서화된 근거** — 4개의 ADR이 플랫폼 선택 결정([ADR-001](ADR/ADR-001.md), [ADR-002](ADR/ADR-002.md), [ADR-003](ADR/ADR-003.md), [ADR-004](ADR/ADR-004.md))의 근거를 기록하며, 거부된 대안과 이유를 포함합니다.
+3. **ADR 기반 문서화된 근거** — 4개의 ADR이 설계적 선택 결정([ADR-001](ADR/ADR-001.md), [ADR-002](ADR/ADR-002.md), [ADR-003](ADR/ADR-003.md), [ADR-004](ADR/ADR-004.md))의 근거를 기록하며, 거부된 대안과 이유를 포함합니다.
 
 4. **SAP 트레이드오프 분석** — [EXP-03](4-Planned-Experiments.md#exp-03-gui-실시간-렌더링-디자인-패턴)의 결과 및 분석 섹션이 각 적용 패턴/전술을 SAP 기준으로 명시적으로 평가하며, 무엇을 얻고 무엇을 포기하는지를 기술합니다.
 
