@@ -107,15 +107,17 @@ C# 경로 채택 시 Avalonia Github의 다수 이슈처럼 RPi5에서 GPU 가�
   비트 주기 예산 사용률 (Raspberry Pi 5, 낮을수록 여유, 100% = 예산)
 
 ```mermaid
-%%{init: {"themeVariables": {"xyChart": {"plotColorPalette": "#A50034, #999999"}}}}%%
+%%{init: {"themeVariables": {"xyChart": {"plotColorPalette": "#A50034, #ED8B00, #999999"}}}}%%
 xychart-beta horizontal
     title "RPi5 run별 worst-case 지연 / 예산 (회색선 = 100% 예산)"
-    x-axis ["21600@48k Sim", "21600@48k Play", "21600@48k Live", "43200@192k Sim", "43200@192k Play"]
+    x-axis ["21600@48k Sim", "21600@48k Play", "21600@48k Live", "43200@192k Sim", "43200@192k Play", "43200@192k Sim (2026-06-21)"]
     y-axis "예산 사용률 (%)" 0 --> 110
-    bar [25.2, 26.4, 24.2, 40.8, 41.5]
-    line [100, 100, 100, 100, 100]
+    bar [25.2, 26.4, 24.2, 40.8, 41.5, 0]
+    bar [0, 0, 0, 0, 0, 43.8]
+    line [100, 100, 100, 100, 100, 100]
 ```
   - 한계: Rate/Scope 탭·latency/drop·miss 기준 판정. CPU/RAM, 이미지 탭(Spectrogram/Sound Print), 43200 실음향 Live는 별도 평가 필요하나, 추가 시험은 진행하지 않음.
+  - 주황 막대: 43200@192k Sim E2E max = 36.46 ms로 예산의 43.8%(2026-06-21 측정).
 
 ### 목적
 
@@ -165,6 +167,19 @@ RPi5 Live 환경에서 입력 → 분석 → 표시 파이프라인이 실시간
 
 - **결정 사항** : Pipe-and-Filter 흐름 + 동시성 택틱(Producer–Consumer · Observer · Latest-Wins · 고정 버퍼 풀) 채택한다.
 - **실험 결과** : [하단 실험 결과 및 분석](#실험-결과-및-분석) 참조
+
+  탭별 E2E max (Raspberry Pi 5, 43200@192k Sim, 낮을수록 여유, 회색선 = 83.3 ms 예산)
+
+```mermaid
+%%{init: {"themeVariables": {"xyChart": {"plotColorPalette": "#A50034, #999999"}}}}%%
+xychart-beta horizontal
+    title "RPi5 탭별 E2E max (회색선 = 83.3 ms 예산)"
+    x-axis ["Filter Scope", "Rate/Scope", "Beat Noise", "Positions", "Waveforms", "Spectrogram", "Sound Print", "Beat Error", "Long-Term", "Trace", "Sweep", "Vario", "Escapement"]
+    y-axis "E2E max (ms)" 0 --> 90
+    bar [36.46, 31.93, 25.55, 25.25, 23.27, 22.05, 21.75, 21.19, 19.8, 16.89, 16.08, 15.79, 15.09]
+    line [83.3, 83.3, 83.3, 83.3, 83.3, 83.3, 83.3, 83.3, 83.3, 83.3, 83.3, 83.3, 83.3]
+```
+  - 가장 느린 Filter Scope도 36.46 ms로 83.3 ms 예산의 약 44% 수준 — 모든 탭이 예산 내 충분한 여유를 확보함.
 
 ### 목적
 

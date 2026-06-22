@@ -100,14 +100,17 @@ Complete
 **Worst-case E2E latency as % of beat-period budget (RPi5, lower is better, 100% = budget)**
 
 ```mermaid
-%%{init: {"themeVariables": {"xyChart": {"plotColorPalette": "#A50034, #999999"}}}}%%
+%%{init: {"themeVariables": {"xyChart": {"plotColorPalette": "#A50034, #ED8B00, #999999"}}}}%%
 xychart-beta horizontal
     title "RPi5 worst-case latency / budget per run (gray line = 100% budget)"
-    x-axis ["21600@48k Sim", "21600@48k Play", "21600@48k Live", "43200@192k Sim", "43200@192k Play"]
+    x-axis ["21600@48k Sim", "21600@48k Play", "21600@48k Live", "43200@192k Sim", "43200@192k Play", "43200@192k Sim (2026-06-21)"]
     y-axis "Budget usage (%)" 0 --> 110
-    bar [25.2, 26.4, 24.2, 40.8, 41.5]
-    line [100, 100, 100, 100, 100]
+    bar [25.2, 26.4, 24.2, 40.8, 41.5, 0]
+    bar [0, 0, 0, 0, 0, 43.8]
+    line [100, 100, 100, 100, 100, 100]
 ```
+
+- Orange bar: 43200@192k Sim, E2E max = 36.46 ms = 43.8 % of budget (measured 2026-06-21).
 
 ### Objective
 
@@ -158,6 +161,19 @@ Complete
 
 - **Decision**: adopt a Pipe-and-Filter flow + concurrency tactics (Producer–Consumer · Observer · Latest-Wins · fixed buffer pool).
 - **Results**: [see Results & Analysis below](#results--analysis)
+
+**Per-tab E2E max (RPi5, 43200@192k Sim, lower is better, gray line = 83.3 ms budget)**
+
+```mermaid
+%%{init: {"themeVariables": {"xyChart": {"plotColorPalette": "#A50034, #999999"}}}}%%
+xychart-beta horizontal
+    title "RPi5 per-tab E2E max (gray line = 83.3 ms budget)"
+    x-axis ["Filter Scope", "Rate/Scope", "Beat Noise", "Positions", "Waveforms", "Spectrogram", "Sound Print", "Beat Error", "Long-Term", "Trace", "Sweep", "Vario", "Escapement"]
+    y-axis "E2E max (ms)" 0 --> 90
+    bar [36.46, 31.93, 25.55, 25.25, 23.27, 22.05, 21.75, 21.19, 19.8, 16.89, 16.08, 15.79, 15.09]
+    line [83.3, 83.3, 83.3, 83.3, 83.3, 83.3, 83.3, 83.3, 83.3, 83.3, 83.3, 83.3, 83.3]
+```
+- Even the slowest tab (Filter Scope, 36.46 ms) sits at ~44 % of the 83.3 ms budget — all tabs keep ample headroom.
 
 ### Objective
 
