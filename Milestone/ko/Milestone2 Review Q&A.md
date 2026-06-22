@@ -88,7 +88,6 @@ Milestone 1 이후 다음과 같은 주요 변경사항이 있었습니다:
 - Milestone 3(2026-06-23 ~ 2026-07-01)에는 [EXP-04](4-Planned-Experiments.md#exp-04-온디바이스-tinyml-추론-타당성)(TinyML), [EXP-06](4-Planned-Experiments.md#exp-06-측정-정확도) 2단계(Weishi), 전 탭 줌 인/아웃([G01–G12](2-Architectural-Drivers.md#functional-requirements)), Settings 옵션, 발표 준비, 시연 준비가 포함됩니다.
 - 필수 범위와 선택 범위를 명확히 구분하고 AI 기능을 규칙 기반 폴백과 함께 선택 범위로 격리했습니다.
 
-한 가지 주의사항: "Project Plan Review" 태스크(#117)가 CSV에서 "할 일(미완)"로 남아 있어, M2 공식 계획 문서 자체의 업데이트가 완전히 이루어지지 않았을 수 있습니다.
 
 ---
 
@@ -98,7 +97,7 @@ Milestone 1 이후 다음과 같은 주요 변경사항이 있었습니다:
 
 ### 어떤 실험들이 수행되었는가?
 
-5개의 technical experiment가 완료되었고, 1개가 진행 중입니다:
+4개의 technical experiment가 완료되었고, 2개가 진행 중입니다:
 
 | 실험 | 상태 | 완료일 |
 |------|------|--------|
@@ -135,7 +134,7 @@ Milestone 1 이후 다음과 같은 주요 변경사항이 있었습니다:
 
 네, 명확한 매핑이 존재합니다:
 
-- **[EXP-01](4-Planned-Experiments.md#exp-01-rpi5-avalonia-렌더링-백엔드), [EXP-02](4-Planned-Experiments.md#exp-02-rpi5-실시간-샘플레이트-상한), [EXP-03](4-Planned-Experiments.md#exp-03-gui-실시간-렌더링-디자인-패턴), [EXP-05](4-Planned-Experiments.md#exp-05-장시간-24h-실행-안정성)** → [QAS-2](2-Architectural-Drivers.md#qas-2--performance-latency--소리-입력에서-화면-표시까지)(성능/지연) — 최우선 품질 속성(순위 1).
+- **[EXP-01](4-Planned-Experiments.md#exp-01-rpi5-avalonia-렌더링-백엔드), [EXP-02](4-Planned-Experiments.md#exp-02-rpi5-실시간-샘플레이트-상한), [EXP-03](4-Planned-Experiments.md#exp-03-gui-실시간-렌더링-디자인-패턴), [EXP-05](4-Planned-Experiments.md#exp-05-장시간-24h-실행-안정성)** → [QAS-2](2-Architectural-Drivers.md#qas-2--performance-latency--소리-입력에서-화면-표시까지)(성능/지연)
 - **[EXP-06](4-Planned-Experiments.md#exp-06-측정-정확도)** → [QAS-1](2-Architectural-Drivers.md#qas-1--accuracy--음향-이벤트-검출에서-시계-지표-계산까지의-정확도)(정확도) — 시스템의 핵심 측정 목적(rate, amplitude, beat error)의 신뢰성을 직접 검증.
 - **[EXP-04](4-Planned-Experiments.md#exp-04-온디바이스-tinyml-추론-타당성)** → [QAS-2](2-Architectural-Drivers.md#qas-2--performance-latency--소리-입력에서-화면-표시까지) + [QAS-3](2-Architectural-Drivers.md#qas-3--reliability--잡음약신호-환경) — 선택 AI 기능 추가 시 실시간 동작 또는 측정 신뢰성이 깨지지 않는지 검증.
 
@@ -149,7 +148,7 @@ Milestone 1 이후 다음과 같은 주요 변경사항이 있었습니다:
 
 ### 코드 구조 관점
 
-팀은 두 가지 모듈 뷰를 작성했습니다:
+우리는 두 가지 모듈 뷰를 작성했습니다:
 
 <details>
 <summary><strong><a href="5-Architectural-View.md#1-1-timegrapher-mvvm-view--responsibility-separation">1. TIMEGRAPHER MVVM VIEW – Responsibility Separation</a></strong></summary>
@@ -164,14 +163,14 @@ Milestone 1 이후 다음과 같은 주요 변경사항이 있었습니다:
 </details>
 
 <details>
-<summary><strong><a href="5-Architectural-View.md#1-2-timegrapher-module-uses-view--actual-dependencies--internal-decomposition">2. TIMEGRAPHER MODULE USES VIEW – Actual Dependencies & Internal Decomposition</a></strong></summary>
+<summary><strong><a href="5-Architectural-View.md#1-2-timegrapher-module-uses-view--actual-dependencies--internal-decomposition">2-1. TIMEGRAPHER MODULE USES VIEW – Actual Dependencies & Internal Decomposition</a></strong></summary>
 
-실행 중 데이터가 흐르는 순서가 아닌, 어떤 모듈이 어떤 모듈을 사용하도록 구조화되어 있는지를 보여줍니다. 전체 프로젝트 수준에서 App·Core·플랫폼 오디오 어댑터·Verify의 관계를 표현하며, 핵심은 Core가 중심에 있고 App·Verify·`WindowsAudio`·`LinuxAudio`가 Core를 사용한다는 점입니다. `WindowsAudio`·`LinuxAudio`(platform adapters)는 OS별 오디오 의존성이 Core 안으로 들어오지 않도록 경계를 만듭니다.
+어떤 모듈이 어떤 모듈을 사용하도록 구조화되어 있는지를 보여줍니다. 전체 프로젝트 수준에서 App·Core·플랫폼 오디오 어댑터·Verify의 관계를 표현하며, 핵심은 Core가 중심에 있고 App·Verify·`WindowsAudio`·`LinuxAudio`가 Core를 사용한다는 점입니다. `WindowsAudio`·`LinuxAudio`(platform adapters)는 OS별 오디오 의존성이 Core 안으로 들어오지 않도록 경계를 만듭니다.
 
 </details>
 
 <details>
-<summary><strong><a href="5-Architectural-View.md#core-internal-module-uses">3. Core-Internal Module Uses</a></strong></summary>
+<summary><strong><a href="5-Architectural-View.md#core-internal-module-uses">2-2. Core-Internal Module Uses</a></strong></summary>
 
 Core를 확대한 내부 뷰입니다. `Analysis`가 분석 흐름을 조정하며 `Detection`·`Metrics`·`Imaging`·`AudioIo` 도메인 모듈을 사용합니다. `Shared`는 Core 내부 모듈들이 공통으로 사용하는 타입과 계약(`AnalysisFrame`, 공유 오디오 버퍼, 분석 worker 입출력 계약, sync/signal 상태 타입 등)을 모아둔 영역으로, 다른 Core 모듈에 의존하지 않습니다.
 
@@ -267,9 +266,9 @@ Stopped → Starting → Running ⇄ Paused → Stopping → StopFailed 간의 �
 
 네, 직접적이고 실질적으로 개선되었습니다:
 
-- **[EXP-01](4-Planned-Experiments.md#exp-01-rpi5-avalonia-렌더링-백엔드)** → Avalonia GPU 우선 렌더링 백엔드 고정(SW 폴백 불필요). 앱 시작 설정이 업데이트됨.
+- **[EXP-01](4-Planned-Experiments.md#exp-01-rpi5-avalonia-렌더링-백엔드)** ([ADR-001](ADR/ADR-001.md)) → Avalonia GPU 우선 렌더링 백엔드 고정(SW 폴백 불필요). 앱 시작 설정이 업데이트됨.
 - **[EXP-02](4-Planned-Experiments.md#exp-02-rpi5-실시간-샘플레이트-상한)** → 지원 샘플레이트 범위(48k 기본 / 192k 상한) 확정, 원래 p99 ≤ 500 ms 기준을 "비트 주기 이내" 단일 게이트로 교체.
-- **[EXP-03](4-Planned-Experiments.md#exp-03-gui-실시간-렌더링-디자인-패턴)** → Pipe-and-Filter + 동시성 전술이 영구 아키텍처로 채택: 전용 분석 스레드(`ThreadPriority.Highest`), `AnalysisFrameRouter` Observer 팬아웃, Latest-Wins 스케줄러, 고정 버퍼 풀(`PublishBufferCount = 3`), `DecimatingSeries`. 현재 프로덕션 소스에 반영됨.
+- **[EXP-03](4-Planned-Experiments.md#exp-03-gui-실시간-렌더링-디자인-패턴)** ([ADR-002](ADR/ADR-002.md)) → Pipe-and-Filter + 동시성 전술이 영구 아키텍처로 채택: 전용 분석 스레드(`ThreadPriority.Highest`), `AnalysisFrameRouter` Observer 팬아웃, Latest-Wins 스케줄러, 고정 버퍼 풀(`PublishBufferCount = 3`), `DecimatingSeries`. 현재 프로덕션 소스에 반영됨.
 - **[EXP-05](4-Planned-Experiments.md#exp-05-장시간-24h-실행-안정성)** → 추가적인 버퍼 캡이나 집계 구조가 필요 없음을 확인; 현재 아키텍처 유지.
 - **MVC → MVVM 리팩토링** ([ADR-003](ADR/ADR-003.md))도 [QAS-5](2-Architectural-Drivers.md#qas-5--modifiability-extensibility--새-측정필터그래프-추가) 피드백과 M1 리뷰의 수정성 요구사항에 의해 촉발된 아키텍처 개선임.
 
@@ -284,8 +283,6 @@ Stopped → Starting → Running ⇄ Paused → Stopping → StopFailed 간의 �
 - **동시성 격리 이점:** 무거운 렌더링 중에도 UI 스레드가 블로킹되지 않음; Latest-Wins가 백로그 누적을 방지.
 - **동시성 비용:** 중간 프레임이 드롭됨(프레임 드롭 / 최신 편향). **완화 방법과 근거 명시:** 실시간 모니터에서는 지연 없이 최신 상태를 보여주는 것이 더 중요하며, 장기 이력은 `DecimatingSeries`로 보완함.
 
-팀은 어떤 SAP 전술이 어떤 QAS에 적용되는지를 명시적으로 연결하고 있어, 단순 구현을 넘어 개념적 이해를 보여줍니다.
-
 ---
 
 ### 아키텍처가 시스템 목표와 잘 맞는가?
@@ -294,12 +291,12 @@ Stopped → Starting → Running ⇄ Paused → Stopping → StopFailed 간의 �
 
 | 목표 | 아키텍처 대응 |
 |------|--------------|
-| 실시간 비트 처리([QAS-2](2-Architectural-Drivers.md#qas-2--performance-latency--소리-입력에서-화면-표시까지)) | 전용 분석 스레드 + Latest-Wins + 유한 버퍼 → 예산의 43.8% 사용으로 검증됨 |
 | 측정 정확도([QAS-1](2-Architectural-Drivers.md#qas-1--accuracy--음향-이벤트-검출에서-시계-지표-계산까지의-정확도)) | 단일 AnalysisFrame 소스 → 모든 표시가 동일 데이터 공유([QAS-4](2-Architectural-Drivers.md#qas-4--consistency--표시-간-값-일치)); Detector.cs의 서브샘플 보간 |
+| 실시간 비트 처리([QAS-2](2-Architectural-Drivers.md#qas-2--performance-latency--소리-입력에서-화면-표시까지)) | 전용 분석 스레드 + Latest-Wins + 유한 버퍼 → 예산의 43.8% 사용으로 검증됨 ([ADR-002](ADR/ADR-002.md)) |
 | 노이즈 하 신뢰성([QAS-3](2-Architectural-Drivers.md#qas-3--reliability--잡음약신호-환경)) | 신호 품질 게이팅; "신호 약함" UI 상태; 규칙 기반 폴백(`PllMatchGate`) |
-| 수정성([QAS-5](2-Architectural-Drivers.md#qas-5--modifiability-extensibility--새-측정필터그래프-추가)) | `ViewModelPurityTests`로 단방향 레이어 규칙 강제; IAnalysisFrameConsumer 확장점; 새 기능당 기존 모듈 수정 ≤ 1 |
+| 수정성([QAS-5](2-Architectural-Drivers.md#qas-5--modifiability-extensibility--새-측정필터그래프-추가)) | `ViewModelPurityTests`로 단방향 레이어 규칙 강제 ([ADR-003](ADR/ADR-003.md)); IAnalysisFrameConsumer 확장점; 새 기능당 기존 모듈 수정 ≤ 1; App/test/verify 모듈 분리로 6인 팀의 병렬 개발 및 머지 충돌 최소화; TDD 기반 테스트 스위트가 genAI 보조 코드 리뷰의 자동화된 안전망 제공 ([ADR-004](ADR/ADR-004.md)) |
 | 소형 터치스크린 사용성([QAS-6](2-Architectural-Drivers.md#qas-6--usability--터치스크린에서-읽기조작)) | 핵심 수치 우선 레이아웃; 물리 크기 기반 가독성 규칙(글자 ≥ 2.9 mm, 터치 타겟 ≥ 9 mm) |
-| 크로스플랫폼([C-3](2-Architectural-Drivers.md#설계-제약사항)) | `WindowsAudio`(WASAPI)와 `LinuxAudio`(ALSA/PipeWire)를 격리하는 Adapter 패턴 |
+| 크로스플랫폼([C-3](2-Architectural-Drivers.md#설계-제약사항)) | `WindowsAudio`(WASAPI)와 `LinuxAudio`(ALSA/PipeWire)를 격리하는 Adapter 패턴 ([ADR-001](ADR/ADR-001.md)) |
 
 ---
 
@@ -313,7 +310,6 @@ Stopped → Starting → Running ⇄ Paused → Stopping → StopFailed 간의 �
 
 부가적 우려사항:
 - [EXP-04](4-Planned-Experiments.md#exp-04-온디바이스-tinyml-추론-타당성)(TinyML) 결과가 미확정; 채택 시 [R-17](3-Risk-Assessment.md#f-프로젝트--프로세스)은 TinyML 부하 하에서 [EXP-02](4-Planned-Experiments.md#exp-02-rpi5-실시간-샘플레이트-상한)/[EXP-03](4-Planned-Experiments.md#exp-03-gui-실시간-렌더링-디자인-패턴) 재실행을 요구합니다.
-- [G09](2-Architectural-Drivers.md#g09--time-frequency-spectrogram-display) FR-09-04, FR-09-05가 2026-06-21 기준 진행 중입니다.
 
 ---
 
@@ -321,12 +317,11 @@ Stopped → Starting → Running ⇄ Paused → Stopping → StopFailed 간의 �
 
 네, 복수의 상호보완적 메커니즘을 통해 평가가 수행되었습니다:
 
-1. **정량적 실험 기반 평가** — [EXP-01](4-Planned-Experiments.md#exp-01-rpi5-avalonia-렌더링-백엔드)~[EXP-05](4-Planned-Experiments.md#exp-05-장시간-24h-실행-안정성)가 정의된 QAS 임계값(지연 예산, 프레임 레이트, RSS 추세)에 대한 Pass/Fail 측정값을 산출했습니다. ATAM 의미의 시나리오 기반 평가에 해당합니다.
+1. **정량적 실험 기반 평가** — [EXP-01](4-Planned-Experiments.md#exp-01-rpi5-avalonia-렌더링-백엔드)~[EXP-05](4-Planned-Experiments.md#exp-05-장시간-24h-실행-안정성)가 정의된 QAS 임계값(지연 예산, 프레임 레이트, RSS 추세)에 대한 Pass/Fail 측정값을 산출했습니다.
 
 2. **자동화된 구조 테스트** — `ViewModelPurityTests`가 빌드 타임에 단방향 의존성 규칙을 강제합니다. `SyntheticDetectorTests`와 `AdverseScenarios` 단위 테스트가 알고리즘 동작을 알려진 합성 입력에 대해 검증합니다([EXP-06](4-Planned-Experiments.md#exp-06-측정-정확도) 1단계).
 
-3. **ADR 기반 문서화된 근거** — 4개의 ADR이 플랫폼 선택 결정([ADR-001](ADR/ADR-001.md), [ADR-002](ADR/ADR-002.md), [ADR-003](ADR/ADR-003.md), [ADR-004](ADR/ADR-004.md), 2026-06-21 완료)의 근거를 기록하며, 거부된 대안과 이유를 포함합니다.
+3. **ADR 기반 문서화된 근거** — 4개의 ADR이 설계적 선택 결정([ADR-001](ADR/ADR-001.md), [ADR-002](ADR/ADR-002.md), [ADR-003](ADR/ADR-003.md), [ADR-004](ADR/ADR-004.md))의 근거를 기록하며, 거부된 대안과 이유를 포함합니다.
 
 4. **SAP 트레이드오프 분석** — [EXP-03](4-Planned-Experiments.md#exp-03-gui-실시간-렌더링-디자인-패턴)의 결과 및 분석 섹션이 각 적용 패턴/전술을 SAP 기준으로 명시적으로 평가하며, 무엇을 얻고 무엇을 포기하는지를 기술합니다.
 
-아직 수행되지 않은 것: 외부 검토자에 의한 공식 ATAM 워크숍 또는 구조화된 시나리오 워크스루. 지금까지의 평가는 모두 내부적으로 이루어졌습니다.

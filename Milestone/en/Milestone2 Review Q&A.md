@@ -88,8 +88,6 @@ Yes. The construction plan is feature-allocated, team-member-assigned, and time-
 - Milestone 3 (2026-06-23 to 2026-07-01) carries: [EXP-04](4-Planned-Experiments.md#exp-04-on-device-tinyml-inference-feasibility) (TinyML), [EXP-06](4-Planned-Experiments.md#exp-06-measurement-accuracy) Step 2 (Weishi), zoom-in/out for all graph tabs ([G01–G12](2-Architectural-Drivers.md#functional-requirements)), Setting Options, Presentation preparation, and Demonstration.
 - The plan distinguishes mandatory from optional scope, with the AI feature explicitly isolated as optional with a rule-based fallback.
 
-One concern: the "Project Plan Review" task (#117) was marked "할 일 (To Do)" in the CSV and did not complete in Milestone 2, suggesting the formal plan document itself may not have been fully updated for M2.
-
 ---
 
 ## Experiments / Results
@@ -98,7 +96,7 @@ One concern: the "Project Plan Review" task (#117) was marked "할 일 (To Do)" 
 
 ### What experiments have been conducted?
 
-Five technical experiments have been completed; one is in progress:
+Four technical experiments have been completed; two are in progress:
 
 | Experiment | Status | Completion date |
 |------------|--------|-----------------|
@@ -135,7 +133,7 @@ Largely yes, with one significant item still outstanding:
 
 Yes, with a clear mapping:
 
-- **[EXP-01](4-Planned-Experiments.md#exp-01-avalonia-rendering-backend-on-the-rpi5), [EXP-02](4-Planned-Experiments.md#exp-02-rpi5-real-time-sample-rate-ceiling), [EXP-03](4-Planned-Experiments.md#exp-03-gui-real-time-rendering-design-patterns), [EXP-05](4-Planned-Experiments.md#exp-05-long-run-stability-24h)** → [QAS-2](2-Architectural-Drivers.md#qas-2--performance-latency--from-sound-input-to-screen-display) (Performance/Latency) — the highest-ranked quality attribute (Rank 1).
+- **[EXP-01](4-Planned-Experiments.md#exp-01-avalonia-rendering-backend-on-the-rpi5), [EXP-02](4-Planned-Experiments.md#exp-02-rpi5-real-time-sample-rate-ceiling), [EXP-03](4-Planned-Experiments.md#exp-03-gui-real-time-rendering-design-patterns), [EXP-05](4-Planned-Experiments.md#exp-05-long-run-stability-24h)** → [QAS-2](2-Architectural-Drivers.md#qas-2--performance-latency--from-sound-input-to-screen-display) (Performance/Latency)
 - **[EXP-06](4-Planned-Experiments.md#exp-06-measurement-accuracy)** → [QAS-1](2-Architectural-Drivers.md#qas-1--accuracy--from-acoustic-event-detection-to-computed-watch-metrics) (Accuracy) — directly tests whether the core measurement purpose of the system (rate, amplitude, beat error) is trustworthy.
 - **[EXP-04](4-Planned-Experiments.md#exp-04-on-device-tinyml-inference-feasibility)** → [QAS-2](2-Architectural-Drivers.md#qas-2--performance-latency--from-sound-input-to-screen-display) + [QAS-3](2-Architectural-Drivers.md#qas-3--reliability--under-noisy-or-weak-signals) — tests whether the optional AI enhancement can be added without breaking real-time behavior or measurement reliability.
 
@@ -149,7 +147,7 @@ All experiments were targeted at the top-rated risks (High probability × High i
 
 ### Module View
 
-The team created two module views:
+We created two module views:
 
 <details>
 <summary><strong><a href="5-Architectural-View.md#1-1-timegrapher-mvvm-view--responsibility-separation">1. TIMEGRAPHER MVVM VIEW – Responsibility Separation</a></strong></summary>
@@ -164,14 +162,14 @@ Key constraint: ViewModel holds no Avalonia/View types (enforced by `ViewModelPu
 </details>
 
 <details>
-<summary><strong><a href="5-Architectural-View.md#1-2-timegrapher-module-uses-view--actual-dependencies--internal-decomposition">2. TIMEGRAPHER MODULE USES VIEW – Actual Dependencies & Internal Decomposition</a></strong></summary>
+<summary><strong><a href="5-Architectural-View.md#1-2-timegrapher-module-uses-view--actual-dependencies--internal-decomposition">2-1. TIMEGRAPHER MODULE USES VIEW – Actual Dependencies & Internal Decomposition</a></strong></summary>
 
-Shows not the runtime data-flow order, but how modules are structured to use each other. At the project level it maps the relationships among App, Core, platform adapters, and Verify: Core sits at the center, with App, Verify, `WindowsAudio`, and `LinuxAudio` all depending on it. `WindowsAudio` and `LinuxAudio` (platform adapters) form a boundary that keeps OS-specific audio dependencies out of Core.
+Shows how modules are structured to use each other. At the project level it maps the relationships among App, Core, platform adapters, and Verify: Core sits at the center, with App, Verify, `WindowsAudio`, and `LinuxAudio` all depending on it. `WindowsAudio` and `LinuxAudio` (platform adapters) form a boundary that keeps OS-specific audio dependencies out of Core.
 
 </details>
 
 <details>
-<summary><strong><a href="5-Architectural-View.md#core-internal-module-uses">3. Core-Internal Module Uses</a></strong></summary>
+<summary><strong><a href="5-Architectural-View.md#core-internal-module-uses">2-2. Core-Internal Module Uses</a></strong></summary>
 
 A zoomed-in view of Core internals. `Analysis` orchestrates the analysis flow and uses the domain modules `Detection`, `Metrics`, `Imaging`, and `AudioIo`. `Shared` collects the common types and contracts used across Core-internal modules — `AnalysisFrame`, the shared audio buffer, analysis worker I/O contracts, and sync/signal state types — and depends on no other Core module.
 
@@ -267,9 +265,9 @@ Mechanical watch → microphone/pickup → USB audio → audio input of each nod
 
 Yes, directly and substantially:
 
-- **[EXP-01](4-Planned-Experiments.md#exp-01-avalonia-rendering-backend-on-the-rpi5)** → locked the Avalonia GPU-first rendering backend (no forced SW fallback needed). Architecture startup config was updated.
+- **[EXP-01](4-Planned-Experiments.md#exp-01-avalonia-rendering-backend-on-the-rpi5)** ([ADR-001](ADR/ADR-001.md)) → locked the Avalonia GPU-first rendering backend (no forced SW fallback needed). Architecture startup config was updated.
 - **[EXP-02](4-Planned-Experiments.md#exp-02-rpi5-real-time-sample-rate-ceiling)** → fixed the supported sample rate range (48k base / 192k top) and determined that a single latency gate (≤ one beat period) is the right criterion, replacing the original p99 ≤ 500 ms criterion.
-- **[EXP-03](4-Planned-Experiments.md#exp-03-gui-real-time-rendering-design-patterns)** → introduced the Pipe-and-Filter + concurrency tactics that became the permanent architecture: dedicated analysis thread at `ThreadPriority.Highest`, `AnalysisFrameRouter` Observer fan-out, Latest-Wins scheduler, fixed buffer pool (`PublishBufferCount = 3`), and `DecimatingSeries` for long-term data bounding. These are now in production source (`AnalysisFrameRouter.cs`, `DecimatingSeries.cs`, `AnalysisWorker.cs`).
+- **[EXP-03](4-Planned-Experiments.md#exp-03-gui-real-time-rendering-design-patterns)** ([ADR-002](ADR/ADR-002.md)) → introduced the Pipe-and-Filter + concurrency tactics that became the permanent architecture: dedicated analysis thread at `ThreadPriority.Highest`, `AnalysisFrameRouter` Observer fan-out, Latest-Wins scheduler, fixed buffer pool (`PublishBufferCount = 3`), and `DecimatingSeries` for long-term data bounding. These are now in production source (`AnalysisFrameRouter.cs`, `DecimatingSeries.cs`, `AnalysisWorker.cs`).
 - **[EXP-05](4-Planned-Experiments.md#exp-05-long-run-stability-24h)** → confirmed no need for additional buffer caps or aggregation structures; keeps the current architecture.
 - **MVC → MVVM refactoring** ([ADR-003](ADR/ADR-003.md)) was also an architecture refinement driven by [QAS-5](2-Architectural-Drivers.md#qas-5--modifiability-extensibility--adding-a-new-measurementfiltergraph) feedback and the modifiability demands from M1 review.
 
@@ -284,8 +282,6 @@ Yes. [EXP-03](4-Planned-Experiments.md#exp-03-gui-real-time-rendering-design-pat
 - **Concurrency-isolation benefits:** UI never blocks even under heavy rendering; Latest-Wins prevents backlog accumulation.
 - **Concurrency cost:** intermediate frames are dropped (frame drop / recency bias). **Mitigation acknowledged and justified:** for a real-time monitor, showing the latest state without lag is more important than preserving past frames; long-term history is supplemented by `DecimatingSeries`.
 
-The team explicitly names which SAP tactics apply to which QAS, demonstrating conceptual fluency, not just implementation.
-
 ---
 
 ### Do architectural approaches align with system goals?
@@ -294,12 +290,12 @@ Yes, the alignment is explicit:
 
 | Goal | Architecture response |
 |------|----------------------|
-| Real-time beat processing ([QAS-2](2-Architectural-Drivers.md#qas-2--performance-latency--from-sound-input-to-screen-display)) | Dedicated analysis thread + Latest-Wins + bounded buffers → verified to 43.8% of budget |
 | Measurement accuracy ([QAS-1](2-Architectural-Drivers.md#qas-1--accuracy--from-acoustic-event-detection-to-computed-watch-metrics)) | Single AnalysisFrame source → all displays share identical data ([QAS-4](2-Architectural-Drivers.md#qas-4--consistency--consistent-values-across-displays)); sub-sample interpolation in Detector.cs |
+| Real-time beat processing ([QAS-2](2-Architectural-Drivers.md#qas-2--performance-latency--from-sound-input-to-screen-display)) | Dedicated analysis thread + Latest-Wins + bounded buffers → verified to 43.8% of budget ([ADR-002](ADR/ADR-002.md)) |
 | Reliability under noise ([QAS-3](2-Architectural-Drivers.md#qas-3--reliability--under-noisy-or-weak-signals)) | Signal-quality gating; "signal weak" UI state; rule-based fallback (`PllMatchGate`) |
-| Modifiability ([QAS-5](2-Architectural-Drivers.md#qas-5--modifiability-extensibility--adding-a-new-measurementfiltergraph)) | One-way layer rule enforced by `ViewModelPurityTests`; IAnalysisFrameConsumer extension point; ≤ 1 existing module changed per new feature |
+| Modifiability ([QAS-5](2-Architectural-Drivers.md#qas-5--modifiability-extensibility--adding-a-new-measurementfiltergraph)) | One-way layer rule enforced by `ViewModelPurityTests` ([ADR-003](ADR/ADR-003.md)); IAnalysisFrameConsumer extension point; ≤ 1 existing module changed per new feature; App/test/verify module separation enables 6-member parallel development with minimal merge conflicts; TDD-based test suite provides an automated safety net for AI-assisted code review ([ADR-004](ADR/ADR-004.md)) |
 | Usability on small touchscreen ([QAS-6](2-Architectural-Drivers.md#qas-6--usability--reading-and-operating-on-the-touchscreen)) | Key-readings-first layout; physical-size-based legibility rules (≥ 2.9 mm letters, ≥ 9 mm touch targets) |
-| Cross-platform ([C-3](2-Architectural-Drivers.md#design-constraints)) | Adapter pattern isolating `WindowsAudio` (WASAPI) and `LinuxAudio` (ALSA/PipeWire) |
+| Cross-platform ([C-3](2-Architectural-Drivers.md#design-constraints)) | Adapter pattern isolating `WindowsAudio` (WASAPI) and `LinuxAudio` (ALSA/PipeWire) ([ADR-001](ADR/ADR-001.md)) |
 
 ---
 
@@ -313,7 +309,6 @@ Two significant concerns remain:
 
 Minor concerns:
 - [EXP-04](4-Planned-Experiments.md#exp-04-on-device-tinyml-inference-feasibility) (TinyML) result is open; if adopted, [R-17](3-Risk-Assessment.md#f-project--process) requires re-running [EXP-02](4-Planned-Experiments.md#exp-02-rpi5-real-time-sample-rate-ceiling)/[EXP-03](4-Planned-Experiments.md#exp-03-gui-real-time-rendering-design-patterns) under TinyML load to confirm no budget regression.
-- [G09](2-Architectural-Drivers.md#g09--time-frequency-spectrogram-display) FR-09-04 and FR-09-05 remain in progress as of 2026-06-21.
 
 ---
 
@@ -321,12 +316,11 @@ Minor concerns:
 
 Yes, through multiple complementary mechanisms:
 
-1. **Quantitative experiment-based evaluation** — [EXP-01](4-Planned-Experiments.md#exp-01-avalonia-rendering-backend-on-the-rpi5) through [EXP-05](4-Planned-Experiments.md#exp-05-long-run-stability-24h) produced pass/fail measurements against defined QAS thresholds (latency budget, frame rate, RSS trend). These are scenario-based evaluations in the ATAM sense.
+1. **Quantitative experiment-based evaluation** — [EXP-01](4-Planned-Experiments.md#exp-01-avalonia-rendering-backend-on-the-rpi5) through [EXP-05](4-Planned-Experiments.md#exp-05-long-run-stability-24h) produced pass/fail measurements against defined QAS thresholds (latency budget, frame rate, RSS trend).
 
 2. **Automated structural tests** — `ViewModelPurityTests` enforces the one-way dependency rule at build time. `SyntheticDetectorTests` and `AdverseScenarios` unit tests verify algorithm behavior against known synthetic inputs ([EXP-06](4-Planned-Experiments.md#exp-06-measurement-accuracy) Step 1).
 
-3. **ADR-based documented rationale** — Four ADRs record the reasoning behind platform selection ([ADR-001](ADR/ADR-001.md), [ADR-002](ADR/ADR-002.md), [ADR-003](ADR/ADR-003.md), [ADR-004](ADR/ADR-004.md), completed 2026-06-21), including rejected alternatives and rationale.
+3. **ADR-based documented rationale** — Four ADRs record the reasoning behind each architectural decision ([ADR-001](ADR/ADR-001.md), [ADR-002](ADR/ADR-002.md), [ADR-003](ADR/ADR-003.md), [ADR-004](ADR/ADR-004.md)), including rejected alternatives and rationale.
 
 4. **SAP trade-off analysis** — [EXP-03](4-Planned-Experiments.md#exp-03-gui-real-time-rendering-design-patterns)'s Results & Analysis section explicitly evaluates each applied pattern/tactic against SAP criteria, naming what is gained and what is given up.
 
-What has not been done: a formal ATAM workshop or structured scenario walkthrough by an external reviewer. The evaluations to date are all internal.
