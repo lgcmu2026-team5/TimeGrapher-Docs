@@ -100,17 +100,16 @@ Complete
 **Worst-case E2E latency as % of beat-period budget (RPi5, lower is better, 100% = budget)**
 
 ```mermaid
-%%{init: {"themeVariables": {"xyChart": {"plotColorPalette": "#A50034, #ED8B00, #999999"}}}}%%
+%%{init: {"themeVariables": {"xyChart": {"plotColorPalette": "#A50034, #999999"}}}}%%
 xychart-beta horizontal
     title "RPi5 worst-case latency / budget per run (gray line = 100% budget)"
     x-axis ["21600@48k Sim", "21600@48k Play", "21600@48k Live", "43200@192k Sim", "43200@192k Play", "43200@192k Sim (2026-06-21)"]
     y-axis "Budget usage (%)" 0 --> 110
-    bar [25.2, 26.4, 24.2, 40.8, 41.5, 0]
-    bar [0, 0, 0, 0, 0, 43.8]
+    bar [25.2, 26.4, 24.2, 40.8, 41.5, 43.8]
     line [100, 100, 100, 100, 100, 100]
 ```
 
-- Orange bar: 43200@192k Sim, E2E max = 36.46 ms = 43.8 % of budget (measured 2026-06-21).
+- Added bar (43200@192k Sim): E2E max = 36.46 ms = 43.8 % of budget (measured 2026-06-21).
 
 ### Objective
 

@@ -107,17 +107,16 @@ C# 경로 채택 시 Avalonia Github의 다수 이슈처럼 RPi5에서 GPU 가�
   비트 주기 예산 사용률 (Raspberry Pi 5, 낮을수록 여유, 100% = 예산)
 
 ```mermaid
-%%{init: {"themeVariables": {"xyChart": {"plotColorPalette": "#A50034, #ED8B00, #999999"}}}}%%
+%%{init: {"themeVariables": {"xyChart": {"plotColorPalette": "#A50034, #999999"}}}}%%
 xychart-beta horizontal
     title "RPi5 run별 worst-case 지연 / 예산 (회색선 = 100% 예산)"
     x-axis ["21600@48k Sim", "21600@48k Play", "21600@48k Live", "43200@192k Sim", "43200@192k Play", "43200@192k Sim (2026-06-21)"]
     y-axis "예산 사용률 (%)" 0 --> 110
-    bar [25.2, 26.4, 24.2, 40.8, 41.5, 0]
-    bar [0, 0, 0, 0, 0, 43.8]
+    bar [25.2, 26.4, 24.2, 40.8, 41.5, 43.8]
     line [100, 100, 100, 100, 100, 100]
 ```
   - 한계: Rate/Scope 탭·latency/drop·miss 기준 판정. CPU/RAM, 이미지 탭(Spectrogram/Sound Print), 43200 실음향 Live는 별도 평가 필요하나, 추가 시험은 진행하지 않음.
-  - 주황 막대: 43200@192k Sim E2E max = 36.46 ms로 예산의 43.8%(2026-06-21 측정).
+  - 추가 막대(43200@192k Sim): E2E max = 36.46 ms로 예산의 43.8%(2026-06-21 측정).
 
 ### 목적
 
