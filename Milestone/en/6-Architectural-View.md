@@ -112,6 +112,8 @@ Decomposes `TimeGrapher.Core` into its major domain modules and shows which Core
 
 At runtime there is a separate external input path: the **acoustic beat signal** of a mechanical watch is converted to an electrical signal through a microphone/pickup and enters each node's audio input via **USB audio**.
 
+**Deploy Targets (Releases):** <https://github.com/lgcmu2026-team5/TimeGrapher-Net/releases>
+
 ![Deployment view diagram](../assets/deployment-view-detailed-en.svg)
 
 ## 5. TIMEGRAPHER RUN LIFECYCLE C&C VIEW - Sequence Diagram

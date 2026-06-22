@@ -117,6 +117,8 @@ App, Core, platform adapters, Verify 사이의 module uses 관계를 보여준�
 
 런타임에는 별도의 외부 입력 경로가 있다: 기계식 시계의 **음향 비트 신호**가 마이크/픽업을 거쳐 전기신호로 변환되고, **USB 오디오**로 각 노드의 오디오 입력에 들어간다.
 
+**배포 Target(릴리스):** <https://github.com/lgcmu2026-team5/TimeGrapher-Net/releases>
+
 ![배포 뷰 다이어그램](../assets/deployment-view-detailed.svg)
 
 ## 5. TIMEGRAPHER RUN LIFECYCLE C&C VIEW - Sequence Diagram
