@@ -14,6 +14,7 @@
 | **Milestone 1-4** | Planned Experiments | [4-Planned-Experiments.md](4-Planned-Experiments.md) |
 | **Milestone 1-5** | Architectural Approaches | [5-Architectural-Approaches.md](5-Architectural-Approaches.md) |
 | **Milestone 1-6** | Architectural View | [6-Architectural-View.md](6-Architectural-View.md) |
+| **ADR** | Architecture Decision Records | [ADR/](ADR/) |
 | **Glossary** | Terms & Definitions (all sections) | [7-Glossary.md](7-Glossary.md) |
 
 ---
