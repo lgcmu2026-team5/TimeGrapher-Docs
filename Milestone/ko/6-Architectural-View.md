@@ -119,5 +119,89 @@ App, Core, platform adapters, Verify 사이의 module uses 관계를 보여준�
 
 ![배포 뷰 다이어그램](../assets/deployment-view-detailed.svg)
 
+## 5. TIMEGRAPHER RUN LIFECYCLE C&C VIEW - Sequence Diagram
 
+측정 흐름은 반복 루프를 포함해 가장 세분화가 필요한 부분이므로 Level 2 자식 뷰로 분리한다.
 
+### 문서 로드맵
+
+| Page | 내용 |
+| --- | --- |
+| Level 1 | 실행 수명주기 개요 |
+| Level 2 | Level 1의 `ref`에서 펼친 측정 중 분석 반복 흐름 |
+
+### 5-1. 주 표현 · Level 1 · 실행 수명주기 개요
+
+Level 1은 실행 수명주기 전체를 한 장에 담는다. 세부 분석 반복은 `ref`로 접고 Level 2에서 펼친다.
+
+![Level 1 실행 수명주기 개요](../assets/Sequence-run-lifecycle-level1.svg)
+
+### 5-2. 동작 · Level 2 · 측정 중 분석 반복 흐름
+
+Level 2는 Level 1의 측정 `ref`를 펼친 뷰다. 반복 조건과 시간 제약은 다이어그램 안에 표시한다.
+
+![Level 2 측정 중 분석 반복 흐름](../assets/Sequence-run-lifecycle-level2.svg)
+
+### 5-3. 표기
+
+공통 표기는 아래 범례 이미지를 따른다.
+
+![UML 시퀀스 다이어그램 표기 범례](../assets/Sequence-run-lifecycle-notation.svg)
+
+라벨 규칙: User↔시스템 화살표는 사용자의 의도/행위, 객체 간 화살표는 오퍼레이션 시그니처다.
+
+### 5-4. 요소 카탈로그
+
+각 lifeline의 역할을 정리한다. `MasterAudioBuffer`와 `Core pipeline`은 Level 2에서만 등장한다.
+
+| Lifeline | MVVM 레이어 | 책임 |
+| --- | --- | --- |
+| User | (actor) | 사용자 |
+| View (`MainWindow`) | View | UI 이벤트 수신, 렌더링·스레드 마샬링, `RunSessionController`로 입력·분석 worker 수명 구동, 서비스의 `IRunCommandOperations` 콜백 포트 구현 |
+| ViewModel (`MainWindowViewModel`) | ViewModel | `PlayPauseCommand`/`ResetCommand`와 관찰 가능한 `RunState`/`StatusText`를 노출한다. 도메인을 직접 호출하지 않는다. |
+| RunCommandService | App service (State Pattern) | 시작/일시정지/정지 오케스트레이션, ViewModel 상태 갱신, `IRunCommandOperations`를 통한 View 호출 |
+| RunSessionController | Model boundary | 실행 세션 token, 입력 worker attach/stop, 분석 worker 수명 관리 |
+| Input worker | Model | Live=`AudioCaptureWorker`, Playback=`PlaybackWorker`, Simulation=`SimWorker` |
+| MasterAudioBuffer | Model | 입력↔분석 공유 오디오 ring buffer |
+| AnalysisWorker | Model | 분석 스레드 |
+| Core pipeline | Model | Detection / Metrics / Projectors |
+
+### 5-5. 가변성
+
+입력 소스(Live / Playback / Simulation)가 유일한 변이점이며, 런타임에 `CurrentMode` 분기로 처리된다.
+
+### 5-6. 설계 근거
+
+- **결정**: MVC 스타일의 거대한 `MainWindow`에 섞여 있던 UI 상태·명령·실행 오케스트레이션을 MVVM의 세 역할로 분리했다. View는 렌더링/플랫폼/세션 배선, ViewModel은 바인딩 가능한 상태와 명령, RunCommandService는 State Pattern 기반 실행 상태 머신을 담당한다.
+- **근거**: 관심사 분리로 수정용이성·시험용이성을 높인다. ViewModel은 도메인을 직접 호출하지 않아 윈도 없이 단위 테스트가 가능하다. 서비스↔View 결합은 명령 본문용 `IRunCommandRunner`와 서비스→View 콜백용 `IRunCommandOperations`로 역전한다.
+- **기각한 대안**: View가 `Func`/`Action` 델리게이트로 명령 본문을 ViewModel에 주입하던 MVC 잔재 방식. 명령 본문을 ViewModel 쪽 명령 경로에 두도록 `IRunCommandRunner` 주입 방식으로 대체했다.
+- **의도된 예외**: Playback 자연 종료와 애플리케이션 종료는 worker 완료 또는 창 닫힘 콜백에서 시작되므로 View가 직접 처리하고 `RunCommandService`를 우회한다.
+
+## 6. TIMEGRAPHER RUN LIFECYCLE STATE MACHINE VIEW
+
+이 뷰는 `RunCommandService`의 실행 제어 상태(State Pattern)와 `MainWindowViewModel.RunState`(`RunUiState`)를 상태 머신으로 본다. 객체 간 호출 순서는 C&C view에서 다루고, 제어 상태의 변화는 이 뷰에서 다룬다.
+
+![Run 상태 머신](../assets/Statemachine-run-lifecycle.svg)
+
+### 6-1. 범위
+
+이 상태 머신의 기준 상태 값은 `RunUiState`다. `RunCommandService`는 현재 `RunUiState`에 맞는 상태 객체(`StoppedState`, `RunningState` 등)를 선택하고, 각 상태 객체가 `StartAsync`, `TogglePause`, `StopRunWithoutReset`, `StopRunAndRefreshDevices`, `Reset` 명령을 허용하거나 무시한다.
+
+실제 worker 생성·정지·recording close·장치 복원은 `IRunCommandOperations` 포트를 통해 View 쪽 구현으로 위임된다. 따라서 이 뷰는 "어떤 상태로 넘어가는가"를 표현하고, 입력 worker/분석 worker의 상세 호출 순서는 시퀀스 뷰에 둔다.
+
+### 6-2. 상태
+
+| State | 코드 기준 의미 |
+| --- | --- |
+| `Stopped` | 측정 중이 아닌 기본 상태. 시작 전 설정을 바꿀 수 있고, `StartAsync`가 허용된다. |
+| `Starting` | 시작 절차 진행 중. 중복 시작·정지·리셋 명령은 무시된다. |
+| `Running` | 입력 worker와 분석 worker가 동작 중인 상태. Pause 또는 stop intent가 허용된다. |
+| `Paused` | worker는 살아 있고 입력만 pause gate에 걸린 상태. Resume 또는 Reset이 허용된다. |
+| `Stopping` | stop intent를 수행 중인 상태. 정지가 아직 끝나지 않은 경우 Stop/Reset 재시도 표면이 유지된다. |
+| `StopFailed` | worker stop timeout 또는 recording close 실패로 완전 정지에 실패한 상태. Stop/Reset 재시도로 같은 pending intent를 다시 수행한다. |
+
+### 6-3. 표기
+
+상태 머신 공통 표기는 아래 범례 이미지를 따른다.
+
+![UML 상태 머신 표기 범례](../assets/Statemachine-run-lifecycle-notation.svg)
