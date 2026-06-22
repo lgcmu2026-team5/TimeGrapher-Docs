@@ -169,11 +169,11 @@ Status: 🟢 Implemented · 🟡 Partially Implemented · 🔴 Needs Implementat
 | FR-11-01 | 🟢 | mandatory | The Scope Mode with Synchronized Sweep Display shall provide the user with a display of the watch's acoustic signal in a fixed sweep window, similar to an oscilloscope. |
 | FR-11-02 | 🟢 | recommended | The Scope Mode with Synchronized Sweep Display should provide the user with a display of the processed signal that combines the upper and lower halves of the waveform. |
 | FR-11-03 | 🟢 | recommended | The Scope Mode with Synchronized Sweep Display should provide the user with the ability to configure the sweep time as a multiple of the watch's tick interval. |
-| FR-11-04 | 🔴 | recommended | The Scope Mode with Synchronized Sweep Display should provide the user with a synchronized display in which the beat pattern stays visually stable near the nominal rate and drifts when the watch is fast or slow. |
+| FR-11-04 | 🟢 | recommended | The Scope Mode with Synchronized Sweep Display should provide the user with a synchronized display in which the beat pattern stays visually stable near the nominal rate and drifts when the watch is fast or slow. |
 | FR-11-05 | 🟢 | optional | The Scope Mode with Synchronized Sweep Display may provide the user with the daily rate reference value from the most recent timing test. |
 | FR-11-06 | 🟢 | optional | The Scope Mode with Synchronized Sweep Display may provide the user with the amplitude reference value from the most recent timing test. |
 | FR-11-07 | 🟢 | optional | The Scope Mode with Synchronized Sweep Display may provide the user with the beat error reference value from the most recent timing test. |
-| FR-11-08 | 🔴 | optional | The Scope Mode with Synchronized Sweep Display may provide the user with the nominal beat rate reference value from the most recent timing test. |
+| FR-11-08 | 🟢 | optional | The Scope Mode with Synchronized Sweep Display may provide the user with the nominal beat rate reference value from the most recent timing test. |
 
 ### G12 · Scope Function with Multiple Filter Views
 | ID | Status | Grade | Requirement |
