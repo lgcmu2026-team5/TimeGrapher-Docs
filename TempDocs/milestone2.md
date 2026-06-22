@@ -226,31 +226,31 @@ All experiments were targeted at the top-rated risks (High probability × High i
 
 The team created two module views:
 
-**1. MVVM Responsibility Flow** — shows one-way «use» dependencies across three layers:
+**1. TIMEGRAPHER MVVM VIEW – Responsibility Separation** — shows one-way «use» dependencies across three layers:
 - **View Layer** (Main Window, Graph Tabs Window, Graph Rendering) → uses `MainWindowViewModel`
 - **ViewModel Layer** (`MainWindowViewModel`, Run/session coordination, Input/display coordination) → uses Core modules
 - **Model Layer** (`Core.Analysis·Detection`, `Core.Metrics·AudioIo·Imaging`, `Core.Shared`, `Platform.WindowsAudio·LinuxAudio`) → no upward dependencies
 
 Key constraint: ViewModel holds no Avalonia/View types (enforced by `ViewModelPurityTests`). The Model (`Core`) has zero external dependencies.
 
-**2. Project-Level Module Uses** — shows that `TimeGrapher.App` uses `TimeGrapher.Core` and conditionally `WindowsAudio` or `LinuxAudio`; `TimeGrapher.Verify` uses `Core`; `Core` depends on nothing.
+**2. TIMEGRAPHER MODULE USES VIEW – Actual Dependencies & Internal Decomposition** — shows not the runtime data-flow order, but how modules are structured to use each other. At the project level it maps the relationships among App, Core, platform adapters, and Verify: Core sits at the center, with App, Verify, `WindowsAudio`, and `LinuxAudio` all depending on it. `WindowsAudio` and `LinuxAudio` (platform adapters) form a boundary that keeps OS-specific audio dependencies out of Core.
 
-**3. Core-Internal Module Uses** — decomposes Core into `Analysis`, `Detection`, `Detection.Scoring`, `Metrics`, `Imaging`, `AudioIo`, `Sim`, and `Shared`, with `Shared` having zero dependencies.
+**3. Core-Internal Module Uses** — a zoomed-in view of Core internals. `Analysis` orchestrates the analysis flow and uses the domain modules `Detection`, `Metrics`, `Imaging`, and `AudioIo`. `Shared` collects the common types and contracts used across Core-internal modules — `AnalysisFrame`, the shared audio buffer, analysis worker I/O contracts, and sync/signal state types — and depends on no other Core module.
 
 **한국어**
 
 팀은 두 가지 모듈 뷰를 작성했습니다:
 
-**1. MVVM 책임 흐름** — 세 레이어 간의 단방향 «use» 의존성을 보여줍니다:
+**1. TIMEGRAPHER MVVM VIEW – Responsibility Separation** — 세 레이어 간의 단방향 «use» 의존성을 보여줍니다:
 - **View Layer** (Main Window, Graph Tabs Window, Graph Rendering) → `MainWindowViewModel` 사용
 - **ViewModel Layer** (`MainWindowViewModel`, Run/세션 조정, 입력/표시 조정) → Core 모듈 사용
 - **Model Layer** (`Core.Analysis·Detection`, `Core.Metrics·AudioIo·Imaging`, `Core.Shared`, `Platform.WindowsAudio·LinuxAudio`) → 상향 의존 없음
 
 핵심 제약: ViewModel은 Avalonia/View 타입을 보유하지 않음(`ViewModelPurityTests`로 강제). Model(`Core`)은 외부 의존성이 없음.
 
-**2. 프로젝트 수준 모듈 Uses** — `TimeGrapher.App`이 `TimeGrapher.Core`와 조건부로 `WindowsAudio` 또는 `LinuxAudio`를 사용; `TimeGrapher.Verify`가 `Core`를 사용; `Core`는 아무것도 의존하지 않음.
+**2. TIMEGRAPHER MODULE USES VIEW – Actual Dependencies & Internal Decomposition** — 실행 중 데이터가 흐르는 순서가 아닌, 어떤 모듈이 어떤 모듈을 사용하도록 구조화되어 있는지를 보여줍니다. 전체 프로젝트 수준에서 App·Core·플랫폼 오디오 어댑터·Verify의 관계를 표현하며, 핵심은 Core가 중심에 있고 App·Verify·`WindowsAudio`·`LinuxAudio`가 Core를 사용한다는 점입니다. `WindowsAudio`·`LinuxAudio`(platform adapters)는 OS별 오디오 의존성이 Core 안으로 들어오지 않도록 경계를 만듭니다.
 
-**3. Core 내부 모듈 Uses** — Core를 `Analysis`, `Detection`, `Detection.Scoring`, `Metrics`, `Imaging`, `AudioIo`, `Sim`, `Shared`로 분해하며, `Shared`는 의존성이 없음.
+**3. Core-Internal Module Uses** — Core를 확대한 내부 뷰입니다. `Analysis`가 분석 흐름을 조정하며 `Detection`·`Metrics`·`Imaging`·`AudioIo` 도메인 모듈을 사용합니다. `Shared`는 Core 내부 모듈들이 공통으로 사용하는 타입과 계약(`AnalysisFrame`, 공유 오디오 버퍼, 분석 worker 입출력 계약, sync/signal 상태 타입 등)을 모아둔 영역으로, 다른 Core 모듈에 의존하지 않습니다.
 
 ---
 

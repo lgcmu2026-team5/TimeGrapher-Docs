@@ -6,10 +6,10 @@
 
 아래 서브섹션에서 MVVM 구조와 Module Uses 뷰를 각각 제시한다.
 
-- **MVVM 구조:** View Layer, ViewModel Layer, Model Layer 간의 하향식 단방향 의존성(«use») — 각 컴포넌트의 책임 분리를 나타낸다.
-- **Module Uses 구조:** 프로젝트 수준(App, Core, 플랫폼 어댑터) 및 Core 내부 서브모듈 간의 구문적(syntactic) 사용 의존성을 나타낸다.
+- **1-1. TIMEGRAPHER MVVM VIEW – Responsibility Separation:** View Layer, ViewModel Layer, Model Layer 간의 하향식 단방향 의존성(«use») — 각 컴포넌트의 책임 분리를 나타낸다.
+- **1-2. TIMEGRAPHER MODULE USES VIEW – Actual Dependencies & Internal Decomposition:** 프로젝트 수준(App, Core, 플랫폼 어댑터) 및 Core 내부 서브모듈 간의 구문적(syntactic) 사용 의존성을 나타낸다.
 
-### MVVM 책임 흐름
+### 1-1. TIMEGRAPHER MVVM VIEW – Responsibility Separation
 
 **표기:** 계층마다 색을 칠하고(View Layer / ViewModel Layer / Model Layer), 회색 상자는 **모듈**(관련 클래스 묶음)이다. 모든 의존성은 *사용하는* 모듈에서 *사용되는* 모듈로 향하는 점선 **«use»** 화살표로 그린다.
 
@@ -24,15 +24,11 @@
 
 ![MVVM responsibility flow](../assets/MVVM.png)
 
-### Project-Level Module Uses
-
-> **발표 스크립트:** 이 view는 실행 중 데이터가 흐르는 순서가 아니라, 어떤 모듈이 어떤 모듈을 사용하도록 구조화되어 있는지를 보여줍니다. 먼저 전체 프로젝트 수준에서 App, Core, 플랫폼 오디오 어댑터, Verify의 관계를 보고, 다음으로 Core 내부를 한 단계 확대해서 분석 도메인의 분해 구조를 설명하겠습니다.
+### 1-2. TIMEGRAPHER MODULE USES VIEW – Actual Dependencies & Internal Decomposition
 
 App, Core, platform adapters, Verify 사이의 module uses 관계를 보여준다. 여기서 platform adapters는 그림의 `WindowsAudio`와 `LinuxAudio`를 의미하며, OS-specific audio dependency가 `TimeGrapher.Core`로 들어오지 않도록 분리된 modules이다.
 
 ![Module Uses View - Project-level modules](../assets/module-uses-project.ko.svg)
-
-> **발표 스크립트:** 이 그림에서 핵심은 Core가 중심에 있고, App과 Verify, WindowsAudio, LinuxAudio가 Core를 사용한다는 점입니다. WindowsAudio와 LinuxAudio가 여기서 말하는 platform adapters이며, OS별 오디오 의존성이 Core 안으로 들어오지 않게 경계를 만듭니다.
 
 - `TimeGrapher.App` uses `TimeGrapher.Core`.
 - `TimeGrapher.App` conditionally uses `WindowsAudio` or `LinuxAudio`.
@@ -41,8 +37,6 @@ App, Core, platform adapters, Verify 사이의 module uses 관계를 보여준�
 - `TimeGrapher.Core`는 App, Verify, platform adapters를 사용하지 않는다.
 
 ### Core-Internal Module Uses
-
-> **발표 스크립트:** 두 번째 그림은 Core만 확대해서 본 것입니다. Analysis가 분석 흐름을 조정하고, Detection, Metrics, Imaging, AudioIo 같은 도메인 모듈을 사용합니다. Shared는 Core 내부 모듈들이 함께 쓰는 공통 타입과 계약을 모아둔 영역입니다. 예를 들어 분석 결과를 한 번에 전달하는 AnalysisFrame, 입력과 분석을 분리하는 공유 오디오 버퍼, 분석 worker 입출력 계약, sync/signal 상태 타입이 여기에 해당합니다.
 
 `TimeGrapher.Core`를 주요 domain modules로 분해하고, 각 module이 어떤 Core 내부 module을 사용하는지 보여준다.
 
@@ -84,7 +78,7 @@ App, Core, platform adapters, Verify 사이의 module uses 관계를 보여준�
 
 이 섹션은 1번 항목에서 정의한 구조적 요소들이 런타임에 어떻게 상호작용하는지 보완 설명합니다.
 
-### 3-1. 시퀀스 다이어그램 (Run Lifecycle C&C)
+### 3-1. TIMEGRAPHER RUN LIFECYCLE C&C VIEW – Measurement Analysis Loop
 
 User → View → ViewModel → RunCommandService → Model(RunSessionController 및 Workers)로 이어지는 객체 간 호출 흐름을 다룬다. 측정 분석 루프는 반복 주기를 포함해 가장 세분화가 필요하므로 Level 2 자식 뷰로 분리한다.
 
@@ -129,7 +123,7 @@ Level 2는 Level 1의 측정 `ref`를 펼친 뷰다. 반복 조건과 시간 제
 | AnalysisWorker | Model | 분석 스레드 |
 | Core pipeline | Model | Detection / Metrics / Projectors |
 
-### 3-2. 상태 머신 다이어그램 (Run Lifecycle State Machine)
+### 3-2. TIMEGRAPHER RUN LIFECYCLE BEHAVIOR VIEW – Control State Transitions
 
 Stopped, Starting, Running, Paused, Stopping, StopFailed 상태 간의 전이 규칙을 정의한다.
 
@@ -160,7 +154,7 @@ Stopped, Starting, Running, Paused, Stopping, StopFailed 상태 간의 전이 �
 
 ---
 
-## 4. Context Diagram
+## 4. TIMEGRAPHER SYSTEM DEPLOYMENT VIEW – Hardware & External Signal Path
 
 시스템이 상호작용하는 외부 엔티티와 경계를 보여준다. 아래 배포 뷰는 소프트웨어 전달 경로와 런타임 오디오 신호 경로를 함께 나타낸다.
 
@@ -197,9 +191,9 @@ Stopped, Starting, Running, Paused, Stopping, StopFailed 상태 간의 전이 �
 
 ## 7. Related Views
 
-계층 뷰(Layered View)는 Primary Presentation에서 보여주는 모든 모듈 의존성을 지배하는 권한 규칙을 정의한다. 허용되는 의존 방향과 계층 구조를 명시하여 전체 아키텍처의 근간을 이룬다.
+TIMEGRAPHER LAYERED VIEW는 Primary Presentation에서 보여주는 모든 모듈 의존성을 지배하는 권한 규칙을 정의한다. 허용되는 의존 방향과 계층 구조를 명시하여 전체 아키텍처의 근간을 이룬다.
 
-### 계층 뷰 (LAYERED VIEW – 권한 기반 아키텍처)
+### TIMEGRAPHER LAYERED VIEW – Permission-Based Architecture
 
 **목적:** 어떤 레이어가 어떤 하위 레이어를 사용할 수 있는지 보여준다. 구현 세부사항이 아니라 허용되는 의존성을 정의한다.
 

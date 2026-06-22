@@ -6,10 +6,10 @@
 
 The subsections below present the MVVM structure and Module Uses views individually.
 
-- **MVVM Structure:** Downward one-way dependencies («use») among View Layer, ViewModel Layer, and Model Layer — illustrates responsibility separation across components.
-- **Module Uses Structure:** Syntactic use dependencies among project-level modules (App, Core, platform adapters) and Core-internal submodules.
+- **1-1. TIMEGRAPHER MVVM VIEW – Responsibility Separation:** Downward one-way dependencies («use») among View Layer, ViewModel Layer, and Model Layer — illustrates responsibility separation across components.
+- **1-2. TIMEGRAPHER MODULE USES VIEW – Actual Dependencies & Internal Decomposition:** Syntactic use dependencies among project-level modules (App, Core, platform adapters) and Core-internal submodules.
 
-### MVVM Responsibility Flow
+### 1-1. TIMEGRAPHER MVVM VIEW – Responsibility Separation
 
 **Notation:** Each layer is colored (View Layer / ViewModel Layer / Model Layer); a gray box is a **module** (a group of related classes). Every dependency is a dotted **«use»** arrow drawn from the *using* module to the *used* one.
 
@@ -24,7 +24,7 @@ The subsections below present the MVVM structure and Module Uses views individua
 
 ![MVVM responsibility flow](../assets/MVVM.png)
 
-### Project-Level Module Uses
+### 1-2. TIMEGRAPHER MODULE USES VIEW – Actual Dependencies & Internal Decomposition
 
 Shows module uses relations among App, Core, platform adapters, and Verify. Here, platform adapters refer to `WindowsAudio` and `LinuxAudio` in the diagram; they isolate OS-specific audio dependencies from `TimeGrapher.Core`.
 
@@ -78,7 +78,7 @@ The table below lists every element's layer, module name, and primary responsibi
 
 This section complements the structural elements defined in section 1 by explaining how they interact at runtime.
 
-### 3-1. Sequence Diagram (Run Lifecycle C&C)
+### 3-1. TIMEGRAPHER RUN LIFECYCLE C&C VIEW – Measurement Analysis Loop
 
 Covers the object call flow from User → View → ViewModel → RunCommandService → Model (RunSessionController and Workers). The measurement analysis loop is detailed in a Level 2 child view because it contains the recurring cycle that requires the most precision.
 
@@ -123,7 +123,7 @@ Roles and code references for each lifeline. `MasterAudioBuffer` and `Core pipel
 | AnalysisWorker | Model | Analysis thread |
 | Core pipeline | Model | Detection / Metrics / Projectors |
 
-### 3-2. State Machine Diagram (Run Lifecycle State Machine)
+### 3-2. TIMEGRAPHER RUN LIFECYCLE BEHAVIOR VIEW – Control State Transitions
 
 Defines the transition rules among Stopped, Starting, Running, Paused, Stopping, and StopFailed states.
 
@@ -154,7 +154,7 @@ The common state-machine notation follows the legend below.
 
 ---
 
-## 4. Context Diagram
+## 4. TIMEGRAPHER SYSTEM DEPLOYMENT VIEW – Hardware & External Signal Path
 
 Shows the external entities and boundaries the system interacts with. The deployment view below covers both the software delivery path and the runtime audio signal path.
 
@@ -191,9 +191,9 @@ Shows the external entities and boundaries the system interacts with. The deploy
 
 ## 7. Related Views
 
-The Layered View defines the permission rules that govern all module dependencies shown in the Primary Presentation. It establishes which layers may depend on which, and in which direction — forming the foundational constraint of the entire architecture.
+The TIMEGRAPHER LAYERED VIEW defines the permission rules that govern all module dependencies shown in the Primary Presentation. It establishes which layers may depend on which, and in which direction — forming the foundational constraint of the entire architecture.
 
-### LAYERED VIEW – Permission-Based Architecture
+### TIMEGRAPHER LAYERED VIEW – Permission-Based Architecture
 
 **Purpose:** Shows which layers are permitted to use which lower layers. Defines allowed dependencies, not implementation details.
 
