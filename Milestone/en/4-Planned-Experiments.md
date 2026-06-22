@@ -95,21 +95,29 @@ Complete
 ### Results & Decisions
 
 - **Decision**: Base at 48 kHz, top support at 192 kHz.
-- **Results**: Both conditions pass. Worst-case E2E latency at 43200@192k is ~41 % of budget (34.6 / 83.3 ms) on the RPi5. The 43200 Playback used a verified synthetic WAV (`WatchSynthStream`) since no real recording exists.
+- **Results**: The first 2026-06-11 measurement passed at 43200@192k Playback with 34.562 ms worst E2E latency (41.5% of budget), and the 2026-06-21 current all-tab check also passed with a 36.46 ms worst case (43.8% of budget). Therefore, 192 kHz support is confirmed within budget in both the first measurement and the current implementation.
+- **E2E meaning**: E2E means capture to display, the total latency from when the input sample is captured until the analysis result is shown on screen.
 
-**Worst-case E2E latency as % of beat-period budget (RPi5, lower is better, 100% = budget)**
+| Date | Condition | Input | E2E worst | Budget | Worst usage | Drop | Miss | Result |
+| :--- | :--- | :--- | ---: | ---: | ---: | ---: | ---: | :--- |
+| 2026-06-11 | 21600 BPH @ 48 kHz | Simulation | 41.975 ms | 166.667 ms | 25.2% | 0 | 0 | Pass |
+| 2026-06-11 | 21600 BPH @ 48 kHz | Playback | 43.939 ms | 166.667 ms | 26.4% | 0 | 0 | Pass |
+| 2026-06-11 | 21600 BPH @ 48 kHz | Live | 40.378 ms | 166.667 ms | 24.2% | 0 | 0 | Pass |
+| 2026-06-11 | 43200 BPH @ 192 kHz | Simulation | 34.003 ms | 83.333 ms | 40.8% | 0 | 0 | Pass |
+| 2026-06-11 | 43200 BPH @ 192 kHz | Playback | 34.562 ms | 83.333 ms | 41.5% | 0 | 0 | Pass |
+| **2026-06-21** | **43200 BPH @ 192 kHz** | **Simulation** | **36.46 ms** | **83.333 ms** | **43.8%** | **0** | **0** | **Pass** |
 
 ```mermaid
 %%{init: {"themeVariables": {"xyChart": {"plotColorPalette": "#A50034, #999999"}}}}%%
 xychart-beta horizontal
     title "RPi5 worst-case latency / budget per run (gray line = 100% budget)"
-    x-axis ["21600@48k Sim", "21600@48k Play", "21600@48k Live", "43200@192k Sim", "43200@192k Play", "43200@192k Sim (2026-06-21)"]
+    x-axis ["21600@48k Sim", "21600@48k Play", "21600@48k Live", "43200@192k Sim", "43200@192k Play", "(2026-06-21) 43200@192k Sim"]
     y-axis "Budget usage (%)" 0 --> 110
     bar [25.2, 26.4, 24.2, 40.8, 41.5, 43.8]
     line [100, 100, 100, 100, 100, 100]
 ```
 
-- Added bar (43200@192k Sim): E2E max = 36.46 ms = 43.8 % of budget (measured 2026-06-21).
+- **Remaining limit**: Because the implementation and measurement conditions can change, this should be measured continuously using the same criteria.
 
 ### Objective
 
@@ -120,7 +128,7 @@ Confirm whether the input → analysis → display pipeline meets real-time requ
 
 ### Status
 
-Complete
+Complete (continuous measurement planned)
 
 ### Deliverables
 
@@ -145,8 +153,9 @@ Complete
 ### Duration
 
 - 6/9–6/10: Prepare instrumentation code
-- 6/11: Run measurements
-- 6/12–6/13: Analyze results and derive the recommendation
+- 6/11: Run the QAS-2 approval matrix
+- 6/12–6/13: Analyze results and derive the decisions
+- 6/21: Measure 43200@192k on the current implementation
 
 ### Links & References
 
