@@ -225,7 +225,7 @@ Risk ID | Status | Risk Title | Type | QAS | P | I
   - **Grading rationale**
     - P-Medium: plausible-but-wrong GenAI code is common in DSP/concurrency.
     - I-Medium: caught by mandatory verification before it ships.
-  - **Result**: The mentor recommends using GenAI, and mandatory verification (unit tests, synthetic-signal bench + code review) blocks bad code before it ships while the whole team understands the core algorithms, so no extra response is needed.
+  - **Result**: [ADR-004](ADR/ADR-004.md) established the App / test / verify module separation and mandated TDD with automated testing as a required gate before every commit, forming the structural safety net for AI-generated code. Plausible-but-wrong code is caught first by TDD-written unit tests and the verify module (synthetic-signal bench), then confirmed by team code review using test results as an objective merge criterion. With this two-layer gate in place, no additional response is needed.
 
 - **R-19 — Only one test RPi5 — real-use verification doesn't fit the schedule**
   - **Status**: Accepted
