@@ -17,7 +17,7 @@
 | "Several of the patterns listed can enhance modifiability and extensibility. That's good, but mind the high priority QA rmts." | Kept QAS-1 Accuracy and QAS-2 Performance as top-priority drivers. | `2-Architectural-Drivers.md` > `QAS-1 · Accuracy`<br>`2-Architectural-Drivers.md` > `QAS-2 · Performance (Latency)` |
 | "In your git repo, your files should not say \"Milestone1\". So, instead of \"Milestone1_1-Project-Plan.md\" it should be \"1-Project-Plan.md\". These files can be updated continuously until the end of the project. You should not copy & paste to other files with prefix \"Milestone2\" and \"Milestone3\". Git keeps the history of all changes." | Consolidated milestone docs under numbered filenames without milestone prefixes. | `0-Index.md` > `Presentation Documents` |
 
-## Additions by File in Milestone2
+## Changes by File in Milestone2
 
 - `1-Project-Plan.md`
   - Quire link and timeline notation guide
