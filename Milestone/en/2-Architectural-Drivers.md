@@ -142,8 +142,8 @@ Status: 🟢 Implemented · 🟡 Partially Implemented · 🔴 Needs Implementat
 | FR-09-01 | 🟢 | mandatory | The Time-Frequency Spectrogram Display shall provide the user with a time-frequency spectrogram that shows how the watch's acoustic energy is distributed across time and frequency. |
 | FR-09-02 | 🟢 | mandatory | The Time-Frequency Spectrogram Display shall present the spectrogram to the user with time on the horizontal axis, frequency on the vertical axis, and signal strength as color intensity. |
 | FR-09-03 | 🟢 | recommended | The Time-Frequency Spectrogram Display should provide the user with the ability to inspect either the most recent beat or a selected recent time window. |
-| FR-09-04 | 🟡 | recommended | The Time-Frequency Spectrogram Display should provide the user with the ability to view recurring energy structures at characteristic frequency ranges. |
-| FR-09-05 | 🟡 | recommended | The Time-Frequency Spectrogram Display should provide the user with the ability to compare one beat with the next. |
+| FR-09-04 | 🟢 | recommended | The Time-Frequency Spectrogram Display should provide the user with the ability to view recurring energy structures at characteristic frequency ranges. |
+| FR-09-05 | 🟢 | recommended | The Time-Frequency Spectrogram Display should provide the user with the ability to compare one beat with the next. |
 | FR-09-06 | 🟢 | recommended | The Time-Frequency Spectrogram Display should provide the user with a color scale or legend for interpreting relative signal strength. |
 
 ### G10 · Waveform Comparison Display with Timing Markers
