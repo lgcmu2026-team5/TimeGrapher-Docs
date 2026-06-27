@@ -1,5 +1,7 @@
 # Wednesday Final Demo Runbook
 
+[English](3-Wednesday-Runbook.md) | [한국어](3-Wednesday-Runbook.ko.md)
+
 This runbook is the scoring-first operating version for Wednesday.
 
 Known scoring priority from the team: **demo 350 points, presentation 150 points**.

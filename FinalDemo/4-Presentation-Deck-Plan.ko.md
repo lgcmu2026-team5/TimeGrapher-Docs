@@ -1,50 +1,56 @@
-# Wednesday Presentation Deck Plan
+# 수요일 발표 슬라이드 구성안
 
 [English](4-Presentation-Deck-Plan.md) | [한국어](4-Presentation-Deck-Plan.ko.md)
 
-This is the presentation counterpart to `3-Wednesday-Runbook.md`.
+이 문서는 `3-Wednesday-Runbook.ko.md`의 발표용 짝이다.
 
-Known scoring priority: **demo 350 points, presentation 150 points**.
-The presentation should not repeat the whole live tour. It should explain the architecture and evidence behind the demo, still in rubric order.
+확인된 점수 비중:
 
-Target length: 20 minutes.
+- **데모 350점**
+- **발표 150점**
 
-## Presentation Strategy
+발표는 live tour를 다시 반복하지 않는다. 방금 데모에서 본 내용을 기반으로, 그 뒤의 **아키텍처와 근거**를 루브릭 순서대로 설명한다.
 
-The demo answers: "Does it work?"
+목표 발표 시간: **20분**
 
-The presentation answers:
+## 발표 전략
 
-1. Why the architecture is credible.
-2. Why the tradeoffs were intentional.
-3. What evidence supports performance, latency, correctness, and extensibility.
-4. How AI was used safely in the product and in development.
+데모가 답하는 질문:
 
-Opening line:
+> "Does it work?"
+
+발표가 답해야 하는 질문:
+
+1. 왜 이 아키텍처가 신뢰할 만한가
+2. 왜 이 tradeoff가 의도적인 선택인가
+3. performance, latency, correctness, extensibility를 뒷받침하는 evidence는 무엇인가
+4. AI를 product와 development에서 어떻게 안전하게 사용했는가
+
+발표 시작 문장:
 
 > "The demo followed the rubric from the running system. The presentation follows the same rubric from the architecture and evidence side."
 
-## Slide Outline
+## 슬라이드 구성
 
 | Slide | Time | Rubric | Purpose |
 |---:|---:|---|---|
-| 1 | 0:45 | Setup | Re-anchor the app and target platform. |
-| 2 | 1:30 | Area 1 recap | Show the 12-display coverage matrix. |
-| 3 | 2:00 | Area 2 | Explain enhancements and ONNX classifier safety. |
-| 4 | 3:00 | Area 3 | Quality attributes and tradeoffs, accuracy first. |
-| 5 | 3:00 | Area 4 | Performance/latency evidence on RPi5. |
-| 6 | 2:00 | Area 4 | Correctness evidence and Witschi status. |
-| 7 | 3:00 | Area 5 | Extensible architecture and dependency boundaries. |
-| 8 | 1:30 | Area 6 | GUI usability and operational resilience. |
-| 9 | 2:00 | Area 7 | AI in product and development, with verification. |
-| 10 | 1:15 | Area 8 + Bonus + close | UI value, bonus, limitations, final ask. |
+| 1 | 0:45 | Setup | 앱과 target platform 다시 고정 |
+| 2 | 1:30 | Area 1 recap | 12-display coverage matrix |
+| 3 | 2:00 | Area 2 | 개선 사항과 ONNX classifier safety 설명 |
+| 4 | 3:00 | Area 3 | Quality attributes and tradeoffs, accuracy first |
+| 5 | 3:00 | Area 4 | RPi5 performance/latency evidence |
+| 6 | 2:00 | Area 4 | Correctness evidence and Witschi status |
+| 7 | 3:00 | Area 5 | Extensible architecture and dependency boundaries |
+| 8 | 1:30 | Area 6 | GUI usability and operational resilience |
+| 9 | 2:00 | Area 7 | Product/development AI use and verification |
+| 10 | 1:15 | Area 8 + Bonus + close | UI value, bonus, limitations, final ask |
 
 ## Slide 1 - Running Product, Not A Mockup
 
 Visual:
 
-- One app screenshot on Raspberry Pi 5.
-- Small labels: Live / Playback / Simulation, .NET 8, Avalonia, Core engine.
+- Raspberry Pi 5에서 실행 중인 앱 screenshot 1장
+- 작은 label: Live / Playback / Simulation, .NET 8, Avalonia, Core engine
 
 Speaker:
 
@@ -54,14 +60,14 @@ Speaker:
 
 Visual:
 
-- 12-item checklist with tab names.
-- Use green check marks only for items actually shown in the demo.
+- 12-item checklist와 tab 이름
+- demo에서 실제로 보여준 항목만 green check
 
 Speaker:
 
 > "Area 1 was the largest demo surface. We showed all twelve required real-time displays. The architectural point is that they are not twelve separate calculators. They are views over the same analysis frame, which prevents inconsistent numbers across screens."
 
-Include:
+포함할 표:
 
 | Required item | App tab |
 |---|---|
@@ -82,9 +88,9 @@ Include:
 
 Visual:
 
-- Sound Print before/after or annotated screenshot.
-- Rate/Scope annotated screenshot.
-- Small architecture box: `App -> TimeGrapher.Inference -> ISignalQualityClassifier -> Core`.
+- Sound Print before/after 또는 annotated screenshot
+- Rate/Scope annotated screenshot
+- 작은 architecture box: `App -> TimeGrapher.Inference -> ISignalQualityClassifier -> Core`
 
 Speaker:
 
@@ -92,17 +98,17 @@ Speaker:
 
 > "The AI feature is an on-device ONNX signal-quality classifier. The app tries to load the embedded ONNX model and falls back to a deterministic heuristic if loading fails. The important safety design is that this classifier is advisory: it annotates trust and warning state, but it cannot create events, retime events, or alter BPH/PLL synchronization."
 
-Evidence to cite:
+근거로 언급할 코드:
 
-- `src/TimeGrapher.App/Views/MainWindow.axaml.cs`: composition root loads `OnnxSignalQualityClassifier.LoadOrElse`.
-- `src/TimeGrapher.Inference/OnnxSignalQualityClassifier.cs`: model implementation.
-- `src/TimeGrapher.Core/Analysis/DetectorMetricsEngine.cs`: quality assessment is read-only annotation.
+- `src/TimeGrapher.App/Views/MainWindow.axaml.cs`: composition root에서 `OnnxSignalQualityClassifier.LoadOrElse` 로드
+- `src/TimeGrapher.Inference/OnnxSignalQualityClassifier.cs`: model implementation
+- `src/TimeGrapher.Core/Analysis/DetectorMetricsEngine.cs`: quality assessment가 read-only annotation
 
 ## Slide 4 - Area 3 Quality Attributes And Tradeoffs
 
 Visual:
 
-- Pyramid or table:
+- Pyramid 또는 table:
   - Accuracy first
   - Performance/latency
   - Portability
@@ -117,7 +123,7 @@ Speaker:
 
 > "That is the central tradeoff: protect the number first, then recover the picture."
 
-Include one limitation:
+제한 사항 하나를 반드시 포함:
 
 > "The remaining accuracy validation item is the Witschi commercial comparison if not completed before Wednesday. We report it as a remaining validation item, not as a hidden success."
 
@@ -125,10 +131,10 @@ Include one limitation:
 
 Visual:
 
-- Table from EXP-02.
-- Highlight the current all-tab check.
+- EXP-02 table
+- current all-tab check 강조
 
-Use these exact numbers:
+정확히 넣을 숫자:
 
 | Condition | Input | Worst E2E | Budget | Usage | Drop | Miss |
 |---|---|---:|---:|---:|---:|---:|
@@ -147,24 +153,24 @@ Speaker:
 
 Visual:
 
-- Three-column evidence stack:
+- 3-column evidence stack:
   - Known synthetic reference
   - Witschi commercial comparison
   - Verify/adverse tests
 
-Speaker if Witschi data is complete:
+Witschi data가 완료된 경우:
 
 > "For correctness, we use three layers. First, a known synthetic reference where the generator gives the expected rate, amplitude, and beat error. Second, a Witschi commercial comparison on the same watch. Third, automated Verify/adverse fixtures so we do not regress weak-signal and noisy-signal behavior."
 
-Speaker if Witschi data is not complete:
+Witschi data가 완료되지 않은 경우:
 
 > "For correctness, the known synthetic reference pass is complete and the Witschi comparison remains the final real-world validation item. We are explicit about that because architectural evaluation should separate achieved evidence from remaining risk."
 
-Do not say:
+말하지 말 것:
 
 - "CI/CD proves accuracy."
 
-Say:
+대신 말할 것:
 
 > "CI/CD protects the evidence from regression; it does not replace runtime validation."
 
@@ -185,7 +191,7 @@ Speaker:
 
 > "A new display is local: add a catalog entry, a frame consumer when needed, and a renderer over the immutable analysis frame. That is how the display set grew without making twelve competing pipelines."
 
-Evidence to cite:
+언급할 근거:
 
 - `InfoTabCatalog.cs`
 - `AnalysisFrame`
@@ -196,7 +202,7 @@ Evidence to cite:
 
 Visual:
 
-- Before/after or annotated current UI.
+- before/after 또는 annotated current UI
 - Callouts:
   - Device state
   - Start/stop/pause/reset
@@ -224,7 +230,7 @@ Speaker:
 
 > "The control principle was verification. AI-generated or AI-assisted work had to pass tests, Verify scenarios, architecture boundary checks, and live Pi measurements. We used AI as a fast collaborator, not as an authority."
 
-Mention risk:
+risk 언급:
 
 > "The risk is over-claiming. We mitigated that by downgrading claims when the code did not fully support them, and by keeping the AI classifier away from timing control."
 
@@ -232,15 +238,15 @@ Mention risk:
 
 Visual:
 
-- Current UI screenshot.
-- Health radar screenshot if stable.
-- Short limitation list.
+- current UI screenshot
+- Health radar screenshot, 안정적인 경우만
+- 짧은 limitation list
 
 Speaker:
 
 > "For Best UI, our goal is a readable measurement instrument, not a decorative dashboard. The user can see whether the watch is synchronized, whether readings are trustworthy, and which diagnostic view explains the problem."
 
-If Health bonus is stable:
+Health bonus가 안정적인 경우:
 
 > "For bonus, the Health radar summarizes multi-position watch condition, and diagnosis/classification turns measurements into an interpretation."
 
@@ -260,14 +266,15 @@ Close:
 | What is extensible? | New views use tab catalog + frame consumer + renderer over the same analysis frame; Core remains independent. |
 | What remains incomplete? | Say only what is true on Wednesday: likely Witschi comparison and any unstable bonus screen. |
 
-## Final Prep Checklist
+## 최종 준비 체크리스트
 
-- [ ] Update the actual deck to follow slides 1-10.
-- [ ] Put the Area number in the slide title or top-right corner.
-- [ ] Add exact EXP-02 latency table.
-- [ ] Add Witschi comparison table if available.
-- [ ] Add one screenshot for each critical demo area.
-- [ ] Mark Health/bonus as enabled only if stable in the live build.
-- [ ] Rehearse transition from demo to presentation:
+- [ ] 실제 deck을 slide 1-10 흐름에 맞게 수정
+- [ ] slide title 또는 우상단에 Area 번호 표시
+- [ ] EXP-02 latency table 정확히 추가
+- [ ] Witschi comparison table이 있으면 추가
+- [ ] critical demo area마다 screenshot 하나씩 추가
+- [ ] Health/bonus는 live build에서 안정적인 경우에만 enabled로 표시
+- [ ] 데모에서 발표로 넘어가는 문장 리허설
 
 > "The demo showed the scoring items in the running system. Now we will show the architecture and evidence behind those items, in the same rubric order."
+
