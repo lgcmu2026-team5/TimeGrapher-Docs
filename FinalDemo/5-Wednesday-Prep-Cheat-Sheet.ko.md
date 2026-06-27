@@ -87,7 +87,7 @@ Area 1 마무리 문장:
 | Beat Error | tic/toc 시간 비대칭을 숫자와 diagnostic trace로 보여주는 화면 | Beat Error numeric value, Tic/Toc trace separation, slope/45 degree major-fault warning, 1x/4x/16x zoom | "Beat Error diagnoses tic/toc asymmetry: separation means beat error, and slope means timing drift or major fault risk." |
 | Waveforms | 여러 beat waveform을 A 기준으로 정렬해 beat shape와 C marker 반복성을 비교하는 화면 | recent beat lanes, A-aligned waveform, mean C guide, selected pair/cursor | "Waveforms compares recent beats side by side, so marker repeatability and waveform consistency are visible." |
 | Filter Scope | F0-F3 필터가 같은 입력 신호를 어떻게 다르게 보여주는지 비교하는 signal interpretation 화면 | raw-like F0, smoothing F1, rising/feature emphasized F2/F3 lanes | "Filter Scope shows the same signal through multiple filters, helping the user understand which processing view supports detection." |
-| Spectrogram | watch sound energy가 시간과 주파수에서 어떻게 분포하는지 보는 time-frequency 화면 | Last Beat/Compare Beats/Seconds mode, frequency axis, dB colorbar, periodic vertical bursts | "Spectrogram shows the frequency content of the beat sound over time, making repeated energy bursts and noise easier to identify." |
+| Spectrogram | 정상 beat energy가 일정한 주기로 특정 주파수 대역에 반복되는지 확인하고, broadband noise·외부 주파수 간섭·약한 신호를 구분하는 time-frequency 진단 화면 | Last Beat/Compare Beats/Seconds mode, 반복 vertical burst, frequency band 집중도, dB colorbar, noise floor 변화 | "Spectrogram tells us whether the watch sound is a clean repeated beat or contaminated by broad noise or narrow-band interference." |
 
 데모 흐름상 연결 문장:
 
