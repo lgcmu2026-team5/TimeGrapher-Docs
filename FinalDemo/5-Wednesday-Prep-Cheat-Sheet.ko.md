@@ -68,6 +68,31 @@ Area 1 마무리 문장:
 
 > "That is the full Area 1 set: twelve required displays, driven by the same live analysis frame rather than separate calculators."
 
+## 그래프별 목적과 데모에서 보여줄 것
+
+이 표는 Area 1에서 빠르게 넘길 때의 보조 대본이다. 시간이 부족하면 "탭 이름 + 목적 한 문장 + 눈으로 확인할 포인트 하나"만 말한다. 평가자가 중간에 "이 화면은 왜 필요한가요?"라고 물으면 이 표의 목적 문장을 그대로 답한다.
+
+| 탭 | 목적 | 데모에서 보여줄 것 | 말할 문장 |
+|---|---|---|---|
+| Rate/Scope | 실시간 입력 신호가 정상적으로 감지되고, trigger와 tic/toc rate trace가 측정값의 기반이 됨을 보여주는 기본 진단 화면 | rectified signal, trigger threshold, A/C event marker, Tic/Toc rate points가 안정되는 모습 | "Rate/Scope is the baseline live measurement view: it shows the signal, trigger, event markers, and tic/toc rate behavior together." |
+| Sound Print | beat envelope가 반복적으로 깨끗하게 들어오는지 한눈에 확인하는 acoustic fingerprint 화면 | beat column이 규칙적으로 쌓이는지, noise 또는 weak signal에서 pattern이 흐트러지는지 | "Sound Print shows whether the acoustic beat pattern is repeatable, so we can see detection quality visually." |
+| Trace | rate와 amplitude가 시간에 따라 안정적인지, acceptable band를 벗어나는지 보는 시간 추적 화면 | rate trace, amplitude trace, average/sigma band, alert 상태 | "Trace shows whether the watch stays inside the accepted rate and amplitude range over time." |
+| Vario | rate/amplitude/beat error의 min, max, average, spread를 빠르게 읽는 안정성 요약 화면 | current value, average, spread/range, accept band와 verdict | "Vario compresses the running history into stability statistics, so the user can judge variation quickly." |
+| Long-Term | 장시간 측정에서 rate, amplitude, beat error가 drift하는지 확인하는 장기 성능 화면 | long-term rate/amplitude/beat-error panes, bucketed trend, accept range | "Long-Term shows whether the watch remains stable over a longer run, not only in the latest few beats." |
+| Sweep | oscilloscope처럼 beat period에 동기화된 반복 파형을 보여주는 scope mode 화면 | 1x/2x/3x sweep window, repeated A/C marker alignment, fixed sweep trace | "Sweep locks the display to the beat period, so repeated beat shapes can be compared like an oscilloscope." |
+| Escapement | 한 beat 안에서 A/C marker와 elapsed ms를 자세히 보며 timing reference가 반복 가능한지 진단하는 화면 | latest beat waveform, A marker, C marker, A-to-C interval, repeatability verdict | "Escapement explains where the timing markers are placed inside one beat and whether those markers are repeatable." |
+| Positions | 시계 자세별 rate, amplitude, beat error 결과를 비교하는 multi-position 측정 화면 | CH/CB/6H/9H/3H/12H 등 position row, position별 summary, collection progress | "Positions shows the same measurements by watch orientation, which is required because mechanical watches behave differently by position." |
+| Health | position별 결과를 radar/health 형태로 요약하는 bonus 진단 화면 | amplitude/rate/beat-error metric 선택, position radar, healthy band | "Health is a bonus summary view over the position data: it turns the table into a quick diagnostic shape." |
+| Beat Noise | summary measurement의 근거가 되는 실제 tick/tock acoustic waveform과 A/C marker 품질을 확대해서 보는 화면 | Scope/Avg Envelope 전환, 20/200/400 ms range, recent beat strip, A/C marker, Tic/Toc average envelope | "Beat Noise is the evidence view behind the measurements: it lets us inspect individual beat waveforms, A/C markers, and averaged envelopes." |
+| Beat Error | tic/toc 시간 비대칭을 숫자와 diagnostic trace로 보여주는 화면 | Beat Error numeric value, Tic/Toc trace separation, slope/45 degree major-fault warning, 1x/4x/16x zoom | "Beat Error diagnoses tic/toc asymmetry: separation means beat error, and slope means timing drift or major fault risk." |
+| Waveforms | 여러 beat waveform을 A 기준으로 정렬해 beat shape와 C marker 반복성을 비교하는 화면 | recent beat lanes, A-aligned waveform, mean C guide, selected pair/cursor | "Waveforms compares recent beats side by side, so marker repeatability and waveform consistency are visible." |
+| Filter Scope | F0-F3 필터가 같은 입력 신호를 어떻게 다르게 보여주는지 비교하는 signal interpretation 화면 | raw-like F0, smoothing F1, rising/feature emphasized F2/F3 lanes | "Filter Scope shows the same signal through multiple filters, helping the user understand which processing view supports detection." |
+| Spectrogram | watch sound energy가 시간과 주파수에서 어떻게 분포하는지 보는 time-frequency 화면 | Last Beat/Compare Beats/Seconds mode, frequency axis, dB colorbar, periodic vertical bursts | "Spectrogram shows the frequency content of the beat sound over time, making repeated energy bursts and noise easier to identify." |
+
+데모 흐름상 연결 문장:
+
+> "The first views show the primary measurements. The middle views show stability over time and position. The later diagnostic views explain why the measurements are trustworthy by exposing markers, waveform shape, filters, and frequency content."
+
 ## Area 2: 개선 + AI
 
 반드시 말할 내용:
