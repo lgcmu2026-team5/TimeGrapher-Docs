@@ -444,13 +444,11 @@
 **[Presenter]**
 > "Quality attributes competed, and every tradeoff was deliberate.
 >
-> **QAS-1 Accuracy vs. QAS-2 Latency**: a longer warm-up before reporting BPH means the first reading arrives later — we accept that delay to avoid showing wrong numbers early. A higher sample rate gives finer timestamp resolution but costs more CPU per beat — we support up to 192 kHz and verified it fits the budget on the Pi.
+> **QAS-1 (Accuracy) vs. QAS-2 (Latency)**: we accepted latency costs to protect accuracy. A longer warm-up before reporting BPH means the first reading arrives later — we accept that delay to avoid showing wrong numbers early. A higher sample rate gives finer timestamp resolution but costs more CPU per beat — we support up to 192 kHz and verified it fits the budget on the Pi before committing.
 >
-> **QAS-2 Performance → Pipe-and-Filter choice**: audio processing and display rendering are separated at worker boundaries. Rendering happens only when a tab is selected — we do not process all 13 tabs simultaneously. However, the detector and metrics remain one **synchronous hot path** — full internal queuing between every stage would spend the beat-period budget. This structure also serves QAS-5 Modifiability: adding a new tab does not touch the analysis pipeline.
+> **QAS-5 (Modifiability) vs. QAS-1/QAS-2 (Accuracy/Latency)**: we separated input, analysis, rendering, and recording at worker boundaries to gain modifiability — but kept the detector and metrics as one **synchronous hot path**. Full pipe-and-filter between every stage would add per-stage queuing that spends the beat-period budget, threatening both latency and accuracy. That is the core tradeoff between modifiability and the top two quality attributes.
 >
-> **QAS-6 Usability → Centralization**: font size (2.9 mm) and touch targets (9 mm) were determined experimentally on the Pi touchscreen, then centralized in App.axaml — enforcing the policy in code so maintenance work cannot accidentally break it.
->
-> **The key tradeoff — measurement vs. visualization**: when the system falls behind its deadline, it degrades the *visuals first* — latest-wins rendering skips intermediate frames — but it **never drops or interpolates a measurement**. We protect the number and sacrifice the picture."
+> **Measurement vs. visualization**: when the system falls behind its deadline, it degrades the *visuals first* — latest-wins rendering skips intermediate frames — but it **never drops or interpolates a measurement**. We protect the number and sacrifice the picture."
 
 ---
 
