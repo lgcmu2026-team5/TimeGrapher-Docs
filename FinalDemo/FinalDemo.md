@@ -426,6 +426,10 @@
 
 **[지시문]** QAS-1 목표 + Verify 모듈 + Core.Detection 구현 전술 슬라이드.
 
+**[Slide Visual]**
+
+![Core.Detection — Accuracy Tactics Pipeline](assets/core-detection-tactics.svg)
+
 **[Presenter]**
 > "Accuracy is our top-ranked quality attribute. The architecture was designed to define that goal precisely and make it verifiable — and the actual achievement is the responsibility of the Core.Detection implementation.
 >

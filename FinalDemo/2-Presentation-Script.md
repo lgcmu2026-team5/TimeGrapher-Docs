@@ -138,7 +138,7 @@
 **[Presenter]**
 > "What we achieved: the main real-time risks are resolved in the risk register. R-01 and R-03 — high sample rate and beat-period overrun — are resolved by measurement. R-04 — long continuous run degradation — passed a 24-hour run with memory flat around 406 MB and CPU steady around 36 percent of four-core capacity.
 >
-> What remains: the clean synthetic accuracy pass is done, but the commercial Weishi/Witschi comparison is still the critical real-world validation if we have not completed it before demo day. TinyML also stays conditional unless the trained model is actually in the demo build. We report those limits because honest architectural evaluation is stronger than pretending the risk disappeared."
+> What remains: the clean synthetic accuracy pass is done, but the commercial Weishi comparison is still the critical real-world validation if we have not completed it before demo day. TinyML also stays conditional unless the trained model is actually in the demo build. We report those limits because honest architectural evaluation is stronger than pretending the risk disappeared."
 
 ---
 

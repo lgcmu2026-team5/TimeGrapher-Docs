@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1220" height="385" viewBox="0 0 1220 385">
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto" markerUnits="userSpaceOnUse">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#4b5563"/>
+    </marker>
+    <marker id="redarrow" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto" markerUnits="userSpaceOnUse">
+      <polygon points="0 0, 8 3, 0 6" fill="#dc2626"/>
+    </marker>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1220" height="385" fill="white"/>
+
+  <!-- Title -->
+  <text x="610" y="36" text-anchor="middle"
+        font-family="Helvetica, Arial, sans-serif" font-size="20" font-weight="bold" fill="#111827">
+    Core.Detection — Accuracy Tactics (QAS-1)
+  </text>
+
+  <!-- ── Input ─────────────────────────────── -->
+  <rect x="20" y="80" width="130" height="90" rx="10"
+        fill="#f9fafb" stroke="#9ca3af" stroke-width="2"/>
+  <text x="85" y="116" text-anchor="middle"
+        font-family="Helvetica, Arial, sans-serif" font-size="13" font-weight="bold" fill="#374151">Audio</text>
+  <text x="85" y="134" text-anchor="middle"
+        font-family="Helvetica, Arial, sans-serif" font-size="13" font-weight="bold" fill="#374151">Signal</text>
+  <text x="85" y="155" text-anchor="middle"
+        font-family="Helvetica, Arial, sans-serif" font-size="12" fill="#6b7280">192 kHz</text>
+
+  <!-- Arrow 1 -->
+  <line x1="150" y1="125" x2="198" y2="125" stroke="#4b5563" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- ── Gate 1: Adaptive Noise Floor ─────── -->
+  <rect x="200" y="65" width="175" height="120" rx="10"
+        fill="#ece9ff" stroke="#8b5cf6" stroke-width="2"/>
+  <text x="288" y="103" text-anchor="middle"
+        font-family="Helvetica, Arial, sans-serif" font-size="14" font-weight="bold" fill="#5b21b6">Adaptive</text>
+  <text x="288" y="121" text-anchor="middle"
+        font-family="Helvetica, Arial, sans-serif" font-size="14" font-weight="bold" fill="#5b21b6">Noise Floor</text>
+  <text x="288" y="148" text-anchor="middle"
+        font-family="Helvetica, Arial, sans-serif" font-size="11" fill="#7c3aed">75th %ile of silence</text>
+  <text x="288" y="164" text-anchor="middle"
+        font-family="Helvetica, Arial, sans-serif" font-size="11" fill="#7c3aed">samples</text>
+
+  <!-- Reject ↓ Gate 1 -->
+  <line x1="288" y1="185" x2="288" y2="242" stroke="#dc2626" stroke-width="1.5"
+        stroke-dasharray="5,3" marker-end="url(#redarrow)"/>
+  <rect x="220" y="246" width="136" height="32" rx="8"
+        fill="#fef2f2" stroke="#dc2626" stroke-width="1.5"/>
+  <text x="288" y="267" text-anchor="middle"
+        font-family="Helvetica, Arial, sans-serif" font-size="11" fill="#b91c1c">noise rejected</text>
+
+  <!-- Arrow 2 -->
+  <line x1="375" y1="125" x2="423" y2="125" stroke="#4b5563" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- ── Gate 2: PLL-Guided Gating ─────────── -->
+  <rect x="425" y="65" width="175" height="120" rx="10"
+        fill="#ece9ff" stroke="#8b5cf6" stroke-width="2"/>
+  <text x="513" y="103" text-anchor="middle"
+        font-family="Helvetica, Arial, sans-serif" font-size="14" font-weight="bold" fill="#5b21b6">PLL-Guided</text>
+  <text x="513" y="121" text-anchor="middle"
+        font-family="Helvetica, Arial, sans-serif" font-size="14" font-weight="bold" fill="#5b21b6">Gating</text>
+  <text x="513" y="148" text-anchor="middle"
+        font-family="Helvetica, Arial, sans-serif" font-size="11" fill="#7c3aed">onset outside predicted</text>
+  <text x="513" y="164" text-anchor="middle"
+        font-family="Helvetica, Arial, sans-serif" font-size="11" fill="#7c3aed">beat window → reject</text>
+
+  <!-- Reject ↓ Gate 2 -->
+  <line x1="513" y1="185" x2="513" y2="242" stroke="#dc2626" stroke-width="1.5"
+        stroke-dasharray="5,3" marker-end="url(#redarrow)"/>
+  <rect x="445" y="246" width="136" height="32" rx="8"
+        fill="#fef2f2" stroke="#dc2626" stroke-width="1.5"/>
+  <text x="513" y="267" text-anchor="middle"
+        font-family="Helvetica, Arial, sans-serif" font-size="11" fill="#b91c1c">false onset rejected</text>
+
+  <!-- Arrow 3 -->
+  <line x1="600" y1="125" x2="648" y2="125" stroke="#4b5563" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- ── Gate 3: Regime Guard ───────────────── -->
+  <rect x="650" y="65" width="175" height="120" rx="10"
+        fill="#ece9ff" stroke="#8b5cf6" stroke-width="2"/>
+  <text x="738" y="103" text-anchor="middle"
+        font-family="Helvetica, Arial, sans-serif" font-size="14" font-weight="bold" fill="#5b21b6">Regime Guard</text>
+  <text x="738" y="130" text-anchor="middle"
+        font-family="Helvetica, Arial, sans-serif" font-size="11" fill="#7c3aed">3 consecutive qualifying</text>
+  <text x="738" y="148" text-anchor="middle"
+        font-family="Helvetica, Arial, sans-serif" font-size="11" fill="#7c3aed">peaks required before</text>
+  <text x="738" y="166" text-anchor="middle"
+        font-family="Helvetica, Arial, sans-serif" font-size="11" fill="#7c3aed">reset</text>
+
+  <!-- Reject ↓ Gate 3 -->
+  <line x1="738" y1="185" x2="738" y2="242" stroke="#dc2626" stroke-width="1.5"
+        stroke-dasharray="5,3" marker-end="url(#redarrow)"/>
+  <rect x="670" y="246" width="136" height="32" rx="8"
+        fill="#fef2f2" stroke="#dc2626" stroke-width="1.5"/>
+  <text x="738" y="267" text-anchor="middle"
+        font-family="Helvetica, Arial, sans-serif" font-size="11" fill="#b91c1c">impulse rejected</text>
+
+  <!-- Arrow 4 -->
+  <line x1="825" y1="125" x2="873" y2="125" stroke="#4b5563" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- ── Sub-sample Interpolation (green = core mechanism) ── -->
+  <rect x="875" y="55" width="210" height="140" rx="10"
+        fill="#d1fae5" stroke="#059669" stroke-width="2.5"/>
+  <text x="980" y="94" text-anchor="middle"
+        font-family="Helvetica, Arial, sans-serif" font-size="14" font-weight="bold" fill="#065f46">Sub-sample</text>
+  <text x="980" y="112" text-anchor="middle"
+        font-family="Helvetica, Arial, sans-serif" font-size="14" font-weight="bold" fill="#065f46">Interpolation</text>
+  <text x="980" y="138" text-anchor="middle"
+        font-family="Helvetica, Arial, sans-serif" font-size="11" fill="#047857">A event: linear</text>
+  <text x="980" y="156" text-anchor="middle"
+        font-family="Helvetica, Arial, sans-serif" font-size="11" fill="#047857">C event: parabolic</text>
+  <text x="980" y="178" text-anchor="middle"
+        font-family="Helvetica, Arial, sans-serif" font-size="11" font-weight="bold" fill="#065f46">≪ 1 μs precision</text>
+
+  <!-- Arrow 5 -->
+  <line x1="1085" y1="125" x2="1113" y2="125" stroke="#4b5563" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- ── Output ─────────────────────────────── -->
+  <rect x="1115" y="80" width="100" height="90" rx="10"
+        fill="#fef3c7" stroke="#d97706" stroke-width="2"/>
+  <text x="1165" y="116" text-anchor="middle"
+        font-family="Helvetica, Arial, sans-serif" font-size="13" font-weight="bold" fill="#92400e">Beat Time</text>
+  <text x="1165" y="136" text-anchor="middle"
+        font-family="Helvetica, Arial, sans-serif" font-size="14" font-weight="bold" fill="#b45309">±1.0 s/d</text>
+  <text x="1165" y="158" text-anchor="middle"
+        font-family="Helvetica, Arial, sans-serif" font-size="11" fill="#b45309">QAS-1 ✓</text>
+
+  <!-- ── Bottom brackets ─────────────────────── -->
+  <!-- Defense gates bracket (purple) -->
+  <line x1="200" y1="308" x2="825" y2="308" stroke="#8b5cf6" stroke-width="1.5"/>
+  <line x1="200" y1="302" x2="200" y2="314" stroke="#8b5cf6" stroke-width="1.5"/>
+  <line x1="825" y1="302" x2="825" y2="314" stroke="#8b5cf6" stroke-width="1.5"/>
+  <text x="513" y="332" text-anchor="middle"
+        font-family="Helvetica, Arial, sans-serif" font-size="12" fill="#6b21a8">
+    Defense gates — reliability under noise (QAS-3 support)
+  </text>
+
+  <!-- Interpolation bracket (green) -->
+  <line x1="875" y1="308" x2="1085" y2="308" stroke="#059669" stroke-width="1.5"/>
+  <line x1="875" y1="302" x2="875" y2="314" stroke="#059669" stroke-width="1.5"/>
+  <line x1="1085" y1="302" x2="1085" y2="314" stroke="#059669" stroke-width="1.5"/>
+  <text x="980" y="332" text-anchor="middle"
+        font-family="Helvetica, Arial, sans-serif" font-size="12" fill="#047857">Core precision mechanism</text>
+
+  <!-- Footnote -->
+  <text x="610" y="368" text-anchor="middle"
+        font-family="Helvetica, Arial, sans-serif" font-size="11" fill="#9ca3af">
+    All mechanisms are default behavior — always on.  Architecture sets the goal and enables verification;  Core.Detection achieves it.
+  </text>
+</svg>
