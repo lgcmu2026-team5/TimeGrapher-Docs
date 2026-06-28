@@ -457,9 +457,18 @@
 ### 2-4. 달성한 것과 남은 한계 (5점)
 
 **[Presenter]**
-> "What we achieved: rate accuracy within ±1.0 s/d on clean simulation inputs — QAS-1 passed. Latency within budget at 43200 BPH / 192 kHz across all 13 tabs. 24-hour continuous run with memory flat at ~406 MB and CPU steady at ~36% of 4-core capacity.
+> "**What we achieved:**
+> QAS-1 (Accuracy): rate within ±1.0 s/d on clean simulation input — passed.
+> QAS-2 (Latency): worst-case E2E 36.46 ms at 43200 BPH / 192 kHz — 44% of the 83.3 ms budget. Drop 0 / Miss 0 across all 13 tabs — passed.
+> QAS-3 (Reliability): adaptive noise floor, PLL-guided gating, regime guard, and TinyML classifier implemented. Verified against noise, impulse, and gain-step scenarios in Verify `--adverse` mode — passed.
+> QAS-4 (Consistency): single AnalysisFrame structure guarantees zero mismatches within a frame — passed by design.
+> QAS-5 (Modifiability): all 13 tabs added via InfoTabCatalog pattern, each touching ≤1 existing module — passed.
+> QAS-6 (Usability): 2.9 mm letter height, 9 mm touch targets centralized in App.axaml and verified on the Pi touchscreen — passed.
 >
-> Limitations: the commercial Weishi comparison against the live reference device is our final accuracy validation. TinyML is now integrated and running, but production robustness at low SNR across all watch types has not been fully characterized. We report those limits because honest architectural evaluation is stronger than pretending the risk disappeared."
+> **Limitations that remain:**
+> QAS-1: passed on simulation and Verify fixtures, but the real-world validation is measuring the same watch on both TimeGrapher and the Weishi reference device and checking the numbers agree — we show that result in slide 5.
+> QAS-3: the TinyML classifier is integrated and running, but how well it classifies across different watch types and real low-SNR conditions has not been fully tested yet.
+> We report these limits because honest evaluation is stronger than pretending the risks have disappeared."
 
 ---
 
