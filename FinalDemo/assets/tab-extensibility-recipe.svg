@@ -1,0 +1,102 @@
+<svg viewBox="0 0 1200 310" xmlns="http://www.w3.org/2000/svg"
+     font-family="'Malgun Gothic','Apple SD Gothic Neo','Noto Sans KR',sans-serif">
+  <defs>
+    <marker id="arr" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#546E7A"/>
+    </marker>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1200" height="310" fill="#F8F9FA" rx="10"/>
+
+  <!-- Title -->
+  <text x="600" y="30" text-anchor="middle" font-size="14" font-weight="700" fill="#212121">
+    새 디스플레이 추가 레시피 — 기존 분석 알고리즘 변경 없음 (QAS-5)
+  </text>
+
+  <!-- ── STEP 1 : Core.Shared / AnalysisFrame ── -->
+  <rect x="28"  y="48" width="188" height="192" rx="8" fill="#EBF5FF" stroke="#1565C0" stroke-width="1.5"/>
+  <rect x="28"  y="48" width="188" height="34"  rx="8" fill="#1565C0"/>
+  <rect x="28"  y="70" width="188" height="12"  fill="#1565C0"/>
+  <text x="122" y="70"  text-anchor="middle" font-size="13" font-weight="700" fill="#FFFFFF">STEP 1</text>
+  <text x="122" y="103" text-anchor="middle" font-size="11" font-weight="600" fill="#1565C0">Core.Shared</text>
+  <text x="122" y="121" text-anchor="middle" font-size="10" fill="#546E7A" font-style="italic">AnalysisFrame.cs</text>
+  <line x1="48"  y1="133" x2="196" y2="133" stroke="#BBDEFB" stroke-width="1"/>
+  <text x="122" y="158" text-anchor="middle" font-size="14" font-weight="700" fill="#0D47A1">새 속성</text>
+  <text x="122" y="178" text-anchor="middle" font-size="14" font-weight="700" fill="#0D47A1">필드 추가</text>
+  <rect x="54"  y="212" width="136" height="22" rx="11" fill="#BBDEFB"/>
+  <text x="122" y="227" text-anchor="middle" font-size="10" fill="#1565C0" font-weight="600">기존 파일, 1줄 추가</text>
+
+  <!-- Arrow 1 -->
+  <line x1="218" y1="145" x2="244" y2="145" stroke="#546E7A" stroke-width="2" marker-end="url(#arr)"/>
+
+  <!-- ── STEP 2 : Core.Analysis / AnalysisWorker ── -->
+  <rect x="248" y="48" width="188" height="192" rx="8" fill="#EBF5FF" stroke="#1565C0" stroke-width="1.5"/>
+  <rect x="248" y="48" width="188" height="34"  rx="8" fill="#1565C0"/>
+  <rect x="248" y="70" width="188" height="12"  fill="#1565C0"/>
+  <text x="342" y="70"  text-anchor="middle" font-size="13" font-weight="700" fill="#FFFFFF">STEP 2</text>
+  <text x="342" y="103" text-anchor="middle" font-size="11" font-weight="600" fill="#1565C0">Core.Analysis</text>
+  <text x="342" y="121" text-anchor="middle" font-size="10" fill="#546E7A" font-style="italic">AnalysisWorker.cs</text>
+  <line x1="268" y1="133" x2="416" y2="133" stroke="#BBDEFB" stroke-width="1"/>
+  <text x="342" y="158" text-anchor="middle" font-size="14" font-weight="700" fill="#0D47A1">값 할당</text>
+  <text x="342" y="178" text-anchor="middle" font-size="14" font-weight="700" fill="#0D47A1">한 줄</text>
+  <rect x="274" y="212" width="136" height="22" rx="11" fill="#BBDEFB"/>
+  <text x="342" y="227" text-anchor="middle" font-size="10" fill="#1565C0" font-weight="600">기존 파일, 1줄 추가</text>
+
+  <!-- Arrow 2 -->
+  <line x1="438" y1="145" x2="464" y2="145" stroke="#546E7A" stroke-width="2" marker-end="url(#arr)"/>
+
+  <!-- ── STEP 3 : App.Rendering / FooRenderer (신규 파일) ── -->
+  <rect x="468" y="48" width="188" height="192" rx="8" fill="#E8F5E9" stroke="#2E7D32" stroke-width="1.5"/>
+  <rect x="468" y="48" width="188" height="34"  rx="8" fill="#2E7D32"/>
+  <rect x="468" y="70" width="188" height="12"  fill="#2E7D32"/>
+  <text x="562" y="70"  text-anchor="middle" font-size="13" font-weight="700" fill="#FFFFFF">STEP 3</text>
+  <text x="562" y="103" text-anchor="middle" font-size="11" font-weight="600" fill="#2E7D32">App.Rendering</text>
+  <text x="562" y="121" text-anchor="middle" font-size="10" fill="#546E7A" font-style="italic">FooRenderer.cs  ← 신규</text>
+  <line x1="488" y1="133" x2="636" y2="133" stroke="#C8E6C9" stroke-width="1"/>
+  <text x="562" y="158" text-anchor="middle" font-size="14" font-weight="700" fill="#1B5E20">새 파일 생성</text>
+  <text x="562" y="178" text-anchor="middle" font-size="13" fill="#2E7D32">기존 파일 무변경</text>
+  <rect x="487" y="212" width="150" height="22" rx="11" fill="#C8E6C9"/>
+  <text x="562" y="227" text-anchor="middle" font-size="10" fill="#2E7D32" font-weight="600">기존 파일 변경 없음</text>
+
+  <!-- Arrow 3 -->
+  <line x1="658" y1="145" x2="684" y2="145" stroke="#546E7A" stroke-width="2" marker-end="url(#arr)"/>
+
+  <!-- ── STEP 4 : App.Tabs / InfoTabCatalog ── -->
+  <rect x="688" y="48" width="188" height="192" rx="8" fill="#E8F5E9" stroke="#2E7D32" stroke-width="1.5"/>
+  <rect x="688" y="48" width="188" height="34"  rx="8" fill="#2E7D32"/>
+  <rect x="688" y="70" width="188" height="12"  fill="#2E7D32"/>
+  <text x="782" y="70"  text-anchor="middle" font-size="13" font-weight="700" fill="#FFFFFF">STEP 4</text>
+  <text x="782" y="103" text-anchor="middle" font-size="11" font-weight="600" fill="#2E7D32">App.Tabs</text>
+  <text x="782" y="121" text-anchor="middle" font-size="10" fill="#546E7A" font-style="italic">InfoTabCatalog.cs</text>
+  <line x1="708" y1="133" x2="856" y2="133" stroke="#C8E6C9" stroke-width="1"/>
+  <text x="782" y="158" text-anchor="middle" font-size="14" font-weight="700" fill="#1B5E20">카탈로그</text>
+  <text x="782" y="178" text-anchor="middle" font-size="14" font-weight="700" fill="#1B5E20">한 줄 등록</text>
+  <rect x="707" y="212" width="150" height="22" rx="11" fill="#C8E6C9"/>
+  <text x="782" y="227" text-anchor="middle" font-size="10" fill="#2E7D32" font-weight="600">기존 파일 변경 없음</text>
+
+  <!-- Arrow 4 -->
+  <line x1="878" y1="145" x2="904" y2="145" stroke="#546E7A" stroke-width="2" marker-end="url(#arr)"/>
+
+  <!-- ── RESULT ── -->
+  <rect x="908" y="48" width="264" height="192" rx="8" fill="#FFF8E1" stroke="#F57F17" stroke-width="2"/>
+  <rect x="908" y="48" width="264" height="34"  rx="8" fill="#F57F17"/>
+  <rect x="908" y="70" width="264" height="12"  fill="#F57F17"/>
+  <text x="1040" y="70"  text-anchor="middle" font-size="13" font-weight="700" fill="#FFFFFF">완료</text>
+  <text x="1040" y="116" text-anchor="middle" font-size="30" fill="#E65100">&#10003;</text>
+  <text x="1040" y="148" text-anchor="middle" font-size="14" font-weight="700" fill="#BF360C">새 탭 즉시 작동</text>
+  <line x1="928" y1="162" x2="1152" y2="162" stroke="#FFE0B2" stroke-width="1"/>
+  <text x="1040" y="180" text-anchor="middle" font-size="10" fill="#6D4C41">AnalysisFrameRouter</text>
+  <text x="1040" y="196" text-anchor="middle" font-size="10" fill="#6D4C41">자동 인식 · Scheduler 자동 연결</text>
+  <rect x="948" y="212" width="184" height="22" rx="11" fill="#FFE0B2"/>
+  <text x="1040" y="227" text-anchor="middle" font-size="10" fill="#E65100" font-weight="600">인프라 변경 없음, 자동 처리</text>
+
+  <!-- ── Bottom summary bar ── -->
+  <rect x="28" y="252" width="1144" height="46" rx="6" fill="#263238"/>
+  <text x="600" y="272" text-anchor="middle" font-size="12" font-weight="700" fill="#ECEFF1">
+    기존 Core 분석 알고리즘 (Detection · Metrics · Imaging) 변경 없음
+  </text>
+  <text x="600" y="289" text-anchor="middle" font-size="11" fill="#90A4AE">
+    Router · Scheduler 인프라 자동 처리 → QAS-5 달성: 새 기능당 기존 모듈 최대 1개 변경
+  </text>
+</svg>
