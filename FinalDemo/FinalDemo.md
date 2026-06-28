@@ -416,7 +416,7 @@
 **[지시문]** QAS 우선순위 슬라이드.
 
 **[Presenter]**
-> "Six quality attributes drive this system, prioritized in this order: **Accuracy** first, then **Performance/Latency**, **Reliability**, **Consistency**, **Modifiability**, and **Usability**. These are not generic quality words — we turned them into measurable scenarios.
+> "Six quality attributes drive this system, prioritized in this order. That ordering was itself a decision — through discussion with Dan and Steve, we settled on **Accuracy** as the top priority. A timegrapher's only job is to produce correct readings; if the rate is wrong, everything else is meaningless. After that: **Performance/Latency**, **Reliability**, **Consistency**, **Modifiability**, and **Usability**. These are not generic quality words — we turned each one into a measurable scenario.
 >
 > QAS-1: clean reference input must be within ±1.0 s/d over ≥1,000 beats. QAS-2: worst-case E2E latency must stay within one beat period — 83.3 ms at 43200 BPH. QAS-4: all displays in the same frame must come from one source data set, with zero mismatches. QAS-5: a new graph, filter, or measurement touches ≤1 existing module. QAS-6: 2.9 mm letter height, 9 mm touch targets on the Pi screen."
 
@@ -442,13 +442,13 @@
 **[지시문]** 트레이드오프 표 슬라이드.
 
 **[Presenter]**
-> "Prioritizing accuracy cost us elsewhere, and we made those tradeoffs on purpose:
+> "Quality attributes competed, and every tradeoff was deliberate.
 >
-> **Accuracy vs. Latency**: a longer warm-up before reporting BPH and rate means the first reading is later — we accept that delay to avoid showing a wrong number early.
+> **QAS-1 Accuracy vs. QAS-2 Latency**: a longer warm-up before reporting BPH means the first reading arrives later — we accept that delay to avoid showing wrong numbers early. A higher sample rate gives finer timestamp resolution but costs more CPU per beat — we support up to 192 kHz and verified it fits the budget on the Pi.
 >
-> **Accuracy vs. Performance**: a higher sample rate gives finer timestamp resolution but costs more CPU per beat. We support up to 192 kHz and verified it still fits the budget on the Pi.
+> **QAS-2 Performance → Pipe-and-Filter choice**: audio processing and display rendering are separated at worker boundaries. Rendering happens only when a tab is selected — we do not process all 13 tabs simultaneously. However, the detector and metrics remain one **synchronous hot path** — full internal queuing between every stage would spend the beat-period budget. This structure also serves QAS-5 Modifiability: adding a new tab does not touch the analysis pipeline.
 >
-> **Worker Pipe-and-Filter vs. hot-path latency**: we separate input, analysis, rendering, and recording at worker boundaries — but we deliberately keep the detector and metrics as one synchronous hot path. Full internal queuing between every stage would spend the beat-period budget.
+> **QAS-6 Usability → Centralization**: font size (2.9 mm) and touch targets (9 mm) were determined experimentally on the Pi touchscreen, then centralized in App.axaml — enforcing the policy in code so maintenance work cannot accidentally break it.
 >
 > **The key tradeoff — measurement vs. visualization**: when the system falls behind its deadline, it degrades the *visuals first* — latest-wins rendering skips intermediate frames — but it **never drops or interpolates a measurement**. We protect the number and sacrifice the picture."
 
@@ -486,6 +486,14 @@
 > This boundary isn't just a diagram — **our CI enforces it**. A test fails the build if Core ever imports a UI, platform, or audio type. The architecture rule is a failing test, not a comment.
 >
 > All three inputs — live mic, WAV playback, and the simulator — implement one small interface. Core only knows that contract, so a new input or OS backend drops in without touching the engine. And the same frame fan-out is what makes the thirteen-display tour possible: Rate/Scope, Beat Error, Trace, Vario, Long-Term, Sweep, Escapement, Positions, Beat Noise, Waveforms, Filter Scope, Sound Print, and Spectrogram are different views over the same measured analysis frame — not separate competing calculators."
+
+**[Presenter] (QAS traceability)**
+> "Every boundary in this diagram was motivated by a specific quality requirement:
+> **Core zero dependency → QAS-1**: the Verify module runs Core in complete isolation, enabling headless accuracy verification against known references — the architecture does not achieve accuracy, but it makes achievement verifiable.
+> **Worker Pipe-and-Filter → QAS-2**: audio processing and rendering are separated; rendering occurs only when a tab is selected, not all thirteen simultaneously.
+> **Single AnalysisFrame → QAS-4**: every display derives from the same source object — zero mismatches is structurally guaranteed.
+> **InfoTabCatalog pattern → QAS-5**: a new tab requires one catalog entry and one renderer file — no existing analysis module is touched.
+> **Centralized App.axaml theme → QAS-6**: font and touch policy live in one place, preventing accidental drift during maintenance."
 
 **[Presenter] (정직성 포인트)**
 > "We also assessed our patterns honestly. Our MVVM is partial — start/stop lifecycle still lives in code-behind — and our DSP chain is pipe-and-filter in structure but a single synchronous thread internally. Knowing exactly where a pattern is fully applied versus partially applied was part of what we learned from this course."
@@ -555,24 +563,25 @@
 ### 7-1. AI 도구 사용 설명 (5점)
 
 **[Presenter]**
-> "We used AI in three different ways.
+> "Our approach to AI was **agentic engineering** — bringing AI into the team development process in a controlled way, not as individual improvised prompting. Two mechanisms kept AI aligned with our project:
 >
-> First, as a **product feature**: the TimeGrapher.Inference module is an ONNX-based signal-quality classifier — four classes, eight features per beat — running on-device on the Pi. The architectural constraint: the model classifies and vetos candidates; it cannot create events, re-time them, or touch BPH sync.
+> **AGENTS.md** defines our project rules, commit format, and architectural principles. Every AI session starts from this context — AI follows our conventions rather than its own defaults.
+> **DocRules.md**, derived from course materials, is our document quality standard. AI drafts documents; we review using this standard; the review results go back to AI for refinement.
 >
-> Second, as a **development collaborator**: we used Claude Code and Codex throughout — the Qt-to-.NET port, debugging, 933 tests, documentation, and architecture review.
+> This structure means humans make all final decisions, and AI is part of our defined process — not a wildcard.
 >
-> Third, as **engineering automation**: AI helped design and refine the CI/CD pipeline — build, test, Verify runs, and release packaging. That pipeline is not the product, but it protects the product as we change it."
+> Application areas: **base code conversion** (Qt/C++ → .NET port), **CI/CD pipeline** design and automation, **933 test** generation. And as a **product feature**: TimeGrapher.Inference is an ONNX signal-quality classifier running on-device on the Pi — architectural constraint means it cannot create events, re-time them, or touch BPH sync."
 
 ---
 
 ### 7-2. 사려깊은 활용 (5점)
 
 **[Presenter]**
-> "We applied AI across the lifecycle: the Qt-to-.NET port, test generation, CI/CD workflow automation, and an AI-driven **performance regression audit** that compared our port against the original C++ line by line — found six regressions, fixed each with a documented commit.
+> "**The review loop**: AI drafts → we review using DocRules.md from course materials → we feed the review back to AI for refinement. This preserved quality without sacrificing speed.
 >
-> Concrete example: our Pipe-and-Filter architecture decision. The UI thread was freezing during heavy spectrogram computation. We described the bottleneck to Claude and asked it to suggest relevant patterns from Bass, Clements & Kazman's SAP. It suggested Producer-Consumer + Latest-Wins scheduler. We validated against the book's quality-attribute analysis, implemented it, and EXP-03 confirms the UI thread is now fully decoupled.
+> **Concrete example 1: Pipe-and-Filter decision.** The UI thread was freezing during heavy spectrogram computation. We described the bottleneck to Claude and asked for relevant patterns from Bass, Clements & Kazman's SAP. It suggested Producer-Consumer + Latest-Wins scheduler. We validated against the book's quality-attribute analysis and implemented it. EXP-03 confirms the UI thread is now fully decoupled.
 >
-> Second example: the ViewModel purity test. We asked how to enforce 'no Avalonia in ViewModel' mechanically. Claude suggested a reflection-based test. We implemented ViewModelPurityTests — it runs on every CI push.
+> **Concrete example 2: ViewModel purity test.** We asked how to enforce 'no Avalonia in ViewModel' mechanically. Claude suggested a reflection-based test. We implemented ViewModelPurityTests — it runs on every CI push.
 >
 > AI output was always checked by executable evidence: tests, CI jobs, Verify fixtures, ADRs, and live Pi measurements."
 
@@ -583,9 +592,9 @@
 **[Presenter]**
 > "Honestly, on strengths, limits, and risks:
 >
-> **Strength**: it let a small team port a large real-time app, add an on-device classifier, and automate the build/test/release workflow with traceable history.
+> **Strength**: AI was included in the team development process in a controlled way — not individual improvised use. AI followed our conventions via AGENTS.md and DocRules.md; humans made all final decisions. This let a small team port a large real-time app, add an on-device classifier, and automate the build/test/release workflow.
 >
-> **Limit**: AI over-claims. Early on it labeled our MVVM and Pipe-and-Filter as fully applied. We had to verify against the code and downgrade those claims. The same applies to the classifier: we only claim what the model actually does in the running app.
+> **Limits**: AI required thorough review of excessive output. More specifically: it does not fully understand project context and can make plausible-but-wrong suggestions — functionality must always be tested. It can make mistakes with local environment and branch state. Document quality improves, but deep design intent still needs humans to fill in. UI/UX judgment requires iterative feedback.
 >
 > **Risk**: for a real-time, accuracy-critical system, a plausible-but-wrong AI change can silently hurt timing. Our mitigation was structural: the classifier path cannot own timing, CI enforces architecture boundaries, Verify gates adverse signals, and human review checks generated code. **We treated AI as a fast collaborator that must be checked — not as an authority.**"
 
@@ -602,7 +611,8 @@
 
 | 질문 | 핵심 답변 |
 |---|---|
-| "정확도를 어떻게 보장했나?" | 파이프라인 전체 타이밍 보존 + adaptive floor / PLL onset gating / regime guard / detection-gap / rate warm-up(기본 동작) + accept-band 단일 소스. Weishi 비교 + Verify adverse 수치로 입증. |
+| "정확도를 어떻게 보장했나?" | Two levels: **architecture** defines QAS-1 target and enables headless verification via Verify module; **Core.Detection implementation** achieves it — sub-sample interpolation, adaptive noise floor, PLL-guided gating, regime guard. Weishi comparison + Verify adverse fixtures as evidence. |
+| "QAS가 아키텍처 결정과 어떻게 연결되나?" | Core zero dependency → QAS-1 verifiability; Pipe-and-Filter → QAS-2 performance; single AnalysisFrame → QAS-4 consistency; InfoTabCatalog → QAS-5 modifiability; centralized App.axaml → QAS-6 usability. |
 | "지연이 정말 실시간인가?" | EXP-02 표 그대로: 21600@48k와 43200@192k 모두 Pass, worst usage 24–44%, Drop 0 / Miss 0. |
 | "두 시스템 값이 다르면?" | 차이를 숨기지 않고 원인(캘리브레이션·마이크 감쇠·필터·lift angle) 가설 제시. |
 | "AI 기능이 진짜 AI인가?" | Yes. ONNX 모델이 on-device에서 동작 중이고, 데모에서 시연했다. 안전을 위해 이 경로는 이벤트 생성·retiming·BPH sync를 건드리지 못하는 구조적 제약이 있다. |
