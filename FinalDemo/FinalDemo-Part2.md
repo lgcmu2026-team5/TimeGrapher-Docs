@@ -58,18 +58,22 @@
 
 ### 2-2. Evidence That Accuracy Is the Top Priority (5 pts)
 
-**[Note]** QAS-1 target + Verify module + Core.Detection tactics slide.
+**[Note]** Layer diagram → Core.Detection accuracy mechanisms slide.
 
-**[Slide Visual]**
+**[Slide Visual — Layer structure: Core zero dependency]**
 
-![Core.Detection — Accuracy Tactics Pipeline](assets/core-detection-tactics.svg)
+![Layer Diagram](../Milestone/assets/LAYER.png)
+
+**[Slide Visual — Core.Detection accuracy mechanisms]**
+
+![Core.Detection — Accuracy Mechanisms](assets/core-detection-tactics.svg)
 
 **[Presenter]**
 > "Accuracy is our top-ranked quality attribute. The architecture was designed to define that goal precisely and make it verifiable — and the actual achievement is the responsibility of the Core.Detection implementation.
 >
-> **Architecture level:** QAS-1 sets the target — computed rate within ±1.0 s/d of a known reference over ≥1,000 consecutive beats on clean input. The **Verify module** checks this headlessly on every CI change, running Core directly against synthetic fixtures with known timing references. Because **Core has zero dependencies**, it can be tested in complete isolation — no UI noise, no platform interference.
+> **Architecture level:** As shown in the layer diagram, Core is completely isolated from UI and OS. QAS-1 sets the target — computed rate within ±1.0 s/d of a known reference over ≥1,000 consecutive beats on clean input. Because **Core has zero dependencies**, the **Verify module** can run Core directly in complete isolation — no UI noise, no platform interference — checking this headlessly on every CI change against synthetic fixtures with known timing references.
 >
-> **Implementation level:** Achieving that target is Core.Detection's job. The key mechanism is **sub-sample interpolation** — linear for A events, parabolic for C events — producing timing precision far beyond integer sample resolution at 192 kHz. Surrounding defense tactics: an **adaptive noise floor** tracking the 75th percentile of silence samples rather than a fixed threshold; **PLL-guided gating** that rejects onset crossings outside the predicted beat window after lock; and a **regime guard** that requires three consecutive qualifying peaks before resetting state — so one impulse cannot destroy a lock.
+> **Implementation level:** Achieving that target is Core.Detection's job. The primary mechanism is **sub-sample interpolation** — linear for A events, parabolic for C events — producing timing precision far beyond integer sample resolution at 192 kHz. Three additional mechanisms maintain this precision in real-world conditions: an **adaptive noise floor** that automatically tracks the 75th percentile of silence samples; **PLL-guided gating** that rejects signal crossings outside the predicted beat window after lock; and a **regime guard** that requires three consecutive qualifying peaks before resetting state — so a single impulse cannot break the timing lock.
 >
 > These are not optional toggles — they are the default detection behavior, always on. **The architecture sets the bar and enforces it through CI; the implementation clears it.**"
 
