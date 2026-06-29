@@ -81,6 +81,15 @@
 
 **[Note]** Tradeoff table slide.
 
+**[Slide Visual — Tradeoff Summary]**
+
+| Tradeoff | Our Choice | Implementation |
+|---|---|---|
+| QAS-1 Accuracy vs QAS-2 Latency | Accuracy first | Accepted 192 kHz + longer warm-up — verified experimentally that pipeline fits within budget on the Pi |
+| QAS-5 Modifiability vs QAS-1·2 Accuracy·Latency | Hot path stays synchronous | Input · analysis · rendering separated at worker boundaries; detector + metrics kept as a single synchronous pass |
+| QAS-1 Accuracy vs QAS-2 Visual Responsiveness | Protect measurements | Visuals degrade first when behind deadline (latest-wins rendering) — measurements are never dropped |
+| QAS-3 Reliability vs QAS-1 Accuracy | Accuracy first | PLL-guided gating + regime guard maintain timing lock even in noisy conditions |
+
 **[Presenter]**
 > "There were tradeoffs between quality attributes, and every choice was deliberate.
 >
