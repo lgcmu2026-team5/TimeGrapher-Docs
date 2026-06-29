@@ -82,7 +82,7 @@
 **[Note]** Tradeoff table slide.
 
 **[Presenter]**
-> "Quality attributes competed, and every tradeoff was deliberate.
+> "There were tradeoffs between quality attributes, and every choice was deliberate.
 >
 > **QAS-1 (Accuracy) vs. QAS-2 (Latency)**: we accepted latency costs to protect accuracy. A longer warm-up before reporting BPH means the first reading arrives later — we accept that delay to avoid showing wrong numbers early. A higher sample rate gives finer timestamp resolution but costs more CPU per beat — we support up to 192 kHz and verified it fits the budget on the Pi before committing.
 >
