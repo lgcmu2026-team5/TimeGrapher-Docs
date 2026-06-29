@@ -1,58 +1,57 @@
 # TimeGrapher Final Presentation Script — Part 2: Presentation
 
-> **Team 5 · TimeGrapherNet** — Final LG SW Architect Presentation (20분)
-> 형식: **[Presenter]** 영어 대사(채점자에게 그대로 말하는 문장) + **[지시문]** 한국어 동작 지시.
+> **Team 5 · TimeGrapherNet** — Final LG SW Architect Presentation (20 min)
+> Format: **[Presenter]** English script (spoken directly to the evaluators) + **[Note]** action cues.
 >
-> Slide story: QA definition (Area 3) → Performance evidence (Area 4) → Architecture (Area 5) → AI (Area 7) → UI Enhancement (Area 2·6)
+> Slide story: QA definition (Area 3) → Performance evidence (Area 4) → Architecture (Area 5) → AI use (Area 7) → UI Enhancement (Area 2·6)
 
 ---
 
-## 발표 타임라인
+## Presentation Timeline
 
-| # | 슬라이드 | 시간 | 채우는 Rubric |
+| # | Slide | Time | Rubric |
 |---|---|---|---|
-| 1 | 타이틀 & 구현 표면 | 0:45 | — |
-| 2 | 품질속성 & 트레이드오프 (accuracy 최우선) | 4:30 | **Area 3 (20점)** |
-| 3 | 성능·지연·정확성 근거 (Pi 5 실측) | 4:00 | **Area 4 (25점)** |
-| 4 | 아키텍처 개요: 기술 선택 · Layers · Core 무의존 · CI 강제 경계 | 3:30 | **Area 5 (20점)** |
-| 5 | 확장성 심화: 새 측정/필터/탭 추가 | 2:00 | **Area 5 (20점)** |
-| 6 | AI 활용 (TinyML + 개발 전반) | 3:00 | **Area 7 (15점)** |
-| 7 | UI Enhancement (SoundPrint · Rate/Scope · GUI) | 1:30 | Area 2·6 |
-| 8 | 클로징 & Q&A | 0:45 | — |
+| 1 | Title & Implementation Surface | 0:45 | — |
+| 2 | Quality Attributes & Tradeoffs (accuracy first) | 4:30 | **Area 3 (20 pts)** |
+| 3 | Performance, Latency & Correctness (Pi 5 measured) | 4:30 | **Area 4 (25 pts)** |
+| 4 | Architecture & Extensibility: Layers · Core zero-dep · CI boundary · new graph walkthrough | 4:30 | **Area 5 (20 pts)** |
+| 5 | Use of AI (TinyML + development) | 3:30 | **Area 7 (15 pts)** |
+| 6 | UI Enhancement (SoundPrint · Rate/Scope · GUI) | 1:30 | Area 2·6 |
+| 7 | Closing & Q&A | 0:45 | — |
 
 ---
 
-# PART 2 — PRESENTATION (20분)
+# PART 2 — PRESENTATION (20 min)
 
 ---
 
 ## Slide 1. Title & Implementation Surface (0:45)
 
 **[Presenter]**
-> "We're Team 5. TimeGrapher listens to a mechanical watch and measures its accuracy in real time. The program you just saw is not a mock-up: it has live, playback, and simulation inputs, and exposes all twelve required measurement displays — Rate/Scope, Beat Error, Trace, Vario, Long-Term, Sweep, Escapement, Positions, Beat Noise, Waveforms, Filter Scope, Sound Print, and Spectrogram.
+> "We are Team 5. TimeGrapher listens to a mechanical watch and measures its accuracy in real time. The program you just saw is not a mock-up: it has live, playback, and simulation inputs, and exposes all twelve required measurement displays — Rate/Scope, Beat Error, Trace, Vario, Long-Term, Sweep, Escapement, Positions, Beat Noise, Waveforms, Filter Scope, Sound Print, and Spectrogram.
 >
-> We rebuilt it from the original Qt/C++ version into **Avalonia and C# on .NET 8**, so a **single codebase** runs on both Windows and the Raspberry Pi 5."
+> Our technology stack is **C# on .NET 8, Avalonia UI, and Raspberry Pi 5**. The decision to move from Qt/C++ — documented in ADR-001 — was driven by team expertise, single-codebase portability, and license flexibility. The performance risk was resolved experimentally before committing: we verified the pipeline fits within budget on the Pi, and we'll show you those numbers shortly."
 
 ---
 
 ## Slide 2. Quality Attributes & Tradeoffs (4:30)
-> ▣ RUBRIC: **Area 3 — Quality Attribute Tradeoff Discussion (20점)**
-> 주요 QA 식별 5점 / 트레이드오프 설명 5점 / accuracy 최우선 입증 5점 / 달성·한계 5점
+> ▣ RUBRIC: **Area 3 — Quality Attribute Tradeoff Discussion (20 pts)**
+> Identify major QAs 5 pts / Tradeoff discussion 5 pts / Accuracy as top priority 5 pts / Achievement & limitations 5 pts
 
-### 2-1. Major QA Identification (5점)
+### 2-1. Major QA Identification (5 pts)
 
-**[지시문]** QAS 우선순위 슬라이드.
+**[Note]** QAS priority slide.
 
 **[Presenter]**
 > "Six quality attributes drive this system, prioritized in this order. That ordering was itself a decision — through discussion with Dan and Steve, we settled on **Accuracy** as the top priority. A timegrapher's only job is to produce correct readings; if the rate is wrong, everything else is meaningless. After that: **Performance/Latency**, **Reliability**, **Consistency**, **Modifiability**, and **Usability**. These are not generic quality words — we turned each one into a measurable scenario.
 >
-> QAS-1 (Accuracy): clean reference input within ±1.0 s/d of a known reference over ≥1,000 beats. QAS-2 (Latency): worst-case E2E latency within one beat period — 83.3 ms at 43200 BPH. QAS-3 (Reliability): at SNR ≥ 30 dB over ≥1,000 beats, detection ≥ 95% and displayed rate within ±3 s/d of the reference; below threshold, show 'signal weak'. QAS-4 (Consistency): all displays in the same frame from one source data set, zero mismatches. QAS-5 (Modifiability): a new graph, filter, or measurement touches ≤1 existing module. QAS-6 (Usability): 2.9 mm letter height, 9 mm touch targets on the Pi 1280×800 screen."
+> QAS-1 (Accuracy): computed rate within ±1.0 s/d of a known reference over ≥1,000 consecutive beats on clean input. QAS-2 (Latency): worst-case E2E latency within one beat period — 83.3 ms at 43200 BPH. QAS-3 (Reliability): at SNR ≥ 30 dB over ≥1,000 beats, detection ≥ 95% and displayed rate within ±3 s/d of the reference; below threshold, show 'signal weak'. QAS-4 (Consistency): all displays in the same frame from one source data set, zero mismatches. QAS-5 (Modifiability): a new graph, filter, or measurement touches ≤1 existing module. QAS-6 (Usability): 2.9 mm letter height, 9 mm touch targets on the Pi 1280×800 screen."
 
 ---
 
-### 2-2. Evidence That Accuracy Is the Top Priority (5점)
+### 2-2. Evidence That Accuracy Is the Top Priority (5 pts)
 
-**[지시문]** QAS-1 목표 + Verify 모듈 + Core.Detection 구현 전술 슬라이드.
+**[Note]** QAS-1 target + Verify module + Core.Detection tactics slide.
 
 **[Slide Visual]**
 
@@ -69,9 +68,9 @@
 
 ---
 
-### 2-3. Tradeoff Discussion (5점)
+### 2-3. Tradeoff Discussion (5 pts)
 
-**[지시문]** 트레이드오프 표 슬라이드.
+**[Note]** Tradeoff table slide.
 
 **[Presenter]**
 > "Quality attributes competed, and every tradeoff was deliberate.
@@ -86,7 +85,7 @@
 
 ---
 
-### 2-4. What Was Achieved / Limitations (5점)
+### 2-4. What Was Achieved / Limitations (5 pts)
 
 **[Presenter]**
 > "**What we achieved:**
@@ -98,22 +97,22 @@
 > QAS-6 (Usability): 2.9 mm letter height, 9 mm touch targets centralized in App.axaml and verified on the Pi touchscreen — passed.
 >
 > **Limitations that remain:**
-> QAS-1: passed on simulation and Verify fixtures, but the real-world validation is measuring the same watch on both TimeGrapher and the Weishi reference device and checking the numbers agree — we show that result in slide 3.
+> QAS-1: passed on simulation and Verify fixtures, but the definitive real-world check is measuring the same watch on both TimeGrapher and the Weishi reference device and confirming the numbers agree — we show that result in slide 3.
 > QAS-3: the TinyML classifier is integrated and running, but how well it classifies across different watch types and real low-SNR conditions has not been fully tested yet.
 > We report these limits because honest evaluation is stronger than pretending the risks have disappeared."
 
 ---
 
-## Slide 3. Performance, Latency, and Correctness (4:00)
-> ▣ RUBRIC: **Area 4 — Performance, Latency, Correctness (25점)**
-> Pi 실시간 8점 / 저지연 6점 / 정확성 6점 / 근거 5점
+## Slide 3. Performance, Latency, and Correctness (4:30)
+> ▣ RUBRIC: **Area 4 — Performance, Latency, Correctness (25 pts)**
+> Pi real-time 8 pts / Low latency 6 pts / Correctness 6 pts / Evidence 5 pts
 
 **[Presenter]** *(transition from slide 2)*
 > "We've defined our quality targets and walked through the tradeoffs. Now let's look at whether we hit those targets — with measured numbers from the Pi 5."
 
 ### 3-1. Pi 5 Real-Time + Low Latency
 
-**[지시문]** EXP-02 Results 표를 직접 인용한 슬라이드.
+**[Note]** Slide quoting EXP-02 Results table directly.
 
 **[Slide Visual — EXP-02 Results (Pi 5, capture → analysis → display E2E)]**
 
@@ -164,7 +163,7 @@ xychart-beta horizontal
 
 ### 3-2. Correctness + Evidence
 
-**[지시문]** 두 시스템 비교 수치 표와 Verify 통과 캡처 슬라이드.
+**[Note]** Two-system comparison table and Verify pass screenshot slide.
 
 **[Slide Visual — Three-layer correctness evidence]**
 
@@ -187,13 +186,21 @@ xychart-beta horizontal
 
 ---
 
-## Slide 4. Architecture Overview (3:30)
-> ▣ RUBRIC: **Area 5 — Extensibility: modular, separates concerns (6점) + understandable/maintainable (4점)**
+## Slide 4. Architecture & Extensibility (4:30)
+> ▣ RUBRIC: **Area 5 — Extensibility: modular, separates concerns (6 pts) + supports adding new displays with limited redesign (6 pts) + understandable/maintainable (4 pts)**
 
-**[지시문]** Layer 다이어그램 (`assets/LAYER.png` 또는 module-uses 뷰). ADR-001 기술 선택 도입부 포함.
+**[Note]** Layer diagram + module-uses view + 4-step extensibility recipe slide.
+
+**[Slide Visual — Layer structure (3 layers, one-way dependencies)]**
+
+![Layer Diagram](../Milestone/assets/LAYER.png)
+
+**[Slide Visual — Project module dependencies (App · Core · Platform · Verify)]**
+
+![Module Dependency View](../Milestone/assets/module-uses-project.en.svg)
 
 **[Presenter]** *(transition from slide 3)*
-> "Those numbers were possible because of the architecture. First, the technology choice — documented in **ADR-001** — we moved from Qt/C++ to **Avalonia and C# on .NET 8**. The drivers were team expertise (the majority of us have C# experience), single-codebase portability, and license flexibility. Rejected alternatives: Qt/C++, Electron, MAUI, Flutter. The performance risk was resolved by experiment — and those are the numbers you just saw.
+> "Those numbers were possible because of the architecture. Let me explain why.
 >
 > The architecture is three layers. **Core** is the analysis engine — detection, measurement, image generation, the simulator — and it has **zero dependencies** on UI or OS. The **App** is the Avalonia UI. The **Platform** assemblies wrap each OS's microphone stack. Dependencies only point downward: App and Platform both depend on Core, never the reverse.
 >
@@ -209,35 +216,77 @@ xychart-beta horizontal
 > **InfoTabCatalog pattern → QAS-5**: a new tab requires one catalog entry and one renderer file — no existing analysis module is touched.
 > **Centralized App.axaml theme → QAS-6**: font and touch policy live in one place, preventing accidental drift during maintenance."
 
+**[Slide Visual — 4-step recipe for adding a new display]**
+
+![New Tab Recipe](assets/tab-extensibility-recipe.svg)
+
+**[Slide Visual — Worker-level pipe-and-filter (input → analysis → rendering, separated)]**
+
+![Worker-Level Pipe-and-Filter](../Milestone/assets/worker-level-partial-pipe-and-filter.svg)
+
+**[Presenter] (Extensibility — what actually happens when you add a new graph)**
+> "Let me make 'limited redesign' concrete with two real examples.
+>
+> **Example 1: Adding the Spectrogram tab.** To store an STFT result as an image in AnalysisFrame, we touched exactly four places. One new property on AnalysisFrame in Core.Shared — one struct field. One assignment in AnalysisWorker in Core.Analysis — one line. One new file, SpectrogramRenderer.cs, in App.Rendering — no existing file modified. One catalog registration in InfoTabCatalog in App.Tabs — one line. The routing infrastructure picks it up automatically. The existing Detection, Metrics, and Imaging modules were **not touched at all**.
+>
+> **Example 2: Adding the Watch Health Radar tab.** The Positions data was already in AnalysisFrame. In this case we didn't even need a new field — just a new RadarRenderer.cs file and one catalog line. Two touchpoints total.
+>
+> This is **how the architecture delivers QAS-5**: a new graph touches at most one existing module. All 13 tabs were built this way."
+
+**[Slide Visual — Open extension axes vs. closed stable core]**
+
+```mermaid
+flowchart LR
+    subgraph LOCK["🔒 Stable — CI-enforced boundary"]
+        C["Core Analysis Engine\nDetection · Metrics · Imaging\nZero dependencies"]
+    end
+    subgraph OPEN["🔓 Open extension axes (add implementations of contracts)"]
+        P["Platform Adapters\nWindows · Linux/Pi\n✚ New OS = one adapter"]
+        I["Input Sources\nLive · Playback · Sim\n✚ New source = IAudioInput impl"]
+        T["InfoTabCatalog\n13 tabs\n✚ New tab = one catalog line"]
+    end
+    P & I -->|"IAudioInput contract"| C
+    C -->|"AnalysisFrame supply"| T
+```
+
+**[Presenter] (Future requirements — how the structure stays open)**
+> "Three scenarios show how this structure accommodates future requirements.
+>
+> **New OS port**: add one Platform assembly — Core and App are untouched. Just implement the same IAudioInput contract. Windows and Linux/Pi already coexist exactly this way.
+>
+> **New input source (network stream, BLE sensor, etc.)**: likewise, add one IAudioInput implementation. Core only knows the contract — it doesn't care where the signal comes from.
+>
+> **New measurement algorithm or filter**: change inside Core.Detection or Core.Metrics. CI monitors Core's zero-dependency rule, so an algorithmic change that leaks into the UI or Platform layer fails the build.
+>
+> Summary: the open axes (new tabs, inputs, platforms) extend by adding contract implementations; the closed axis (Core analysis engine) is isolation-guaranteed by CI."
+
+**[Slide Visual — Core internal module dependencies (single responsibility, intra-layer flow)]**
+
+![Core Internal Module Dependencies](../Milestone/assets/module-uses-core.en.svg)
+
+**[Presenter] (Code organization — readability & maintainability)**
+> "Five reasons the code structure is understandable and maintainable:
+>
+> First, **ADR documentation** — ADR-001 through ADR-004 record every major design decision with context, alternatives considered, and rationale. A new team member can understand 'why does this look this way' without reading the code alone.
+>
+> Second, **CI mechanically enforces architecture boundaries** — if Core imports a UI type, the build fails. A failing test guards the boundary, not a comment or convention.
+>
+> Third, **ViewModelPurityTests** — if an Avalonia type enters a ViewModel, CI catches it. The MVVM boundary is automatically verified at the code level.
+>
+> Fourth, **InfoTabCatalog pattern** — which tabs exist and what they render is declared in one place. When a new team member asks 'where is this tab?', there is one place to look.
+>
+> Fifth, **IAudioInput interface** — the only thing Core knows about audio input is this interface. A new team member who wants to understand 'how does audio get in?' reads one contract. Because live mic, WAV playback, and the simulator all implement the same contract, swapping or adding an input source requires no reading of Core internals."
+
 **[Presenter] (honesty point)**
 > "We also assessed our patterns honestly. Our MVVM is partial — start/stop lifecycle still lives in code-behind — and our DSP chain is pipe-and-filter in structure but a single synchronous thread internally. Knowing exactly where a pattern is fully applied versus partially applied was part of what we learned from this course."
 
 ---
 
-## Slide 5. Extensibility Deep-Dive (2:00)
-> ▣ RUBRIC: **Area 5 — supports adding new measurements/filters/graphs with limited redesign (6점)**
+## Slide 5. Use of AI (3:30)
+> ▣ RUBRIC: **Area 7 — Use of AI in Building the Software (15 pts)**
+> Description 5 pts / Thoughtful use 5 pts / Strengths, limits & risks 5 pts
 
-**[지시문]** "새 디스플레이 추가 4단계" 슬라이드. InfoTabCatalog + Frame consumer + Renderer 흐름.
-
-**[Presenter]**
-> "Adding capability is deliberately cheap. A new display is four steps:
->
-> 1. Add a new property to AnalysisFrame in Core.Shared — one struct field.
-> 2. Populate it in AnalysisWorker — one assignment.
-> 3. Create a new Renderer class in App.Rendering — a new file, no existing file touched.
-> 4. Register the tab in InfoTabCatalog — one line.
->
-> The routing infrastructure — AnalysisFrameRouter and AnalysisFrameRenderScheduler — picks it up automatically. The Watch Health Radar is a live example of this pattern: a new renderer over the existing per-position snapshot, one catalog entry.
->
-> The measurable target from QAS-5: a new graph or measurement should touch **at most one existing module**, with an eight person-day budget per feature. ADR-004 supports this through App, test, and Verify module separation, so six members — and AI coding assistants — can work without conflict. Because the engine is isolated and CI-locked, additions are **limited, local changes** — which is exactly what extensible architecture should mean."
-
----
-
-## Slide 6. Use of AI (3:00)
-> ▣ RUBRIC: **Area 7 — Use of AI in Building the Software (15점)**
-> 설명 5점 / 사려깊은 활용 5점 / 강점·한계·위험 5점
-
-### 6-1. How AI Tools Were Used (5점)
+### 5-1. How AI Tools Were Used (5 pts)
 
 **[Presenter]**
 > "Our approach to AI was **agentic engineering** — bringing AI into the team development process in a controlled way, not as individual improvised prompting. Two mechanisms kept AI aligned with our project:
@@ -247,24 +296,26 @@ xychart-beta horizontal
 >
 > This structure means humans make all final decisions, and AI is part of our defined process — not a wildcard.
 >
-> Application areas: **base code conversion** (Qt/C++ → .NET port), **CI/CD pipeline** design and automation, **933 test** generation. And as a **product feature**: TimeGrapher.Inference is an ONNX signal-quality classifier running on-device on the Pi — architectural constraint means it cannot create events, re-time them, or touch BPH sync."
+> Application areas — four of them. **Base code conversion**: Qt/C++ DSP logic, event detection, and audio buffer management ported to C# idioms (Span\<T\>, Channel, IDisposable). **CI/CD pipeline** design and automation. **933 test** generation. And as a **product feature**: TimeGrapher.Inference is an ONNX signal-quality classifier running on-device on the Pi — architectural constraint means it cannot create events, re-time them, or touch BPH sync."
 
 ---
 
-### 6-2. Thoughtful Use (5점)
+### 5-2. Thoughtful Use (5 pts)
 
 **[Presenter]**
 > "**The review loop**: AI drafts → we review using DocRules.md from course materials → we feed the review back to AI for refinement. This preserved quality without sacrificing speed.
 >
-> **Concrete example 1: Pipe-and-Filter decision.** The UI thread was freezing during heavy spectrogram computation. We described the bottleneck to Claude and asked for relevant patterns from Bass, Clements & Kazman's SAP. It suggested Producer-Consumer + Latest-Wins scheduler. We validated against the book's quality-attribute analysis and implemented it. EXP-03 confirms the UI thread is now fully decoupled.
+> **Concrete example 1: C++ → C# base code conversion.** Porting the existing Qt/C++ implementation to C# was the largest upfront risk in this project. DSP logic, event detection algorithms, and audio buffer management were all written in C++. We gave AI the C++ files as context and asked for a direct translation into .NET 8 idioms — Span\<T\>, ArrayPool, Channel. This was not a syntax translation; it was a **language-idiom translation** — pointer arithmetic to Span, RAII to IDisposable, Qt signals to C# events. We reviewed every translated output ourselves, and confirmed correctness by checking that the Verify fixtures and 933 tests still passed after each conversion block. **AI handled the repetitive heavy lifting; humans guaranteed semantic correctness.**
 >
-> **Concrete example 2: ViewModel purity test.** We asked how to enforce 'no Avalonia in ViewModel' mechanically. Claude suggested a reflection-based test. We implemented ViewModelPurityTests — it runs on every CI push.
+> **Concrete example 2: Pipe-and-Filter decision.** The UI thread was freezing during heavy spectrogram computation. We described the bottleneck to Claude and asked for relevant patterns from Bass, Clements & Kazman's SAP. It suggested Producer-Consumer + Latest-Wins scheduler. We validated against the book's quality-attribute analysis and implemented it. EXP-03 confirms the UI thread is now fully decoupled.
+>
+> **Concrete example 3: ViewModel purity test.** We asked how to enforce 'no Avalonia in ViewModel' mechanically. Claude suggested a reflection-based test. We implemented ViewModelPurityTests — it runs on every CI push.
 >
 > AI output was always checked by executable evidence: tests, CI jobs, Verify fixtures, ADRs, and live Pi measurements."
 
 ---
 
-### 6-3. Strengths, Limits, and Risks (5점)
+### 5-3. Strengths, Limits, and Risks (5 pts)
 
 **[Presenter]**
 > "Honestly, on strengths, limits, and risks:
@@ -277,23 +328,27 @@ xychart-beta horizontal
 
 ---
 
-## Slide 7. UI Enhancement (1:30)
-> ▣ RUBRIC: Area 2 (SoundPrint·Rate/Scope improvements) · Area 6 (GUI Modifications)
+## Slide 6. UI Enhancement (1:30)
+> ▣ RUBRIC: Area 2 (SoundPrint · Rate/Scope improvements) · Area 6 (GUI Modifications)
 
-**[지시문]** UI 개선 요약 슬라이드. SoundPrint 마커 오버레이 스크린샷, 상태바, 연결 복구 배너를 보여준다.
+**[Note]** UI improvement summary slide. Show SoundPrint marker overlay screenshot, status bar, and disconnect recovery banner.
 
 **[Presenter]**
-> "Finally, the UI improvements the user actually encounters. Three areas:
+> "Finally, the UI improvements the user actually encounters. Three requirements-driven enhancements, and two additions we made beyond the requirements.
 >
 > **SoundPrint Enhancement (Area 2):** A and C event markers displayed as permanent overlays on the scrolling envelope image. Marker placement uses the same sample-to-column mapping as the signal itself — pixel-accurate alignment, not approximated. Published on a 100 ms cadence so it stays responsive on the Pi. Detection accuracy is visually verifiable here without switching tabs.
 >
 > **Rate/Scope Enhancement (Area 2):** Configurable measurement window selector and peak-hold indicator. Maintains a 10-second history and renders only within a fixed point budget — freeze a window, inspect, resume without dropping measurements.
 >
-> **GUI Structural Improvements (Area 6):** QAS-6 achieved — touch targets minimum 9 mm, letter height minimum 2.9 mm. Three key readings (rate · beat error · amplitude) always visible in the top status bar across all tabs. Less-used controls moved to the Settings drawer. Clean state recovery on microphone disconnect — auto-detected on reconnect. Beat-synchronized display: A/C events placed at the same relative position each cycle, so irregular timing shows up immediately as positional deviation."
+> **GUI Structural Improvements (Area 6):** QAS-6 achieved — touch targets minimum 9 mm, letter height minimum 2.9 mm. Three key readings (rate · beat error · amplitude) always visible in the top status bar across all tabs. Less-used controls moved to the Settings drawer. Clean state recovery on microphone disconnect — auto-detected on reconnect. Beat-synchronized display: A/C events placed at the same relative position each cycle, so irregular timing shows up immediately as positional deviation.
+>
+> **Dark Mode (beyond requirements):** We implemented system-theme-following dark/light switching. Watch measurement environments are often dimly lit workspaces, so reducing eye strain over long sessions was a practical need. Because all color palettes live in the centralized App.axaml theme structure, swapping the palette in one place applies consistently across all tabs.
+>
+> **User Manual (beyond requirements):** We added an in-app user manual. Tab-by-tab measurement explanations, position test procedures, and outlier interpretation guides are accessible directly inside the app. The goal was to let a user with no watch-repair domain knowledge complete a measurement using the app alone."
 
 ---
 
-## Slide 8. Closing & Q&A (0:45)
+## Slide 7. Closing & Q&A (0:45)
 
 **[Presenter]**
 > "In short: a running watch-measurement application with twelve required displays, accuracy first, proven on the Pi 5 with measured latency and a two-system comparison; an architecture that is modular, portable, and CI-enforced; and AI used both in the product through the signal-quality classifier and in the development process through guarded automation. Thank you — we're happy to take questions."
@@ -310,7 +365,7 @@ xychart-beta horizontal
 | "What if the two-system values differ?" | Don't hide the difference — hypothesize causes (calibration · mic attenuation · filter · lift angle). |
 | "Is the AI feature real AI?" | Yes. ONNX model running on-device, demonstrated in the demo. Architecturally constrained: cannot create events, re-time them, or touch BPH sync. |
 | "What about the radar chart?" | Implemented in Watch Health Radar tab. Reuses the same per-position snapshots as Positions, one catalog entry + renderer. |
-| "Evidence of extensibility?" | New tab = one catalog entry + consumer. Core unchanged. CI enforces boundaries → changes are local. All 13 tabs follow this pattern. |
+| "Evidence of extensibility?" | New tab = one catalog entry + renderer file. Core unchanged. CI enforces boundaries → changes are local. All 13 tabs follow this pattern. |
 | "Is MVVM complete?" | Not claiming textbook-complete MVVM. View/ViewModel/Model separation and ViewModel testability are the direction; some lifecycle remains in code-behind. |
 | "You said CI/CD verifies accuracy?" | CI/CD is the improvement process, not the application itself. The accuracy claim rests on runtime design choices + Weishi comparison + repeated measurements first. Verify/CI prevents that accuracy from regressing — supporting evidence. |
 
@@ -322,7 +377,6 @@ xychart-beta horizontal
 |---|---|---|
 | 2. Quality Attributes & Tradeoffs | 2-Architectural-Drivers.md (QAS-1~6) | QAS are measurable: ±1.0 s/d, ≤one beat period, ≥95% detection, 0 display mismatches. |
 | 3. Performance, Latency, Correctness | 3-Risk-Assessment.md, 4-Planned-Experiments.md | EXP-02 closes R-01/R-03; EXP-05 closes R-04; Weishi comparison closes EXP-06. |
-| 4. Architecture Overview | ADR-001, ADR-002, ADR-003, 5-Architectural-View.md | Technology choice (ADR-001); Core zero dependency; worker-level partial Pipe-and-Filter. |
-| 5. Extensibility Deep-Dive | QAS-5, ADR-004 | New graph/filter/measurement ≤1 existing module changed; App/test/verify split. |
-| 6. AI Use | ADR-004, EXP-04, R-17/R-18 | AI is useful but checked: tests/Verify/CI/human review are the safety net. |
-| 7. UI Enhancement | QAS-6, SoundPrint improvements | QAS-6 achieved: 9 mm touch, 2.9 mm letter height; A/C pixel-aligned overlay; unplug/replug recovery. |
+| 4. Architecture & Extensibility | ADR-001, ADR-002, ADR-003, ADR-004, 5-Architectural-View.md | Core zero dependency; worker-level partial Pipe-and-Filter; new graph/filter/measurement ≤1 existing module changed. |
+| 5. AI Use | ADR-004, EXP-04, R-17/R-18 | AI is useful but must be checked: tests/Verify/CI/human review are the safety net. |
+| 6. UI Enhancement | QAS-6, SoundPrint improvements | QAS-6 achieved: 9 mm touch, 2.9 mm letter height; A/C pixel-aligned overlay; unplug/replug recovery; dark mode; in-app manual. |
