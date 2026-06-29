@@ -45,9 +45,14 @@
 **[Note]** QAS priority slide.
 
 **[Presenter]**
-> "Six quality attributes drive this system, prioritized in this order. That ordering was itself a decision — through discussion with Dan and Steve, we settled on **Accuracy** as the top priority. A timegrapher's only job is to produce correct readings; if the rate is wrong, everything else is meaningless. After that: **Performance/Latency**, **Reliability**, **Consistency**, **Modifiability**, and **Usability**. These are not generic quality words — we turned each one into a measurable scenario.
+> "We defined six quality attributes, prioritized in the numbered order shown. Early in the project, through discussion with Dan and Steve, we settled on **Accuracy** as the top priority. A timegrapher's only job is to produce correct readings; if the rate is wrong, everything else is meaningless. After that: Performance/Latency, Reliability, Consistency, Modifiability, and Usability. We turned each one into a measurable scenario — the quality attribute scenarios we defined are shown on screen.
 >
-> QAS-1 (Accuracy): computed rate within ±1.0 s/d of a known reference over ≥1,000 consecutive beats on clean input. QAS-2 (Latency): worst-case E2E latency within one beat period — 83.3 ms at 43200 BPH. QAS-3 (Reliability): at SNR ≥ 30 dB over ≥1,000 beats, detection ≥ 95% and displayed rate within ±3 s/d of the reference; below threshold, show 'signal weak'. QAS-4 (Consistency): all displays in the same frame from one source data set, zero mismatches. QAS-5 (Modifiability): a new graph, filter, or measurement touches ≤1 existing module. QAS-6 (Usability): 2.9 mm letter height, 9 mm touch targets on the Pi 1280×800 screen."
+> QAS-1 (Accuracy): computed rate within ±1.0 s/d of a known reference over ≥1,000 consecutive beats on clean input.
+> QAS-2 (Latency): worst-case E2E latency within one beat period — 83.3 ms at 43200 BPH.
+> QAS-3 (Reliability): at SNR ≥ 30 dB over ≥1,000 beats, detection ≥ 95% and displayed rate within ±3 s/d of the reference; below threshold, show 'signal weak'.
+> QAS-4 (Consistency): all displays in the same frame from one source data set, zero mismatches.
+> QAS-5 (Modifiability): a new graph, filter, or measurement touches ≤1 existing module.
+> QAS-6 (Usability): 2.9 mm letter height, 9 mm touch targets on the Pi 1280×800 screen."
 
 ---
 
