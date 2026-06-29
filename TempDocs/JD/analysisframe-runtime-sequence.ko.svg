@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1700" height="1040" viewBox="0 0 1700 1040">
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L9,3 z" fill="#111"/>
+    </marker>
+  </defs>
+  <rect width="1700" height="1040" fill="#fff"/>
+  <text x="40" y="58" font-family="'Malgun Gothic', 'Apple SD Gothic Neo', Arial, sans-serif" font-size="30" font-weight="700" fill="#111" text-anchor="start">AnalysisFrame Runtime Sequence Diagram</text>
+  <text x="42" y="94" font-family="'Malgun Gothic', 'Apple SD Gothic Neo', Arial, sans-serif" font-size="15" font-weight="400" fill="#555" text-anchor="start">UML 구조와 Mapping View가 runtime에서 어떻게 생성·전달·소비되는지 보여준다. 핵심은 same-frame fan-out과 active renderer only rendering이다.</text>
+  <rect x="40" y="112" width="250" height="54" rx="0" ry="0" fill="#F7F7F7" stroke="#AAA" stroke-width="1"/>
+<text x="165" y="134" font-family="'Malgun Gothic', 'Apple SD Gothic Neo', Arial, sans-serif" font-size="13" font-weight="400" fill="#222" text-anchor="middle">1. UML Class Diagram</text>
+<text x="165" y="153" font-family="'Malgun Gothic', 'Apple SD Gothic Neo', Arial, sans-serif" font-size="13" font-weight="400" fill="#222" text-anchor="middle">구조: field/type 관계</text>
+<rect x="370" y="112" width="250" height="54" rx="0" ry="0" fill="#F7F7F7" stroke="#AAA" stroke-width="1"/>
+<text x="495" y="134" font-family="'Malgun Gothic', 'Apple SD Gothic Neo', Arial, sans-serif" font-size="13" font-weight="400" fill="#222" text-anchor="middle">2. Mapping View</text>
+<text x="495" y="153" font-family="'Malgun Gothic', 'Apple SD Gothic Neo', Arial, sans-serif" font-size="13" font-weight="400" fill="#222" text-anchor="middle">payload -&gt; 대표 graph</text>
+<rect x="700" y="112" width="250" height="54" rx="0" ry="0" fill="#FFF1EA" stroke="#FF6B35" stroke-width="3"/>
+<text x="825" y="134" font-family="'Malgun Gothic', 'Apple SD Gothic Neo', Arial, sans-serif" font-size="13" font-weight="700" fill="#222" text-anchor="middle">3. Sequence Diagram</text>
+<text x="825" y="153" font-family="'Malgun Gothic', 'Apple SD Gothic Neo', Arial, sans-serif" font-size="13" font-weight="700" fill="#222" text-anchor="middle">runtime 전달 흐름</text>
+<line x1="290" y1="139" x2="370" y2="139" stroke="#777" stroke-width="1.5" marker-end="url(#arrow)"/>
+<line x1="620" y1="139" x2="700" y2="139" stroke="#777" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <rect x="30" y="210" width="200" height="70" rx="0" ry="0" fill="#E8F2FF" stroke="#1565C0" stroke-width="2"/>
+<text x="130" y="235" font-family="'Malgun Gothic', 'Apple SD Gothic Neo', Arial, sans-serif" font-size="13" font-weight="700" fill="#111" text-anchor="middle">AnalysisWorker</text>
+<text x="130" y="254" font-family="'Malgun Gothic', 'Apple SD Gothic Neo', Arial, sans-serif" font-size="13" font-weight="700" fill="#111" text-anchor="middle">(Core)</text>
+<line x1="130" y1="280" x2="130" y2="900" stroke="#999" stroke-width="1.5" stroke-dasharray="6 6"/>
+<rect x="295" y="210" width="200" height="70" rx="0" ry="0" fill="#F7F7F7" stroke="#333" stroke-width="2"/>
+<text x="395" y="235" font-family="'Malgun Gothic', 'Apple SD Gothic Neo', Arial, sans-serif" font-size="13" font-weight="700" fill="#111" text-anchor="middle">MainWindow</text>
+<text x="395" y="254" font-family="'Malgun Gothic', 'Apple SD Gothic Neo', Arial, sans-serif" font-size="13" font-weight="700" fill="#111" text-anchor="middle">OnAnalysisFrameReady</text>
+<line x1="395" y1="280" x2="395" y2="900" stroke="#999" stroke-width="1.5" stroke-dasharray="6 6"/>
+<rect x="565" y="210" width="200" height="70" rx="0" ry="0" fill="#FFF7E0" stroke="#B7791F" stroke-width="2"/>
+<text x="665" y="235" font-family="'Malgun Gothic', 'Apple SD Gothic Neo', Arial, sans-serif" font-size="13" font-weight="700" fill="#111" text-anchor="middle">RenderScheduler</text>
+<text x="665" y="254" font-family="'Malgun Gothic', 'Apple SD Gothic Neo', Arial, sans-serif" font-size="13" font-weight="700" fill="#111" text-anchor="middle">latest-wins</text>
+<line x1="665" y1="280" x2="665" y2="900" stroke="#999" stroke-width="1.5" stroke-dasharray="6 6"/>
+<rect x="835" y="210" width="200" height="70" rx="0" ry="0" fill="#F7F7F7" stroke="#333" stroke-width="2"/>
+<text x="935" y="235" font-family="'Malgun Gothic', 'Apple SD Gothic Neo', Arial, sans-serif" font-size="13" font-weight="700" fill="#111" text-anchor="middle">MainWindow</text>
+<text x="935" y="254" font-family="'Malgun Gothic', 'Apple SD Gothic Neo', Arial, sans-serif" font-size="13" font-weight="700" fill="#111" text-anchor="middle">HandleAnalysisFrame</text>
+<line x1="935" y1="280" x2="935" y2="900" stroke="#999" stroke-width="1.5" stroke-dasharray="6 6"/>
+<rect x="1105" y="210" width="200" height="70" rx="0" ry="0" fill="#F7F7F7" stroke="#333" stroke-width="2"/>
+<text x="1205" y="235" font-family="'Malgun Gothic', 'Apple SD Gothic Neo', Arial, sans-serif" font-size="13" font-weight="700" fill="#111" text-anchor="middle">AnalysisFrameRouter</text>
+<line x1="1205" y1="280" x2="1205" y2="900" stroke="#999" stroke-width="1.5" stroke-dasharray="6 6"/>
+<rect x="1380" y="210" width="200" height="70" rx="0" ry="0" fill="#EEF8F0" stroke="#2E7D32" stroke-width="2"/>
+<text x="1480" y="235" font-family="'Malgun Gothic', 'Apple SD Gothic Neo', Arial, sans-serif" font-size="13" font-weight="700" fill="#111" text-anchor="middle">IAnalysisFrameConsumer</text>
+<text x="1480" y="254" font-family="'Malgun Gothic', 'Apple SD Gothic Neo', Arial, sans-serif" font-size="13" font-weight="700" fill="#111" text-anchor="middle">Renderer</text>
+<line x1="1480" y1="280" x2="1480" y2="900" stroke="#999" stroke-width="1.5" stroke-dasharray="6 6"/>
+  <rect x="40" y="350" width="330" height="78" rx="0" ry="0" fill="#FFF1EA" stroke="#FF6B35" stroke-width="2"/>
+  <text x="62" y="378" font-family="'Malgun Gothic', 'Apple SD Gothic Neo', Arial, sans-serif" font-size="14" font-weight="700" fill="#111" text-anchor="start">same analysis pass</text>
+  <text x="62" y="404" font-family="'Malgun Gothic', 'Apple SD Gothic Neo', Arial, sans-serif" font-size="12" font-weight="400" fill="#111" text-anchor="start">Scope/Rate/Metric/Image/Quality payload를</text>
+  <text x="62" y="424" font-family="'Malgun Gothic', 'Apple SD Gothic Neo', Arial, sans-serif" font-size="12" font-weight="400" fill="#111" text-anchor="start">하나의 AnalysisFrame으로 묶음</text>
+
+  <line x1="130" y1="320" x2="395" y2="320" stroke="#1565C0" stroke-width="2" marker-end="url(#arrow)"/>
+<text x="262.5" y="312" font-family="'Malgun Gothic', 'Apple SD Gothic Neo', Arial, sans-serif" font-size="12" font-weight="400" fill="#1565C0" text-anchor="middle">AnalysisFrameReady(frame)  // analysis thread</text>
+  <line x1="395" y1="395" x2="665" y2="395" stroke="#111" stroke-width="2" marker-end="url(#arrow)"/>
+<text x="530" y="387" font-family="'Malgun Gothic', 'Apple SD Gothic Neo', Arial, sans-serif" font-size="12" font-weight="400" fill="#111" text-anchor="middle">Enqueue(frame)</text>
+  <rect x="520" y="420" width="290" height="75" rx="0" ry="0" fill="#FFF7E0" stroke="#B7791F" stroke-width="2"/>
+  <text x="540" y="448" font-family="'Malgun Gothic', 'Apple SD Gothic Neo', Arial, sans-serif" font-size="14" font-weight="700" fill="#111" text-anchor="start">coalescing / latest-wins</text>
+  <text x="540" y="474" font-family="'Malgun Gothic', 'Apple SD Gothic Neo', Arial, sans-serif" font-size="12" font-weight="400" fill="#111" text-anchor="start">pending frame 교체 시 transient signal과 image metadata 보존</text>
+  <line x1="665" y1="525" x2="935" y2="525" stroke="#B7791F" stroke-width="2" marker-end="url(#arrow)"/>
+<text x="800" y="517" font-family="'Malgun Gothic', 'Apple SD Gothic Neo', Arial, sans-serif" font-size="12" font-weight="400" fill="#B7791F" text-anchor="middle">postToUi -&gt; ProcessPendingFrame(frame, droppedFrames)</text>
+  <rect x="835" y="548" width="210" height="60" rx="0" ry="0" fill="#F7F7F7" stroke="#333" stroke-width="2"/>
+  <text x="858" y="575" font-family="'Malgun Gothic', 'Apple SD Gothic Neo', Arial, sans-serif" font-size="14" font-weight="700" fill="#111" text-anchor="start">session gate</text>
+  <text x="858" y="599" font-family="'Malgun Gothic', 'Apple SD Gothic Neo', Arial, sans-serif" font-size="12" font-weight="400" fill="#111" text-anchor="start">stale SessionId면 return</text>
+  <line x1="935" y1="635" x2="1205" y2="635" stroke="#111" stroke-width="2" marker-end="url(#arrow)"/>
+<text x="1070" y="627" font-family="'Malgun Gothic', 'Apple SD Gothic Neo', Arial, sans-serif" font-size="12" font-weight="400" fill="#111" text-anchor="middle">Route(frame, activeTabId, context)</text>
+  <rect x="1080" y="660" width="250" height="78" rx="0" ry="0" fill="#F7F7F7" stroke="#333" stroke-width="2"/>
+  <text x="1102" y="688" font-family="'Malgun Gothic', 'Apple SD Gothic Neo', Arial, sans-serif" font-size="14" font-weight="700" fill="#111" text-anchor="start">Router fan-out policy</text>
+  <text x="1102" y="714" font-family="'Malgun Gothic', 'Apple SD Gothic Neo', Arial, sans-serif" font-size="12" font-weight="400" fill="#111" text-anchor="start">1) 모든 consumer가 ObserveFrame(frame)</text>
+  <text x="1102" y="734" font-family="'Malgun Gothic', 'Apple SD Gothic Neo', Arial, sans-serif" font-size="12" font-weight="400" fill="#111" text-anchor="start">2) active tab만 RenderFrame(frame)</text>
+  <line x1="1205" y1="770" x2="1480" y2="770" stroke="#555" stroke-width="2" stroke-dasharray="6 5" marker-end="url(#arrow)"/>
+<text x="1342.5" y="762" font-family="'Malgun Gothic', 'Apple SD Gothic Neo', Arial, sans-serif" font-size="12" font-weight="400" fill="#555" text-anchor="middle">loop all: ObserveFrame(frame)</text>
+  <line x1="1205" y1="835" x2="1480" y2="835" stroke="#2E7D32" stroke-width="2" marker-end="url(#arrow)"/>
+<text x="1342.5" y="827" font-family="'Malgun Gothic', 'Apple SD Gothic Neo', Arial, sans-serif" font-size="12" font-weight="400" fill="#2E7D32" text-anchor="middle">active only: RenderFrame(frame, context)</text>
+  <line x1="935" y1="900" x2="395" y2="900" stroke="#555" stroke-width="2" stroke-dasharray="6 5" marker-end="url(#arrow)"/>
+<text x="665" y="892" font-family="'Malgun Gothic', 'Apple SD Gothic Neo', Arial, sans-serif" font-size="12" font-weight="400" fill="#555" text-anchor="middle">Presenter.Present(frame): status / latency / review max</text>
+
+  <rect x="40" y="925" width="820" height="80" rx="0" ry="0" fill="#FAFAFA" stroke="#DDD" stroke-width="1"/>
+  <text x="62" y="954" font-family="'Malgun Gothic', 'Apple SD Gothic Neo', Arial, sans-serif" font-size="15" font-weight="700" fill="#111" text-anchor="start">발표용 메시지</text>
+  <text x="62" y="980" font-family="'Malgun Gothic', 'Apple SD Gothic Neo', Arial, sans-serif" font-size="13" font-weight="400" fill="#111" text-anchor="start">하나의 AnalysisFrame이 scheduler/presenter/router를 지나 renderer에 전달된다.</text>
+  <text x="62" y="1000" font-family="'Malgun Gothic', 'Apple SD Gothic Neo', Arial, sans-serif" font-size="13" font-weight="400" fill="#111" text-anchor="start">Renderer들은 Core를 다시 호출하지 않고 같은 frame snapshot을 소비한다.</text>
+  <rect x="895" y="925" width="610" height="80" rx="0" ry="0" fill="#FFFFFF" stroke="#111" stroke-width="2"/>
+  <text x="917" y="954" font-family="'Malgun Gothic', 'Apple SD Gothic Neo', Arial, sans-serif" font-size="15" font-weight="700" fill="#111" text-anchor="start">범례</text>
+  <text x="917" y="980" font-family="'Malgun Gothic', 'Apple SD Gothic Neo', Arial, sans-serif" font-size="13" font-weight="400" fill="#111" text-anchor="start">실선 = frame 전달 / 점선 = observe 또는 presenter side-effect</text>
+  <text x="917" y="1000" font-family="'Malgun Gothic', 'Apple SD Gothic Neo', Arial, sans-serif" font-size="13" font-weight="400" fill="#111" text-anchor="start">노란 박스 = scheduling tactic / 초록 화살표 = 실제 render</text>
+</svg>

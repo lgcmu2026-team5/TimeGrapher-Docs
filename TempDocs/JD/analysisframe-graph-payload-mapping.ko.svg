@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1560" height="980" viewBox="0 0 1560 980">
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L9,3 z" fill="#111"/>
+    </marker>
+  </defs>
+  <rect width="1560" height="980" fill="#fff"/>
+  <text x="40" y="58" font-family="'Malgun Gothic', 'Apple SD Gothic Neo', Arial, sans-serif" font-size="30" font-weight="700" fill="#111" text-anchor="start">AnalysisFrame Graph-to-Payload Mapping View</text>
+  <text x="42" y="94" font-family="'Malgun Gothic', 'Apple SD Gothic Neo', Arial, sans-serif" font-size="15" font-weight="400" fill="#555" text-anchor="start">UML 클래스 다이어그램의 정적 구조를 실제 대표 graph/display 소비 관계로 연결한다. 전체 그래프 목록이 아니라 발표용 대표 흐름이다.</text>
+  <rect x="40" y="112" width="250" height="54" rx="0" ry="0" fill="#F7F7F7" stroke="#AAA" stroke-width="1"/>
+<text x="165" y="134" font-family="'Malgun Gothic', 'Apple SD Gothic Neo', Arial, sans-serif" font-size="13" font-weight="400" fill="#222" text-anchor="middle">1. UML Class Diagram</text>
+<text x="165" y="153" font-family="'Malgun Gothic', 'Apple SD Gothic Neo', Arial, sans-serif" font-size="13" font-weight="400" fill="#222" text-anchor="middle">구조: field/type 관계</text>
+<rect x="370" y="112" width="250" height="54" rx="0" ry="0" fill="#FFF1EA" stroke="#FF6B35" stroke-width="3"/>
+<text x="495" y="134" font-family="'Malgun Gothic', 'Apple SD Gothic Neo', Arial, sans-serif" font-size="13" font-weight="700" fill="#222" text-anchor="middle">2. Mapping View</text>
+<text x="495" y="153" font-family="'Malgun Gothic', 'Apple SD Gothic Neo', Arial, sans-serif" font-size="13" font-weight="700" fill="#222" text-anchor="middle">payload -&gt; 대표 graph</text>
+<rect x="700" y="112" width="250" height="54" rx="0" ry="0" fill="#F7F7F7" stroke="#AAA" stroke-width="1"/>
+<text x="825" y="134" font-family="'Malgun Gothic', 'Apple SD Gothic Neo', Arial, sans-serif" font-size="13" font-weight="400" fill="#222" text-anchor="middle">3. Sequence Diagram</text>
+<text x="825" y="153" font-family="'Malgun Gothic', 'Apple SD Gothic Neo', Arial, sans-serif" font-size="13" font-weight="400" fill="#222" text-anchor="middle">runtime 전달 흐름</text>
+<line x1="290" y1="139" x2="370" y2="139" stroke="#777" stroke-width="1.5" marker-end="url(#arrow)"/>
+<line x1="620" y1="139" x2="700" y2="139" stroke="#777" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <rect x="55" y="225" width="300" height="180" rx="0" ry="0" fill="#FFF1EA" stroke="#FF6B35" stroke-width="3"/>
+<text x="71" y="253" font-family="'Malgun Gothic', 'Apple SD Gothic Neo', Arial, sans-serif" font-size="15" font-weight="700" fill="#111" text-anchor="start">UML Class Diagram에서 온 근거</text>
+<text x="71" y="281" font-family="'Malgun Gothic', 'Apple SD Gothic Neo', Arial, sans-serif" font-size="12" font-weight="400" fill="#333" text-anchor="start">AnalysisFrame</text>
+<text x="71" y="299" font-family="'Malgun Gothic', 'Apple SD Gothic Neo', Arial, sans-serif" font-size="12" font-weight="400" fill="#333" text-anchor="start">- ScopeSeries / RateSeries</text>
+<text x="71" y="317" font-family="'Malgun Gothic', 'Apple SD Gothic Neo', Arial, sans-serif" font-size="12" font-weight="400" fill="#333" text-anchor="start">- Markers</text>
+<text x="71" y="335" font-family="'Malgun Gothic', 'Apple SD Gothic Neo', Arial, sans-serif" font-size="12" font-weight="400" fill="#333" text-anchor="start">- MetricsUpdate / MetricsHistory</text>
+<text x="71" y="353" font-family="'Malgun Gothic', 'Apple SD Gothic Neo', Arial, sans-serif" font-size="12" font-weight="400" fill="#333" text-anchor="start">- BeatSegments</text>
+<text x="71" y="371" font-family="'Malgun Gothic', 'Apple SD Gothic Neo', Arial, sans-serif" font-size="12" font-weight="400" fill="#333" text-anchor="start">- SoundImage / SpectrogramImage</text>
+<text x="71" y="389" font-family="'Malgun Gothic', 'Apple SD Gothic Neo', Arial, sans-serif" font-size="12" font-weight="400" fill="#333" text-anchor="start">- SignalQuality</text>
+
+  <rect x="445" y="205" width="360" height="130" rx="0" ry="0" fill="#FFF1EA" stroke="#FF6B35" stroke-width="3"/>
+<text x="461" y="233" font-family="'Malgun Gothic', 'Apple SD Gothic Neo', Arial, sans-serif" font-size="15" font-weight="700" fill="#111" text-anchor="start">AnalysisFrame</text>
+<text x="461" y="261" font-family="'Malgun Gothic', 'Apple SD Gothic Neo', Arial, sans-serif" font-size="12" font-weight="400" fill="#333" text-anchor="start">한 번의 analysis pass 결과를 묶은</text>
+<text x="461" y="279" font-family="'Malgun Gothic', 'Apple SD Gothic Neo', Arial, sans-serif" font-size="12" font-weight="400" fill="#333" text-anchor="start">Core.Shared DTO</text>
+<text x="461" y="297" font-family="'Malgun Gothic', 'Apple SD Gothic Neo', Arial, sans-serif" font-size="12" font-weight="400" fill="#333" text-anchor="start"></text>
+<text x="461" y="315" font-family="'Malgun Gothic', 'Apple SD Gothic Neo', Arial, sans-serif" font-size="12" font-weight="400" fill="#333" text-anchor="start">same frame = same UI update contract</text>
+
+  <rect x="445" y="385" width="360" height="105" rx="0" ry="0" fill="#E8F2FF" stroke="#1565C0" stroke-width="2"/>
+<text x="461" y="413" font-family="'Malgun Gothic', 'Apple SD Gothic Neo', Arial, sans-serif" font-size="15" font-weight="700" fill="#111" text-anchor="start">Graph Payload</text>
+<text x="461" y="441" font-family="'Malgun Gothic', 'Apple SD Gothic Neo', Arial, sans-serif" font-size="12" font-weight="400" fill="#333" text-anchor="start">ScopeSeries / RateSeries</text>
+<text x="461" y="459" font-family="'Malgun Gothic', 'Apple SD Gothic Neo', Arial, sans-serif" font-size="12" font-weight="400" fill="#333" text-anchor="start">Vertical·Horizontal·Text Markers</text>
+  <rect x="445" y="510" width="360" height="105" rx="0" ry="0" fill="#EEF8F0" stroke="#2E7D32" stroke-width="2"/>
+<text x="461" y="538" font-family="'Malgun Gothic', 'Apple SD Gothic Neo', Arial, sans-serif" font-size="15" font-weight="700" fill="#111" text-anchor="start">Metrics Payload</text>
+<text x="461" y="566" font-family="'Malgun Gothic', 'Apple SD Gothic Neo', Arial, sans-serif" font-size="12" font-weight="400" fill="#333" text-anchor="start">MetricsUpdate / MetricsHistory</text>
+<text x="461" y="584" font-family="'Malgun Gothic', 'Apple SD Gothic Neo', Arial, sans-serif" font-size="12" font-weight="400" fill="#333" text-anchor="start">Rate, Amplitude, BeatError, Stats</text>
+  <rect x="445" y="635" width="360" height="95" rx="0" ry="0" fill="#FFF7E0" stroke="#B7791F" stroke-width="2"/>
+<text x="461" y="663" font-family="'Malgun Gothic', 'Apple SD Gothic Neo', Arial, sans-serif" font-size="15" font-weight="700" fill="#111" text-anchor="start">Beat Payload</text>
+<text x="461" y="691" font-family="'Malgun Gothic', 'Apple SD Gothic Neo', Arial, sans-serif" font-size="12" font-weight="400" fill="#333" text-anchor="start">BeatSegments</text>
+<text x="461" y="709" font-family="'Malgun Gothic', 'Apple SD Gothic Neo', Arial, sans-serif" font-size="12" font-weight="400" fill="#333" text-anchor="start">recent beat windows, A/C markers, average lanes</text>
+  <rect x="445" y="750" width="360" height="105" rx="0" ry="0" fill="#F2ECFF" stroke="#6B46C1" stroke-width="2"/>
+<text x="461" y="778" font-family="'Malgun Gothic', 'Apple SD Gothic Neo', Arial, sans-serif" font-size="15" font-weight="700" fill="#111" text-anchor="start">Image / Annotation Payload</text>
+<text x="461" y="806" font-family="'Malgun Gothic', 'Apple SD Gothic Neo', Arial, sans-serif" font-size="12" font-weight="400" fill="#333" text-anchor="start">SoundImage, SpectrogramImage + metadata</text>
+<text x="461" y="824" font-family="'Malgun Gothic', 'Apple SD Gothic Neo', Arial, sans-serif" font-size="12" font-weight="400" fill="#333" text-anchor="start">SignalQuality advisory annotation</text>
+
+  <rect x="930" y="210" width="460" height="100" rx="0" ry="0" fill="#FFFFFF" stroke="#4F5B62" stroke-width="2"/>
+<text x="946" y="238" font-family="'Malgun Gothic', 'Apple SD Gothic Neo', Arial, sans-serif" font-size="15" font-weight="700" fill="#111" text-anchor="start">Scope / Rate Scope</text>
+<text x="946" y="266" font-family="'Malgun Gothic', 'Apple SD Gothic Neo', Arial, sans-serif" font-size="12" font-weight="400" fill="#333" text-anchor="start">RateScopeRenderer</text>
+<text x="946" y="284" font-family="'Malgun Gothic', 'Apple SD Gothic Neo', Arial, sans-serif" font-size="12" font-weight="400" fill="#333" text-anchor="start">ScopeSeries + RateSeries + markers + MetricsUpdate</text>
+  <rect x="930" y="335" width="460" height="100" rx="0" ry="0" fill="#FFFFFF" stroke="#4F5B62" stroke-width="2"/>
+<text x="946" y="363" font-family="'Malgun Gothic', 'Apple SD Gothic Neo', Arial, sans-serif" font-size="15" font-weight="700" fill="#111" text-anchor="start">Beat Error</text>
+<text x="946" y="391" font-family="'Malgun Gothic', 'Apple SD Gothic Neo', Arial, sans-serif" font-size="12" font-weight="400" fill="#333" text-anchor="start">BeatErrorDiagRenderer</text>
+<text x="946" y="409" font-family="'Malgun Gothic', 'Apple SD Gothic Neo', Arial, sans-serif" font-size="12" font-weight="400" fill="#333" text-anchor="start">RateSeries + MetricsHistory.BeatError + interval summary</text>
+  <rect x="930" y="460" width="460" height="100" rx="0" ry="0" fill="#FFFFFF" stroke="#4F5B62" stroke-width="2"/>
+<text x="946" y="488" font-family="'Malgun Gothic', 'Apple SD Gothic Neo', Arial, sans-serif" font-size="15" font-weight="700" fill="#111" text-anchor="start">Vario / Long-Term</text>
+<text x="946" y="516" font-family="'Malgun Gothic', 'Apple SD Gothic Neo', Arial, sans-serif" font-size="12" font-weight="400" fill="#333" text-anchor="start">VarioRenderer, LongTermPerfRenderer</text>
+<text x="946" y="534" font-family="'Malgun Gothic', 'Apple SD Gothic Neo', Arial, sans-serif" font-size="12" font-weight="400" fill="#333" text-anchor="start">MetricsHistory.Rate/Amplitude/Stats/Positions</text>
+  <rect x="930" y="585" width="460" height="100" rx="0" ry="0" fill="#FFFFFF" stroke="#4F5B62" stroke-width="2"/>
+<text x="946" y="613" font-family="'Malgun Gothic', 'Apple SD Gothic Neo', Arial, sans-serif" font-size="15" font-weight="700" fill="#111" text-anchor="start">Beat Noise / Avg Envelope</text>
+<text x="946" y="641" font-family="'Malgun Gothic', 'Apple SD Gothic Neo', Arial, sans-serif" font-size="12" font-weight="400" fill="#333" text-anchor="start">BeatNoiseScopeRenderer, WaveformCompareRenderer</text>
+<text x="946" y="659" font-family="'Malgun Gothic', 'Apple SD Gothic Neo', Arial, sans-serif" font-size="12" font-weight="400" fill="#333" text-anchor="start">BeatSegments + A/C markers + average lanes</text>
+  <rect x="930" y="710" width="460" height="100" rx="0" ry="0" fill="#FFFFFF" stroke="#4F5B62" stroke-width="2"/>
+<text x="946" y="738" font-family="'Malgun Gothic', 'Apple SD Gothic Neo', Arial, sans-serif" font-size="15" font-weight="700" fill="#111" text-anchor="start">Sound Print / Spectrogram</text>
+<text x="946" y="766" font-family="'Malgun Gothic', 'Apple SD Gothic Neo', Arial, sans-serif" font-size="12" font-weight="400" fill="#333" text-anchor="start">SoundPrintFrameConsumer, SpectrogramFrameConsumer</text>
+<text x="946" y="784" font-family="'Malgun Gothic', 'Apple SD Gothic Neo', Arial, sans-serif" font-size="12" font-weight="400" fill="#333" text-anchor="start">SoundImage, SpectrogramImage, live-column metadata</text>
+
+  <line x1="355" y1="315" x2="445" y2="270" stroke="#FF6B35" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="625" y1="335" x2="625" y2="385" stroke="#333" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="625" y1="335" x2="625" y2="510" stroke="#333" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="625" y1="335" x2="625" y2="635" stroke="#333" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="625" y1="335" x2="625" y2="750" stroke="#333" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <line x1="805" y1="438" x2="930" y2="260" stroke="#1565C0" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="805" y1="438" x2="930" y2="385" stroke="#1565C0" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="805" y1="563" x2="930" y2="385" stroke="#2E7D32" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="805" y1="563" x2="930" y2="510" stroke="#2E7D32" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="805" y1="682" x2="930" y2="635" stroke="#B7791F" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="805" y1="803" x2="930" y2="760" stroke="#6B46C1" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <rect x="55" y="875" width="605" height="72" rx="0" ry="0" fill="#FAFAFA" stroke="#DDD" stroke-width="1"/>
+  <text x="75" y="902" font-family="'Malgun Gothic', 'Apple SD Gothic Neo', Arial, sans-serif" font-size="15" font-weight="700" fill="#111" text-anchor="start">발표용 메시지</text>
+  <text x="75" y="928" font-family="'Malgun Gothic', 'Apple SD Gothic Neo', Arial, sans-serif" font-size="13" font-weight="400" fill="#111" text-anchor="start">각 graph가 Core에 직접 붙는 것이 아니라, 같은 AnalysisFrame contract에서 필요한 payload만 소비한다.</text>
+
+  <rect x="720" y="875" width="670" height="72" rx="0" ry="0" fill="#FFFFFF" stroke="#111" stroke-width="2"/>
+  <text x="742" y="902" font-family="'Malgun Gothic', 'Apple SD Gothic Neo', Arial, sans-serif" font-size="15" font-weight="700" fill="#111" text-anchor="start">범례</text>
+  <text x="742" y="928" font-family="'Malgun Gothic', 'Apple SD Gothic Neo', Arial, sans-serif" font-size="13" font-weight="400" fill="#111" text-anchor="start">색상 = payload group / 화살표 = 대표 소비 관계 / 오른쪽 박스 = 대표 display 또는 renderer</text>
+</svg>
