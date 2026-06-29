@@ -106,18 +106,11 @@
 ### 2-4. What Was Achieved / Limitations (5 pts)
 
 **[Presenter]**
-> "**What we achieved:**
-> QAS-1 (Accuracy): rate within ±1.0 s/d on clean simulation input — passed.
-> QAS-2 (Latency): worst-case E2E 36.46 ms at 43200 BPH / 192 kHz — 44% of the 83.3 ms budget. Drop 0 / Miss 0 across all 13 tabs — passed.
-> QAS-3 (Reliability): adaptive noise floor, PLL-guided gating, regime guard, and TinyML classifier implemented. Verified against noise, impulse, and gain-step scenarios in Verify `--adverse` mode — passed.
-> QAS-4 (Consistency): single AnalysisFrame structure guarantees zero mismatches within a frame — passed by design.
-> QAS-5 (Modifiability): all 13 tabs added via InfoTabCatalog pattern, each touching ≤1 existing module — passed.
-> QAS-6 (Usability): 2.9 mm letter height, 9 mm touch targets centralized in App.axaml and verified on the Pi touchscreen — passed.
+> "**What we achieved:** all six QAS targets were met. The measured numbers are in the next slide.
 >
 > **Limitations that remain:**
 > QAS-1: passed on simulation and Verify fixtures, but the definitive real-world check is measuring the same watch on both TimeGrapher and the Weishi reference device and confirming the numbers agree — we show that result in slide 3.
-> QAS-3: the TinyML classifier is integrated and running, but how well it classifies across different watch types and real low-SNR conditions has not been fully tested yet.
-> We report these limits because honest evaluation is stronger than pretending the risks have disappeared."
+> QAS-3: the TinyML classifier is integrated and running, but how well it classifies across different watch types and real low-SNR conditions has not been fully tested yet."
 
 ---
 
