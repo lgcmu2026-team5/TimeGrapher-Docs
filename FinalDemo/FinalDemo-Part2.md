@@ -198,51 +198,32 @@ xychart-beta horizontal
 ---
 
 ## Slide 4. Architecture & Extensibility (4:30)
-> ▣ RUBRIC: **Area 5 — Extensibility: modular, separates concerns (6 pts) + supports adding new displays with limited redesign (6 pts) + understandable/maintainable (4 pts)**
+> ▣ RUBRIC: **Area 5 — Extensibility (20 pts): modular, separates concerns (6 pts) + supports adding new displays with limited redesign (6 pts) + explains future requirements/enhancements (4 pts) + understandable/maintainable (4 pts)**
 
-**[Note]** Layer diagram + module-uses view + 4-step extensibility recipe slide.
+---
 
-**[Slide Visual — Layer structure (3 layers, one-way dependencies)]**
+### 4-1. Modular & Separation of Concerns (6 pts)
 
-![Layer Diagram](../Milestone/assets/LAYER.png)
-
-**[Slide Visual — Project module dependencies (App · Core · Platform · Verify)]**
+**[Slide Visual — Project module dependencies]**
 
 ![Module Dependency View](../Milestone/assets/module-uses-project.en.svg)
 
+**[Slide Visual — Core internal module dependencies]**
+
+![Core Internal Module Dependencies](../Milestone/assets/module-uses-core.en.svg)
+
 **[Presenter]** *(transition from slide 3)*
-> "Those numbers were possible because of the architecture. Let me explain why.
+> "We've verified the performance and correctness evidence. Now let me walk through the architecture and extensibility of the system.
 >
-> The architecture is three layers. **Core** is the analysis engine — detection, measurement, image generation, the simulator — and it has **zero dependencies** on UI or OS. The **App** is the Avalonia UI. The **Platform** assemblies wrap each OS's microphone stack. Dependencies only point downward: App and Platform both depend on Core, never the reverse.
+> As shown in the module dependency view, **Core** is the analysis engine — detection, measurement, image generation, the simulator — and it has **zero dependencies** on UI or OS. The **App** is the Avalonia UI. The **Platform** assemblies wrap each OS's microphone stack. Each module owns exactly one concern — this is **separation of concerns**. Dependencies only point downward: App and Platform both depend on Core, never the reverse.
 >
 > This boundary isn't just a diagram — **our CI enforces it**. A test fails the build if Core ever imports a UI, platform, or audio type. The architecture rule is a failing test, not a comment.
 >
-> All three inputs — live mic, WAV playback, and the simulator — implement one small interface. Core only knows that contract, so a new input or OS backend drops in without touching the engine. And the same frame fan-out is what makes the thirteen-display tour possible: Rate/Scope, Beat Error, Trace, Vario, Long-Term, Sweep, Escapement, Positions, Beat Noise, Waveforms, Filter Scope, Sound Print, and Spectrogram are different views over the same measured analysis frame — not separate competing calculators."
+> All three inputs — live mic, WAV playback, and the simulator — implement one small interface. Core only knows that contract, so a new input or OS backend drops in without touching the engine. And the same frame fan-out is what makes the thirteen-display tour possible: Rate/Scope, Beat Error, Trace, Vario, Long-Term, Sweep, Escapement, Positions, Beat Noise, Waveforms, Filter Scope, Sound Print, and Spectrogram — all 13 are different views rendering the same single AnalysisFrame."
 
-**[Presenter] (QAS traceability)**
-> "Every boundary in this diagram was motivated by a specific quality requirement:
-> **Core zero dependency → QAS-1**: the Verify module runs Core in complete isolation, enabling headless accuracy verification against known references — the architecture does not achieve accuracy, but it makes achievement verifiable.
-> **Worker Pipe-and-Filter → QAS-2**: audio processing and rendering are separated; rendering occurs only when a tab is selected, not all thirteen simultaneously.
-> **Single AnalysisFrame → QAS-4**: every display derives from the same source object — zero mismatches is structurally guaranteed.
-> **InfoTabCatalog pattern → QAS-5**: a new tab requires one catalog entry and one renderer file — no existing analysis module is touched.
-> **Centralized App.axaml theme → QAS-6**: font and touch policy live in one place, preventing accidental drift during maintenance."
+---
 
-**[Slide Visual — 4-step recipe for adding a new display]**
-
-![New Tab Recipe](assets/tab-extensibility-recipe.svg)
-
-**[Slide Visual — Worker-level pipe-and-filter (input → analysis → rendering, separated)]**
-
-![Worker-Level Pipe-and-Filter](../Milestone/assets/worker-level-partial-pipe-and-filter.svg)
-
-**[Presenter] (Extensibility — what actually happens when you add a new graph)**
-> "Let me make 'limited redesign' concrete with two real examples.
->
-> **Example 1: Adding the Spectrogram tab.** To store an STFT result as an image in AnalysisFrame, we touched exactly four places. One new property on AnalysisFrame in Core.Shared — one struct field. One assignment in AnalysisWorker in Core.Analysis — one line. One new file, SpectrogramRenderer.cs, in App.Rendering — no existing file modified. One catalog registration in InfoTabCatalog in App.Tabs — one line. The routing infrastructure picks it up automatically. The existing Detection, Metrics, and Imaging modules were **not touched at all**.
->
-> **Example 2: Adding the Watch Health Radar tab.** The Positions data was already in AnalysisFrame. In this case we didn't even need a new field — just a new RadarRenderer.cs file and one catalog line. Two touchpoints total.
->
-> This is **how the architecture delivers QAS-5**: a new graph touches at most one existing module. All 13 tabs were built this way."
+### 4-2. Supporting New Displays with Limited Redesign (6 pts)
 
 **[Slide Visual — Open extension axes vs. closed stable core]**
 
@@ -260,7 +241,67 @@ flowchart LR
     C -->|"AnalysisFrame supply"| T
 ```
 
-**[Presenter] (Future requirements — how the structure stays open)**
+**[Slide Visual — 4-step recipe for adding a new display]**
+
+![New Tab Recipe](assets/tab-extensibility-recipe.svg)
+
+**[Presenter]**
+> "Let me make 'limited redesign' concrete with two real examples.
+>
+> **Example 1: Adding the Spectrogram tab.** To store an STFT result as an image in AnalysisFrame, we touched exactly four places. One new property on AnalysisFrame in Core.Shared — one struct field. One assignment in AnalysisWorker in Core.Analysis — one line. One new file, SpectrogramRenderer.cs, in App.Rendering — no existing file modified. One catalog registration in InfoTabCatalog in App.Tabs — one line. The routing infrastructure picks it up automatically. The existing Detection, Metrics, and Imaging modules were **not touched at all**.
+>
+> **Example 2: Adding the Watch Health Radar tab.** The Positions data was already in AnalysisFrame. In this case we didn't even need a new field — just a new RadarRenderer.cs file and one catalog line. Two touchpoints total.
+>
+> This is **how the architecture delivers QAS-5**: a new graph touches at most one existing module. All 13 tabs were built this way."
+
+---
+
+### 4-3. Supporting Future Requirements (4 pts)
+
+**[Slide Visual — Impact scope per scenario (full architecture)]**
+
+```mermaid
+flowchart LR
+    subgraph PLAT["Platform Layer"]
+        WIN["WindowsAudio"]
+        LIN["LinuxAudio"]
+        NEWOS["✚ New OS Adapter\n① New OS port"]
+    end
+    subgraph INPUT["Input Workers"]
+        WAV["PlaybackWorker"]
+        SIM["SimWorker"]
+        NEWIN["✚ New InputWorker\n② New input source"]
+    end
+    subgraph CORE["Core — CI boundary 🔒"]
+        DET["Detection ✏️\n③ New algorithm"]
+        MET["Metrics ✏️\n③ New algorithm"]
+        SHD["Shared · Imaging · Sim"]
+    end
+    subgraph APP["App Layer"]
+        UI["Avalonia UI"]
+        CAT["InfoTabCatalog\n13 displays"]
+    end
+    subgraph LEGEND["Notation"]
+        L_STABLE["Unchanged"]
+        L_S1["① New OS port — added"]
+        L_S2["② New input source — added"]
+        L_S3["③ New algorithm — modified"]
+    end
+    PLAT -->|IAudioInputWorker| CORE
+    INPUT -->|IAudioInputWorker| CORE
+    CORE -->|AnalysisFrame| APP
+
+    classDef stable fill:#e0e0e0,stroke:#9e9e9e,color:#424242
+    classDef s1 fill:#c62828,color:#fff,stroke:#8e0000
+    classDef s2 fill:#1565c0,color:#fff,stroke:#003c8f
+    classDef s3 fill:#2e7d32,color:#fff,stroke:#1b5e20
+    class WIN,LIN,WAV,SIM,SHD,UI,CAT,L_STABLE stable
+    class NEWOS,L_S1 s1
+    class NEWIN,L_S2 s2
+    class DET,MET,L_S3 s3
+```
+
+**[Presenter]**
 > "Three scenarios show how this structure accommodates future requirements.
 >
 > **New OS port**: add one Platform assembly — Core and App are untouched. Just implement the same IAudioInput contract. Windows and Linux/Pi already coexist exactly this way.
@@ -271,11 +312,11 @@ flowchart LR
 >
 > Summary: the open axes (new tabs, inputs, platforms) extend by adding contract implementations; the closed axis (Core analysis engine) is isolation-guaranteed by CI."
 
-**[Slide Visual — Core internal module dependencies (single responsibility, intra-layer flow)]**
+---
 
-![Core Internal Module Dependencies](../Milestone/assets/module-uses-core.en.svg)
+### 4-4. Code Organization — Understandable & Maintainable (4 pts)
 
-**[Presenter] (Code organization — readability & maintainability)**
+**[Presenter]**
 > "Five reasons the code structure is understandable and maintainable:
 >
 > First, **ADR documentation** — ADR-001 through ADR-004 record every major design decision with context, alternatives considered, and rationale. A new team member can understand 'why does this look this way' without reading the code alone.
@@ -284,12 +325,9 @@ flowchart LR
 >
 > Third, **ViewModelPurityTests** — if an Avalonia type enters a ViewModel, CI catches it. The MVVM boundary is automatically verified at the code level.
 >
-> Fourth, **InfoTabCatalog pattern** — which tabs exist and what they render is declared in one place. When a new team member asks 'where is this tab?', there is one place to look.
+> Fourth, **InfoTabCatalog file** — which tabs exist and what they render is declared in one place. When a new team member asks 'where is this tab?', there is one place to look.
 >
-> Fifth, **IAudioInput interface** — the only thing Core knows about audio input is this interface. A new team member who wants to understand 'how does audio get in?' reads one contract. Because live mic, WAV playback, and the simulator all implement the same contract, swapping or adding an input source requires no reading of Core internals."
-
-**[Presenter] (honesty point)**
-> "We also assessed our patterns honestly. Our MVVM is partial — start/stop lifecycle still lives in code-behind — and our DSP chain is pipe-and-filter in structure but a single synchronous thread internally. Knowing exactly where a pattern is fully applied versus partially applied was part of what we learned from this course."
+> Fifth, **IAudioInputWorker interface** — the only thing Core knows about audio input is this interface. A new team member who wants to understand 'how does audio get in?' reads one contract. Because live mic, WAV playback, and the simulator all implement the same contract, swapping or adding an input source requires no reading of Core internals."
 
 ---
 

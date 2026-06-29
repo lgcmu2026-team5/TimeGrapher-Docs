@@ -198,51 +198,32 @@ xychart-beta horizontal
 ---
 
 ## 슬라이드 4. 아키텍처 & 확장성 (4:30)
-> ▣ RUBRIC: **Area 5 — Extensibility: modular, separates concerns (6점) + supports adding new displays with limited redesign (6점) + understandable/maintainable (4점)**
+> ▣ RUBRIC: **Area 5 — Extensibility (20점): modular, separates concerns (6점) + supports adding new displays with limited redesign (6점) + explains future requirements/enhancements (4점) + understandable/maintainable (4점)**
 
-**[지시문]** Layer 다이어그램 + module-uses 뷰 + 4단계 확장성 레시피 슬라이드.
+---
 
-**[슬라이드 비주얼 — 레이어 구조 (3개 계층, 단방향 의존성)]**
+### 4-1. 모듈화 & 관심사 분리 (6점)
 
-![레이어 다이어그램](../Milestone/assets/LAYER.png)
-
-**[슬라이드 비주얼 — 프로젝트 모듈 의존성 (App · Core · Platform · Verify)]**
+**[슬라이드 비주얼 — 프로젝트 모듈 의존성]**
 
 ![모듈 의존성 뷰](../Milestone/assets/module-uses-project.en.svg)
 
+**[슬라이드 비주얼 — Core 내부 모듈 의존성]**
+
+![Core 내부 모듈 의존성](../Milestone/assets/module-uses-core.en.svg)
+
 **[발표자]** *(슬라이드 3에서 이어서)*
-> "이 수치들이 가능했던 이유를 아키텍처 관점에서 설명합니다.
+> "성능·정확성 근거를 확인했습니다. 이제 이 시스템의 아키텍처 구조와 확장성을 설명합니다.
 >
-> 아키텍처는 세 개의 레이어입니다. **Core**는 분석 엔진 — 검출, 측정, 이미지 생성, 시뮬레이터 — 이며 UI나 OS에 대한 **의존성이 없습니다**. **App**은 Avalonia UI입니다. **Platform** 어셈블리는 각 OS의 마이크 스택을 감쌉니다. 의존성은 아래 방향으로만: App과 Platform 모두 Core에 의존하고, 반대는 없습니다.
+> 화면의 모듈 의존성 뷰처럼, **Core**는 분석 엔진 — 검출, 측정, 이미지 생성, 시뮬레이터 — 이며 UI나 OS에 대한 **의존성이 없습니다**. **App**은 Avalonia UI입니다. **Platform** 어셈블리는 각 OS의 마이크 스택을 감쌉니다. 각 모듈이 하나의 관심사만 담당하는 **관심사 분리(separation of concerns)**입니다. 의존성은 아래 방향으로만: App과 Platform 모두 Core에 의존하고, 반대는 없습니다.
 >
 > 이 경계는 다이어그램에 그치지 않습니다 — **CI가 강제합니다**. Core가 UI, Platform, 오디오 타입을 임포트하면 테스트가 빌드를 실패시킵니다. 아키텍처 규칙이 주석이 아닌 실패하는 테스트입니다.
 >
-> 세 가지 입력 — 라이브 마이크, WAV 재생, 시뮬레이터 — 이 모두 하나의 작은 인터페이스를 구현합니다. Core는 그 계약만 알기 때문에 새 입력이나 OS 백엔드가 엔진을 건드리지 않고 끼워집니다. 그리고 같은 프레임 팬아웃이 13개 디스플레이 투어를 가능하게 합니다: Rate/Scope, Beat Error, Trace, Vario, Long-Term, Sweep, Escapement, Positions, Beat Noise, Waveforms, Filter Scope, Sound Print, Spectrogram은 같은 측정 분석 프레임 위의 다른 뷰들입니다 — 별개로 경쟁하는 계산기가 아닙니다."
+> 세 가지 입력 — 라이브 마이크, WAV 재생, 시뮬레이터 — 이 모두 하나의 작은 인터페이스를 구현합니다. Core는 그 계약만 알기 때문에 새 입력이나 OS 백엔드가 엔진을 건드리지 않고 끼워집니다. 그리고 같은 프레임 팬아웃이 13개 디스플레이 투어를 가능하게 합니다: Rate/Scope, Beat Error, Trace, Vario, Long-Term, Sweep, Escapement, Positions, Beat Noise, Waveforms, Filter Scope, Sound Print, Spectrogram — 이 13개는 모두 동일한 AnalysisFrame을 렌더링하는 서로 다른 뷰입니다."
 
-**[발표자] (QAS 추적성)**
-> "이 구조의 각 경계는 특정 QAS에서 동기화됩니다:
-> **Core 무의존성 → QAS-1**: Verify 모듈이 Core를 격리 상태로 직접 실행해 정확도를 헤드리스로 검증합니다. 아키텍처는 정확도를 달성하지 않지만, 달성했는지 검증 가능하게 만듭니다.
-> **워커 파이프-앤-필터 → QAS-2**: 오디오 처리와 렌더링이 분리됩니다. 렌더링은 탭이 선택될 때만 발생 — 13개 탭 전체를 동시에 처리하지 않습니다.
-> **단일 AnalysisFrame → QAS-4**: 모든 디스플레이가 같은 소스 객체에서 파생되므로 불일치가 구조적으로 불가능합니다.
-> **InfoTabCatalog 패턴 → QAS-5**: 새 탭은 카탈로그 1줄 + 렌더러 파일 추가로, 기존 분석 모듈을 건드리지 않습니다.
-> **App.axaml 중앙 테마 → QAS-6**: 폰트와 터치 정책이 한 곳에 있어, 유지보수 중 우발적 변경을 코드 수준에서 방지합니다."
+---
 
-**[슬라이드 비주얼 — 새 디스플레이 추가 4단계 레시피]**
-
-![새 탭 추가 레시피](assets/tab-extensibility-recipe.svg)
-
-**[슬라이드 비주얼 — 워커 수준 파이프-앤-필터 (입력 → 분석 → 렌더링 분리)]**
-
-![워커 수준 파이프-앤-필터](../Milestone/assets/worker-level-partial-pipe-and-filter.svg)
-
-**[발표자] (확장성 — 새 그래프를 추가할 때 실제로 어떻게 되는가)**
-> "왜 '제한적인 변경'인지 구체 예시로 설명합니다.
->
-> **예시 1: Spectrogram 탭 추가.** STFT 결과를 AnalysisFrame에 이미지로 담으려면 네 곳만 건드립니다. Core.Shared의 AnalysisFrame에 `SpectrogramImage` 속성 하나, Core.Analysis의 AnalysisWorker에서 그 속성을 채우는 할당 한 줄, App.Rendering에 새 `SpectrogramRenderer.cs` 파일 하나, App.Tabs의 InfoTabCatalog에 카탈로그 등록 한 줄. 라우팅 인프라가 자동으로 인식합니다 — 기존 Detection, Metrics, Imaging 모듈은 **전혀 건드리지 않습니다**.
->
-> **예시 2: Watch Health Radar 탭 추가.** AnalysisFrame에 Positions 데이터가 이미 있었습니다. 이 경우 새 속성 추가도 필요 없었습니다 — 기존 필드를 레이더 차트로 렌더링하는 `RadarRenderer.cs` 신규 파일과 카탈로그 등록 한 줄, 두 곳만으로 완성했습니다.
->
-> 이것이 **아키텍처가 QAS-5를 보장하는 방식**입니다: 새 그래프는 기존 분석 모듈을 최대 1개만 건드립니다. 13개 탭 전부가 이 패턴으로 만들어졌습니다."
+### 4-2. 새 디스플레이 추가 지원 (6점)
 
 **[슬라이드 비주얼 — 열린 확장 축 vs 닫힌 안정 축]**
 
@@ -260,7 +241,67 @@ flowchart LR
     C -->|"AnalysisFrame 공급"| T
 ```
 
-**[발표자] (미래 요구사항 지원 — 구조가 어떻게 열려 있는가)**
+**[슬라이드 비주얼 — 새 디스플레이 추가 4단계 레시피]**
+
+![새 탭 추가 레시피](assets/tab-extensibility-recipe.svg)
+
+**[발표자]**
+> "왜 '제한적인 변경'인지 구체 예시로 설명합니다.
+>
+> **예시 1: Spectrogram 탭 추가.** STFT 결과를 AnalysisFrame에 이미지로 담으려면 네 곳만 건드립니다. Core.Shared의 AnalysisFrame에 `SpectrogramImage` 속성 하나, Core.Analysis의 AnalysisWorker에서 그 속성을 채우는 할당 한 줄, App.Rendering에 새 `SpectrogramRenderer.cs` 파일 하나, App.Tabs의 InfoTabCatalog에 카탈로그 등록 한 줄. 라우팅 인프라가 자동으로 인식합니다 — 기존 Detection, Metrics, Imaging 모듈은 **전혀 건드리지 않습니다**.
+>
+> **예시 2: Watch Health Radar 탭 추가.** AnalysisFrame에 Positions 데이터가 이미 있었습니다. 이 경우 새 속성 추가도 필요 없었습니다 — 기존 필드를 레이더 차트로 렌더링하는 `RadarRenderer.cs` 신규 파일과 카탈로그 등록 한 줄, 두 곳만으로 완성했습니다.
+>
+> 이것이 **아키텍처가 QAS-5를 보장하는 방식**입니다: 새 그래프는 기존 분석 모듈을 최대 1개만 건드립니다. 13개 탭 전부가 이 패턴으로 만들어졌습니다."
+
+---
+
+### 4-3. 미래 요구사항 지원 (4점)
+
+**[슬라이드 비주얼 — 시나리오별 영향 범위 (전체 아키텍처)]**
+
+```mermaid
+flowchart LR
+    subgraph PLAT["Platform Layer"]
+        WIN["WindowsAudio"]
+        LIN["LinuxAudio"]
+        NEWOS["✚ 새 OS 어댑터\n① 새 OS 포팅"]
+    end
+    subgraph INPUT["Input Workers"]
+        WAV["PlaybackWorker"]
+        SIM["SimWorker"]
+        NEWIN["✚ 새 InputWorker\n② 새 입력 소스"]
+    end
+    subgraph CORE["Core — CI 경계 🔒"]
+        DET["Detection ✏️\n③ 새 알고리즘"]
+        MET["Metrics ✏️\n③ 새 알고리즘"]
+        SHD["Shared · Imaging · Sim"]
+    end
+    subgraph APP["App Layer"]
+        UI["Avalonia UI"]
+        CAT["InfoTabCatalog\n13 displays"]
+    end
+    subgraph LEGEND["표기 범례"]
+        L_STABLE["변경 없음"]
+        L_S1["① 새 OS 포팅 — 추가"]
+        L_S2["② 새 입력 소스 — 추가"]
+        L_S3["③ 새 알고리즘 — 수정"]
+    end
+    PLAT -->|IAudioInputWorker| CORE
+    INPUT -->|IAudioInputWorker| CORE
+    CORE -->|AnalysisFrame| APP
+
+    classDef stable fill:#e0e0e0,stroke:#9e9e9e,color:#424242
+    classDef s1 fill:#c62828,color:#fff,stroke:#8e0000
+    classDef s2 fill:#1565c0,color:#fff,stroke:#003c8f
+    classDef s3 fill:#2e7d32,color:#fff,stroke:#1b5e20
+    class WIN,LIN,WAV,SIM,SHD,UI,CAT,L_STABLE stable
+    class NEWOS,L_S1 s1
+    class NEWIN,L_S2 s2
+    class DET,MET,L_S3 s3
+```
+
+**[발표자]**
 > "이 구조가 미래 요구사항을 어떻게 수용하는지 세 가지 시나리오로 설명합니다.
 >
 > **새 OS 포팅**: Platform 어셈블리 하나만 추가합니다 — Core와 App은 전혀 건드리지 않습니다. 동일한 IAudioInput 계약을 구현하면 됩니다. 지금도 Windows와 Linux(Pi)가 이 방식으로 공존합니다.
@@ -271,12 +312,12 @@ flowchart LR
 >
 > 요약: 열린 축(새 탭·입력·플랫폼)은 계약 구현 추가로 확장하고, 닫힌 축(Core 분석 엔진)은 CI로 격리가 보장됩니다."
 
-**[슬라이드 비주얼 — Core 내부 모듈 의존성 (단일 책임, 계층 내 흐름)]**
+---
 
-![Core 내부 모듈 의존성](../Milestone/assets/module-uses-core.en.svg)
+### 4-4. 코드 이해 & 유지보수성 (4점)
 
-**[발표자] (코드 구조의 가독성 & 유지보수성)**
-> "코드 구조가 왜 이해하기 쉽고 유지보수하기 쉬운지 네 가지 근거:
+**[발표자]**
+> "코드 구조가 왜 이해하기 쉽고 유지보수하기 쉬운지 다섯 가지 근거:
 >
 > 첫째, **ADR 문서화** — ADR-001부터 ADR-004까지, 모든 주요 설계 결정은 맥락·대안·이유가 기록된 ADR에 남습니다. 새 팀원이 '왜 이런 구조인가'를 코드만 보지 않아도 이해할 수 있습니다.
 >
@@ -284,12 +325,9 @@ flowchart LR
 >
 > 셋째, **ViewModelPurityTests** — ViewModel에 Avalonia 타입이 들어오면 CI에서 감지합니다. MVVM 경계가 코드 수준에서 자동 검증됩니다.
 >
-> 넷째, **InfoTabCatalog 패턴** — 어떤 탭이 있고 무엇을 렌더링하는지가 카탈로그 한 곳에서 선언됩니다. 새 팀원이 '이 탭은 어디 있나'를 찾을 때 여기 한 곳만 보면 됩니다.
+> 넷째, **InfoTabCatalog 파일** — 어떤 탭이 있고 무엇을 렌더링하는지가 한 곳에서 선언됩니다. 새 팀원이 '이 탭은 어디 있나'를 찾을 때 여기 한 곳만 보면 됩니다.
 >
-> 다섯째, **IAudioInput 인터페이스** — Core가 입력 소스에 대해 아는 것은 이 인터페이스뿐입니다. 새 팀원이 '오디오 입력이 어떻게 들어오나'를 이해하려면 이 계약 하나만 읽으면 됩니다. 라이브 마이크·WAV 재생·시뮬레이터가 모두 같은 계약을 구현하기 때문에, 입력을 교체·추가할 때도 Core를 읽지 않아도 됩니다."
-
-**[발표자] (정직성 포인트)**
-> "저희는 패턴을 정직하게 평가했습니다. MVVM은 부분적입니다 — 시작/중지 생명주기가 여전히 code-behind에 있습니다 — DSP 체인도 구조는 파이프-앤-필터이지만 내부는 단일 동기 스레드입니다. 패턴이 완전히 적용된 곳과 부분적으로 적용된 곳을 정확히 아는 것이 이 과목에서 배운 부분입니다."
+> 다섯째, **IAudioInputWorker 인터페이스** — Core가 입력 소스에 대해 아는 것은 이 인터페이스뿐입니다. 새 팀원이 '오디오 입력이 어떻게 들어오나'를 이해하려면 이 계약 하나만 읽으면 됩니다. 라이브 마이크·WAV 재생·시뮬레이터가 모두 같은 계약을 구현하기 때문에, 입력을 교체·추가할 때도 Core를 읽지 않아도 됩니다."
 
 ---
 
