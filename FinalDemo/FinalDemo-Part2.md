@@ -15,7 +15,7 @@
 | 2 | Quality Attributes & Tradeoffs (accuracy first) | 4:30 | **Area 3 (20 pts)** |
 | 3 | Performance, Latency & Correctness (Pi 5 measured) | 4:30 | **Area 4 (25 pts)** |
 | 4 | Architecture & Extensibility: Layers · Core zero-dep · CI boundary · new graph walkthrough | 4:30 | **Area 5 (20 pts)** |
-| 5 | Use of AI (TinyML + development) | 3:30 | **Area 7 (15 pts)** |
+| 5 | Use of AI (TinyML + general development) | 3:30 | **Area 7 (15 pts)** |
 | 6 | UI Enhancement (SoundPrint · Rate/Scope · GUI) | 1:30 | Area 2·6 |
 | 7 | Closing & Q&A | 0:45 | — |
 
@@ -88,18 +88,18 @@
 | QAS-1 Accuracy vs QAS-2 Latency | Accuracy first | Accepted 192 kHz + longer warm-up — verified experimentally that pipeline fits within budget on the Pi |
 | QAS-5 Modifiability vs QAS-1·2 Accuracy·Latency | Hot path stays synchronous | Input · analysis · rendering separated at worker boundaries; detector + metrics kept as a single synchronous pass |
 | QAS-1 Accuracy vs QAS-2 Visual Responsiveness | Protect measurements | Visuals degrade first when behind deadline (latest-wins rendering) — measurements are never dropped |
-| QAS-3 Reliability vs QAS-1 Accuracy | Accuracy first, notify user | PLL-guided gating + regime guard maintain timing lock. Below threshold, show 'signal weak' alarm instead of forcing a measurement |
+| QAS-3 Reliability vs QAS-1 Accuracy | Accuracy first | PLL-guided gating + regime guard maintain timing lock in noisy environments |
 
 **[Presenter]**
 > "There were tradeoffs between quality attributes, and every choice was deliberate.
 >
-> **QAS-1 (Accuracy) vs. QAS-2 (Latency)**: we accepted latency costs to protect accuracy. A longer warm-up before reporting BPH means the first reading arrives later — we accept that delay to avoid showing wrong numbers early. A higher sample rate gives finer timestamp resolution but costs more CPU per beat — we support up to 192 kHz and verified it fits the budget on the Pi before committing.
+> **QAS-1 (Accuracy) vs. QAS-2 (Latency)**: we accepted latency costs to protect accuracy. A longer warm-up before reporting BPH and rate avoids showing incorrect numbers early. A higher sample rate gives finer timestamp resolution but costs more CPU per beat — we support up to 192 kHz and verified it fits the budget on the Pi before committing.
 >
 > **QAS-5 (Modifiability) vs. QAS-1/QAS-2 (Accuracy/Latency)**: we separated input, analysis, rendering, and recording at worker boundaries to gain modifiability — but kept the detector and metrics as one **synchronous hot path**. Full pipe-and-filter between every stage would add per-stage queuing that spends the beat-period budget, threatening both latency and accuracy. That is the core tradeoff between modifiability and the top two quality attributes.
 >
 > **QAS-1 (Accuracy) vs. QAS-2 (Latency / visual responsiveness)**: when the system falls behind its deadline, it degrades the *visuals first* — latest-wins rendering skips intermediate frames — but it **never drops or interpolates a measurement**. We protect the number and sacrifice the picture.
 >
-> **QAS-3 (Reliability) vs. QAS-1 (Accuracy)**: raising detection rate under noise requires loosening the threshold — but that risks accepting false beats and hurting accuracy. Our choice was to protect accuracy. Instead of forcing a measurement when the signal is below threshold, we show the user a 'signal weak' alarm — a wrong reading is worse than no reading. PLL-guided gating and the regime guard filter out noise for signals above threshold. The TinyML classifier also addresses this tradeoff, but it is **architecturally constrained**: it can veto candidates but cannot create events or re-time them — so even a wrong model cannot break the timing lock."
+> **QAS-3 (Reliability) vs. QAS-1 (Accuracy)**: raising detection rate under noise requires loosening the threshold — but that risks accepting false beats and hurting accuracy. PLL-guided gating and the regime guard manage this tension. The TinyML classifier also addresses this tradeoff, but it is **architecturally constrained** — even a wrong model cannot break the timing lock."
 
 ---
 
@@ -114,7 +114,7 @@
 
 ---
 
-## Slide 3. Performance, Latency, and Correctness (4:30)
+## Slide 3. Performance, Latency, and Correctness (4:00)
 > ▣ RUBRIC: **Area 4 — Performance, Latency, Correctness (25 pts)**
 > Pi real-time 8 pts / Low latency 6 pts / Correctness 6 pts / Evidence 5 pts
 
@@ -281,7 +281,7 @@ flowchart LR
         UI["Avalonia UI"]
         CAT["InfoTabCatalog\n13 displays"]
     end
-    subgraph LEGEND["Notation"]
+    subgraph LEGEND["Notation Legend"]
         L_STABLE["Unchanged"]
         L_S1["① New OS port — added"]
         L_S2["② New input source — added"]
@@ -402,7 +402,7 @@ flowchart LR
 ## Slide 7. Closing & Q&A (0:45)
 
 **[Presenter]**
-> "In short: a running watch-measurement application with twelve required displays, accuracy first, proven on the Pi 5 with measured latency and a two-system comparison; an architecture that is modular, portable, and CI-enforced; and AI used both in the product through the signal-quality classifier and in the development process through guarded automation. Thank you — we're happy to take questions."
+> "In short: a running watch-measurement application with 12 required displays, accuracy first, proven on the Pi 5 with measured latency and a two-system comparison; an architecture that is modular, portable, and CI-enforced; and AI used through guarded, process-controlled automation across development. Thank you — we're happy to take questions."
 
 ---
 
