@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mxfile host="app.diagrams.net" modified="2026-06-29T00:00:00.000Z" agent="Codex" version="24.7.17" type="device">
+  <diagram id="analysisframe-mapping-ko" name="Graph-to-Payload Mapping KO">
+    <mxGraphModel dx="1560" dy="980" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1560" pageHeight="980" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="title" value="AnalysisFrame Graph-to-Payload Mapping View" style="fontFamily=Malgun Gothic;fontSize=30;fontStyle=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;" vertex="1" parent="1">
+          <mxGeometry x="40" y="28" width="900" height="48" as="geometry" />
+        </mxCell>
+        <mxCell id="subtitle" value="UML 클래스 다이어그램의 정적 구조를 실제 대표 graph/display 소비 관계로 연결한다. 전체 그래프 목록이 아니라 발표용 대표 흐름이다." style="fontFamily=Malgun Gothic;fontSize=15;fontColor=#555555;strokeColor=none;fillColor=none;align=left;verticalAlign=top;" vertex="1" parent="1">
+          <mxGeometry x="42" y="78" width="1380" height="42" as="geometry" />
+        </mxCell>
+        <mxCell id="bc1" value="&lt;b&gt;1. UML Class Diagram&lt;/b&gt;&lt;br/&gt;구조: field/type 관계" style="fontFamily=Malgun Gothic;fontSize=13;whiteSpace=wrap;html=1;rounded=0;align=center;verticalAlign=middle;spacing=6;strokeWidth=1;strokeColor=#AAAAAA;fillColor=#F7F7F7;" vertex="1" parent="1">
+          <mxGeometry x="40" y="112" width="250" height="54" as="geometry" />
+        </mxCell>
+        <mxCell id="bc2" value="&lt;b&gt;2. Mapping View&lt;/b&gt;&lt;br/&gt;payload -&gt; 대표 graph" style="fontFamily=Malgun Gothic;fontSize=13;whiteSpace=wrap;html=1;rounded=0;align=center;verticalAlign=middle;spacing=6;strokeWidth=3;strokeColor=#FF6B35;fillColor=#FFF1EA;" vertex="1" parent="1">
+          <mxGeometry x="370" y="112" width="250" height="54" as="geometry" />
+        </mxCell>
+        <mxCell id="bc3" value="&lt;b&gt;3. Sequence Diagram&lt;/b&gt;&lt;br/&gt;runtime 전달 흐름" style="fontFamily=Malgun Gothic;fontSize=13;whiteSpace=wrap;html=1;rounded=0;align=center;verticalAlign=middle;spacing=6;strokeWidth=1;strokeColor=#AAAAAA;fillColor=#F7F7F7;" vertex="1" parent="1">
+          <mxGeometry x="700" y="112" width="250" height="54" as="geometry" />
+        </mxCell>
+        <mxCell id="bc12" value="" style="endArrow=block;html=1;strokeColor=#777777;strokeWidth=1.5;" edge="1" parent="1" source="bc1" target="bc2">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="bc23" value="" style="endArrow=block;html=1;strokeColor=#777777;strokeWidth=1.5;" edge="1" parent="1" source="bc2" target="bc3">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="uml" value="&lt;b&gt;UML Class Diagram에서 온 근거&lt;/b&gt;&lt;br/&gt;AnalysisFrame&lt;br/&gt;- ScopeSeries / RateSeries&lt;br/&gt;- Markers&lt;br/&gt;- MetricsUpdate / MetricsHistory&lt;br/&gt;- BeatSegments&lt;br/&gt;- SoundImage / SpectrogramImage&lt;br/&gt;- SignalQuality" style="fontFamily=Malgun Gothic;whiteSpace=wrap;html=1;rounded=0;align=left;verticalAlign=top;spacing=10;fontSize=12;strokeWidth=3;strokeColor=#FF6B35;fillColor=#FFF1EA;" vertex="1" parent="1">
+          <mxGeometry x="55" y="225" width="300" height="180" as="geometry" />
+        </mxCell>
+        <mxCell id="af" value="&lt;b&gt;AnalysisFrame&lt;/b&gt;&lt;br/&gt;한 번의 analysis pass 결과를 묶은&lt;br/&gt;Core.Shared DTO&lt;br/&gt;&lt;br/&gt;same frame = same UI update contract" style="fontFamily=Malgun Gothic;whiteSpace=wrap;html=1;rounded=0;align=left;verticalAlign=top;spacing=10;fontSize=12;strokeWidth=3;strokeColor=#FF6B35;fillColor=#FFF1EA;" vertex="1" parent="1">
+          <mxGeometry x="445" y="205" width="360" height="130" as="geometry" />
+        </mxCell>
+        <mxCell id="graph" value="&lt;b&gt;Graph Payload&lt;/b&gt;&lt;br/&gt;ScopeSeries / RateSeries&lt;br/&gt;Vertical·Horizontal·Text Markers" style="fontFamily=Malgun Gothic;whiteSpace=wrap;html=1;rounded=0;align=left;verticalAlign=top;spacing=10;fontSize=12;strokeWidth=2;strokeColor=#1565C0;fillColor=#E8F2FF;" vertex="1" parent="1">
+          <mxGeometry x="445" y="385" width="360" height="105" as="geometry" />
+        </mxCell>
+        <mxCell id="metrics" value="&lt;b&gt;Metrics Payload&lt;/b&gt;&lt;br/&gt;MetricsUpdate / MetricsHistory&lt;br/&gt;Rate, Amplitude, BeatError, Stats" style="fontFamily=Malgun Gothic;whiteSpace=wrap;html=1;rounded=0;align=left;verticalAlign=top;spacing=10;fontSize=12;strokeWidth=2;strokeColor=#2E7D32;fillColor=#EEF8F0;" vertex="1" parent="1">
+          <mxGeometry x="445" y="510" width="360" height="105" as="geometry" />
+        </mxCell>
+        <mxCell id="beat" value="&lt;b&gt;Beat Payload&lt;/b&gt;&lt;br/&gt;BeatSegments&lt;br/&gt;recent beat windows, A/C markers, average lanes" style="fontFamily=Malgun Gothic;whiteSpace=wrap;html=1;rounded=0;align=left;verticalAlign=top;spacing=10;fontSize=12;strokeWidth=2;strokeColor=#B7791F;fillColor=#FFF7E0;" vertex="1" parent="1">
+          <mxGeometry x="445" y="635" width="360" height="95" as="geometry" />
+        </mxCell>
+        <mxCell id="image" value="&lt;b&gt;Image / Annotation Payload&lt;/b&gt;&lt;br/&gt;SoundImage, SpectrogramImage + metadata&lt;br/&gt;SignalQuality advisory annotation" style="fontFamily=Malgun Gothic;whiteSpace=wrap;html=1;rounded=0;align=left;verticalAlign=top;spacing=10;fontSize=12;strokeWidth=2;strokeColor=#6B46C1;fillColor=#F2ECFF;" vertex="1" parent="1">
+          <mxGeometry x="445" y="750" width="360" height="105" as="geometry" />
+        </mxCell>
+        <mxCell id="scope" value="&lt;b&gt;Scope / Rate Scope&lt;/b&gt;&lt;br/&gt;RateScopeRenderer&lt;br/&gt;ScopeSeries + RateSeries + markers + MetricsUpdate" style="fontFamily=Malgun Gothic;whiteSpace=wrap;html=1;rounded=0;align=left;verticalAlign=top;spacing=10;fontSize=12;strokeWidth=2;strokeColor=#4F5B62;fillColor=#FFFFFF;" vertex="1" parent="1">
+          <mxGeometry x="930" y="210" width="460" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="be" value="&lt;b&gt;Beat Error&lt;/b&gt;&lt;br/&gt;BeatErrorDiagRenderer&lt;br/&gt;RateSeries + MetricsHistory.BeatError + interval summary" style="fontFamily=Malgun Gothic;whiteSpace=wrap;html=1;rounded=0;align=left;verticalAlign=top;spacing=10;fontSize=12;strokeWidth=2;strokeColor=#4F5B62;fillColor=#FFFFFF;" vertex="1" parent="1">
+          <mxGeometry x="930" y="335" width="460" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="vario" value="&lt;b&gt;Vario / Long-Term&lt;/b&gt;&lt;br/&gt;VarioRenderer, LongTermPerfRenderer&lt;br/&gt;MetricsHistory.Rate/Amplitude/Stats/Positions" style="fontFamily=Malgun Gothic;whiteSpace=wrap;html=1;rounded=0;align=left;verticalAlign=top;spacing=10;fontSize=12;strokeWidth=2;strokeColor=#4F5B62;fillColor=#FFFFFF;" vertex="1" parent="1">
+          <mxGeometry x="930" y="460" width="460" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="bn" value="&lt;b&gt;Beat Noise / Avg Envelope&lt;/b&gt;&lt;br/&gt;BeatNoiseScopeRenderer, WaveformCompareRenderer&lt;br/&gt;BeatSegments + A/C markers + average lanes" style="fontFamily=Malgun Gothic;whiteSpace=wrap;html=1;rounded=0;align=left;verticalAlign=top;spacing=10;fontSize=12;strokeWidth=2;strokeColor=#4F5B62;fillColor=#FFFFFF;" vertex="1" parent="1">
+          <mxGeometry x="930" y="585" width="460" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="imgd" value="&lt;b&gt;Sound Print / Spectrogram&lt;/b&gt;&lt;br/&gt;SoundPrintFrameConsumer, SpectrogramFrameConsumer&lt;br/&gt;SoundImage, SpectrogramImage, live-column metadata" style="fontFamily=Malgun Gothic;whiteSpace=wrap;html=1;rounded=0;align=left;verticalAlign=top;spacing=10;fontSize=12;strokeWidth=2;strokeColor=#4F5B62;fillColor=#FFFFFF;" vertex="1" parent="1">
+          <mxGeometry x="930" y="710" width="460" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="msg" value="&lt;b&gt;발표용 메시지&lt;/b&gt;&lt;br/&gt;각 graph가 Core에 직접 붙는 것이 아니라, 같은 AnalysisFrame contract에서 필요한 payload만 소비한다." style="fontFamily=Malgun Gothic;whiteSpace=wrap;html=1;rounded=0;align=left;verticalAlign=top;spacing=10;fontSize=12;strokeWidth=1;strokeColor=#DDDDDD;fillColor=#FAFAFA;" vertex="1" parent="1">
+          <mxGeometry x="55" y="875" width="605" height="72" as="geometry" />
+        </mxCell>
+        <mxCell id="legend" value="&lt;b&gt;범례&lt;/b&gt;&lt;br/&gt;색상 = payload group / 화살표 = 대표 소비 관계 / 오른쪽 박스 = 대표 display 또는 renderer" style="fontFamily=Malgun Gothic;fontSize=13;whiteSpace=wrap;html=1;rounded=0;strokeColor=#111111;fillColor=#FFFFFF;strokeWidth=2;align=left;verticalAlign=top;spacing=12;" vertex="1" parent="1">
+          <mxGeometry x="720" y="875" width="670" height="72" as="geometry" />
+        </mxCell>
+        <mxCell id="e_uml" value="" style="endArrow=block;html=1;rounded=0;strokeWidth=2;strokeColor=#FF6B35;" edge="1" parent="1" source="uml" target="af">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_af_graph" value="" style="endArrow=block;html=1;rounded=0;strokeWidth=2;strokeColor=#333333;" edge="1" parent="1" source="af" target="graph">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_af_metrics" value="" style="endArrow=block;html=1;rounded=0;strokeWidth=2;strokeColor=#333333;" edge="1" parent="1" source="af" target="metrics">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_af_beat" value="" style="endArrow=block;html=1;rounded=0;strokeWidth=2;strokeColor=#333333;" edge="1" parent="1" source="af" target="beat">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_af_image" value="" style="endArrow=block;html=1;rounded=0;strokeWidth=2;strokeColor=#333333;" edge="1" parent="1" source="af" target="image">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_graph_scope" value="" style="endArrow=block;html=1;rounded=0;strokeWidth=2;strokeColor=#1565C0;" edge="1" parent="1" source="graph" target="scope">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_graph_be" value="" style="endArrow=block;html=1;rounded=0;strokeWidth=2;strokeColor=#1565C0;" edge="1" parent="1" source="graph" target="be">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_metrics_be" value="" style="endArrow=block;html=1;rounded=0;strokeWidth=2;strokeColor=#2E7D32;" edge="1" parent="1" source="metrics" target="be">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_metrics_vario" value="" style="endArrow=block;html=1;rounded=0;strokeWidth=2;strokeColor=#2E7D32;" edge="1" parent="1" source="metrics" target="vario">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_beat_bn" value="" style="endArrow=block;html=1;rounded=0;strokeWidth=2;strokeColor=#B7791F;" edge="1" parent="1" source="beat" target="bn">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_image_img" value="" style="endArrow=block;html=1;rounded=0;strokeWidth=2;strokeColor=#6B46C1;" edge="1" parent="1" source="image" target="imgd">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

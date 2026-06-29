@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mxfile host="app.diagrams.net" modified="2026-06-29T00:00:00.000Z" agent="Codex" version="24.7.17" type="device">
+  <diagram id="analysisframe-class-diagram-ko" name="AnalysisFrame Class Diagram KO">
+    <mxGraphModel dx="1700" dy="1200" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1620" pageHeight="1180" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="title" value="AnalysisFrame 기준 UML 클래스 다이어그램" style="fontFamily=Malgun Gothic;fontSize=30;fontStyle=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;" vertex="1" parent="1">
+          <mxGeometry x="40" y="28" width="900" height="48" as="geometry" />
+        </mxCell>
+        <mxCell id="subtitle" value="관점: AnalysisFrame이 한 번의 analysis pass 결과를 어떤 타입들과 함께 UI update 계약으로 묶는지 보여준다." style="fontFamily=Malgun Gothic;fontSize=15;fontColor=#555555;strokeColor=none;fillColor=none;align=left;verticalAlign=top;" vertex="1" parent="1">
+          <mxGeometry x="42" y="78" width="1320" height="42" as="geometry" />
+        </mxCell>
+        <mxCell id="analysisFrame" value="&lt;div style=&quot;text-align:center&quot;&gt;&lt;b&gt;«sealed class»&lt;/b&gt;&lt;br/&gt;&lt;span style=&quot;font-size:16px&quot;&gt;&lt;b&gt;AnalysisFrame&lt;/b&gt;&lt;/span&gt;&lt;/div&gt;&lt;hr/&gt;+ SessionId: ulong&lt;br/&gt;+ SourceId: ulong&lt;br/&gt;+ SampleRate: int&lt;br/&gt;+ BeatSynced: bool&lt;br/&gt;+ GraphTickEnd: ulong&lt;br/&gt;+ ScopeSeries: IReadOnlyList&amp;lt;GraphSeriesFrame&amp;gt;&lt;br/&gt;+ RateSeries: IReadOnlyList&amp;lt;GraphSeriesFrame&amp;gt;&lt;br/&gt;+ VerticalMarkers: IReadOnlyList&amp;lt;ScopeVerticalMarker&amp;gt;&lt;br/&gt;+ HorizontalMarkers: IReadOnlyList&amp;lt;ScopeHorizontalMarker&amp;gt;&lt;br/&gt;+ TextMarkers: IReadOnlyList&amp;lt;ScopeTextMarker&amp;gt;&lt;br/&gt;+ MetricsUpdate: WatchMetricsUpdate&lt;br/&gt;+ MetricsHistory: BeatMetricsHistorySnapshot?&lt;br/&gt;+ BeatSegments: BeatSegmentsSnapshot?&lt;br/&gt;+ SignalQuality: SignalQualityAssessment?&lt;br/&gt;+ SoundImage: PixelBuffer?&lt;br/&gt;+ SpectrogramImage: PixelBuffer?&lt;hr/&gt;~ AddScopeSeries(series)&lt;br/&gt;~ AddRateSeries(series)&lt;br/&gt;~ SetScopeMarkers(vertical, horizontal, text)&lt;br/&gt;- Replace&amp;lt;T&amp;gt;(target, source)" style="fontFamily=Malgun Gothic;whiteSpace=wrap;html=1;rounded=0;align=left;verticalAlign=top;spacing=10;fontSize=12;strokeWidth=3;strokeColor=#FF6B35;fillColor=#FFF1EA;" vertex="1" parent="1">
+          <mxGeometry x="585" y="195" width="430" height="520" as="geometry" />
+        </mxCell>
+        <mxCell id="graphSeries" value="&lt;div style=&quot;text-align:center&quot;&gt;&lt;b&gt;«sealed class»&lt;/b&gt;&lt;br/&gt;&lt;span style=&quot;font-size:16px&quot;&gt;&lt;b&gt;GraphSeriesFrame&lt;/b&gt;&lt;/span&gt;&lt;/div&gt;&lt;hr/&gt;+ Id: string&lt;br/&gt;+ X: IReadOnlyList&amp;lt;double&amp;gt;&lt;br/&gt;+ Y: IReadOnlyList&amp;lt;double&amp;gt;&lt;br/&gt;+ Replace: bool&lt;br/&gt;+ TicPhaseOffsetMs: double" style="fontFamily=Malgun Gothic;whiteSpace=wrap;html=1;rounded=0;align=left;verticalAlign=top;spacing=10;fontSize=12;strokeWidth=2;strokeColor=#4F5B62;fillColor=#FFFFFF;" vertex="1" parent="1">
+          <mxGeometry x="70" y="170" width="360" height="185" as="geometry" />
+        </mxCell>
+        <mxCell id="markers" value="&lt;div style=&quot;text-align:center&quot;&gt;&lt;b&gt;«structs»&lt;/b&gt;&lt;br/&gt;&lt;span style=&quot;font-size:16px&quot;&gt;&lt;b&gt;Scope Markers&lt;/b&gt;&lt;/span&gt;&lt;/div&gt;&lt;hr/&gt;ScopeVerticalMarker&lt;br/&gt;  + X, Height, Color&lt;br/&gt;ScopeHorizontalMarker&lt;br/&gt;  + Direction, XLeft, XRight, Length, Height, Color&lt;br/&gt;ScopeTextMarker&lt;br/&gt;  + X, Height, Text, Color, Alignment&lt;br/&gt;HorizontalMarkerDirection, MarkerTextAlignment" style="fontFamily=Malgun Gothic;whiteSpace=wrap;html=1;rounded=0;align=left;verticalAlign=top;spacing=10;fontSize=12;strokeWidth=2;strokeColor=#4F5B62;fillColor=#FFFFFF;" vertex="1" parent="1">
+          <mxGeometry x="70" y="395" width="360" height="250" as="geometry" />
+        </mxCell>
+        <mxCell id="graphIds" value="&lt;div style=&quot;text-align:center&quot;&gt;&lt;b&gt;«static class»&lt;/b&gt;&lt;br/&gt;&lt;span style=&quot;font-size:16px&quot;&gt;&lt;b&gt;AnalysisGraphSeries&lt;/b&gt;&lt;/span&gt;&lt;/div&gt;&lt;hr/&gt;+ ScopePcm, ScopeThreshold&lt;br/&gt;+ RateTic, RateToc&lt;br/&gt;+ SweepTrace&lt;br/&gt;+ FilterF0..FilterF3" style="fontFamily=Malgun Gothic;whiteSpace=wrap;html=1;rounded=0;align=left;verticalAlign=top;spacing=10;fontSize=12;strokeWidth=2;strokeColor=#6D6D6D;fillColor=#F7F7F7;" vertex="1" parent="1">
+          <mxGeometry x="70" y="680" width="360" height="150" as="geometry" />
+        </mxCell>
+        <mxCell id="metricsUpdate" value="&lt;div style=&quot;text-align:center&quot;&gt;&lt;b&gt;«sealed class»&lt;/b&gt;&lt;br/&gt;&lt;span style=&quot;font-size:16px&quot;&gt;&lt;b&gt;WatchMetricsUpdate&lt;/b&gt;&lt;/span&gt;&lt;/div&gt;&lt;hr/&gt;+ XTic/YTic: IReadOnlyList&amp;lt;double&amp;gt;&lt;br/&gt;+ XToc/YToc: IReadOnlyList&amp;lt;double&amp;gt;&lt;br/&gt;+ ResultsText: string&lt;br/&gt;+ CMarkerText: string&lt;br/&gt;+ BeatTimingSample: BeatTimingSample&lt;br/&gt;+ AmplitudeSample: AmplitudeSample&lt;br/&gt;+ DerivedMeasures: DerivedTimingMeasures&lt;br/&gt;+ AveragePeriodRateInterval: AveragePeriodRateInterval&lt;hr/&gt;~ SetTicRate(x, y)&lt;br/&gt;~ SetTocRate(x, y)&lt;br/&gt;~ SetResults(text)&lt;br/&gt;~ SetCMarkerText(text)&lt;br/&gt;~ SetBeatTimingSample(sample)&lt;br/&gt;~ SetAmplitudeSample(sample)&lt;br/&gt;~ SetDerivedMeasures(measures)&lt;br/&gt;~ SetAveragePeriodRateInterval(interval)" style="fontFamily=Malgun Gothic;whiteSpace=wrap;html=1;rounded=0;align=left;verticalAlign=top;spacing=10;fontSize=12;strokeWidth=2;strokeColor=#2E7D32;fillColor=#EEF8F0;" vertex="1" parent="1">
+          <mxGeometry x="1140" y="140" width="410" height="390" as="geometry" />
+        </mxCell>
+        <mxCell id="metricValues" value="&lt;div style=&quot;text-align:center&quot;&gt;&lt;b&gt;«record structs»&lt;/b&gt;&lt;br/&gt;&lt;span style=&quot;font-size:16px&quot;&gt;&lt;b&gt;Metric Value Types&lt;/b&gt;&lt;/span&gt;&lt;/div&gt;&lt;hr/&gt;BeatTimingSample&lt;br/&gt;AmplitudeSample&lt;br/&gt;DerivedTimingMeasures&lt;br/&gt;AveragePeriodRateInterval" style="fontFamily=Malgun Gothic;whiteSpace=wrap;html=1;rounded=0;align=left;verticalAlign=top;spacing=10;fontSize=12;strokeWidth=2;strokeColor=#4F5B62;fillColor=#FFFFFF;" vertex="1" parent="1">
+          <mxGeometry x="1140" y="565" width="410" height="135" as="geometry" />
+        </mxCell>
+        <mxCell id="history" value="&lt;div style=&quot;text-align:center&quot;&gt;&lt;b&gt;«sealed class»&lt;/b&gt;&lt;br/&gt;&lt;span style=&quot;font-size:16px&quot;&gt;&lt;b&gt;BeatMetricsHistorySnapshot&lt;/b&gt;&lt;/span&gt;&lt;/div&gt;&lt;hr/&gt;+ Version: ulong&lt;br/&gt;+ Rate/Amplitude/BeatError: MetricsHistorySeries&lt;br/&gt;+ Derived: DerivedTimingMeasures&lt;br/&gt;+ AveragePeriodRateIntervals: IReadOnlyList&amp;lt;AveragePeriodRateInterval&amp;gt;&lt;br/&gt;+ RateStats/AmplitudeStats: StatsSummary&lt;br/&gt;+ Positions: IReadOnlyList&amp;lt;PositionSummary&amp;gt;&lt;br/&gt;+ PositionChanges: IReadOnlyList&amp;lt;PositionChange&amp;gt;" style="fontFamily=Malgun Gothic;whiteSpace=wrap;html=1;rounded=0;align=left;verticalAlign=top;spacing=10;fontSize=12;strokeWidth=2;strokeColor=#4F5B62;fillColor=#FFFFFF;" vertex="1" parent="1">
+          <mxGeometry x="1140" y="735" width="410" height="215" as="geometry" />
+        </mxCell>
+        <mxCell id="segments" value="&lt;div style=&quot;text-align:center&quot;&gt;&lt;b&gt;«sealed class»&lt;/b&gt;&lt;br/&gt;&lt;span style=&quot;font-size:16px&quot;&gt;&lt;b&gt;BeatSegmentsSnapshot&lt;/b&gt;&lt;/span&gt;&lt;/div&gt;&lt;hr/&gt;+ Version: ulong&lt;br/&gt;+ Segments: IReadOnlyList&amp;lt;BeatSegment&amp;gt;&lt;br/&gt;+ Markers: IReadOnlyList&amp;lt;BeatNoiseMarker&amp;gt;&lt;br/&gt;+ LiftAngleDeg: double&lt;br/&gt;+ Average: BeatNoiseAverageSnapshot&lt;br/&gt;+ Quality: SignalQualityFlags" style="fontFamily=Malgun Gothic;whiteSpace=wrap;html=1;rounded=0;align=left;verticalAlign=top;spacing=10;fontSize=12;strokeWidth=2;strokeColor=#4F5B62;fillColor=#FFFFFF;" vertex="1" parent="1">
+          <mxGeometry x="70" y="865" width="430" height="175" as="geometry" />
+        </mxCell>
+        <mxCell id="pixel" value="&lt;div style=&quot;text-align:center&quot;&gt;&lt;b&gt;«sealed class»&lt;/b&gt;&lt;br/&gt;&lt;span style=&quot;font-size:16px&quot;&gt;&lt;b&gt;PixelBuffer&lt;/b&gt;&lt;/span&gt;&lt;/div&gt;&lt;hr/&gt;+ Width: int&lt;br/&gt;+ Height: int&lt;br/&gt;+ Pixels: uint[]&lt;hr/&gt;+ Fill(argb)&lt;br/&gt;+ SetPixel(x, y, argb)&lt;br/&gt;+ GetPixel(x, y): uint&lt;br/&gt;+ Clone(): PixelBuffer" style="fontFamily=Malgun Gothic;whiteSpace=wrap;html=1;rounded=0;align=left;verticalAlign=top;spacing=10;fontSize=12;strokeWidth=2;strokeColor=#4F5B62;fillColor=#FFFFFF;" vertex="1" parent="1">
+          <mxGeometry x="585" y="785" width="430" height="205" as="geometry" />
+        </mxCell>
+        <mxCell id="quality" value="&lt;div style=&quot;text-align:center&quot;&gt;&lt;b&gt;«readonly record struct»&lt;/b&gt;&lt;br/&gt;&lt;span style=&quot;font-size:16px&quot;&gt;&lt;b&gt;SignalQualityAssessment&lt;/b&gt;&lt;/span&gt;&lt;/div&gt;&lt;hr/&gt;+ Class: SignalQualityClass&lt;br/&gt;+ Confidence: float&lt;br/&gt;+ Features: SignalQualityFeatures&lt;br/&gt;+ Unknown: SignalQualityAssessment" style="fontFamily=Malgun Gothic;whiteSpace=wrap;html=1;rounded=0;align=left;verticalAlign=top;spacing=10;fontSize=12;strokeWidth=2;strokeColor=#4F5B62;fillColor=#FFFFFF;" vertex="1" parent="1">
+          <mxGeometry x="1110" y="940" width="440" height="135" as="geometry" />
+        </mxCell>
+        <mxCell id="legend" value="&lt;b&gt;범례 / UML 표기&lt;/b&gt;&lt;br/&gt;◆ = composition: AnalysisFrame이 frame payload로 직접 보유&lt;br/&gt;◇ = aggregation/reference: nullable snapshot 또는 공유 가능한 image/annotation&lt;br/&gt;0..* = 여러 개, 0..1 = 없거나 하나, 1 = 항상 하나&lt;br/&gt;+ public, ~ internal, - private&lt;br/&gt;색상: 주황=중심 class, 초록=setter behavior, 흰색=관련 DTO/value type" style="fontFamily=Malgun Gothic;fontSize=13;whiteSpace=wrap;html=1;rounded=0;strokeColor=#111111;fillColor=#FFFFFF;strokeWidth=2;align=left;verticalAlign=top;spacing=12;" vertex="1" parent="1">
+          <mxGeometry x="555" y="1015" width="560" height="145" as="geometry" />
+        </mxCell>
+        <mxCell id="af_graph" value="ScopeSeries/RateSeries 0..*" style="endArrow=none;startArrow=diamond;startFill=1;html=1;rounded=0;strokeWidth=2;strokeColor=#111111;fontFamily=Malgun Gothic;fontSize=12;" edge="1" parent="1" source="analysisFrame" target="graphSeries">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="af_markers" value="markers 0..*" style="endArrow=none;startArrow=diamond;startFill=1;html=1;rounded=0;strokeWidth=2;strokeColor=#111111;fontFamily=Malgun Gothic;fontSize=12;" edge="1" parent="1" source="analysisFrame" target="markers">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="graph_ids" value="Id uses constants" style="endArrow=open;dashed=1;html=1;rounded=0;strokeWidth=1.5;strokeColor=#555555;fontFamily=Malgun Gothic;fontSize=12;" edge="1" parent="1" source="graphSeries" target="graphIds">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="af_metrics" value="1" style="endArrow=none;startArrow=diamond;startFill=1;html=1;rounded=0;strokeWidth=2;strokeColor=#111111;fontFamily=Malgun Gothic;fontSize=12;" edge="1" parent="1" source="analysisFrame" target="metricsUpdate">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="metrics_values" value="value fields" style="endArrow=none;startArrow=diamond;startFill=1;html=1;rounded=0;strokeWidth=2;strokeColor=#111111;fontFamily=Malgun Gothic;fontSize=12;" edge="1" parent="1" source="metricsUpdate" target="metricValues">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="af_history" value="0..1" style="endArrow=none;startArrow=diamond;startFill=0;html=1;rounded=0;strokeWidth=2;strokeColor=#111111;fontFamily=Malgun Gothic;fontSize=12;" edge="1" parent="1" source="analysisFrame" target="history">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="history_values" value="uses" style="endArrow=open;dashed=1;html=1;rounded=0;strokeWidth=1.5;strokeColor=#555555;fontFamily=Malgun Gothic;fontSize=12;" edge="1" parent="1" source="history" target="metricValues">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="af_segments" value="0..1" style="endArrow=none;startArrow=diamond;startFill=0;html=1;rounded=0;strokeWidth=2;strokeColor=#111111;fontFamily=Malgun Gothic;fontSize=12;" edge="1" parent="1" source="analysisFrame" target="segments">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="af_pixel" value="0..2 Sound/Spectrogram" style="endArrow=none;startArrow=diamond;startFill=0;html=1;rounded=0;strokeWidth=2;strokeColor=#111111;fontFamily=Malgun Gothic;fontSize=12;" edge="1" parent="1" source="analysisFrame" target="pixel">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="af_quality" value="0..1 advisory" style="endArrow=none;startArrow=diamond;startFill=0;html=1;rounded=0;strokeWidth=2;strokeColor=#111111;fontFamily=Malgun Gothic;fontSize=12;" edge="1" parent="1" source="analysisFrame" target="quality">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
