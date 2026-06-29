@@ -27,10 +27,12 @@
 
 ## 슬라이드 1. 타이틀 & 구현 표면 (0:45)
 
+**[지시문]** TimeGrapher UI 캡처 이미지 슬라이드. 슬라이드 하단에 **ADR-001 유첨** 표기 (기술 선택 근거 문서).
+
 **[발표자]**
-> "저희는 팀 5입니다. TimeGrapher는 기계식 시계 소리를 듣고 실시간으로 정확도를 측정합니다. 방금 보신 프로그램은 목업이 아닙니다: 라이브, 재생, 시뮬레이션 입력을 갖추고 있으며, 12개의 필수 측정 디스플레이를 모두 제공합니다 — Rate/Scope, Beat Error, Trace, Vario, Long-Term, Sweep, Escapement, Positions, Beat Noise, Waveforms, Filter Scope, Sound Print, Spectrogram.
+> "저희는 팀 5입니다. 저희의 TimeGrapher는 오전에 데모에서 보셨던 것과 같이, 라이브, 재생, 시뮬레이션 입력을 갖추고 있으며, 13개의 측정 디스플레이를 모두 제공합니다.
 >
-> 기술 스택은 **C# on .NET 8, Avalonia UI, Raspberry Pi 5**입니다. Qt/C++에서 전환한 이유 — ADR-001에 문서화 — 는 팀 역량, 단일 코드베이스 이식성, 라이선스 유연성입니다. Performance 위험은 실험으로 예산 내임을 먼저 확인했고, 그 수치는 발표에서 보여드리겠습니다."
+> 저희는 기존의 basecode를 C#으로 변환하였는데, 그 이유는 팀 역량, 단일 코드베이스 이식성, 라이선스 유연성입니다. Performance 위험은 실험으로 예산 내임을 먼저 확인했고, 그 수치는 이후 발표에서 보여드리겠습니다."
 
 ---
 

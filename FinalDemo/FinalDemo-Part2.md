@@ -27,10 +27,12 @@
 
 ## Slide 1. Title & Implementation Surface (0:45)
 
+**[Note]** TimeGrapher UI screenshot slide. Add **ADR-001 attached** annotation at the bottom of the slide (technology selection rationale document).
+
 **[Presenter]**
-> "We are Team 5. TimeGrapher listens to a mechanical watch and measures its accuracy in real time. The program you just saw is not a mock-up: it has live, playback, and simulation inputs, and exposes all twelve required measurement displays — Rate/Scope, Beat Error, Trace, Vario, Long-Term, Sweep, Escapement, Positions, Beat Noise, Waveforms, Filter Scope, Sound Print, and Spectrogram.
+> "We are Team 5. As you saw in this morning's demo, our TimeGrapher has live, playback, and simulation inputs, and provides all 13 measurement displays.
 >
-> Our technology stack is **C# on .NET 8, Avalonia UI, and Raspberry Pi 5**. The decision to move from Qt/C++ — documented in ADR-001 — was driven by team expertise, single-codebase portability, and license flexibility. The performance risk was resolved experimentally before committing: we verified the pipeline fits within budget on the Pi, and we'll show you those numbers shortly."
+> We converted the existing base code to C#. The reasons were team expertise, single-codebase portability, and license flexibility. The performance risk was resolved experimentally before committing — we verified the pipeline fits within budget on the Pi, and we will show you those numbers later in the presentation."
 
 ---
 
