@@ -168,7 +168,7 @@ xychart-beta horizontal
 > Current all-tab check (2026-06-21): 36.46 ms, same budget — still 43.8%.
 > Every run: Drop 0, Miss 0, Result Pass.
 >
-> Per-tab: Filter Scope is slowest at 36.46 ms. Escapement is fastest at 15.09 ms. All 13 tabs well inside budget. The key mechanism: the **Latest-Wins scheduler** discards stale frames rather than queuing them, so backlog never accumulates."
+> Per-tab: Filter Scope is slowest at 36.46 ms. Escapement is fastest at 15.09 ms. All 13 tabs well inside budget. The key mechanism: the **Latest-Wins scheduler** discards any unprocessed frame when a newer one arrives, so latency never accumulates."
 
 ---
 
