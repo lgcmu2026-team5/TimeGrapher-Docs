@@ -345,22 +345,24 @@ flowchart LR
 >
 > This structure means humans make all final decisions, and AI is part of our defined process — not a wildcard.
 >
-> Application areas — four of them. **Base code conversion**: Qt/C++ DSP logic, event detection, and audio buffer management ported to C# idioms (Span\<T\>, Channel, IDisposable). **CI/CD pipeline** design and automation. **933 test** generation. And as a **product feature**: TimeGrapher.Inference is an ONNX signal-quality classifier running on-device on the Pi — architectural constraint means it cannot create events, re-time them, or touch BPH sync."
+> Application areas — five. **Base code conversion**: Qt/C++ DSP logic, event detection, and audio buffer management ported to C# idioms (Span\<T\>, Channel, IDisposable). **Code implementation**: renderers, test fixtures, buffer pool, and other repetitive implementation work — AI drafted, humans reviewed. **CI/CD pipeline** design and automation. **933 test** generation. **Document translation**: Korean and English architecture documents and presentation scripts drafted by AI, reviewed and corrected against DocRules.md."
 
 ---
 
 ### 5-2. Thoughtful Use (5 pts)
 
 **[Presenter]**
-> "**The review loop**: AI drafts → we review using DocRules.md from course materials → we feed the review back to AI for refinement. This preserved quality without sacrificing speed.
+> "Across all five areas, one principle held: **AI drafts, humans verify with executable evidence.**
 >
-> **Concrete example 1: C++ → C# base code conversion.** Porting the existing Qt/C++ implementation to C# was the largest upfront risk in this project. DSP logic, event detection algorithms, and audio buffer management were all written in C++. We gave AI the C++ files as context and asked for a direct translation into .NET 8 idioms — Span\<T\>, ArrayPool, Channel. This was not a syntax translation; it was a **language-idiom translation** — pointer arithmetic to Span, RAII to IDisposable, Qt signals to C# events. We reviewed every translated output ourselves, and confirmed correctness by checking that the Verify fixtures and 933 tests still passed after each conversion block. **AI handled the repetitive heavy lifting; humans guaranteed semantic correctness.**
+> **① Base code conversion.** Porting Qt/C++ to C# was the largest upfront risk. We gave AI the C++ files and asked for .NET 8 idioms — Span\<T\>, ArrayPool, Channel. Not a syntax translation but a **language-idiom translation**: pointer arithmetic → Span, RAII → IDisposable, Qt signals → C# events. Correctness confirmed by Verify fixtures and test pass counts.
 >
-> **Concrete example 2: Pipe-and-Filter decision.** The UI thread was freezing during heavy spectrogram computation. We described the bottleneck to Claude and asked for relevant patterns from Bass, Clements & Kazman's SAP. It suggested Producer-Consumer + Latest-Wins scheduler. We validated against the book's quality-attribute analysis and implemented it. EXP-03 confirms the UI thread is now fully decoupled.
+> **② Code implementation.** Repetitive work — renderers, buffer pool, test fixtures — was drafted by AI and reviewed by us. When the UI thread froze during spectrogram computation, we described the bottleneck to Claude and asked for SAP patterns. It suggested Producer-Consumer + Latest-Wins scheduler. We validated against the book's quality-attribute analysis and implemented it. EXP-03 confirms full decoupling.
 >
-> **Concrete example 3: ViewModel purity test.** We asked how to enforce 'no Avalonia in ViewModel' mechanically. Claude suggested a reflection-based test. We implemented ViewModelPurityTests — it runs on every CI push.
+> **③ CI/CD pipeline.** We described our build, test, and release requirements to AI and asked for a workflow design. It proposed the Core zero-dependency boundary tests and tag-triggered cross-platform release structure we use today. The pipeline now enforces architecture boundaries on every commit automatically.
 >
-> AI output was always checked by executable evidence: tests, CI jobs, Verify fixtures, ADRs, and live Pi measurements."
+> **④ Test generation.** Of the 933 tests, a significant portion was AI-generated. AI produced edge-case inputs near detection thresholds and suggested the ViewModelPurityTests approach — a reflection-based test that catches Avalonia types in ViewModels on every CI push.
+>
+> **⑤ Document translation.** Architecture documents and presentation scripts were AI-drafted in both Korean and English, then reviewed against DocRules.md. AI kept both versions in sync; humans made all final calls on natural phrasing and design intent."
 
 ---
 
