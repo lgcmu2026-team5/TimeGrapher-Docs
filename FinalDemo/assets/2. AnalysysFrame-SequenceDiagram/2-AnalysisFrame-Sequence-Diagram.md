@@ -1,6 +1,10 @@
 # AnalysisFrame Sequence Diagram Speaker Notes
 
-Draw.io source: [assets/2. AnalysisFrame sequence diagram.drawio](assets/2.%20AnalysisFrame%20sequence%20diagram.drawio)
+![AnalysisFrame sequence diagram](<2. AnalysisFrame sequence diagram.png>)
+
+Draw.io source: [2. AnalysisFrame sequence diagram.drawio](<2. AnalysisFrame sequence diagram.drawio>)
+
+Rendered preview: [2. AnalysisFrame sequence diagram.png](<2. AnalysisFrame sequence diagram.png>)
 
 ## Slide Purpose
 
