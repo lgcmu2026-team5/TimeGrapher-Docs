@@ -1,6 +1,8 @@
-# TIMEGRAPHER LAYERED VIEW – Permission-Based Architecture
+# TimeGrapher Layered View - Dependency Rules
 
-This view shows which layers are permitted to use which lower layers. It defines the *allowed* dependencies that govern every module dependency in the rest of the view set — not implementation details. It is the foundational constraint of the architecture: all other views must respect the directions established here.
+This view shows which layers may use which lower layers. It defines the dependency rules that govern the rest of the view set; implementation-level module dependencies are documented in the [Module Uses View](5-2-Module-Uses-View.md).
+
+## Primary Presentation
 
 ![TimeGrapher layered view](../../assets/LAYER.png)
 
@@ -8,18 +10,18 @@ This view shows which layers are permitted to use which lower layers. It defines
 
 **Key concepts**
 
-- **Relaxed Layering**: Upper layers can skip intermediate layers and use any lower layer they need.
+- **Direct lower-layer use**: Upper layers may use any lower layer when the dependency direction remains downward.
 - **Upward Dependency Forbidden**: Only downward flow is allowed (App → Core; never Core → App).
 - **Sidecar Layer**: Common external utilities and frameworks are placed in a sidecar layer accessible by permitted layers.
 
 **Layers**
 
-- **Layer 1 – Entry Points & UI**: App (Avalonia UI), Verify (console), Test Suites.
-- **Layer 2 – Platform Adapters**: WindowsAudio (NAudio), LinuxAudio (PipeWire / ALSA tools).
-- **Layer 3 – Portable Core**: `TimeGrapher.Core` (analysis, detection, metrics — no external dependencies).
+- **Entry Points & UI**: App (Avalonia UI), Verify (console), Test Suites.
+- **Platform Adapters**: WindowsAudio (NAudio), LinuxAudio (PipeWire / ALSA tools).
+- **Portable Core**: `TimeGrapher.Core` (analysis, detection, metrics — no external dependencies).
 - **External dependency – External Tech** (sidecar): Avalonia, ScottPlot, NAudio, xUnit.
 
-**Permission rules**
+**Dependency rules**
 
 ```text
 App → Platform Adapters

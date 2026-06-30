@@ -1,6 +1,8 @@
-# TIMEGRAPHER MODULE USES VIEW – Actual Dependencies & Internal Decomposition
+# TimeGrapher Module Uses View - Actual Dependencies and Internal Decomposition
 
 This view shows the syntactic «use» dependencies among project-level modules (App, Core, platform adapters, Verify) and then decomposes `TimeGrapher.Core` into its Core-internal submodules. It is the concrete realization of the permission rules defined in the [Layered View](5-1-Layered-View.md). Here, *platform adapters* refer to `WindowsAudio` and `LinuxAudio`; they isolate OS-specific audio dependencies from `TimeGrapher.Core`.
+
+## Primary Presentation
 
 ![Module Uses View - Project-level modules](../../assets/module-uses-project.en.svg)
 
@@ -46,5 +48,6 @@ N/A. This view is structural. The runtime data flow through these modules is doc
 
 ## Related views
 
-- [Layered View](5-1-Layered-View.md) — the permission rules these dependencies must obey.
+- [Layered View](5-1-Layered-View.md) — the dependency rules these module uses must obey.
 - [MVVM View](5-3-MVVM-View.md) — how the App-side modules are organized into View / ViewModel / Model roles.
+- [Worker Pipeline View](5-7-Worker-Pipeline-View.md) — runtime worker and queue boundaries that use these modules.

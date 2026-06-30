@@ -1,8 +1,10 @@
-# TIMEGRAPHER MVVM VIEW – Responsibility Separation
+# TimeGrapher MVVM View - Responsibility Separation
 
 This view shows the downward, one-way «use» dependencies among the View Layer, ViewModel Layer, and Model Layer inside the App, illustrating how responsibility is separated across components.
 
-**Notation:** Each layer is colored (View Layer / ViewModel Layer / Model Layer); a gray box is a **module** (a group of related classes). Every dependency is a dotted **«use»** arrow drawn from the *using* module to the *used* one.
+**Notation:** UML-style module/use diagram. A rectangle represents a module or layer; a dotted «use» arrow points from the using element to the used element.
+
+## Primary Presentation
 
 ![MVVM responsibility flow](../../assets/MVVM.png)
 
@@ -33,6 +35,7 @@ The table below lists every element's layer, module name, and primary responsibi
 | | Core.Metrics · AudioIo · Imaging | Computes rate / amplitude / beat error, reads & writes WAV, and builds sound images. |
 | | Core.Shared | Common contracts and data types (frames, buffers) shared by every module. Does not depend on any other module. |
 | | Platform.WindowsAudio · LinuxAudio | Captures live audio from the OS (WASAPI on Windows, ALSA / PipeWire on Linux). |
+| | Optional Inference Leaf | Loads the ONNX TinyML signal-quality classifier outside `TimeGrapher.Core`; the Core talks only through `ISignalQualityClassifier` and keeps the heuristic fallback. |
 
 ## Behavior
 
@@ -54,3 +57,4 @@ N/A in this view. The runtime interaction of these elements is documented in the
 - [Module Uses View](5-2-Module-Uses-View.md) — the project-level modules these App roles belong to.
 - [Run Lifecycle Sequence View](5-4-Run-Lifecycle-Sequence-View.md) — the runtime call flow across these layers.
 - [Run Lifecycle State Machine View](5-5-Run-Lifecycle-State-Machine-View.md) — the run-control states orchestrated by `RunCommandService`.
+- [Worker Pipeline View](5-7-Worker-Pipeline-View.md) — where analysis frames and optional TinyML signal-quality labels flow at runtime.

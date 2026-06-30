@@ -423,6 +423,8 @@ Complete
 
 **Second pass — commercial Weishi Timegrapher comparison:** measured four real watches on both this system and the Weishi to check whether the readings agree (Watch 4 was defective and excluded). Readings drift over time, so they are reported as observed ranges (min–max); the verdict is whether the two instruments' midpoints differ within tolerance.
 
+**Terminology note:** Weishi and Witschi are both used intentionally in the documentation. **Weishi** is the commercial timegrapher used for this EXP-06 comparison. **Witschi** appears elsewhere only as an industry reference for grade bands/tolerance context; the names are not interchangeable.
+
 ![EXP-06 per-watch comparison — this system vs Weishi](../assets/exp06-weishi-comparison.en.svg)
 
 | Watch | Metric | This system (TimeGrapher) | Weishi | Midpoint Δ | Tolerance | Verdict |
@@ -479,7 +481,8 @@ Judge each stage on the RPi5 (Windows is reference) and record the results in [R
 
 ### Duration
 
-- D1–D2: First pass (Realistic-off simulation) / Follow-up: commercial comparison test
+- 2026-06-21: first pass (Realistic-off simulation)
+- 2026-06-22 to 2026-06-25: follow-up commercial Weishi comparison test
 
 ### Links & References
 

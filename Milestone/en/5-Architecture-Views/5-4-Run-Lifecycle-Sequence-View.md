@@ -1,19 +1,18 @@
-# TIMEGRAPHER RUN LIFECYCLE SEQUENCE VIEW – Measurement Analysis Loop
+# TimeGrapher Run Lifecycle Sequence View - Measurement Analysis Loop
 
-This runtime view covers the object call flow from User → View → ViewModel → `RunCommandService` → Model (`RunSessionController` and Workers). It complements the static structure in the [MVVM View](5-3-MVVM-View.md) by showing how those elements interact over time. The measurement analysis loop is detailed in a Level 2 child view because it contains the recurring cycle that requires the most precision.
+This runtime view covers the object call flow from User → View → ViewModel → `RunCommandService` → Model (`RunSessionController` and Workers). It complements the static structure in the [MVVM View](5-3-MVVM-View.md) by showing how those elements interact over time. The measurement analysis loop is expanded in a referenced sequence diagram because it contains the recurring cycle that requires the most precision.
 
-| Page | Contents |
-| --- | --- |
-| Level 1 | Run lifecycle overview |
-| Level 2 | Measurement analysis loop, expanded from the Level 1 `ref` |
+**Notation:** UML sequence diagram.
 
-**Level 1 · Run Lifecycle Overview** keeps the whole lifecycle on one page. The detailed analysis loop is folded behind a `ref` and expanded in Level 2.
+## Primary Presentation
 
-![Level 1 run lifecycle overview](../../assets/Sequence-run-lifecycle-level1.svg)
+**Run lifecycle overview** keeps the whole lifecycle in one sequence diagram. The detailed analysis loop is folded behind a `ref` and expanded in the referenced diagram.
+
+![Run lifecycle overview](../../assets/Sequence-run-lifecycle-level1.svg)
 
 ## Element Catalog
 
-Roles and code references for each lifeline. `MasterAudioBuffer` and `Core pipeline` appear only in Level 2.
+Roles and code references for each lifeline. `MasterAudioBuffer` and `Core pipeline` appear only in the referenced measurement-analysis diagram.
 
 | Lifeline | MVVM layer | Responsibility |
 | --- | --- | --- |
@@ -31,13 +30,9 @@ Roles and code references for each lifeline. `MasterAudioBuffer` and `Core pipel
 
 ## Behavior
 
-**Level 2 · Measurement Analysis Loop** expands the measurement `ref` from Level 1. The loop condition and timing constraint are shown inside the diagram.
+**Measurement analysis loop** expands the measurement `ref` from the overview diagram. The loop condition and timing constraint are shown inside the diagram.
 
-![Level 2 measurement analysis loop](../../assets/Sequence-run-lifecycle-level2.svg)
-
-**Notation.** The common notation follows the legend below.
-
-![UML sequence diagram notation legend](../../assets/Sequence-run-lifecycle-notation.svg)
+![Measurement analysis loop](../../assets/Sequence-run-lifecycle-level2.svg)
 
 Label rule: User-to-system arrows describe user intent or action; object-to-object arrows use operation signatures.
 
@@ -50,3 +45,4 @@ Label rule: User-to-system arrows describe user intent or action; object-to-obje
 
 - [Run Lifecycle State Machine View](5-5-Run-Lifecycle-State-Machine-View.md) — the control states these sequences move between.
 - [MVVM View](5-3-MVVM-View.md) — the static layer structure of the lifelines above.
+- [Worker Pipeline View](5-7-Worker-Pipeline-View.md) — the worker/queue structure behind the measurement-analysis loop.

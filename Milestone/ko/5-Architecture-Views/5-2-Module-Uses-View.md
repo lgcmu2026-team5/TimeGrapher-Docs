@@ -1,6 +1,8 @@
-# TIMEGRAPHER MODULE USES VIEW – Actual Dependencies & Internal Decomposition
+# TimeGrapher Module Uses View - Actual Dependencies and Internal Decomposition
 
 이 뷰는 프로젝트 수준 모듈(App, Core, platform adapters, Verify) 간의 구문적(syntactic) «use» 의존성을 보여주고, 이어서 `TimeGrapher.Core`를 Core 내부 서브모듈로 분해한다. [Layered View](5-1-Layered-View.md)에서 정의한 권한 규칙을 구체적으로 실현한 뷰다. 여기서 platform adapters는 그림의 `WindowsAudio`와 `LinuxAudio`를 의미하며, OS-specific audio dependency가 `TimeGrapher.Core`로 들어오지 않도록 분리된 modules이다.
+
+## Primary Presentation
 
 ![Module Uses View - Project-level modules](../../assets/module-uses-project.ko.svg)
 
@@ -46,5 +48,6 @@ N/A. 이 뷰는 구조적 뷰다. 이 모듈들을 통과하는 런타임 데이
 
 ## Related views
 
-- [Layered View](5-1-Layered-View.md) — 이 의존성들이 따라야 하는 권한 규칙.
+- [Layered View](5-1-Layered-View.md) — 이 module use들이 따라야 하는 의존 규칙.
 - [MVVM View](5-3-MVVM-View.md) — App 쪽 모듈을 View / ViewModel / Model 역할로 구성한 방식.
+- [Worker Pipeline View](5-7-Worker-Pipeline-View.md) — 이 모듈들을 사용하는 런타임 worker와 queue 경계.

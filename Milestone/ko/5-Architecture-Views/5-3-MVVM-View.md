@@ -1,8 +1,10 @@
-# TIMEGRAPHER MVVM VIEW – Responsibility Separation
+# TimeGrapher MVVM View - Responsibility Separation
 
 이 뷰는 App 내부에서 View Layer, ViewModel Layer, Model Layer 간의 하향식 단방향 «use» 의존성을 보여주며, 각 컴포넌트의 책임 분리를 나타낸다.
 
-**표기:** 3가지 계층으로 분리하며(View Layer / ViewModel Layer / Model Layer), 회색 상자는 **모듈**(관련 클래스 묶음)이다. 모든 의존성은 *사용하는* 모듈에서 *사용되는* 모듈로 향하는 점선 **«use»** 화살표로 그린다.
+**표기:** UML-style module/use diagram. 사각형은 모듈 또는 레이어를 나타내고, 점선 «use» 화살표는 사용하는 요소에서 사용되는 요소로 향한다.
+
+## Primary Presentation
 
 ![MVVM responsibility flow](../../assets/MVVM.png)
 
@@ -33,6 +35,7 @@
 | | Core.Metrics · AudioIo · Imaging | 일오차/진폭/비트에러 계산, WAV 입출력, 사운드 이미지 생성. |
 | | Core.Shared | 모든 서브모듈이 공유하는 공통 계약·데이터 타입(프레임, 버퍼). 다른 모듈에 의존하지 않음. |
 | | Platform.WindowsAudio · LinuxAudio | OS 계층에서 라이브 오디오를 캡처한다(Windows WASAPI, Linux ALSA/PipeWire). |
+| | Optional Inference Leaf | ONNX TinyML signal-quality classifier를 `TimeGrapher.Core` 밖에서 로드한다. Core는 `ISignalQualityClassifier`로만 통신하고 heuristic fallback을 유지한다. |
 
 ## Behavior
 
@@ -54,3 +57,4 @@
 - [Module Uses View](5-2-Module-Uses-View.md) — 이 App 역할들이 속한 프로젝트 수준 모듈.
 - [Run Lifecycle Sequence View](5-4-Run-Lifecycle-Sequence-View.md) — 이 계층들을 가로지르는 런타임 호출 흐름.
 - [Run Lifecycle State Machine View](5-5-Run-Lifecycle-State-Machine-View.md) — `RunCommandService`가 오케스트레이션하는 실행 제어 상태.
+- [Worker Pipeline View](5-7-Worker-Pipeline-View.md) — analysis frame과 선택적 TinyML signal-quality label이 런타임에 흐르는 위치.

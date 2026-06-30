@@ -38,7 +38,8 @@ Metrics, units, and standards referenced by the quality attribute scenarios.
 | ISO 9241-303 | International ergonomics standard for electronic displays — source of the character-size guideline |
 | Glyph | The visual shape of a single character on screen |
 | arcmin | Minute of arc (1° = 60 arcmin) — unit for how large something appears to the eye |
-| Witschi / Chronometer grade | Witschi — a watch-timing-machine maker whose accuracy grade bands are an industry reference; **Chronometer** is the tightest band (−2…+6 s/d), the basis for the ±3 s/d tolerance |
+| Weishi Timegrapher | The commercial timegrapher unit used in the EXP-06 side-by-side measurement comparison. This is the actual comparison device, not a typo for Witschi. |
+| Witschi / Chronometer grade | Witschi — a watch-timing-machine maker whose accuracy grade bands are used only as an industry reference in this document; **Chronometer** is the tightest band (−2…+6 s/d), the basis for the ±3 s/d tolerance. |
 
 ## Platform & Engineering Terms
 

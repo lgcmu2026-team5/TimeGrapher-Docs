@@ -1,6 +1,10 @@
-# TIMEGRAPHER RUN LIFECYCLE STATE MACHINE VIEW – Control State Transitions
+# TimeGrapher Run Lifecycle State Machine View - Control State Transitions
 
-이 런타임 뷰는 `Stopped`, `Starting`, `Running`, `Paused`, `Stopping`, `StopFailed` 상태 간의 전이 규칙을 정의한다. *어떤 상태로 넘어가는가*를 표현하며, 입력 worker/분석 worker의 상세 호출 순서는 [Run Lifecycle Sequence View](5-4-Run-Lifecycle-Sequence-View.md)에 둔다.
+이 런타임 뷰는 `RunUiState`의 `Stopped`, `Starting`, `Running`, `Paused`, `Stopping`, `StopFailed` 상태 간 전이 규칙을 정의한다. *어떤 상태로 넘어가는가*를 표현하며, 입력 worker/분석 worker의 상세 호출 순서는 [Run Lifecycle Sequence View](5-4-Run-Lifecycle-Sequence-View.md)에 둔다.
+
+**표기:** UML state machine diagram.
+
+## Primary Presentation
 
 ![Run 상태 머신](../../assets/Statemachine-run-lifecycle.svg)
 
@@ -19,9 +23,7 @@
 
 ## Behavior
 
-위 상태 머신 다이어그램 자체가 이 뷰의 동작 모델이다. 상태 머신 공통 표기는 아래 범례 이미지를 따른다.
-
-![UML 상태 머신 표기 범례](../../assets/Statemachine-run-lifecycle-notation.svg)
+위 상태 머신 다이어그램 자체가 이 뷰의 동작 모델이다.
 
 ## Related ADRs
 

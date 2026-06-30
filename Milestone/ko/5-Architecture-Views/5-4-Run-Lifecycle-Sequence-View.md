@@ -1,19 +1,18 @@
-# TIMEGRAPHER RUN LIFECYCLE SEQUENCE VIEW – Measurement Analysis Loop
+# TimeGrapher Run Lifecycle Sequence View - Measurement Analysis Loop
 
-이 런타임 뷰는 User → View → ViewModel → `RunCommandService` → Model(`RunSessionController` 및 Workers)로 이어지는 객체 간 호출 흐름을 다룬다. [MVVM View](5-3-MVVM-View.md)의 정적 구조를, 그 요소들이 시간에 따라 어떻게 상호작용하는지 보여줌으로써 보완한다. 측정 분석 루프는 반복 주기를 포함해 가장 세분화가 필요하므로 Level 2 자식 뷰로 분리한다.
+이 런타임 뷰는 User → View → ViewModel → `RunCommandService` → Model(`RunSessionController` 및 Workers)로 이어지는 객체 간 호출 흐름을 다룬다. [MVVM View](5-3-MVVM-View.md)의 정적 구조를, 그 요소들이 시간에 따라 어떻게 상호작용하는지 보여줌으로써 보완한다. 측정 분석 루프는 반복 주기를 포함해 가장 세분화가 필요하므로 참조된 sequence diagram에서 확장한다.
 
-| Page | 내용 |
-| --- | --- |
-| Level 1 | 실행 수명주기 개요 |
-| Level 2 | Level 1의 `ref`에서 펼친 측정 중 분석 반복 흐름 |
+**표기:** UML sequence diagram.
 
-**Level 1 · 실행 수명주기 개요**는 실행 수명주기 전체를 한 장에 담는다. 세부 분석 반복은 `ref`로 접고 Level 2에서 펼친다.
+## Primary Presentation
 
-![Level 1 실행 수명주기 개요](../../assets/Sequence-run-lifecycle-level1.svg)
+**실행 수명주기 개요**는 실행 수명주기 전체를 하나의 sequence diagram에 담는다. 세부 분석 반복은 `ref`로 접고 참조된 다이어그램에서 펼친다.
+
+![실행 수명주기 개요](../../assets/Sequence-run-lifecycle-level1.svg)
 
 ## Element Catalog
 
-각 lifeline의 역할을 정리한다. `MasterAudioBuffer`와 `Core pipeline`은 Level 2에서만 등장한다.
+각 lifeline의 역할을 정리한다. `MasterAudioBuffer`와 `Core pipeline`은 참조된 측정 분석 다이어그램에서만 등장한다.
 
 | Lifeline | MVVM 레이어 | 책임 |
 | --- | --- | --- |
@@ -31,13 +30,9 @@
 
 ## Behavior
 
-**Level 2 · 측정 중 분석 반복 흐름**은 Level 1의 측정 `ref`를 펼친 뷰다. 반복 조건과 시간 제약은 다이어그램 안에 표시한다.
+**측정 중 분석 반복 흐름**은 overview diagram의 측정 `ref`를 펼친 뷰다. 반복 조건과 시간 제약은 다이어그램 안에 표시한다.
 
-![Level 2 측정 중 분석 반복 흐름](../../assets/Sequence-run-lifecycle-level2.svg)
-
-**표기.** 공통 표기는 아래 범례 이미지를 따른다.
-
-![UML 시퀀스 다이어그램 표기 범례](../../assets/Sequence-run-lifecycle-notation.svg)
+![측정 중 분석 반복 흐름](../../assets/Sequence-run-lifecycle-level2.svg)
 
 라벨 규칙: User↔시스템 화살표는 사용자의 의도/행위, 객체 간 화살표는 오퍼레이션 시그니처다.
 
@@ -50,3 +45,4 @@
 
 - [Run Lifecycle State Machine View](5-5-Run-Lifecycle-State-Machine-View.md) — 이 시퀀스가 오가는 제어 상태.
 - [MVVM View](5-3-MVVM-View.md) — 위 lifeline들의 정적 계층 구조.
+- [Worker Pipeline View](5-7-Worker-Pipeline-View.md) — 측정 분석 루프 뒤의 worker/queue 구조.

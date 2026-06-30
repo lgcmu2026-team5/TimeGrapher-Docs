@@ -1,6 +1,10 @@
-# TIMEGRAPHER RUN LIFECYCLE STATE MACHINE VIEW – Control State Transitions
+# TimeGrapher Run Lifecycle State Machine View - Control State Transitions
 
-This runtime view defines the transition rules among the `Stopped`, `Starting`, `Running`, `Paused`, `Stopping`, and `StopFailed` states. It shows *which state the app moves to*; the detailed worker and analysis call order lives in the [Run Lifecycle Sequence View](5-4-Run-Lifecycle-Sequence-View.md).
+This runtime view defines the transition rules among the `Stopped`, `Starting`, `Running`, `Paused`, `Stopping`, and `StopFailed` states of `RunUiState`. It shows *which state the app moves to*; the detailed worker and analysis call order lives in the [Run Lifecycle Sequence View](5-4-Run-Lifecycle-Sequence-View.md).
+
+**Notation:** UML state machine diagram.
+
+## Primary Presentation
 
 ![Run state machine](../../assets/Statemachine-run-lifecycle.svg)
 
@@ -19,9 +23,7 @@ This runtime view defines the transition rules among the `Stopped`, `Starting`, 
 
 ## Behavior
 
-The state machine diagram above is itself the behavior model for this view. The common state-machine notation follows the legend below.
-
-![UML state machine notation legend](../../assets/Statemachine-run-lifecycle-notation.svg)
+The state machine diagram above is itself the behavior model for this view.
 
 ## Related ADRs
 

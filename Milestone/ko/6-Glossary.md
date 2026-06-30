@@ -38,7 +38,8 @@
 | ISO 9241-303 | 전자 디스플레이 인간공학 국제 표준 — 글자 크기 권고 기준의 출처 |
 | 글리프 (glyph) | 화면에 표시되는 글자 한 개의 모양 |
 | arcmin | 각도의 분 단위(1° = 60 arcmin) — 눈에 보이는 크기를 재는 단위 |
-| Witschi / Chronometer 등급 | Witschi — 정확도 등급 대역이 업계 기준으로 쓰이는 워치 타이밍머신 제조사; **Chronometer**는 가장 엄격한 등급(−2…+6 s/d)으로 ±3 s/d 허용폭의 근거 |
+| Weishi Timegrapher | EXP-06의 side-by-side measurement comparison에 실제로 사용한 상용 timegrapher 장비. Witschi의 오타가 아니라 별도 장비명이다. |
+| Witschi / Chronometer 등급 | Witschi — 이 문서에서 industry reference로만 사용하는 워치 타이밍머신 제조사; **Chronometer**는 가장 엄격한 등급(−2…+6 s/d)으로 ±3 s/d 허용폭의 근거. |
 
 ## 플랫폼·엔지니어링 용어
 

@@ -462,6 +462,8 @@ xychart-beta
 
 **2차 — 상용 Weishi Timegrapher 비교:** 실제 시계 4점을 본 시스템과 Weishi로 측정해 두 측정값의 일치 여부를 확인했다(시계 4는 불량으로 측정 제외). 측정값은 시간에 따라 변동하므로 관측 범위(min–max)로 표기하며, 판정은 두 기기 중앙값 차가 허용오차 이내인지로 본다.
 
+**용어 구분 참고:** 문서에서 Weishi와 Witschi는 모두 의도적으로 사용한다. **Weishi**는 EXP-06 비교 실험에 실제로 사용한 상용 timegrapher 장비다. **Witschi**는 다른 위치에서 등급 대역/허용오차 맥락의 industry reference로만 사용하며, 두 이름은 서로 바꿔 쓸 수 없다.
+
 ![EXP-06 시계별 측정 비교 — 본 시스템 vs Weishi](../assets/exp06-weishi-comparison.ko.svg)
 
 | 시계 | 지표 | 본 시스템 (TimeGrapher) | Weishi | 중앙값 차 | 허용오차 | 판정 |
@@ -518,7 +520,8 @@ xychart-beta
 
 ### 기간
 
-- D1–D2: 1차(Realistic Off 시뮬레이션) / 후속: 상용 비교 테스트
+- 2026-06-21: 1차(Realistic Off 시뮬레이션)
+- 2026-06-22~2026-06-25: 후속 상용 Weishi 비교 테스트
 
 ### 링크 및 참고 자료
 
