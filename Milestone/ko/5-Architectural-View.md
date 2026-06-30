@@ -11,7 +11,7 @@
 
 ### 1-1. TIMEGRAPHER MVVM VIEW – Responsibility Separation
 
-**표기:** 계층마다 색을 칠하고(View Layer / ViewModel Layer / Model Layer), 회색 상자는 **모듈**(관련 클래스 묶음)이다. 모든 의존성은 *사용하는* 모듈에서 *사용되는* 모듈로 향하는 점선 **«use»** 화살표로 그린다.
+**표기:** 3가지 계층으로 분리하며, (View Layer / ViewModel Layer / Model Layer), 회색 상자는 **모듈**(관련 클래스 묶음)이다. 모든 의존성은 *사용하는* 모듈에서 *사용되는* 모듈로 향하는 점선 **«use»** 화살표로 그린다.
 
 **의존 흐름(«use» 화살표):**
 - View Layer의 세 모듈은 `MainWindowViewModel`을 **사용**한다.
