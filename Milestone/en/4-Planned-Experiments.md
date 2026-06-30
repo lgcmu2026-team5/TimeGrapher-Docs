@@ -189,11 +189,11 @@ xychart-beta horizontal
 %%{init: {"themeVariables": {"xyChart": {"plotColorPalette": "#A50034, #999999, #005EB8, #666666"}}}}%%
 xychart-beta horizontal
     title "RPi5 per-tab E2E max — 2026-06-30 (bars = segments, blue line = E2E total, gray line = budget)"
-    x-axis ["Filter Scope", "Beat Noise", "Waveforms", "Rate/Scope", "Long-Term", "Sweep", "Beat Error", "Vario", "Escapement", "Trace", "Sound Print", "Spectrogram", "Health", "Positions"]
+    x-axis ["Filter Scope", "Beat Noise", "Waveforms", "Positions", "Rate/Scope", "Long-Term", "Sweep", "Beat Error", "Vario", "Escapement", "Trace", "Sound Print", "Spectrogram", "Health"]
     y-axis "Latency (ms)" 0 --> 90
-    bar [42.79, 43.29, 42.95, 41.38, 41.27, 41.34, 41.07, 41.37, 41.75, 40.69, 38.56, 37.83, 37.46, 37.67]
-    bar [5.91, 4.60, 4.62, 5.79, 5.78, 5.27, 4.58, 3.62, 3.16, 3.88, 5.30, 5.80, 4.37, 4.03]
-    line [48.70, 47.90, 47.57, 47.17, 47.06, 46.60, 45.65, 44.99, 44.91, 44.57, 43.85, 43.63, 41.83, 41.70]
+    bar [42.79, 43.29, 42.95, 19.33, 41.38, 41.27, 41.34, 41.07, 41.37, 41.75, 40.69, 38.56, 37.83, 37.46]
+    bar [5.91, 4.60, 4.62, 28.18, 5.79, 5.78, 5.27, 4.58, 3.62, 3.16, 3.88, 5.30, 5.80, 4.37]
+    line [48.70, 47.90, 47.57, 47.51, 47.17, 47.06, 46.60, 45.65, 44.99, 44.91, 44.57, 43.85, 43.63, 41.83]
     line [83.3, 83.3, 83.3, 83.3, 83.3, 83.3, 83.3, 83.3, 83.3, 83.3, 83.3, 83.3, 83.3, 83.3]
 ```
 - Even the slowest tab (Filter Scope, 48.70 ms) sits at ~58 % of the 83.3 ms budget — all 14 tabs keep headroom.
@@ -206,6 +206,7 @@ xychart-beta horizontal
 | Filter Scope | 42.79 | 5.91 | 48.70 | 58.4% | 1250 |
 | Beat Noise | 43.29 | 4.60 | 47.90 | 57.5% | 1297 |
 | Waveforms | 42.95 | 4.62 | 47.57 | 57.1% | 1666 |
+| Positions | 19.33 | 28.18 | 47.51 | 57.0% | 987 |
 | Rate/Scope | 41.38 | 5.79 | 47.17 | 56.6% | 987 |
 | Long-Term | 41.27 | 5.78 | 47.06 | 56.5% | 1295 |
 | Sweep | 41.34 | 5.27 | 46.60 | 55.9% | 1301 |
@@ -216,9 +217,8 @@ xychart-beta horizontal
 | Sound Print | 38.56 | 5.30 | 43.85 | 52.6% | 553 |
 | Spectrogram | 37.83 | 5.80 | 43.63 | 52.4% | 410 |
 | Health | 37.46 | 4.37 | 41.83 | 50.2% | 1571 |
-| Positions | 37.67 | 4.03 | 41.70 | 50.0% | 987 |
 
-> Values are rounded from the CSV row reported for each tab's E2E worst. Segment values come from that same row.
+> Values are rounded from the CSV row where `end_to_end_latency_ms` is maximal for each tab. Segment values come from that same row.
 
 ### Objective
 
