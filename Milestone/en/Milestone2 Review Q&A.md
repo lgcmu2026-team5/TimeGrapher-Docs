@@ -150,7 +150,7 @@ All experiments were targeted at the top-rated risks (High probability × High i
 We created two module views:
 
 <details>
-<summary><strong><a href="5-Architecture-Views/5-3-MVVM-View.md">1. TIMEGRAPHER MVVM VIEW – Responsibility Separation</a></strong></summary>
+<summary><strong><a href="5-Architecture-Views/5-3-MVVM-View.md">1. TimeGrapher MVVM View - Responsibility Separation</a></strong></summary>
 
 Shows one-way «use» dependencies across three layers:
 - **View Layer** (Main Window, Graph Tabs Window, Graph Rendering) → uses `MainWindowViewModel`
@@ -162,7 +162,7 @@ Key constraint: ViewModel holds no Avalonia/View types (enforced by `ViewModelPu
 </details>
 
 <details>
-<summary><strong><a href="5-Architecture-Views/5-2-Module-Uses-View.md">2-1. TIMEGRAPHER MODULE USES VIEW – Actual Dependencies & Internal Decomposition</a></strong></summary>
+<summary><strong><a href="5-Architecture-Views/5-2-Module-Uses-View.md">2-1. TimeGrapher Module Uses View - Actual Dependencies and Internal Decomposition</a></strong></summary>
 
 Shows how modules are structured to use each other. At the project level it maps the relationships among App, Core, platform adapters, and Verify: Core sits at the center, with App, Verify, `WindowsAudio`, and `LinuxAudio` all depending on it. `WindowsAudio` and `LinuxAudio` (platform adapters) form a boundary that keeps OS-specific audio dependencies out of Core.
 

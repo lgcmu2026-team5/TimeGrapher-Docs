@@ -1,6 +1,6 @@
 # Glossary
 
-> Consolidated glossary for the Team 5 · Milestone 1 presentation documents — the single source of truth for terminology, so every section can reference it consistently. The terms below are referenced throughout the Milestone 1 presentation documents (Architectural Drivers, Risk Assessment, Planned Experiments, Architectural View, Architectural Approaches).
+> Consolidated glossary for the Team 5 · Milestone 1 presentation documents — the single source of truth for terminology, so every section can reference it consistently. The terms below are referenced throughout the Milestone 1 presentation documents (Architectural Drivers, Risk Assessment, Planned Experiments, Architecture Views, Architectural Approaches).
 
 ## Domain Terms
 

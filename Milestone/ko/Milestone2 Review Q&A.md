@@ -151,7 +151,7 @@ Milestone 1 이후 다음과 같은 주요 변경사항이 있었습니다:
 우리는 두 가지 모듈 뷰를 작성했습니다:
 
 <details>
-<summary><strong><a href="5-Architecture-Views/5-3-MVVM-View.md">1. TIMEGRAPHER MVVM VIEW – Responsibility Separation</a></strong></summary>
+<summary><strong><a href="5-Architecture-Views/5-3-MVVM-View.md">1. TimeGrapher MVVM View - Responsibility Separation</a></strong></summary>
 
 세 레이어 간의 단방향 «use» 의존성을 보여줍니다:
 - **View Layer** (Main Window, Graph Tabs Window, Graph Rendering) → `MainWindowViewModel` 사용
@@ -163,7 +163,7 @@ Milestone 1 이후 다음과 같은 주요 변경사항이 있었습니다:
 </details>
 
 <details>
-<summary><strong><a href="5-Architecture-Views/5-2-Module-Uses-View.md">2-1. TIMEGRAPHER MODULE USES VIEW – Actual Dependencies & Internal Decomposition</a></strong></summary>
+<summary><strong><a href="5-Architecture-Views/5-2-Module-Uses-View.md">2-1. TimeGrapher Module Uses View - Actual Dependencies and Internal Decomposition</a></strong></summary>
 
 어떤 모듈이 어떤 모듈을 사용하도록 구조화되어 있는지를 보여줍니다. 전체 프로젝트 수준에서 App·Core·플랫폼 오디오 어댑터·Verify의 관계를 표현하며, 핵심은 Core가 중심에 있고 App·Verify·`WindowsAudio`·`LinuxAudio`가 Core를 사용한다는 점입니다. `WindowsAudio`·`LinuxAudio`(platform adapters)는 OS별 오디오 의존성이 Core 안으로 들어오지 않도록 경계를 만듭니다.
 

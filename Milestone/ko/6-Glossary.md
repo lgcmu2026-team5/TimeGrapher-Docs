@@ -1,6 +1,6 @@
 # Glossary
 
-> Team 5 · Milestone 1 발표 문서 전반의 통합 용어집 — 모든 절이 일관되게 참조하는 용어의 단일 원천이다. 아래 용어는 Milestone 1 발표 문서 전반(Architectural Drivers, Risk Assessment, Planned Experiments, Architectural View, Architectural Approaches)에서 사용된다.
+> Team 5 · Milestone 1 발표 문서 전반의 통합 용어집 — 모든 절이 일관되게 참조하는 용어의 단일 원천이다. 아래 용어는 Milestone 1 발표 문서 전반(Architectural Drivers, Risk Assessment, Planned Experiments, Architecture Views, Architectural Approaches)에서 사용된다.
 
 ## 도메인 용어
 
