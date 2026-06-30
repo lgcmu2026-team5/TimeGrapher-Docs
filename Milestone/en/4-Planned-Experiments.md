@@ -183,30 +183,19 @@ xychart-beta horizontal
 ```
 - In the 2026-06-21 run, the slowest tab (Filter Scope, 36.46 ms) sat at ~44 % of the 83.3 ms budget.
 
-**Per-tab E2E max (RPi5, 43200@192k Sim, 2026-06-30, lower is better, gray line = 83.3 ms budget)**
+**Per-tab E2E max split (RPi5, 43200@192k Sim, 2026-06-30, red = capture→process, gray = process→display, line = 83.3 ms budget)**
 
 ```mermaid
-%%{init: {"themeVariables": {"xyChart": {"plotColorPalette": "#A50034, #999999"}}}}%%
+%%{init: {"themeVariables": {"xyChart": {"plotColorPalette": "#A50034, #999999, #666666"}}}}%%
 xychart-beta horizontal
-    title "RPi5 per-tab E2E max — 2026-06-30 (gray line = 83.3 ms budget)"
+    title "RPi5 per-tab E2E max — 2026-06-30 (red = capture→process, gray = process→display)"
     x-axis ["Filter Scope", "Beat Noise", "Waveforms", "Rate/Scope", "Long-Term", "Sweep", "Beat Error", "Vario", "Escapement", "Trace", "Sound Print", "Spectrogram", "Health", "Positions"]
-    y-axis "E2E max (ms)" 0 --> 90
-    bar [48.70, 47.90, 47.57, 47.17, 47.06, 46.60, 45.65, 44.99, 44.91, 44.57, 43.85, 43.63, 41.83, 41.70]
+    y-axis "Latency (ms)" 0 --> 90
+    bar [42.79, 43.29, 42.95, 41.38, 41.27, 41.34, 41.07, 41.37, 41.75, 40.69, 38.56, 37.83, 37.46, 37.67]
+    bar [5.91, 4.60, 4.62, 5.79, 5.78, 5.27, 4.58, 3.62, 3.16, 3.88, 5.30, 5.80, 4.37, 4.03]
     line [83.3, 83.3, 83.3, 83.3, 83.3, 83.3, 83.3, 83.3, 83.3, 83.3, 83.3, 83.3, 83.3, 83.3]
 ```
 - Even the slowest tab (Filter Scope, 48.70 ms) sits at ~58 % of the 83.3 ms budget — all 14 tabs keep headroom.
-
-The same tab benchmark is decomposed below using the same row reported for each tab's E2E worst (RPi5, 43200@192k Sim, 2026-06-30). Segment values come from that same row, so `capture→process + process→display = E2E worst` apart from rounding.
-
-```mermaid
-%%{init: {"themeVariables": {"xyChart": {"plotColorPalette": "#A50034, #999999"}}}}%%
-xychart-beta horizontal
-    title "RPi5 segments at each tab's E2E worst (red = capture→process, gray = process→display)"
-    x-axis ["Filter Scope", "Beat Noise", "Waveforms", "Rate/Scope", "Long-Term", "Sweep", "Beat Error", "Vario", "Escapement", "Trace", "Sound Print", "Spectrogram", "Health", "Positions"]
-    y-axis "Latency (ms, at E2E worst)" 0 --> 50
-    bar [42.79, 43.29, 42.95, 41.38, 41.27, 41.34, 41.07, 41.37, 41.75, 40.69, 38.56, 37.83, 37.46, 37.67]
-    bar [5.91, 4.60, 4.62, 5.79, 5.78, 5.27, 4.58, 3.62, 3.16, 3.88, 5.30, 5.80, 4.37, 4.03]
-```
 - All tabs recorded drop 0 · miss 0.
 
 **Measurement data (2026-06-30, RPi5, 43,200 BPH @ 192 kHz, Simulation):**

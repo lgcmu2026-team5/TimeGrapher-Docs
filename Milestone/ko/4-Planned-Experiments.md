@@ -187,30 +187,19 @@ xychart-beta horizontal
 ```
 - 2026-06-21 실행에서는 가장 느린 Filter Scope도 36.46 ms로 83.3 ms 예산의 약 44% 수준이었다.
 
-탭별 E2E max (Raspberry Pi 5, 43200@192k Sim, 2026-06-30, 낮을수록 여유, 회색선 = 83.3 ms 예산)
+탭별 E2E max 구간 분해 (Raspberry Pi 5, 43200@192k Sim, 2026-06-30, 빨강 = capture→process, 회색 = process→display, 선 = 83.3 ms 예산)
 
 ```mermaid
-%%{init: {"themeVariables": {"xyChart": {"plotColorPalette": "#A50034, #999999"}}}}%%
+%%{init: {"themeVariables": {"xyChart": {"plotColorPalette": "#A50034, #999999, #666666"}}}}%%
 xychart-beta horizontal
-    title "RPi5 탭별 E2E max — 2026-06-30 (회색선 = 83.3 ms 예산)"
+    title "RPi5 탭별 E2E max — 2026-06-30 (빨강 = capture→process, 회색 = process→display)"
     x-axis ["Filter Scope", "Beat Noise", "Waveforms", "Rate/Scope", "Long-Term", "Sweep", "Beat Error", "Vario", "Escapement", "Trace", "Sound Print", "Spectrogram", "Health", "Positions"]
-    y-axis "E2E max (ms)" 0 --> 90
-    bar [48.70, 47.90, 47.57, 47.17, 47.06, 46.60, 45.65, 44.99, 44.91, 44.57, 43.85, 43.63, 41.83, 41.70]
+    y-axis "지연 (ms)" 0 --> 90
+    bar [42.79, 43.29, 42.95, 41.38, 41.27, 41.34, 41.07, 41.37, 41.75, 40.69, 38.56, 37.83, 37.46, 37.67]
+    bar [5.91, 4.60, 4.62, 5.79, 5.78, 5.27, 4.58, 3.62, 3.16, 3.88, 5.30, 5.80, 4.37, 4.03]
     line [83.3, 83.3, 83.3, 83.3, 83.3, 83.3, 83.3, 83.3, 83.3, 83.3, 83.3, 83.3, 83.3, 83.3]
 ```
 - 가장 느린 Filter Scope도 48.70 ms로 83.3 ms 예산의 약 58% 수준 — 14개 탭 모두 예산 내 여유를 확보함.
-
-같은 탭들의 구간 값은 각 탭의 E2E worst로 보고한 동일 행에서 가져온다(Raspberry Pi 5, 43200@192k Sim, 2026-06-30). 따라서 반올림 오차를 제외하면 `capture→process + process→display = E2E worst`가 된다.
-
-```mermaid
-%%{init: {"themeVariables": {"xyChart": {"plotColorPalette": "#A50034, #999999"}}}}%%
-xychart-beta horizontal
-    title "RPi5 탭별 E2E worst 시점 구간값 (빨강 = capture→process, 회색 = process→display)"
-    x-axis ["Filter Scope", "Beat Noise", "Waveforms", "Rate/Scope", "Long-Term", "Sweep", "Beat Error", "Vario", "Escapement", "Trace", "Sound Print", "Spectrogram", "Health", "Positions"]
-    y-axis "지연 (ms, E2E worst 시점)" 0 --> 50
-    bar [42.79, 43.29, 42.95, 41.38, 41.27, 41.34, 41.07, 41.37, 41.75, 40.69, 38.56, 37.83, 37.46, 37.67]
-    bar [5.91, 4.60, 4.62, 5.79, 5.78, 5.27, 4.58, 3.62, 3.16, 3.88, 5.30, 5.80, 4.37, 4.03]
-```
 - 전 탭 drop 0 · miss 0.
 
 **측정 데이터 (2026-06-30, Raspberry Pi 5, 43,200 BPH @ 192 kHz, Simulation):**
