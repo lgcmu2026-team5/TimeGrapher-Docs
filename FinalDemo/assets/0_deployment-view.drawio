@@ -1,110 +1,132 @@
 <mxfile host="Electron" agent="Codex">
   <diagram id="timegrapher-runtime-hardware-view" name="Deployment Hardware View">
-    <mxGraphModel dx="2401" dy="828" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1200" pageHeight="760" math="0" shadow="0">
+    <mxGraphModel dx="2464" dy="872" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1200" pageHeight="760" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
-        <mxCell id="watch" parent="1" style="shape=cube;boundedLbl=1;backgroundOutline=1;darkOpacity=0.05;size=14;fillColor=#ffffff;strokeColor=#333333;strokeWidth=1.6;align=center;verticalAlign=top;spacingTop=12;shadow=1;whiteSpace=wrap;html=1;fontFamily=Helvetica;fontSize=12;fontColor=#111111;" value="&amp;laquo;external signal source&amp;raquo;&lt;br&gt;&lt;b&gt;&lt;u&gt;Mechanical Watch&lt;/u&gt;&lt;/b&gt;&lt;br&gt;acoustic tick/tock" vertex="1">
-          <mxGeometry height="115" width="235" y="251.5" as="geometry" />
+        <mxCell id="watch" parent="1" style="shape=cube;boundedLbl=1;backgroundOutline=1;darkOpacity=0.05;size=14;fillColor=#ffffff;strokeColor=#333333;strokeWidth=1.6;align=center;verticalAlign=top;spacingTop=12;shadow=1;whiteSpace=wrap;html=1;fontFamily=Helvetica;fontSize=16;fontColor=#111111;" value="«external signal source»&lt;br&gt;&lt;b&gt;&lt;u&gt;Mechanical Watch&lt;/u&gt;&lt;/b&gt;&lt;br&gt;acoustic tick/tock" vertex="1">
+          <mxGeometry height="115" width="235" x="-90" y="228" as="geometry" />
         </mxCell>
-        <mxCell id="watch-label" parent="1" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;fontFamily=Helvetica;fontSize=11;fontColor=#333333;" value="external signal path&lt;br&gt;acoustic vibration" vertex="1">
-          <mxGeometry height="44" width="120" x="234" y="264" as="geometry" />
+        <mxCell id="watch-label" parent="1" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;fontFamily=Helvetica;fontSize=16;fontColor=#333333;" value="external signal path&lt;br&gt;acoustic vibration" vertex="1">
+          <mxGeometry height="44" width="120" x="171" y="238" as="geometry" />
         </mxCell>
-        <mxCell id="mic" parent="1" style="shape=cube;boundedLbl=1;backgroundOutline=1;darkOpacity=0.05;size=14;fillColor=#ffffff;strokeColor=#333333;strokeWidth=1.6;align=center;verticalAlign=top;spacingTop=12;shadow=1;whiteSpace=wrap;html=1;fontFamily=Helvetica;fontSize=12;fontColor=#111111;" value="&amp;laquo;device&amp;raquo;&lt;br&gt;&lt;b&gt;&lt;u&gt;Watch Measurement&lt;br&gt;Microphone&lt;/u&gt;&lt;/b&gt;" vertex="1">
-          <mxGeometry height="200" width="280" x="350" y="209" as="geometry" />
+        <mxCell id="mic" parent="1" style="shape=cube;boundedLbl=1;backgroundOutline=1;darkOpacity=0.05;size=14;fillColor=#ffffff;strokeColor=#333333;strokeWidth=1.6;align=center;verticalAlign=top;spacingTop=12;shadow=1;whiteSpace=wrap;html=1;fontFamily=Helvetica;fontSize=16;fontColor=#111111;" value="«device»&lt;br&gt;&lt;b&gt;&lt;u&gt;Watch Measurement&lt;br&gt;Microphone&lt;/u&gt;&lt;/b&gt;" vertex="1">
+          <mxGeometry height="211" width="280" x="321" y="180" as="geometry" />
         </mxCell>
-        <mxCell id="mic-props" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f2f2f2;strokeColor=#666666;strokeWidth=1;fontFamily=Helvetica;fontSize=11;align=left;verticalAlign=top;spacing=8;fontColor=#111111;" value="&lt;b&gt;properties&lt;/b&gt;&lt;br&gt;type: watch measurement microphone&lt;br&gt;sampling: 48 kHz&lt;br&gt;channels: mono input" vertex="1">
-          <mxGeometry height="74" width="220" x="385" y="302" as="geometry" />
+        <mxCell id="mic-props" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f2f2f2;strokeColor=#666666;strokeWidth=1;fontFamily=Helvetica;fontSize=15;align=left;verticalAlign=top;spacing=8;fontColor=#111111;" value="&lt;b&gt;properties&lt;/b&gt;&lt;br&gt;type: watch measurement microphone&lt;br&gt;sampling: 48 kHz&lt;br&gt;channels: mono input" vertex="1">
+          <mxGeometry height="108" width="250" x="341" y="273" as="geometry" />
         </mxCell>
-        <mxCell id="pi" parent="1" style="shape=cube;boundedLbl=1;backgroundOutline=1;darkOpacity=0.05;size=14;fillColor=#ffffff;strokeColor=#333333;strokeWidth=1.6;align=center;verticalAlign=top;spacingTop=12;shadow=1;whiteSpace=wrap;html=1;fontFamily=Helvetica;fontSize=12;fontColor=#111111;" value="&amp;laquo;device&amp;raquo;&lt;br&gt;&lt;b&gt;&lt;u&gt;Raspberry Pi 5&lt;/u&gt;&lt;/b&gt;" vertex="1">
-          <mxGeometry height="380" width="355" x="760" y="119" as="geometry" />
+        <mxCell id="pi" parent="1" style="shape=cube;boundedLbl=1;backgroundOutline=1;darkOpacity=0.05;size=14;fillColor=#ffffff;strokeColor=#333333;strokeWidth=1.6;align=center;verticalAlign=top;spacingTop=12;shadow=1;whiteSpace=wrap;html=1;fontFamily=Helvetica;fontSize=16;fontColor=#111111;" value="«device»&lt;br&gt;&lt;b&gt;&lt;u&gt;Raspberry Pi 5&lt;/u&gt;&lt;/b&gt;" vertex="1">
+          <mxGeometry height="429" width="355" x="760" y="70" as="geometry" />
         </mxCell>
-        <mxCell id="pi-props" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f2f2f2;strokeColor=#666666;strokeWidth=1;fontFamily=Helvetica;fontSize=11;align=left;verticalAlign=top;spacing=8;fontColor=#111111;" value="&lt;b&gt;properties&lt;/b&gt;&lt;br&gt;version: Raspberry Pi 5&lt;br&gt;CPU/OS: ARM64&lt;br&gt;memory: 16GB RAM&lt;br&gt;audio: external mic input" vertex="1">
-          <mxGeometry height="86" width="290" x="795" y="194" as="geometry" />
+        <mxCell id="pi-props" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f2f2f2;strokeColor=#666666;strokeWidth=1;fontFamily=Helvetica;fontSize=16;align=left;verticalAlign=top;spacing=8;fontColor=#111111;" value="&lt;b&gt;properties&lt;/b&gt;&lt;br&gt;version: Raspberry Pi 5&lt;br&gt;CPU arch: ARM64&lt;br&gt;memory: 16GB RAM&lt;br&gt;audio: external mic input" vertex="1">
+          <mxGeometry height="120" width="290" x="795" y="150" as="geometry" />
         </mxCell>
-        <mxCell id="runtime" parent="1" style="shape=cube;boundedLbl=1;backgroundOutline=1;darkOpacity=0.04;size=10;fillColor=#f2f2f2;strokeColor=#333333;strokeWidth=1.4;align=center;verticalAlign=middle;whiteSpace=wrap;html=1;fontFamily=Helvetica;fontSize=12;fontColor=#111111;" value="&amp;laquo;execution environment&amp;raquo;&lt;br&gt;&lt;b&gt;&lt;u&gt;Raspberry Pi OS&lt;/u&gt;&lt;/b&gt;&lt;br&gt;arm64 · bundled .NET 8&lt;br&gt;Avalonia · PipeWire / ALSA" vertex="1">
-          <mxGeometry height="88" width="280" x="795" y="304" as="geometry" />
+        <mxCell id="runtime" parent="1" style="shape=cube;boundedLbl=1;backgroundOutline=1;darkOpacity=0.04;size=10;fillColor=#f7f7f7;strokeColor=#333333;strokeWidth=1.2;align=center;verticalAlign=middle;whiteSpace=wrap;html=1;fontFamily=Helvetica;fontSize=16;fontColor=#111111;" value="«execution environment»&lt;br&gt;&lt;b&gt;&lt;u&gt;Raspberry Pi OS&lt;/u&gt;&lt;/b&gt;&lt;br&gt;arm64 · bundled .NET 8&lt;br&gt;Avalonia · PipeWire / ALSA" vertex="1">
+          <mxGeometry height="104" width="280" x="795" y="280" as="geometry" />
         </mxCell>
-        <mxCell id="app" parent="1" style="shape=note;backgroundOutline=1;darkOpacity=0.04;fillColor=#ffffff;strokeColor=#333333;strokeWidth=1.4;align=center;verticalAlign=middle;shadow=1;whiteSpace=wrap;html=1;fontFamily=Helvetica;fontSize=12;fontColor=#111111;" value="&amp;laquo;artifact&amp;raquo;&lt;br&gt;&lt;b&gt;&lt;u&gt;TimeGrapher.App&lt;/u&gt;&lt;/b&gt;" vertex="1">
+        <mxCell id="app" parent="1" style="shape=note;backgroundOutline=1;darkOpacity=0.04;fillColor=#ffffff;strokeColor=#333333;strokeWidth=1.4;align=center;verticalAlign=middle;shadow=1;whiteSpace=wrap;html=1;fontFamily=Helvetica;fontSize=16;fontColor=#111111;" value="«artifact»&lt;br&gt;&lt;b&gt;&lt;u&gt;TimeGrapher.App&lt;/u&gt;&lt;/b&gt;" vertex="1">
           <mxGeometry height="66" width="230" x="820" y="417" as="geometry" />
         </mxCell>
-        <mxCell id="proxy" parent="1" style="shape=cube;boundedLbl=1;backgroundOutline=1;darkOpacity=0.05;size=14;fillColor=#eef3fb;strokeColor=#333333;strokeWidth=1.6;align=center;verticalAlign=top;spacingTop=10;shadow=1;whiteSpace=wrap;html=1;fontFamily=Helvetica;fontSize=12;fontColor=#111111;" value="&amp;laquo;external server&amp;raquo;&lt;br&gt;&lt;b&gt;&lt;u&gt;Approved AI Backend&lt;/u&gt;&lt;/b&gt;&lt;br&gt;reverse proxy" vertex="1">
-          <mxGeometry height="105" width="245" x="739" y="580" as="geometry" />
+        <mxCell id="proxy" parent="1" style="shape=cube;boundedLbl=1;backgroundOutline=1;darkOpacity=0.05;size=14;fillColor=#d9d9d9;strokeColor=#333333;strokeWidth=2;dashed=1;dashPattern=6 3;align=center;verticalAlign=top;spacingTop=10;shadow=1;whiteSpace=wrap;html=1;fontFamily=Helvetica;fontSize=16;fontColor=#111111;" value="«external server»&lt;br&gt;&lt;b&gt;&lt;u&gt;Approved AI Backend&lt;/u&gt;&lt;/b&gt;&lt;br&gt;reverse proxy" vertex="1">
+          <mxGeometry height="177.5" width="310" x="788" y="582.5" as="geometry" />
         </mxCell>
-        <mxCell id="proxy-props" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f2f2f2;strokeColor=#666666;strokeWidth=1;fontFamily=Helvetica;fontSize=11;align=left;verticalAlign=top;spacing=6;fontColor=#111111;" value="&lt;b&gt;properties&lt;/b&gt;&lt;br&gt;access: HTTPS · Basic Auth&lt;br&gt;role: relays log, holds API credential" vertex="1">
-          <mxGeometry height="46" width="215" x="755" y="628" as="geometry" />
+        <mxCell id="proxy-props" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f2f2f2;strokeColor=#666666;strokeWidth=1;fontFamily=Helvetica;fontSize=16;align=left;verticalAlign=top;spacing=6;fontColor=#111111;" value="&lt;b&gt;properties&lt;/b&gt;&lt;br&gt;access: HTTPS · Basic Auth&lt;br&gt;role: relays log, holds API credential" vertex="1">
+          <mxGeometry height="72" width="275" x="810" y="675" as="geometry" />
         </mxCell>
-        <mxCell id="ai" parent="1" style="shape=cloud;fillColor=#ffffff;strokeColor=#333333;strokeWidth=1.8;align=center;verticalAlign=middle;whiteSpace=wrap;html=1;fontFamily=Helvetica;fontSize=12;fontColor=#111111;" value="&amp;laquo;external service&amp;raquo;&lt;br&gt;&lt;b&gt;&lt;u&gt;Gemini API&lt;/u&gt;&lt;/b&gt;&lt;br&gt;LLM analysis" vertex="1">
-          <mxGeometry height="100" width="205" x="1125" y="582.5" as="geometry" />
+        <mxCell id="ai" parent="1" style="shape=cloud;fillColor=#ffffff;strokeColor=#333333;strokeWidth=1.8;align=center;verticalAlign=middle;whiteSpace=wrap;html=1;fontFamily=Helvetica;fontSize=16;fontColor=#111111;" value="«external service»&lt;br&gt;&lt;b&gt;&lt;u&gt;Gemini API&lt;/u&gt;&lt;/b&gt;&lt;br&gt;LLM analysis" vertex="1">
+          <mxGeometry height="140" width="255" x="410" y="450" as="geometry" />
         </mxCell>
-        <mxCell id="watch-to-mic" edge="1" parent="1" source="watch" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;startArrow=none;strokeColor=#333333;strokeWidth=1.6;fontFamily=Helvetica;fontSize=11;fontColor=#333333;" target="mic" value="">
+        <mxCell id="watch-to-mic" edge="1" parent="1" source="watch" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=open;endFill=0;startArrow=none;strokeColor=#333333;strokeWidth=1.3;fontFamily=Helvetica;fontSize=11;fontColor=#333333;" target="mic" value="">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="mic-to-pi" edge="1" parent="1" source="mic" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;startArrow=none;strokeColor=#333333;strokeWidth=2;fontFamily=Helvetica;fontSize=11;fontColor=#333333;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="pi" value="">
+        <mxCell id="mic-to-pi" edge="1" parent="1" source="mic" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;startArrow=none;strokeColor=#333333;strokeWidth=2.4;fontFamily=Helvetica;fontSize=11;fontColor=#333333;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="pi" value="">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="audio-label" parent="1" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;fontFamily=Helvetica;fontSize=11;fontColor=#333333;" value="live audio input&lt;br&gt;mono PCM 48 kHz" vertex="1">
-          <mxGeometry height="38" width="160" x="610" y="270" as="geometry" />
+        <mxCell id="audio-label" parent="1" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;fontFamily=Helvetica;fontSize=16;fontColor=#333333;" value="live audio input&lt;br&gt;mono PCM 48 kHz" vertex="1">
+          <mxGeometry height="38" width="160" x="600" y="244" as="geometry" />
         </mxCell>
-        <mxCell id="runtime-app" edge="1" parent="1" source="runtime" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;startArrow=none;strokeColor=#333333;strokeWidth=1.6;fontFamily=Helvetica;fontSize=11;fontColor=#333333;" target="app" value="">
+        <mxCell id="runtime-app" edge="1" parent="1" source="runtime" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=open;endFill=0;startArrow=none;strokeColor=#333333;strokeWidth=1.3;fontFamily=Helvetica;fontSize=11;fontColor=#333333;" target="app" value="">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="app-proxy" edge="1" parent="1" source="app" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;startArrow=none;strokeColor=#333333;strokeWidth=1.6;fontFamily=Helvetica;fontSize=11;fontColor=#333333;dashed=1;dashPattern=5 4;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.8;entryY=0;entryDx=0;entryDy=0;" target="proxy" value="HTTPS">
+        <mxCell id="app-proxy" edge="1" parent="1" source="app" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;startArrow=none;strokeColor=#333333;strokeWidth=1.8;fontFamily=Helvetica;fontSize=16;fontColor=#333333;dashed=1;dashPattern=5 4;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0;entryY=0;entryDx=148;entryDy=0;entryPerimeter=0;" target="proxy" value="HTTPS">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="proxy-ai" edge="1" parent="1" source="proxy" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;startArrow=none;strokeColor=#333333;strokeWidth=1.6;fontFamily=Helvetica;fontSize=11;fontColor=#333333;dashed=1;dashPattern=5 4;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="ai" value="REST call">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-        <mxCell id="legend-box" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#333333;strokeWidth=1.2;fontFamily=Helvetica;fontSize=11;align=left;verticalAlign=top;spacing=8;fontColor=#111111;" value="" vertex="1">
-          <mxGeometry height="145" width="470" x="55" y="525" as="geometry" />
-        </mxCell>
-        <mxCell id="legend-title" parent="1" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontFamily=Helvetica;fontSize=12;fontColor=#111111;fontStyle=1;" value="Legend · UML Deployment" vertex="1">
-          <mxGeometry height="22" width="210" x="70" y="536" as="geometry" />
-        </mxCell>
-        <mxCell id="legend-hardware-shape" parent="1" style="shape=cube;boundedLbl=1;backgroundOutline=1;darkOpacity=0.05;size=8;fillColor=#ffffff;strokeColor=#333333;strokeWidth=1.2;align=center;verticalAlign=middle;whiteSpace=wrap;html=1;fontFamily=Helvetica;fontSize=8;fontColor=#111111;" value="" vertex="1">
-          <mxGeometry height="30" width="46" x="74" y="565" as="geometry" />
-        </mxCell>
-        <mxCell id="legend-hardware-label" parent="1" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontFamily=Helvetica;fontSize=11;fontColor=#111111;" value="hardware node" vertex="1">
-          <mxGeometry height="30" width="125" x="130" y="565" as="geometry" />
-        </mxCell>
-        <mxCell id="legend-runtime-shape" parent="1" style="shape=cube;boundedLbl=1;backgroundOutline=1;darkOpacity=0.04;size=6;fillColor=#f2f2f2;strokeColor=#333333;strokeWidth=1.2;align=center;verticalAlign=middle;whiteSpace=wrap;html=1;fontFamily=Helvetica;fontSize=8;fontColor=#111111;" value="" vertex="1">
-          <mxGeometry height="30" width="46" x="285" y="565" as="geometry" />
-        </mxCell>
-        <mxCell id="legend-runtime-label" parent="1" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontFamily=Helvetica;fontSize=11;fontColor=#111111;" value="execution environment" vertex="1">
-          <mxGeometry height="30" width="150" x="342" y="565" as="geometry" />
-        </mxCell>
-        <mxCell id="legend-artifact-shape" parent="1" style="shape=note;backgroundOutline=1;darkOpacity=0.04;fillColor=#ffffff;strokeColor=#333333;strokeWidth=1.2;align=center;verticalAlign=middle;whiteSpace=wrap;html=1;fontFamily=Helvetica;fontSize=8;fontColor=#111111;size=17;" value="" vertex="1">
-          <mxGeometry height="34" width="48" x="74" y="606" as="geometry" />
-        </mxCell>
-        <mxCell id="legend-artifact-label" parent="1" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontFamily=Helvetica;fontSize=11;fontColor=#111111;" value="deployed executable" vertex="1">
-          <mxGeometry height="30" width="145" x="130" y="606" as="geometry" />
-        </mxCell>
-        <mxCell id="legend-solid-arrow" edge="1" parent="1" style="endArrow=block;endFill=1;startArrow=none;strokeColor=#333333;strokeWidth=1.4;fontFamily=Helvetica;fontSize=11;fontColor=#333333;html=1;rounded=0;" value="">
+        <mxCell id="proxy-ai" edge="1" parent="1" source="proxy" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;startArrow=none;strokeColor=#333333;strokeWidth=1.8;fontFamily=Helvetica;fontSize=16;fontColor=#333333;dashed=1;dashPattern=5 4;exitX=0;exitY=0;exitDx=0;exitDy=81.75;entryX=0.55;entryY=0.95;entryDx=0;entryDy=0;entryPerimeter=0;exitPerimeter=0;" target="ai" value="REST call">
           <mxGeometry relative="1" as="geometry">
-            <mxPoint x="288" y="621" as="sourcePoint" />
-            <mxPoint x="335" y="621" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="550" y="664" />
+            </Array>
           </mxGeometry>
         </mxCell>
-        <mxCell id="legend-solid-label" parent="1" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontFamily=Helvetica;fontSize=11;fontColor=#111111;" value="physical / runtime flow" vertex="1">
-          <mxGeometry height="30" width="155" x="345" y="606" as="geometry" />
+        <mxCell id="legend-box" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#333333;strokeWidth=1.2;fontFamily=Helvetica;fontSize=16;align=left;verticalAlign=top;spacing=8;fontColor=#111111;" value="" vertex="1">
+          <mxGeometry height="260" width="470" x="-66" y="550" as="geometry" />
         </mxCell>
-        <mxCell id="legend-blue-arrow" edge="1" parent="1" style="endArrow=block;endFill=1;startArrow=none;strokeColor=#333333;strokeWidth=1.7;fontFamily=Helvetica;fontSize=11;fontColor=#333333;html=1;rounded=0;" value="">
+        <mxCell id="legend-title" parent="1" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontFamily=Helvetica;fontSize=16;fontColor=#111111;fontStyle=1;" value="Legend · Shape / Line Key" vertex="1">
+          <mxGeometry height="22" width="250" x="-51" y="561" as="geometry" />
+        </mxCell>
+        <mxCell id="legend-hardware-shape" parent="1" style="shape=cube;boundedLbl=1;backgroundOutline=1;darkOpacity=0.05;size=8;fillColor=#ffffff;strokeColor=#333333;strokeWidth=1.2;align=center;verticalAlign=middle;whiteSpace=wrap;html=1;fontFamily=Helvetica;fontSize=16;fontColor=#111111;" value="" vertex="1">
+          <mxGeometry height="30" width="46" x="-47" y="590" as="geometry" />
+        </mxCell>
+        <mxCell id="legend-hardware-label" parent="1" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontFamily=Helvetica;fontSize=16;fontColor=#111111;" value="hardware node" vertex="1">
+          <mxGeometry height="30" width="125" x="9" y="590" as="geometry" />
+        </mxCell>
+        <mxCell id="legend-runtime-shape" parent="1" style="shape=cube;boundedLbl=1;backgroundOutline=1;darkOpacity=0.04;size=6;fillColor=#f7f7f7;strokeColor=#333333;strokeWidth=1.1;align=center;verticalAlign=middle;whiteSpace=wrap;html=1;fontFamily=Helvetica;fontSize=16;fontColor=#111111;" value="" vertex="1">
+          <mxGeometry height="30" width="46" x="164" y="590" as="geometry" />
+        </mxCell>
+        <mxCell id="legend-runtime-label" parent="1" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontFamily=Helvetica;fontSize=16;fontColor=#111111;" value="execution environment" vertex="1">
+          <mxGeometry height="30" width="150" x="221" y="590" as="geometry" />
+        </mxCell>
+        <mxCell id="legend-artifact-shape" parent="1" style="shape=note;backgroundOutline=1;darkOpacity=0.04;fillColor=#ffffff;strokeColor=#333333;strokeWidth=1.2;align=center;verticalAlign=middle;whiteSpace=wrap;html=1;fontFamily=Helvetica;fontSize=16;fontColor=#111111;size=17;" value="" vertex="1">
+          <mxGeometry height="34" width="48" x="-47" y="631" as="geometry" />
+        </mxCell>
+        <mxCell id="legend-artifact-label" parent="1" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontFamily=Helvetica;fontSize=16;fontColor=#111111;" value="deployed executable" vertex="1">
+          <mxGeometry height="30" width="145" x="9" y="631" as="geometry" />
+        </mxCell>
+        <mxCell id="legend-solid-arrow" edge="1" parent="1" style="endArrow=open;endFill=0;startArrow=none;strokeColor=#333333;strokeWidth=1.2;fontFamily=Helvetica;fontSize=16;fontColor=#333333;html=1;rounded=0;" value="">
           <mxGeometry relative="1" as="geometry">
-            <mxPoint x="78" y="653" as="sourcePoint" />
-            <mxPoint x="125" y="653" as="targetPoint" />
+            <mxPoint x="167" y="646" as="sourcePoint" />
+            <mxPoint x="214" y="646" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="legend-blue-label" parent="1" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontFamily=Helvetica;fontSize=11;fontColor=#111111;" value="live audio input" vertex="1">
-          <mxGeometry height="30" width="140" x="135" y="638" as="geometry" />
+        <mxCell id="legend-solid-label" parent="1" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontFamily=Helvetica;fontSize=16;fontColor=#111111;" value="physical / runtime flow" vertex="1">
+          <mxGeometry height="30" width="155" x="224" y="631" as="geometry" />
         </mxCell>
-        <mxCell id="legend-dashed-arrow" edge="1" parent="1" style="endArrow=block;endFill=1;startArrow=none;strokeColor=#333333;strokeWidth=1.4;fontFamily=Helvetica;fontSize=11;fontColor=#333333;html=1;rounded=0;dashed=1;dashPattern=5 4;" value="">
+        <mxCell id="legend-blue-arrow" edge="1" parent="1" style="endArrow=block;endFill=1;startArrow=none;strokeColor=#333333;strokeWidth=2.2;fontFamily=Helvetica;fontSize=16;fontColor=#333333;html=1;rounded=0;" value="">
           <mxGeometry relative="1" as="geometry">
-            <mxPoint x="288" y="653" as="sourcePoint" />
-            <mxPoint x="335" y="653" as="targetPoint" />
+            <mxPoint x="-43" y="678" as="sourcePoint" />
+            <mxPoint x="4" y="678" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="legend-dashed-label" parent="1" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontFamily=Helvetica;fontSize=11;fontColor=#111111;" value="optional network path" vertex="1">
-          <mxGeometry height="30" width="155" x="345" y="638" as="geometry" />
+        <mxCell id="legend-blue-label" parent="1" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontFamily=Helvetica;fontSize=16;fontColor=#111111;" value="live audio input" vertex="1">
+          <mxGeometry height="30" width="140" x="14" y="663" as="geometry" />
+        </mxCell>
+        <mxCell id="legend-dashed-arrow" edge="1" parent="1" style="endArrow=block;endFill=1;startArrow=none;strokeColor=#333333;strokeWidth=1.6;fontFamily=Helvetica;fontSize=16;fontColor=#333333;html=1;rounded=0;dashed=1;dashPattern=5 4;" value="">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="167" y="678" as="sourcePoint" />
+            <mxPoint x="214" y="678" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="legend-dashed-label" parent="1" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontFamily=Helvetica;fontSize=16;fontColor=#111111;" value="network / API path" vertex="1">
+          <mxGeometry height="30" width="155" x="224" y="663" as="geometry" />
+        </mxCell>
+        <mxCell id="legend-external-server-shape" parent="1" style="shape=cube;boundedLbl=1;backgroundOutline=1;darkOpacity=0.05;size=8;fillColor=#d9d9d9;strokeColor=#333333;strokeWidth=1.8;dashed=1;dashPattern=6 3;align=center;verticalAlign=middle;whiteSpace=wrap;html=1;fontFamily=Helvetica;fontSize=16;fontColor=#111111;" value="" vertex="1">
+          <mxGeometry height="30" width="46" x="-47" y="704" as="geometry" />
+        </mxCell>
+        <mxCell id="legend-external-server-label" parent="1" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontFamily=Helvetica;fontSize=16;fontColor=#111111;" value="external server" vertex="1">
+          <mxGeometry height="30" width="135" x="9" y="704" as="geometry" />
+        </mxCell>
+        <mxCell id="legend-external-service-shape" parent="1" style="shape=cloud;fillColor=#ffffff;strokeColor=#333333;strokeWidth=1.2;align=center;verticalAlign=middle;whiteSpace=wrap;html=1;fontFamily=Helvetica;fontSize=16;fontColor=#111111;" value="" vertex="1">
+          <mxGeometry height="30" width="58" x="158" y="704" as="geometry" />
+        </mxCell>
+        <mxCell id="legend-external-service-label" parent="1" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontFamily=Helvetica;fontSize=16;fontColor=#111111;" value="external service" vertex="1">
+          <mxGeometry height="30" width="135" x="224" y="704" as="geometry" />
+        </mxCell>
+        <mxCell id="legend-properties-shape" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f2f2f2;strokeColor=#666666;strokeWidth=1;fontFamily=Helvetica;fontSize=16;align=center;verticalAlign=middle;fontColor=#111111;" value="" vertex="1">
+          <mxGeometry height="24" width="50" x="-47" y="756" as="geometry" />
+        </mxCell>
+        <mxCell id="legend-properties-label" parent="1" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontFamily=Helvetica;fontSize=16;fontColor=#111111;" value="properties" vertex="1">
+          <mxGeometry height="30" width="120" x="9" y="753" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
