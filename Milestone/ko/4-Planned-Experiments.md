@@ -174,12 +174,25 @@ RPi5 Live 환경에서 입력 → 분석 → 표시 파이프라인이 실시간
 - **결정 사항** : Pipe-and-Filter 흐름 + 동시성 택틱(Producer–Consumer · Observer · Latest-Wins · 고정 버퍼 풀) 채택한다.
 - **실험 결과** : [하단 실험 결과 및 분석](#실험-결과-및-분석) 참조
 
+탭별 E2E max — 2026-06-21 현재 구현 확인(누적 보존, 낮을수록 여유, 회색선 = 83.3 ms 예산)
+
+```mermaid
+%%{init: {"themeVariables": {"xyChart": {"plotColorPalette": "#A50034, #999999"}}}}%%
+xychart-beta horizontal
+    title "RPi5 탭별 E2E max — 2026-06-21 (회색선 = 83.3 ms 예산)"
+    x-axis ["Filter Scope", "Rate/Scope", "Beat Noise", "Positions", "Waveforms", "Spectrogram", "Sound Print", "Beat Error", "Long-Term", "Trace", "Sweep", "Vario", "Escapement"]
+    y-axis "E2E max (ms)" 0 --> 90
+    bar [36.46, 31.93, 25.55, 25.25, 23.27, 22.05, 21.75, 21.19, 19.8, 16.89, 16.08, 15.79, 15.09]
+    line [83.3, 83.3, 83.3, 83.3, 83.3, 83.3, 83.3, 83.3, 83.3, 83.3, 83.3, 83.3, 83.3]
+```
+- 2026-06-21 실행에서는 가장 느린 Filter Scope도 36.46 ms로 83.3 ms 예산의 약 44% 수준이었다.
+
 탭별 E2E max (Raspberry Pi 5, 43200@192k Sim, 2026-06-30, 낮을수록 여유, 회색선 = 83.3 ms 예산)
 
 ```mermaid
 %%{init: {"themeVariables": {"xyChart": {"plotColorPalette": "#A50034, #999999"}}}}%%
 xychart-beta horizontal
-    title "RPi5 탭별 E2E max (회색선 = 83.3 ms 예산)"
+    title "RPi5 탭별 E2E max — 2026-06-30 (회색선 = 83.3 ms 예산)"
     x-axis ["Filter Scope", "Beat Noise", "Waveforms", "Positions", "Rate/Scope", "Long-Term", "Sweep", "Beat Error", "Vario", "Escapement", "Trace", "Sound Print", "Spectrogram", "Health"]
     y-axis "E2E max (ms)" 0 --> 90
     bar [48.70, 47.90, 47.57, 47.51, 47.17, 47.06, 46.60, 45.65, 44.99, 44.91, 44.57, 43.85, 43.63, 41.83]

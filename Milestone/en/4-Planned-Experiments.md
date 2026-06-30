@@ -170,12 +170,25 @@ Complete
 - **Decision**: adopt a Pipe-and-Filter flow + concurrency tactics (Producer–Consumer · Observer · Latest-Wins · fixed buffer pool).
 - **Results**: [see Results & Analysis below](#results--analysis)
 
+**Per-tab E2E max — 2026-06-21 current-implementation check (retained historical run, lower is better, gray line = 83.3 ms budget)**
+
+```mermaid
+%%{init: {"themeVariables": {"xyChart": {"plotColorPalette": "#A50034, #999999"}}}}%%
+xychart-beta horizontal
+    title "RPi5 per-tab E2E max — 2026-06-21 (gray line = 83.3 ms budget)"
+    x-axis ["Filter Scope", "Rate/Scope", "Beat Noise", "Positions", "Waveforms", "Spectrogram", "Sound Print", "Beat Error", "Long-Term", "Trace", "Sweep", "Vario", "Escapement"]
+    y-axis "E2E max (ms)" 0 --> 90
+    bar [36.46, 31.93, 25.55, 25.25, 23.27, 22.05, 21.75, 21.19, 19.8, 16.89, 16.08, 15.79, 15.09]
+    line [83.3, 83.3, 83.3, 83.3, 83.3, 83.3, 83.3, 83.3, 83.3, 83.3, 83.3, 83.3, 83.3]
+```
+- In the 2026-06-21 run, the slowest tab (Filter Scope, 36.46 ms) sat at ~44 % of the 83.3 ms budget.
+
 **Per-tab E2E max (RPi5, 43200@192k Sim, 2026-06-30, lower is better, gray line = 83.3 ms budget)**
 
 ```mermaid
 %%{init: {"themeVariables": {"xyChart": {"plotColorPalette": "#A50034, #999999"}}}}%%
 xychart-beta horizontal
-    title "RPi5 per-tab E2E max (gray line = 83.3 ms budget)"
+    title "RPi5 per-tab E2E max — 2026-06-30 (gray line = 83.3 ms budget)"
     x-axis ["Filter Scope", "Beat Noise", "Waveforms", "Positions", "Rate/Scope", "Long-Term", "Sweep", "Beat Error", "Vario", "Escapement", "Trace", "Sound Print", "Spectrogram", "Health"]
     y-axis "E2E max (ms)" 0 --> 90
     bar [48.70, 47.90, 47.57, 47.51, 47.17, 47.06, 46.60, 45.65, 44.99, 44.91, 44.57, 43.85, 43.63, 41.83]
