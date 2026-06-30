@@ -1,0 +1,132 @@
+<mxfile host="app.diagrams.net">
+  <diagram name="페이지-1" id="Y1Jgrxi1EimP7tAw9Jzo">
+    <mxGraphModel dx="1820" dy="1143" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="OzoGiVV7WRGx4j5uWDAu-19" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;strokeColor=#777777;strokeWidth=2;" value="" vertex="1">
+          <mxGeometry height="181" width="971" x="725" y="917" as="geometry" />
+        </mxCell>
+        <mxCell id="OzoGiVV7WRGx4j5uWDAu-1" edge="1" parent="1" style="endArrow=block;html=1;rounded=0;strokeColor=light-dark(#000000, #64a868);strokeWidth=2;fontFamily=Malgun Gothic;fontSize=13;labelBackgroundColor=#FFFFFF;" value="&lt;font style=&quot;font-size: 18px;&quot;&gt;Render selected graph payload&lt;/font&gt;">
+          <mxGeometry relative="1" x="0.0034" y="21" as="geometry">
+            <mxPoint as="offset" />
+            <mxPoint x="1351" y="1011" as="sourcePoint" />
+            <mxPoint x="1648" y="1011" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="OzoGiVV7WRGx4j5uWDAu-2" parent="1" style="shape=line;direction=south;html=1;strokeColor=#C9C9C9;strokeWidth=2;dashed=1;dashPattern=8 8;" value="" vertex="1">
+          <mxGeometry height="646" width="1" x="1653" y="524" as="geometry" />
+        </mxCell>
+        <mxCell id="OzoGiVV7WRGx4j5uWDAu-3" parent="1" style="html=1;points=[[0,0,0,0,5],[0,1,0,0,-5],[1,0,0,0,5],[1,1,0,0,-5]];perimeter=orthogonalPerimeter;outlineConnect=0;targetShapes=umlLifeline;portConstraint=eastwest;newEdgeStyle={&quot;curved&quot;:0,&quot;rounded&quot;:0};" value="" vertex="1">
+          <mxGeometry height="93" width="10" x="1346.5" y="975" as="geometry" />
+        </mxCell>
+        <mxCell id="OzoGiVV7WRGx4j5uWDAu-4" parent="1" style="shape=line;direction=south;html=1;strokeColor=#C9C9C9;strokeWidth=2;dashed=1;dashPattern=8 8;" value="" vertex="1">
+          <mxGeometry height="656" width="1" x="1043" y="524" as="geometry" />
+        </mxCell>
+        <mxCell id="OzoGiVV7WRGx4j5uWDAu-5" parent="1" style="html=1;points=[[0,0,0,0,5],[0,1,0,0,-5],[1,0,0,0,5],[1,1,0,0,-5]];perimeter=orthogonalPerimeter;outlineConnect=0;targetShapes=umlLifeline;portConstraint=eastwest;newEdgeStyle={&quot;curved&quot;:0,&quot;rounded&quot;:0};" value="" vertex="1">
+          <mxGeometry height="100" width="10" x="1038" y="740" as="geometry" />
+        </mxCell>
+        <mxCell id="OzoGiVV7WRGx4j5uWDAu-6" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;strokeColor=#777777;strokeWidth=2;" value="" vertex="1">
+          <mxGeometry height="168" width="380" x="730" y="690" as="geometry" />
+        </mxCell>
+        <mxCell id="OzoGiVV7WRGx4j5uWDAu-7" parent="1" style="fontFamily=Malgun Gothic;fontSize=13;whiteSpace=wrap;html=1;rounded=0;align=left;verticalAlign=top;spacing=10;strokeWidth=2;" value="&lt;b&gt;Legend : UML Notation&lt;/b&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="40" width="201.5" x="1600" y="1120" as="geometry" />
+        </mxCell>
+        <mxCell id="OzoGiVV7WRGx4j5uWDAu-8" parent="1" style="fontFamily=Malgun Gothic;fontSize=13;whiteSpace=wrap;html=1;rounded=0;align=center;verticalAlign=middle;spacing=6;strokeWidth=3;strokeColor=#666666;fillColor=#f5f5f5;fontColor=#333333;" value="&lt;b&gt;&lt;font style=&quot;font-size: 20px;&quot;&gt;Core Analysis&amp;nbsp;&lt;/font&gt;&lt;/b&gt;&lt;div&gt;&lt;b&gt;&lt;font style=&quot;font-size: 20px;&quot;&gt;Worker&lt;/font&gt;&lt;/b&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="64" width="300" x="53" y="460" as="geometry" />
+        </mxCell>
+        <mxCell id="OzoGiVV7WRGx4j5uWDAu-9" parent="1" style="fontFamily=Malgun Gothic;fontSize=13;whiteSpace=wrap;html=1;rounded=0;align=center;verticalAlign=middle;spacing=6;strokeWidth=2;strokeColor=#666666;fillColor=#f5f5f5;fontColor=#333333;" value="&lt;b&gt;&lt;font style=&quot;font-size: 20px;&quot;&gt;Registered Graph&lt;/font&gt;&lt;/b&gt;&lt;div&gt;&lt;b&gt;&lt;font style=&quot;font-size: 20px;&quot;&gt;Consumers&lt;/font&gt;&lt;/b&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="64" width="230" x="928" y="460" as="geometry" />
+        </mxCell>
+        <mxCell id="OzoGiVV7WRGx4j5uWDAu-10" parent="1" style="fontFamily=Malgun Gothic;fontSize=13;whiteSpace=wrap;html=1;rounded=0;align=center;verticalAlign=middle;spacing=6;strokeWidth=2;strokeColor=#666666;fillColor=#f5f5f5;fontColor=#333333;" value="&lt;b&gt;&lt;font style=&quot;font-size: 20px;&quot;&gt;Active Graph&lt;/font&gt;&lt;/b&gt;&lt;div&gt;&lt;b&gt;&lt;font style=&quot;font-size: 20px;&quot;&gt;Consumer&lt;/font&gt;&lt;/b&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="64" width="250" x="1218" y="460" as="geometry" />
+        </mxCell>
+        <mxCell id="OzoGiVV7WRGx4j5uWDAu-11" parent="1" style="fontFamily=Malgun Gothic;fontSize=13;whiteSpace=wrap;html=1;rounded=0;align=center;verticalAlign=middle;spacing=6;strokeWidth=3;strokeColor=#666666;fillColor=#f5f5f5;fontColor=#333333;" value="&lt;b&gt;&lt;font style=&quot;font-size: 20px;&quot;&gt;Selected Graph&lt;/font&gt;&lt;/b&gt;&lt;div&gt;&lt;b&gt;&lt;font style=&quot;font-size: 20px;&quot;&gt;Renderer&lt;/font&gt;&lt;/b&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="64" width="290" x="1523" y="460" as="geometry" />
+        </mxCell>
+        <mxCell id="OzoGiVV7WRGx4j5uWDAu-13" parent="1" style="shape=line;direction=south;html=1;strokeColor=#C9C9C9;strokeWidth=2;dashed=1;dashPattern=8 8;" value="" vertex="1">
+          <mxGeometry height="654" width="1" x="203" y="524" as="geometry" />
+        </mxCell>
+        <mxCell id="OzoGiVV7WRGx4j5uWDAu-14" parent="1" style="shape=line;direction=south;html=1;strokeColor=#C9C9C9;strokeWidth=2;dashed=1;dashPattern=8 8;" value="" vertex="1">
+          <mxGeometry height="646" width="1" x="1343" y="524" as="geometry" />
+        </mxCell>
+        <mxCell id="OzoGiVV7WRGx4j5uWDAu-16" edge="1" parent="1" style="endArrow=open;html=1;rounded=0;strokeColor=light-dark(#000000, #63a8f6);strokeWidth=2;fontFamily=Malgun Gothic;fontSize=13;labelBackgroundColor=#FFFFFF;endFill=0;" value="&lt;font style=&quot;font-size: 18px;&quot;&gt;AnalysisFrame DTO&lt;/font&gt;">
+          <mxGeometry relative="1" x="-0.1087" y="-21" as="geometry">
+            <mxPoint as="offset" />
+            <mxPoint x="207" y="579" as="sourcePoint" />
+            <mxPoint x="483.0000000000009" y="579" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="OzoGiVV7WRGx4j5uWDAu-18" edge="1" parent="1" style="endArrow=block;html=1;rounded=0;strokeColor=light-dark(#000000, #63a8f6);strokeWidth=2;fontFamily=Malgun Gothic;fontSize=13;labelBackgroundColor=#FFFFFF;" value="&lt;font style=&quot;font-size: 18px;&quot;&gt;Update lightweight state/cache&lt;/font&gt;">
+          <mxGeometry relative="1" x="0.037" y="-20" as="geometry">
+            <mxPoint as="offset" />
+            <mxPoint x="770" y="740" as="sourcePoint" />
+            <mxPoint x="1040" y="740" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="OzoGiVV7WRGx4j5uWDAu-21" edge="1" parent="1" source="OzoGiVV7WRGx4j5uWDAu-30" style="endArrow=block;html=1;rounded=0;strokeColor=light-dark(#000000, #63a8f6);strokeWidth=2;fontFamily=Malgun Gothic;fontSize=13;labelBackgroundColor=#FFFFFF;" value="&lt;font style=&quot;font-size: 18px;&quot;&gt;Prepare selected graph payload&lt;/font&gt;">
+          <mxGeometry relative="1" x="-0.0088" y="-13" as="geometry">
+            <mxPoint as="offset" />
+            <mxPoint x="741" y="977" as="sourcePoint" />
+            <mxPoint x="1348" y="977" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="OzoGiVV7WRGx4j5uWDAu-22" parent="1" style="html=1;points=[[0,0,0,0,5],[0,1,0,0,-5],[1,0,0,0,5],[1,1,0,0,-5]];perimeter=orthogonalPerimeter;outlineConnect=0;targetShapes=umlLifeline;portConstraint=eastwest;newEdgeStyle={&quot;curved&quot;:0,&quot;rounded&quot;:0};" value="" vertex="1">
+          <mxGeometry height="636" width="10" x="197" y="524" as="geometry" />
+        </mxCell>
+        <mxCell id="OzoGiVV7WRGx4j5uWDAu-24" parent="1" style="html=1;points=[[0,0,0,0,5],[0,1,0,0,-5],[1,0,0,0,5],[1,1,0,0,-5]];perimeter=orthogonalPerimeter;outlineConnect=0;targetShapes=umlLifeline;portConstraint=eastwest;newEdgeStyle={&quot;curved&quot;:0,&quot;rounded&quot;:0};" value="" vertex="1">
+          <mxGeometry height="40" width="10" x="1648.5" y="1006" as="geometry" />
+        </mxCell>
+        <mxCell id="OzoGiVV7WRGx4j5uWDAu-25" parent="1" style="fontFamily=Malgun Gothic;fontSize=13;whiteSpace=wrap;html=1;rounded=0;align=center;verticalAlign=middle;spacing=6;strokeWidth=3;strokeColor=#666666;fillColor=#f5f5f5;fontColor=#333333;" value="&lt;b&gt;&lt;font style=&quot;font-size: 20px;&quot;&gt;Frame Render&lt;/font&gt;&lt;/b&gt;&lt;div&gt;&lt;b&gt;&lt;font style=&quot;font-size: 20px;&quot;&gt;Scheduler&lt;/font&gt;&lt;/b&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="64" width="231" x="379" y="460" as="geometry" />
+        </mxCell>
+        <mxCell id="OzoGiVV7WRGx4j5uWDAu-26" parent="1" style="shape=line;direction=south;html=1;strokeColor=#C9C9C9;strokeWidth=2;dashed=1;dashPattern=8 8;" value="" vertex="1">
+          <mxGeometry height="654" width="1" x="489" y="524" as="geometry" />
+        </mxCell>
+        <mxCell id="OzoGiVV7WRGx4j5uWDAu-27" parent="1" style="html=1;points=[[0,0,0,0,5],[0,1,0,0,-5],[1,0,0,0,5],[1,1,0,0,-5]];perimeter=orthogonalPerimeter;outlineConnect=0;targetShapes=umlLifeline;portConstraint=eastwest;newEdgeStyle={&quot;curved&quot;:0,&quot;rounded&quot;:0};" value="" vertex="1">
+          <mxGeometry height="124" width="10" x="483" y="524" as="geometry" />
+        </mxCell>
+        <mxCell id="OzoGiVV7WRGx4j5uWDAu-28" parent="1" style="fontFamily=Malgun Gothic;fontSize=20;whiteSpace=wrap;html=1;rounded=0;align=center;verticalAlign=middle;spacing=6;strokeWidth=3;strokeColor=#666666;fillColor=#f5f5f5;fontColor=#333333;" value="&lt;b&gt;AnalysisFrame&lt;/b&gt;&lt;div&gt;&lt;b&gt;Router&lt;/b&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="64" width="220" x="663" y="460" as="geometry" />
+        </mxCell>
+        <mxCell id="OzoGiVV7WRGx4j5uWDAu-29" parent="1" style="shape=line;direction=south;html=1;strokeColor=#C9C9C9;strokeWidth=2;dashed=1;dashPattern=8 8;" value="" vertex="1">
+          <mxGeometry height="654" width="1" x="773" y="524" as="geometry" />
+        </mxCell>
+        <mxCell id="OzoGiVV7WRGx4j5uWDAu-30" parent="1" style="html=1;points=[[0,0,0,0,5],[0,1,0,0,-5],[1,0,0,0,5],[1,1,0,0,-5]];perimeter=orthogonalPerimeter;outlineConnect=0;targetShapes=umlLifeline;portConstraint=eastwest;newEdgeStyle={&quot;curved&quot;:0,&quot;rounded&quot;:0};" value="" vertex="1">
+          <mxGeometry height="510" width="10" x="767" y="638" as="geometry" />
+        </mxCell>
+        <mxCell id="OzoGiVV7WRGx4j5uWDAu-31" edge="1" parent="1" style="endArrow=open;html=1;rounded=0;strokeColor=light-dark(#000000, #63a8f6);strokeWidth=2;fontFamily=Malgun Gothic;fontSize=13;labelBackgroundColor=#FFFFFF;endFill=0;" value="&lt;font style=&quot;font-size: 18px;&quot;&gt;Dispatch latest frame to UI route&lt;/font&gt;">
+          <mxGeometry relative="1" x="-0.0072" y="-24" as="geometry">
+            <mxPoint as="offset" />
+            <mxPoint x="493" y="646" as="sourcePoint" />
+            <mxPoint x="769.0000000000009" y="646" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="OzoGiVV7WRGx4j5uWDAu-33" edge="1" parent="1" style="endArrow=open;html=1;rounded=0;strokeColor=light-dark(#000000, #63a8f6);strokeWidth=2;fontFamily=Malgun Gothic;fontSize=13;labelBackgroundColor=#FFFFFF;dashed=1;dashPattern=8 8;endFill=0;" value="">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1040" y="837" as="sourcePoint" />
+            <mxPoint x="780" y="837" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="OzoGiVV7WRGx4j5uWDAu-34" edge="1" parent="1" style="endArrow=open;html=1;rounded=0;strokeColor=light-dark(#000000, #63a8f6);strokeWidth=2;fontFamily=Malgun Gothic;fontSize=13;labelBackgroundColor=#FFFFFF;dashed=1;dashPattern=8 8;endFill=0;exitX=0.45;exitY=0.926;exitDx=0;exitDy=0;exitPerimeter=0;" value="">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1653" y="1046" as="sourcePoint" />
+            <mxPoint x="1358" y="1046" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="OzoGiVV7WRGx4j5uWDAu-35" edge="1" parent="1" style="endArrow=open;html=1;rounded=0;strokeColor=light-dark(#000000, #63a8f6);strokeWidth=2;fontFamily=Malgun Gothic;fontSize=13;labelBackgroundColor=#FFFFFF;dashed=1;dashPattern=8 8;endFill=0;exitX=0.45;exitY=0.926;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0.826;entryY=-4.158;entryDx=0;entryDy=0;entryPerimeter=0;" target="OzoGiVV7WRGx4j5uWDAu-29" value="">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1337" y="1068" as="sourcePoint" />
+            <mxPoint x="790" y="1060" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="OzoGiVV7WRGx4j5uWDAu-17" parent="1" style="fontFamily=Malgun Gothic;fontSize=13;fontStyle=1;whiteSpace=wrap;html=1;rounded=0;align=left;verticalAlign=middle;spacing=4;strokeWidth=1;strokeColor=#777777;fillColor=#F7F7F7;" value="loop [all registered consumers]" vertex="1">
+          <mxGeometry height="30" width="351" x="730" y="690" as="geometry" />
+        </mxCell>
+        <mxCell id="OzoGiVV7WRGx4j5uWDAu-20" parent="1" style="fontFamily=Malgun Gothic;fontSize=13;fontStyle=1;whiteSpace=wrap;html=1;rounded=0;align=left;verticalAlign=middle;spacing=4;strokeWidth=1;strokeColor=#777777;fillColor=#F7F7F7;" value="alt [active consumer selected by activeTabId]" vertex="1">
+          <mxGeometry height="30" width="455" x="726" y="917" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
