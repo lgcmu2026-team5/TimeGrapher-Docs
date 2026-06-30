@@ -187,6 +187,41 @@ xychart-beta horizontal
 ```
   - 가장 느린 Filter Scope도 36.46 ms로 83.3 ms 예산의 약 44% 수준 — 모든 탭이 예산 내 충분한 여유를 확보함.
 
+  같은 탭들의 E2E를 capture→process / process→display 두 구간으로 분해한 결과다 (Raspberry Pi 5, 43200@192k Sim, 2026-06-30, 14개 탭 전체). 평균은 가산적이라 `E2E = capture→process + process→display`로 한 막대에 누적되므로 분해 표시에는 평균을 사용한다(worst-case는 두 구간의 최댓값이 동시에 발생하지 않아 합산되지 않음).
+
+```mermaid
+%%{init: {"themeVariables": {"xyChart": {"plotColorPalette": "#999999, #A50034"}}}}%%
+xychart-beta horizontal
+    title "RPi5 탭별 E2E 평균 분해 (빨강 = capture→process, 회색 = process→display)"
+    x-axis ["Spectrogram", "Rate/Scope", "Positions", "Sound Print", "Filter Scope", "Beat Noise", "Sweep", "Health", "Waveforms", "Long-Term", "Escapement", "Trace", "Vario", "Beat Error"]
+    y-axis "지연 (ms, 평균)" 0 --> 16
+    bar [14.68, 10.63, 9.10, 7.41, 6.91, 6.88, 6.72, 6.59, 6.57, 6.55, 6.48, 6.37, 6.27, 6.20]
+    bar [1.57, 2.22, 1.79, 1.51, 1.93, 1.82, 1.75, 1.74, 1.71, 1.74, 1.66, 1.65, 1.63, 1.68]
+```
+  - capture→process는 전 탭에서 1.5–2.2 ms로 거의 일정하다(탭과 무관한 공유 분석 단계). 탭별 차이는 대부분 process→display(렌더링)에서 발생하며 Spectrogram 13.1 ms · Rate/Scope 8.4 ms · Positions 7.3 ms가 가장 무겁고 나머지는 4.5–5.1 ms다. 즉 파이프라인이 분석을 표시 부하로부터 격리함을 평균 분해가 뒷받침한다.
+  - 전 탭 drop 0 · miss 0.
+
+**측정 데이터 (2026-06-30, Raspberry Pi 5, 43200 BPH @ 192 kHz, Simulation):**
+
+| 탭 | capture→process (ms) | process→display (ms) | E2E 평균 (ms) | E2E worst (ms) | 프레임 |
+| :--- | ---: | ---: | ---: | ---: | ---: |
+| Spectrogram | 1.57 | 13.12 | 14.68 | 43.63 | 410 |
+| Rate/Scope | 2.22 | 8.41 | 10.63 | 47.17 | 987 |
+| Positions | 1.79 | 7.31 | 9.10 | 47.51 | 987 |
+| Sound Print | 1.51 | 5.91 | 7.41 | 43.85 | 553 |
+| Filter Scope | 1.93 | 4.99 | 6.91 | 48.70 | 1250 |
+| Beat Noise | 1.82 | 5.06 | 6.88 | 47.90 | 1297 |
+| Sweep | 1.75 | 4.97 | 6.72 | 46.60 | 1301 |
+| Health | 1.74 | 4.86 | 6.59 | 41.83 | 1571 |
+| Waveforms | 1.71 | 4.86 | 6.57 | 47.57 | 1666 |
+| Long-Term | 1.74 | 4.81 | 6.55 | 47.06 | 1295 |
+| Escapement | 1.66 | 4.82 | 6.48 | 44.91 | 1441 |
+| Trace | 1.65 | 4.72 | 6.37 | 44.57 | 1115 |
+| Vario | 1.63 | 4.65 | 6.27 | 44.99 | 1450 |
+| Beat Error | 1.68 | 4.51 | 6.20 | 45.65 | 1038 |
+
+> 값은 각 탭 CSV 누적 통계(마지막 행)를 2자리로 반올림한 것이며, 반올림으로 `capture→process + process→display` 합이 E2E와 ±0.01 ms 다를 수 있다.
+
 ### 목적
 
  기존 단일 스레드 동기 호출 구조로 인해 데이터 처리 부하가 UI 주 스레드로 전이되어 화면이 얼어붙던 성능 병목을 해결하고자 한다. Bass·Clements·Kazman의 *Software Architecture in Practice (SAP)* 이론을 기반으로, 이식성(Portability)과 변경용이성(Modifiability)을 해치지 않으면서 실시간성을 확보하는 패턴·택틱 조합을 검증한다. 
