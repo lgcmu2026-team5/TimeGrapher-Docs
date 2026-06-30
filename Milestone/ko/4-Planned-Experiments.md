@@ -100,7 +100,7 @@ C# 경로 채택 시 Avalonia Github의 다수 이슈처럼 RPi5에서 GPU 가�
 ### 결과 및 결정 사항
 
 - **결정 사항**: 샘플레이트는 기본 48 kHz, 최고 지원 192 kHz로 확정한다.
-- **측정 결과**: 2026-06-11 최초 측정에서 43200@192k Playback이 34.562 ms(예산 41.5%)로 통과했고, 2026-06-21 현재 구현 전체 탭 확인에서도 worst-case가 36.46 ms(예산 43.8%)로 통과했다. 따라서 192 kHz 샘플레이트 지원은 최초 측정과 현재 구현 모두에서 예산 내 동작으로 확인됨.
+- **측정 결과**: 2026-06-11 최초 측정에서 43200@192k Playback이 34.562 ms(예산 41.5%)로 통과했고, 2026-06-21 현재 구현 확인에서도 worst-case가 36.46 ms(예산 43.8%)로 통과했으며, 2026-06-30 전체 탭 벤치마크도 worst-case 48.70 ms(예산 58.4%)로 통과했다. 따라서 192 kHz 샘플레이트 지원은 최초 측정과 이후 구현 확인들 모두에서 예산 내 동작으로 확인됨.
 - **E2E 의미**: E2E는 capture to display, 즉 입력 샘플이 잡힌 시점부터 분석 결과가 화면에 표시될 때까지의 전체 지연이다.
 
 | 측정일 | 조건 | 입력 | E2E worst | 예산 | 예산 사용률 | Drop | Miss | 판정 |
@@ -111,15 +111,16 @@ C# 경로 채택 시 Avalonia Github의 다수 이슈처럼 RPi5에서 GPU 가�
 | 2026-06-11 | 43200 BPH @ 192 kHz | Simulation | 34.003 ms | 83.333 ms | 40.8% | 0 | 0 | Pass |
 | 2026-06-11 | 43200 BPH @ 192 kHz | Playback | 34.562 ms | 83.333 ms | 41.5% | 0 | 0 | Pass |
 | **2026-06-21** | **43200 BPH @ 192 kHz** | **Simulation** | **36.46 ms** | **83.333 ms** | **43.8%** | **0** | **0** | **Pass** |
+| **2026-06-30** | **43200 BPH @ 192 kHz** | **Simulation (all tabs)** | **48.70 ms** | **83.333 ms** | **58.4%** | **0** | **0** | **Pass** |
 
 ```mermaid
 %%{init: {"themeVariables": {"xyChart": {"plotColorPalette": "#A50034, #999999"}}}}%%
 xychart-beta horizontal
     title "RPi5 run별 worst-case 지연 / 예산 (회색선 = 100% 예산)"
-    x-axis ["21600@48k Sim", "21600@48k Play", "21600@48k Live", "43200@192k Sim", "43200@192k Play", "(2026-06-21) 43200@192k Sim"]
+    x-axis ["21600@48k Sim", "21600@48k Play", "21600@48k Live", "43200@192k Sim", "43200@192k Play", "(2026-06-21) 43200@192k Sim", "(2026-06-30) 43200@192k all-tab"]
     y-axis "예산 사용률 (%)" 0 --> 110
-    bar [25.2, 26.4, 24.2, 40.8, 41.5, 43.8]
-    line [100, 100, 100, 100, 100, 100]
+    bar [25.2, 26.4, 24.2, 40.8, 41.5, 43.8, 58.4]
+    line [100, 100, 100, 100, 100, 100, 100]
 ```
 
 - **남은 한계**: 구현과 측정 조건이 바뀔 수 있으므로 동일 기준으로 지속적으로 측정해야 한다.
@@ -160,6 +161,7 @@ RPi5 Live 환경에서 입력 → 분석 → 표시 파이프라인이 실시간
 - 6/11: QAS-2 승인 matrix 측정 실행
 - 6/12-6/13: 결과 분석 및 결정 사항 도출
 - 6/21: 현재 구현 기준 43200@192k 측정
+- 6/30: 현재 구현 기준 43200@192k 전체 탭 벤치마크 측정
 
 ### 링크 및 참고 자료
 
@@ -174,53 +176,52 @@ RPi5 Live 환경에서 입력 → 분석 → 표시 파이프라인이 실시간
 - **결정 사항** : Pipe-and-Filter 흐름 + 동시성 택틱(Producer–Consumer · Observer · Latest-Wins · 고정 버퍼 풀) 채택한다.
 - **실험 결과** : [하단 실험 결과 및 분석](#실험-결과-및-분석) 참조
 
-  탭별 E2E max (Raspberry Pi 5, 43200@192k Sim, 낮을수록 여유, 회색선 = 83.3 ms 예산)
+탭별 E2E max (Raspberry Pi 5, 43200@192k Sim, 2026-06-30, 낮을수록 여유, 회색선 = 83.3 ms 예산)
 
 ```mermaid
 %%{init: {"themeVariables": {"xyChart": {"plotColorPalette": "#A50034, #999999"}}}}%%
 xychart-beta horizontal
     title "RPi5 탭별 E2E max (회색선 = 83.3 ms 예산)"
-    x-axis ["Filter Scope", "Rate/Scope", "Beat Noise", "Positions", "Waveforms", "Spectrogram", "Sound Print", "Beat Error", "Long-Term", "Trace", "Sweep", "Vario", "Escapement"]
+    x-axis ["Filter Scope", "Beat Noise", "Waveforms", "Positions", "Rate/Scope", "Long-Term", "Sweep", "Beat Error", "Vario", "Escapement", "Trace", "Sound Print", "Spectrogram", "Health"]
     y-axis "E2E max (ms)" 0 --> 90
-    bar [36.46, 31.93, 25.55, 25.25, 23.27, 22.05, 21.75, 21.19, 19.8, 16.89, 16.08, 15.79, 15.09]
-    line [83.3, 83.3, 83.3, 83.3, 83.3, 83.3, 83.3, 83.3, 83.3, 83.3, 83.3, 83.3, 83.3]
+    bar [48.70, 47.90, 47.57, 47.51, 47.17, 47.06, 46.60, 45.65, 44.99, 44.91, 44.57, 43.85, 43.63, 41.83]
+    line [83.3, 83.3, 83.3, 83.3, 83.3, 83.3, 83.3, 83.3, 83.3, 83.3, 83.3, 83.3, 83.3, 83.3]
 ```
-  - 가장 느린 Filter Scope도 36.46 ms로 83.3 ms 예산의 약 44% 수준 — 모든 탭이 예산 내 충분한 여유를 확보함.
+- 가장 느린 Filter Scope도 48.70 ms로 83.3 ms 예산의 약 58% 수준 — 14개 탭 모두 예산 내 여유를 확보함.
 
-  같은 탭들의 E2E를 capture→process / process→display 두 구간으로 분해한 결과다 (Raspberry Pi 5, 43200@192k Sim, 2026-06-30, 14개 탭 전체). 평균은 가산적이라 `E2E = capture→process + process→display`로 한 막대에 누적되므로 분해 표시에는 평균을 사용한다(worst-case는 두 구간의 최댓값이 동시에 발생하지 않아 합산되지 않음).
+같은 탭들의 구간별 worst를 capture→process / process→display로 분리한 결과다(Raspberry Pi 5, 43200@192k Sim, 2026-06-30). 두 구간 worst는 서로 다른 프레임에서 발생할 수 있으므로 합산하지 않는다. `E2E worst`는 `end_to_end_latency_ms`에서 직접 관측한 최댓값이다.
 
 ```mermaid
-%%{init: {"themeVariables": {"xyChart": {"plotColorPalette": "#999999, #A50034"}}}}%%
+%%{init: {"themeVariables": {"xyChart": {"plotColorPalette": "#A50034, #999999"}}}}%%
 xychart-beta horizontal
-    title "RPi5 탭별 E2E 평균 분해 (빨강 = capture→process, 회색 = process→display)"
-    x-axis ["Spectrogram", "Rate/Scope", "Positions", "Sound Print", "Filter Scope", "Beat Noise", "Sweep", "Health", "Waveforms", "Long-Term", "Escapement", "Trace", "Vario", "Beat Error"]
-    y-axis "지연 (ms, 평균)" 0 --> 16
-    bar [14.68, 10.63, 9.10, 7.41, 6.91, 6.88, 6.72, 6.59, 6.57, 6.55, 6.48, 6.37, 6.27, 6.20]
-    bar [1.57, 2.22, 1.79, 1.51, 1.93, 1.82, 1.75, 1.74, 1.71, 1.74, 1.66, 1.65, 1.63, 1.68]
+    title "RPi5 탭별 구간 worst (빨강 = capture→process, 회색 = process→display)"
+    x-axis ["Filter Scope", "Beat Noise", "Waveforms", "Positions", "Rate/Scope", "Long-Term", "Sweep", "Beat Error", "Vario", "Escapement", "Trace", "Sound Print", "Spectrogram", "Health"]
+    y-axis "지연 (ms, worst)" 0 --> 50
+    bar [42.79, 43.29, 42.95, 37.67, 41.38, 41.27, 41.34, 41.07, 41.37, 41.75, 40.69, 38.56, 37.83, 37.46]
+    bar [25.42, 27.64, 22.91, 35.49, 26.55, 22.09, 34.90, 25.22, 31.47, 23.69, 23.77, 42.22, 36.05, 24.57]
 ```
-  - capture→process는 전 탭에서 1.5–2.2 ms로 거의 일정하다(탭과 무관한 공유 분석 단계). 탭별 차이는 대부분 process→display(렌더링)에서 발생하며 Spectrogram 13.1 ms · Rate/Scope 8.4 ms · Positions 7.3 ms가 가장 무겁고 나머지는 4.5–5.1 ms다. 즉 파이프라인이 분석을 표시 부하로부터 격리함을 평균 분해가 뒷받침한다.
-  - 전 탭 drop 0 · miss 0.
+- 전 탭 drop 0 · miss 0.
 
-**측정 데이터 (2026-06-30, Raspberry Pi 5, 43200 BPH @ 192 kHz, Simulation):**
+**측정 데이터 (2026-06-30, Raspberry Pi 5, 43,200 BPH @ 192 kHz, Simulation):**
 
-| 탭 | capture→process (ms) | process→display (ms) | E2E 평균 (ms) | E2E worst (ms) | 프레임 |
+| 탭 | capture→process worst (ms) | process→display worst (ms) | E2E worst (ms) | 예산 사용률 | 프레임 |
 | :--- | ---: | ---: | ---: | ---: | ---: |
-| Spectrogram | 1.57 | 13.12 | 14.68 | 43.63 | 410 |
-| Rate/Scope | 2.22 | 8.41 | 10.63 | 47.17 | 987 |
-| Positions | 1.79 | 7.31 | 9.10 | 47.51 | 987 |
-| Sound Print | 1.51 | 5.91 | 7.41 | 43.85 | 553 |
-| Filter Scope | 1.93 | 4.99 | 6.91 | 48.70 | 1250 |
-| Beat Noise | 1.82 | 5.06 | 6.88 | 47.90 | 1297 |
-| Sweep | 1.75 | 4.97 | 6.72 | 46.60 | 1301 |
-| Health | 1.74 | 4.86 | 6.59 | 41.83 | 1571 |
-| Waveforms | 1.71 | 4.86 | 6.57 | 47.57 | 1666 |
-| Long-Term | 1.74 | 4.81 | 6.55 | 47.06 | 1295 |
-| Escapement | 1.66 | 4.82 | 6.48 | 44.91 | 1441 |
-| Trace | 1.65 | 4.72 | 6.37 | 44.57 | 1115 |
-| Vario | 1.63 | 4.65 | 6.27 | 44.99 | 1450 |
-| Beat Error | 1.68 | 4.51 | 6.20 | 45.65 | 1038 |
+| Filter Scope | 42.79 | 25.42 | 48.70 | 58.4% | 1250 |
+| Beat Noise | 43.29 | 27.64 | 47.90 | 57.5% | 1297 |
+| Waveforms | 42.95 | 22.91 | 47.57 | 57.1% | 1666 |
+| Positions | 37.67 | 35.49 | 47.51 | 57.0% | 987 |
+| Rate/Scope | 41.38 | 26.55 | 47.17 | 56.6% | 987 |
+| Long-Term | 41.27 | 22.09 | 47.06 | 56.5% | 1295 |
+| Sweep | 41.34 | 34.90 | 46.60 | 55.9% | 1301 |
+| Beat Error | 41.07 | 25.22 | 45.65 | 54.8% | 1038 |
+| Vario | 41.37 | 31.47 | 44.99 | 54.0% | 1450 |
+| Escapement | 41.75 | 23.69 | 44.91 | 53.9% | 1441 |
+| Trace | 40.69 | 23.77 | 44.57 | 53.5% | 1115 |
+| Sound Print | 38.56 | 42.22 | 43.85 | 52.6% | 553 |
+| Spectrogram | 37.83 | 36.05 | 43.63 | 52.4% | 410 |
+| Health | 37.46 | 24.57 | 41.83 | 50.2% | 1571 |
 
-> 값은 각 탭 CSV 누적 통계(마지막 행)를 2자리로 반올림한 것이며, 반올림으로 `capture→process + process→display` 합이 E2E와 ±0.01 ms 다를 수 있다.
+> 값은 각 탭 CSV 마지막 누적 행의 worst 컬럼을 2자리로 반올림한 것이다. `capture→process worst`와 `process→display worst`는 독립 구간 최댓값이므로 합산하지 않으며, `E2E worst`는 `end_to_end_latency_ms`의 직접 최댓값이다.
 
 ### 목적
 
@@ -297,7 +298,7 @@ xychart-beta horizontal
 
 - **결정 사항**: signal-quality TinyML은 **조건부 채택(Conditional Go)** 한다. ONNX 모델은 `ISignalQualityClassifier` Strategy seam 뒤의 선택 가능한 구현으로 두고, 판정은 `AnalysisFrame.SignalQuality`와 기존 warning overlay/status guidance로만 표시한다. 분류 결과는 측정 event나 rate/amplitude/beat-error 계산을 버리거나 수정하지 않는 **비파괴적 advisory** 정보로 제한한다.
 - **채택 조건**: ① Core는 계속 ONNX Runtime에 의존하지 않는다(`TimeGrapher.Inference` 리프 프로젝트에서만 로드), ② 모델 로드 실패 시 `HeuristicSignalQualityClassifier`로 폴백한다, ③ `SignalQualityFeatures` 계약이나 모델 파일이 바뀌면 trainer 검증·confusion matrix·오프/온 성능 측정을 다시 실행한다, ④ RPi5 배포 전에는 동일 43,200 BPH @ 192 kHz 기준으로 release benchmark를 재실행한다.
-- **성능 판정**: 2026-06-30 Windows 11 개발 PC에서 동일 30초 Realistic 합성 입력(43,200 BPH @ 192 kHz)을 TinyML off/on으로 비교했다. 분석 처리 비율은 **2.598% → 3.548%**로 **+0.950%p** 증가했고, 감지 BPH는 둘 다 **43,200**으로 동일했다. 이는 기존 EXP-03의 RPi5 worst-case 여유(36.46 ms / 83.3 ms)를 침범할 수준의 추가 부하가 아니다.
+- **성능 판정**: 2026-06-30 Windows 11 개발 PC에서 동일 30초 Realistic 합성 입력(43,200 BPH @ 192 kHz)을 TinyML off/on으로 비교했다. 분석 처리 비율은 **2.598% → 3.548%**로 **+0.950%p** 증가했고, 감지 BPH는 둘 다 **43,200**으로 동일했다. 이는 기존 EXP-03의 RPi5 worst-case 여유(48.70 ms / 83.3 ms)를 침범할 수준의 추가 부하가 아니다.
 - **분류 판정**: trainer 검증은 **micro/macro accuracy 0.997**, ONNX round-trip은 **2,000/2,000 rows 일치(100.00%)**였다. 별도 균형 feature validation confusion matrix는 **1,993/2,000 correct(99.65%)**로 signal-quality warning 용도로 충분하다.
 - **검증 결과**: `TimeGrapher.Inference.Tests` 14개, Core signal-quality 관련 25개, App signal-quality/status 관련 36개 테스트가 통과했다.
 

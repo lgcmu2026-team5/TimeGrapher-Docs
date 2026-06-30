@@ -95,7 +95,7 @@ Complete
 ### Results & Decisions
 
 - **Decision**: Base at 48 kHz, top support at 192 kHz.
-- **Results**: The first 2026-06-11 measurement passed at 43200@192k Playback with 34.562 ms worst E2E latency (41.5% of budget), and the 2026-06-21 current all-tab check also passed with a 36.46 ms worst case (43.8% of budget). Therefore, 192 kHz support is confirmed within budget in both the first measurement and the current implementation.
+- **Results**: The first 2026-06-11 measurement passed at 43200@192k Playback with 34.562 ms worst E2E latency (41.5% of budget), the 2026-06-21 current-implementation check passed with a 36.46 ms worst case (43.8% of budget), and the 2026-06-30 all-tab benchmark also passed with a 48.70 ms worst case (58.4% of budget). Therefore, 192 kHz support is confirmed within budget across the first measurement and subsequent implementation checks.
 - **E2E meaning**: E2E means capture to display, the total latency from when the input sample is captured until the analysis result is shown on screen.
 
 | Date | Condition | Input | E2E worst | Budget | Worst usage | Drop | Miss | Result |
@@ -106,15 +106,16 @@ Complete
 | 2026-06-11 | 43200 BPH @ 192 kHz | Simulation | 34.003 ms | 83.333 ms | 40.8% | 0 | 0 | Pass |
 | 2026-06-11 | 43200 BPH @ 192 kHz | Playback | 34.562 ms | 83.333 ms | 41.5% | 0 | 0 | Pass |
 | **2026-06-21** | **43200 BPH @ 192 kHz** | **Simulation** | **36.46 ms** | **83.333 ms** | **43.8%** | **0** | **0** | **Pass** |
+| **2026-06-30** | **43200 BPH @ 192 kHz** | **Simulation (all tabs)** | **48.70 ms** | **83.333 ms** | **58.4%** | **0** | **0** | **Pass** |
 
 ```mermaid
 %%{init: {"themeVariables": {"xyChart": {"plotColorPalette": "#A50034, #999999"}}}}%%
 xychart-beta horizontal
     title "RPi5 worst-case latency / budget per run (gray line = 100% budget)"
-    x-axis ["21600@48k Sim", "21600@48k Play", "21600@48k Live", "43200@192k Sim", "43200@192k Play", "(2026-06-21) 43200@192k Sim"]
+    x-axis ["21600@48k Sim", "21600@48k Play", "21600@48k Live", "43200@192k Sim", "43200@192k Play", "(2026-06-21) 43200@192k Sim", "(2026-06-30) 43200@192k all-tab"]
     y-axis "Budget usage (%)" 0 --> 110
-    bar [25.2, 26.4, 24.2, 40.8, 41.5, 43.8]
-    line [100, 100, 100, 100, 100, 100]
+    bar [25.2, 26.4, 24.2, 40.8, 41.5, 43.8, 58.4]
+    line [100, 100, 100, 100, 100, 100, 100]
 ```
 
 - **Remaining limit**: Because the implementation and measurement conditions can change, this should be measured continuously using the same criteria.
@@ -156,6 +157,7 @@ Complete (continuous measurement planned)
 - 6/11: Run the QAS-2 approval matrix
 - 6/12–6/13: Analyze results and derive the decisions
 - 6/21: Measure 43200@192k on the current implementation
+- 6/30: Measure 43200@192k all-tab benchmark on the current implementation
 
 ### Links & References
 
@@ -170,18 +172,52 @@ Complete (continuous measurement planned)
 - **Decision**: adopt a Pipe-and-Filter flow + concurrency tactics (Producer–Consumer · Observer · Latest-Wins · fixed buffer pool).
 - **Results**: [see Results & Analysis below](#results--analysis)
 
-**Per-tab E2E max (RPi5, 43200@192k Sim, lower is better, gray line = 83.3 ms budget)**
+**Per-tab E2E max (RPi5, 43200@192k Sim, 2026-06-30, lower is better, gray line = 83.3 ms budget)**
 
 ```mermaid
 %%{init: {"themeVariables": {"xyChart": {"plotColorPalette": "#A50034, #999999"}}}}%%
 xychart-beta horizontal
     title "RPi5 per-tab E2E max (gray line = 83.3 ms budget)"
-    x-axis ["Filter Scope", "Rate/Scope", "Beat Noise", "Positions", "Waveforms", "Spectrogram", "Sound Print", "Beat Error", "Long-Term", "Trace", "Sweep", "Vario", "Escapement"]
+    x-axis ["Filter Scope", "Beat Noise", "Waveforms", "Positions", "Rate/Scope", "Long-Term", "Sweep", "Beat Error", "Vario", "Escapement", "Trace", "Sound Print", "Spectrogram", "Health"]
     y-axis "E2E max (ms)" 0 --> 90
-    bar [36.46, 31.93, 25.55, 25.25, 23.27, 22.05, 21.75, 21.19, 19.8, 16.89, 16.08, 15.79, 15.09]
-    line [83.3, 83.3, 83.3, 83.3, 83.3, 83.3, 83.3, 83.3, 83.3, 83.3, 83.3, 83.3, 83.3]
+    bar [48.70, 47.90, 47.57, 47.51, 47.17, 47.06, 46.60, 45.65, 44.99, 44.91, 44.57, 43.85, 43.63, 41.83]
+    line [83.3, 83.3, 83.3, 83.3, 83.3, 83.3, 83.3, 83.3, 83.3, 83.3, 83.3, 83.3, 83.3, 83.3]
 ```
-- Even the slowest tab (Filter Scope, 36.46 ms) sits at ~44 % of the 83.3 ms budget — all tabs keep ample headroom.
+- Even the slowest tab (Filter Scope, 48.70 ms) sits at ~58 % of the 83.3 ms budget — all 14 tabs keep headroom.
+
+The same tab benchmark is decomposed below using **worst** values for capture→process and process→display (RPi5, 43200@192k Sim, 2026-06-30). Segment worst values are independent maxima and are not additive; `E2E worst` is measured directly from `end_to_end_latency_ms`.
+
+```mermaid
+%%{init: {"themeVariables": {"xyChart": {"plotColorPalette": "#A50034, #999999"}}}}%%
+xychart-beta horizontal
+    title "RPi5 per-tab segment worst (red = capture→process, gray = process→display)"
+    x-axis ["Filter Scope", "Beat Noise", "Waveforms", "Positions", "Rate/Scope", "Long-Term", "Sweep", "Beat Error", "Vario", "Escapement", "Trace", "Sound Print", "Spectrogram", "Health"]
+    y-axis "Latency (ms, worst)" 0 --> 50
+    bar [42.79, 43.29, 42.95, 37.67, 41.38, 41.27, 41.34, 41.07, 41.37, 41.75, 40.69, 38.56, 37.83, 37.46]
+    bar [25.42, 27.64, 22.91, 35.49, 26.55, 22.09, 34.90, 25.22, 31.47, 23.69, 23.77, 42.22, 36.05, 24.57]
+```
+- All tabs recorded drop 0 · miss 0.
+
+**Measurement data (2026-06-30, RPi5, 43,200 BPH @ 192 kHz, Simulation):**
+
+| Tab | capture→process worst (ms) | process→display worst (ms) | E2E worst (ms) | Budget usage | Frames |
+| :--- | ---: | ---: | ---: | ---: | ---: |
+| Filter Scope | 42.79 | 25.42 | 48.70 | 58.4% | 1250 |
+| Beat Noise | 43.29 | 27.64 | 47.90 | 57.5% | 1297 |
+| Waveforms | 42.95 | 22.91 | 47.57 | 57.1% | 1666 |
+| Positions | 37.67 | 35.49 | 47.51 | 57.0% | 987 |
+| Rate/Scope | 41.38 | 26.55 | 47.17 | 56.6% | 987 |
+| Long-Term | 41.27 | 22.09 | 47.06 | 56.5% | 1295 |
+| Sweep | 41.34 | 34.90 | 46.60 | 55.9% | 1301 |
+| Beat Error | 41.07 | 25.22 | 45.65 | 54.8% | 1038 |
+| Vario | 41.37 | 31.47 | 44.99 | 54.0% | 1450 |
+| Escapement | 41.75 | 23.69 | 44.91 | 53.9% | 1441 |
+| Trace | 40.69 | 23.77 | 44.57 | 53.5% | 1115 |
+| Sound Print | 38.56 | 42.22 | 43.85 | 52.6% | 553 |
+| Spectrogram | 37.83 | 36.05 | 43.63 | 52.4% | 410 |
+| Health | 37.46 | 24.57 | 41.83 | 50.2% | 1571 |
+
+> Values are rounded from the final cumulative row of each tab CSV. `capture→process worst` and `process→display worst` are independent segment maxima; they are not added. `E2E worst` is the direct maximum of `end_to_end_latency_ms`.
 
 ### Objective
 
@@ -261,7 +297,7 @@ This experiment analyzes, from a benefits/trade-offs perspective, which quality 
 
 - **Decision**: adopt signal-quality TinyML as a **Conditional Go**. Keep the ONNX model as a selectable implementation behind the `ISignalQualityClassifier` Strategy seam, and surface the verdict only through `AnalysisFrame.SignalQuality` plus the existing warning overlay / status guidance. The classifier remains **non-destructive advisory** information: it does not discard or modify measurement events or rate/amplitude/beat-error computation.
 - **Adoption conditions**: ① Core continues to have no ONNX Runtime dependency (model loading stays in the `TimeGrapher.Inference` leaf project), ② model load failure falls back to `HeuristicSignalQualityClassifier`, ③ any `SignalQualityFeatures` contract or model-file change reruns trainer validation, confusion matrix, and off/on performance measurement, and ④ before RPi5 deployment, rerun the same 43,200 BPH @ 192 kHz release benchmark on the target device.
-- **Performance judgment**: on 2026-06-30, the Windows 11 dev PC ran the same 30 s Realistic synthetic input (43,200 BPH @ 192 kHz) with TinyML off/on. Analysis processing ratio changed from **2.598% → 3.548%** (**+0.950 pp**), and detected BPH stayed **43,200** in both runs. This added load is not large enough to threaten the existing EXP-03 RPi5 worst-case headroom (36.46 ms / 83.3 ms).
+- **Performance judgment**: on 2026-06-30, the Windows 11 dev PC ran the same 30 s Realistic synthetic input (43,200 BPH @ 192 kHz) with TinyML off/on. Analysis processing ratio changed from **2.598% → 3.548%** (**+0.950 pp**), and detected BPH stayed **43,200** in both runs. This added load is not large enough to threaten the existing EXP-03 RPi5 worst-case headroom (48.70 ms / 83.3 ms).
 - **Classification judgment**: trainer validation reached **0.997 micro/macro accuracy**, and the ONNX round trip matched **2,000/2,000 rows (100.00%)**. A separate balanced feature-validation confusion matrix reached **1,993/2,000 correct (99.65%)**, sufficient for signal-quality warnings.
 - **Verification result**: `TimeGrapher.Inference.Tests` 14 tests, Core signal-quality tests 25 tests, and App signal-quality/status tests 36 tests passed.
 
