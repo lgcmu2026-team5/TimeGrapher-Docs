@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mxfile host="app.diagrams.net" modified="2026-06-29T00:00:00.000Z" agent="Codex" version="24.7.17" type="device">
+  <diagram id="analysisframe-routing-sequence-with-notes-ko" name="AnalysisFrame Routing Sequence KO">
+    <mxGraphModel dx="1800" dy="1500" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1800" pageHeight="1500" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+
+        <mxCell id="title" value="AnalysisFrame Routing Sequence - Router / Consumer / Payload" style="fontFamily=Malgun Gothic;fontSize=30;fontStyle=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;" vertex="1" parent="1">
+          <mxGeometry x="40" y="28" width="1180" height="46" as="geometry" />
+        </mxCell>
+        <mxCell id="subtitle" value="AnalysisFrame 한 번의 update가 모든 consumer의 관찰 단계와 active graph render 단계로 나뉘어 전달되는 흐름" style="fontFamily=Malgun Gothic;fontSize=15;fontColor=#555555;strokeColor=none;fillColor=none;align=left;verticalAlign=top;" vertex="1" parent="1">
+          <mxGeometry x="42" y="76" width="1400" height="32" as="geometry" />
+        </mxCell>
+
+        <mxCell id="legend" value="&lt;b&gt;Legend&lt;/b&gt;&lt;br/&gt;&lt;font color=&quot;#333333&quot;&gt;흰색 박스&lt;/font&gt; = runtime object/reference&lt;br/&gt;&lt;font color=&quot;#FF6B35&quot;&gt;주황 테두리&lt;/font&gt; = AnalysisFrame DTO&lt;br/&gt;&lt;font color=&quot;#B28A00&quot;&gt;노란 note&lt;/font&gt; = router 내부 field/registry&lt;br/&gt;&lt;font color=&quot;#1565C0&quot;&gt;파란 화살표&lt;/font&gt; = observe/cache update&lt;br/&gt;&lt;font color=&quot;#2E7D32&quot;&gt;초록 화살표&lt;/font&gt; = active graph render" style="fontFamily=Malgun Gothic;fontSize=13;whiteSpace=wrap;html=1;rounded=0;align=left;verticalAlign=top;spacing=10;strokeWidth=2;strokeColor=#333333;fillColor=#FAFAFA;" vertex="1" parent="1">
+          <mxGeometry x="1345" y="35" width="385" height="158" as="geometry" />
+        </mxCell>
+
+        <mxCell id="ui" value="&lt;b&gt;ui: MainWindow&lt;/b&gt;&lt;br/&gt;runtime object" style="fontFamily=Malgun Gothic;fontSize=13;whiteSpace=wrap;html=1;rounded=0;align=center;verticalAlign=middle;spacing=6;strokeWidth=2;strokeColor=#333333;fillColor=#F7F7F7;" vertex="1" parent="1">
+          <mxGeometry x="65" y="170" width="170" height="64" as="geometry" />
+        </mxCell>
+        <mxCell id="frame" value="&lt;b&gt;frame: AnalysisFrame&lt;/b&gt;&lt;br/&gt;single DTO instance" style="fontFamily=Malgun Gothic;fontSize=13;whiteSpace=wrap;html=1;rounded=0;align=center;verticalAlign=middle;spacing=6;strokeWidth=3;strokeColor=#FF6B35;fillColor=#FFF1EA;" vertex="1" parent="1">
+          <mxGeometry x="315" y="170" width="220" height="64" as="geometry" />
+        </mxCell>
+        <mxCell id="router" value="&lt;b&gt;router: AnalysisFrameRouter&lt;/b&gt;&lt;br/&gt;Route(frame, activeTabId)" style="fontFamily=Malgun Gothic;fontSize=13;whiteSpace=wrap;html=1;rounded=0;align=center;verticalAlign=middle;spacing=6;strokeWidth=2;strokeColor=#333333;fillColor=#F7F7F7;" vertex="1" parent="1">
+          <mxGeometry x="615" y="170" width="230" height="64" as="geometry" />
+        </mxCell>
+        <mxCell id="consumer" value="&lt;b&gt;consumer: IAnalysisFrameConsumer&lt;/b&gt;&lt;br/&gt;loop variable / each instance" style="fontFamily=Malgun Gothic;fontSize=13;whiteSpace=wrap;html=1;rounded=0;align=center;verticalAlign=middle;spacing=6;strokeWidth=2;strokeColor=#1565C0;fillColor=#F2F7FF;" vertex="1" parent="1">
+          <mxGeometry x="905" y="170" width="250" height="64" as="geometry" />
+        </mxCell>
+        <mxCell id="activeConsumer" value="&lt;b&gt;activeConsumer: IAnalysisFrameConsumer&lt;/b&gt;&lt;br/&gt;selected reference" style="fontFamily=Malgun Gothic;fontSize=13;whiteSpace=wrap;html=1;rounded=0;align=center;verticalAlign=middle;spacing=6;strokeWidth=3;strokeColor=#2E7D32;fillColor=#EEF8F0;" vertex="1" parent="1">
+          <mxGeometry x="1210" y="170" width="260" height="64" as="geometry" />
+        </mxCell>
+        <mxCell id="renderer" value="&lt;b&gt;renderer&lt;/b&gt;&lt;br/&gt;graph view" style="fontFamily=Malgun Gothic;fontSize=13;whiteSpace=wrap;html=1;rounded=0;align=center;verticalAlign=middle;spacing=6;strokeWidth=3;strokeColor=#2E7D32;fillColor=#EEF8F0;" vertex="1" parent="1">
+          <mxGeometry x="1570" y="170" width="145" height="64" as="geometry" />
+        </mxCell>
+
+        <mxCell id="lifeline_ui" value="" style="shape=line;direction=south;html=1;strokeColor=#C9C9C9;strokeWidth=2;dashed=1;dashPattern=8 8;" vertex="1" parent="1">
+          <mxGeometry x="150" y="234" width="1" height="560" as="geometry" />
+        </mxCell>
+        <mxCell id="lifeline_frame" value="" style="shape=line;direction=south;html=1;strokeColor=#C9C9C9;strokeWidth=2;dashed=1;dashPattern=8 8;" vertex="1" parent="1">
+          <mxGeometry x="425" y="234" width="1" height="560" as="geometry" />
+        </mxCell>
+        <mxCell id="lifeline_router" value="" style="shape=line;direction=south;html=1;strokeColor=#C9C9C9;strokeWidth=2;dashed=1;dashPattern=8 8;" vertex="1" parent="1">
+          <mxGeometry x="730" y="234" width="1" height="560" as="geometry" />
+        </mxCell>
+        <mxCell id="lifeline_consumer" value="" style="shape=line;direction=south;html=1;strokeColor=#C9C9C9;strokeWidth=2;dashed=1;dashPattern=8 8;" vertex="1" parent="1">
+          <mxGeometry x="1030" y="234" width="1" height="560" as="geometry" />
+        </mxCell>
+        <mxCell id="lifeline_active" value="" style="shape=line;direction=south;html=1;strokeColor=#C9C9C9;strokeWidth=2;dashed=1;dashPattern=8 8;" vertex="1" parent="1">
+          <mxGeometry x="1340" y="234" width="1" height="560" as="geometry" />
+        </mxCell>
+        <mxCell id="lifeline_renderer" value="" style="shape=line;direction=south;html=1;strokeColor=#C9C9C9;strokeWidth=2;dashed=1;dashPattern=8 8;" vertex="1" parent="1">
+          <mxGeometry x="1642" y="234" width="1" height="560" as="geometry" />
+        </mxCell>
+
+        <mxCell id="registryNote" value="&lt;b&gt;router._consumers&lt;/b&gt;&lt;br/&gt;Dictionary&amp;lt;TabId, IAnalysisFrameConsumer&amp;gt;&lt;br/&gt;&lt;br/&gt;독립 component가 아니라 router 내부 registry/field" style="fontFamily=Malgun Gothic;fontSize=12;whiteSpace=wrap;html=1;rounded=0;align=left;verticalAlign=top;spacing=8;strokeWidth=2;strokeColor=#B28A00;fillColor=#FFFBE6;" vertex="1" parent="1">
+          <mxGeometry x="570" y="260" width="300" height="106" as="geometry" />
+        </mxCell>
+
+        <mxCell id="msg_route" value="Route(frame, activeTabId)" style="endArrow=block;html=1;rounded=0;strokeColor=#1565C0;strokeWidth=2;fontFamily=Malgun Gothic;fontSize=13;labelBackgroundColor=#FFFFFF;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="150" y="295" as="sourcePoint" />
+            <mxPoint x="730" y="295" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+
+        <mxCell id="loopFrame" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;strokeColor=#777777;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="555" y="390" width="690" height="168" as="geometry" />
+        </mxCell>
+        <mxCell id="loopLabel" value="loop [for each consumer in router._consumers.Values]" style="fontFamily=Malgun Gothic;fontSize=13;fontStyle=1;whiteSpace=wrap;html=1;rounded=0;align=left;verticalAlign=middle;spacing=4;strokeWidth=1;strokeColor=#777777;fillColor=#F7F7F7;" vertex="1" parent="1">
+          <mxGeometry x="555" y="390" width="300" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="msg_observe" value="ObserveFrame(frame)" style="endArrow=block;html=1;rounded=0;strokeColor=#1565C0;strokeWidth=2;fontFamily=Malgun Gothic;fontSize=13;labelBackgroundColor=#FFFFFF;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="730" y="450" as="sourcePoint" />
+            <mxPoint x="1030" y="450" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="observeNote" value="일부 consumer만 필요할 때 latest payload를 cache/update&lt;br/&gt;예: SoundPrint image, Spectrogram image/metadata, recent beat window, position state" style="fontFamily=Malgun Gothic;fontSize=12;whiteSpace=wrap;html=1;rounded=0;align=left;verticalAlign=top;spacing=8;strokeWidth=1;strokeColor=#1565C0;fillColor=#E8F2FF;" vertex="1" parent="1">
+          <mxGeometry x="810" y="482" width="405" height="58" as="geometry" />
+        </mxCell>
+
+        <mxCell id="altFrame" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;strokeColor=#777777;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="555" y="590" width="1135" height="206" as="geometry" />
+        </mxCell>
+        <mxCell id="altLabel" value="alt [router._consumers.TryGetValue(activeTabId, out activeConsumer)]" style="fontFamily=Malgun Gothic;fontSize=13;fontStyle=1;whiteSpace=wrap;html=1;rounded=0;align=left;verticalAlign=middle;spacing=4;strokeWidth=1;strokeColor=#777777;fillColor=#F7F7F7;" vertex="1" parent="1">
+          <mxGeometry x="555" y="590" width="455" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="msg_render" value="RenderFrame(frame, context)" style="endArrow=block;html=1;rounded=0;strokeColor=#2E7D32;strokeWidth=2;fontFamily=Malgun Gothic;fontSize=13;labelBackgroundColor=#FFFFFF;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="730" y="650" as="sourcePoint" />
+            <mxPoint x="1340" y="650" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="selectPayload" value="Select graph-specific payload&lt;br/&gt;from frame or cache" style="endArrow=block;html=1;rounded=0;strokeColor=#2E7D32;strokeWidth=2;fontFamily=Malgun Gothic;fontSize=13;labelBackgroundColor=#FFFFFF;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1340" y="702" as="sourcePoint" />
+            <mxPoint x="1340" y="742" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="msg_to_renderer" value="Render(selected graph payload)" style="endArrow=block;html=1;rounded=0;strokeColor=#2E7D32;strokeWidth=2;fontFamily=Malgun Gothic;fontSize=13;labelBackgroundColor=#FFFFFF;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1340" y="742" as="sourcePoint" />
+            <mxPoint x="1642" y="742" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="elseNote" value="else: activeTabId에 맞는 consumer가 없으면 render 없음" style="fontFamily=Malgun Gothic;fontSize=12;whiteSpace=wrap;html=1;rounded=0;align=left;verticalAlign=middle;spacing=6;strokeWidth=1;strokeColor=#AAAAAA;fillColor=#FAFAFA;" vertex="1" parent="1">
+          <mxGeometry x="575" y="757" width="360" height="28" as="geometry" />
+        </mxCell>
+
+        <mxCell id="summaryTitle" value="정리한 내용" style="fontFamily=Malgun Gothic;fontSize=22;fontStyle=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;" vertex="1" parent="1">
+          <mxGeometry x="50" y="850" width="500" height="34" as="geometry" />
+        </mxCell>
+        <mxCell id="summary1" value="&lt;b&gt;1. 이 그림의 목적&lt;/b&gt;&lt;br/&gt;AnalysisFrame이 각 그래프에 직접 연결되는 것이 아니라, UI handler가 router에 frame과 activeTabId를 넘기고 router가 consumer들을 통해 graph별 payload를 선택한다는 점을 보여준다. 따라서 AnalysisFrame은 분석 결과를 묶은 DTO이고, 그래프별 해석은 consumer 쪽으로 분리된다." style="fontFamily=Malgun Gothic;fontSize=14;whiteSpace=wrap;html=1;rounded=0;align=left;verticalAlign=top;spacing=10;strokeWidth=1;strokeColor=#DDDDDD;fillColor=#FFFFFF;" vertex="1" parent="1">
+          <mxGeometry x="50" y="895" width="810" height="108" as="geometry" />
+        </mxCell>
+        <mxCell id="summary2" value="&lt;b&gt;2. Router와 _consumers&lt;/b&gt;&lt;br/&gt;_consumers는 화면에 따로 떠 있는 runtime component가 아니라 AnalysisFrameRouter 내부의 registry다. 자료구조 관점에서는 Dictionary&amp;lt;TabId, IAnalysisFrameConsumer&amp;gt;이고, router는 이 registry를 순회하면서 모든 consumer에 ObserveFrame(frame)을 호출한 뒤 activeTabId로 선택된 consumer 하나에만 RenderFrame(frame, context)를 호출한다." style="fontFamily=Malgun Gothic;fontSize=14;whiteSpace=wrap;html=1;rounded=0;align=left;verticalAlign=top;spacing=10;strokeWidth=1;strokeColor=#DDDDDD;fillColor=#FFFFFF;" vertex="1" parent="1">
+          <mxGeometry x="910" y="895" width="820" height="108" as="geometry" />
+        </mxCell>
+        <mxCell id="summary3" value="&lt;b&gt;3. Cache/update의 의미&lt;/b&gt;&lt;br/&gt;ObserveFrame 단계에서 모든 consumer가 반드시 큰 cache를 만드는 것은 아니다. 필요한 consumer만 inactive 상태에서도 최신 payload를 유지한다. 예를 들면 SoundPrint는 최신 SoundImage, Spectrogram은 최신 SpectrogramImage와 metadata, Escapement/WatchPositions 계열은 최근 beat window나 position state를 갱신한다. 다른 그래프들은 active가 되었을 때 frame의 MetricsHistory, BeatSegments, RateSeries 등을 바로 읽어 그린다." style="fontFamily=Malgun Gothic;fontSize=14;whiteSpace=wrap;html=1;rounded=0;align=left;verticalAlign=top;spacing=10;strokeWidth=1;strokeColor=#DDDDDD;fillColor=#FFFFFF;" vertex="1" parent="1">
+          <mxGeometry x="50" y="1030" width="810" height="138" as="geometry" />
+        </mxCell>
+        <mxCell id="summary4" value="&lt;b&gt;4. Active graph rendering&lt;/b&gt;&lt;br/&gt;active가 된 consumer는 AnalysisFrame 전체를 다시 분석하지 않는다. 자기 graph에 필요한 graph-specific payload만 frame 또는 cache에서 선택하고 renderer에 넘긴다. 예: Rate/Scope는 ScopeSeries, RateSeries, markers를 사용하고, Beat Noise는 BeatSegments를 사용하며, Spectrogram은 cached SpectrogramImage와 column/beat metadata를 사용한다." style="fontFamily=Malgun Gothic;fontSize=14;whiteSpace=wrap;html=1;rounded=0;align=left;verticalAlign=top;spacing=10;strokeWidth=1;strokeColor=#DDDDDD;fillColor=#FFFFFF;" vertex="1" parent="1">
+          <mxGeometry x="910" y="1030" width="820" height="138" as="geometry" />
+        </mxCell>
+        <mxCell id="summary5" value="&lt;b&gt;5. 발표용 표현&lt;/b&gt;&lt;br/&gt;이 구조는 QAS를 보장한다고 말하기보다 변경 범위를 제한하고 예측 가능하게 만든다고 설명하는 것이 안전하다. 새 그래프를 추가할 때 변경 지점은 DTO payload, producer 할당, consumer/renderer, catalog 등록처럼 정해진 위치로 모인다. 중요한 점은 Detection/Metrics hot path를 건드리지 않고 새로운 display를 추가할 수 있다는 것이다." style="fontFamily=Malgun Gothic;fontSize=14;whiteSpace=wrap;html=1;rounded=0;align=left;verticalAlign=top;spacing=10;strokeWidth=1;strokeColor=#DDDDDD;fillColor=#FFFFFF;" vertex="1" parent="1">
+          <mxGeometry x="50" y="1195" width="810" height="126" as="geometry" />
+        </mxCell>
+        <mxCell id="summary6" value="&lt;b&gt;6. 한 문장 요약&lt;/b&gt;&lt;br/&gt;AnalysisFrame은 한 번의 분석 결과를 담는 공통 계약이고, Router는 그 frame을 모든 consumer에게 observe시키되 실제 rendering은 active tab의 consumer 하나에만 맡긴다. Consumer는 자신의 graph에 필요한 payload만 골라 renderer에 넘긴다." style="fontFamily=Malgun Gothic;fontSize=14;whiteSpace=wrap;html=1;rounded=0;align=left;verticalAlign=top;spacing=10;strokeWidth=1;strokeColor=#DDDDDD;fillColor=#FFFFFF;" vertex="1" parent="1">
+          <mxGeometry x="910" y="1195" width="820" height="126" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
