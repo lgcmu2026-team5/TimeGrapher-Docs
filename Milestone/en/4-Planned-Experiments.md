@@ -229,6 +229,7 @@ xychart-beta horizontal
 | Health | 37.46 | 4.37 | 41.83 | 50.2% | 1571 |
 
 > Values are rounded from the CSV row where `end_to_end_latency_ms` is maximal for each tab. Segment values come from that same row, not from independent segment-worst columns.
+> Positions looks different because its E2E maximum occurred on CSV data row 46 (file line 47), where both segments were elevated at the same time: 19.33 ms + 28.18 ms = 47.51 ms. Its independent capture worst (37.67 ms) and display worst (35.49 ms) happened on different rows, so they are not used in this E2E-row decomposition.
 
 ### Objective
 

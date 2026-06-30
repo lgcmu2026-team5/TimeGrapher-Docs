@@ -233,6 +233,7 @@ xychart-beta horizontal
 | Health | 37.46 | 4.37 | 41.83 | 50.2% | 1571 |
 
 > 값은 각 탭에서 `end_to_end_latency_ms`가 최댓값인 CSV 행을 2자리로 반올림한 것이다. 구간 값도 독립 segment-worst 컬럼이 아니라 그 동일 행의 값이다.
+> Positions가 다르게 보이는 이유는 E2E 최댓값이 CSV 데이터 46행(파일 47행)에서 발생했고, 그 행에서 두 구간이 동시에 튀었기 때문이다: 19.33 ms + 28.18 ms = 47.51 ms. 독립 capture worst(37.67 ms)와 display worst(35.49 ms)는 서로 다른 행에서 발생했으므로 이 E2E-row 분해에는 쓰지 않는다.
 
 ### 목적
 
