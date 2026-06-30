@@ -1,4 +1,4 @@
-﻿# Risk Assessment
+# Risk Assessment
 
 > 프로젝트를 위협하는 리스크를 영역별로 정리하고, 발생 확률과 영향(High/Medium/Low)으로 등급화했다.
 
@@ -36,7 +36,7 @@ Risk ID | 상태 | 리스크 타이틀 | 구분 | QAS | P | I
 [R-14](#f-프로젝트--프로세스) | 해결 | 3주 안에 12개 기능 + AI 전부 불가능 — 우선순위 실패 시 핵심이 빠진다 | NT | QAS-ALL | M | **H**
 [R-15](#f-프로젝트--프로세스) | 해결 | 베이스라인 코드 이해에 시간이 걸려 착수가 늦어진다 | NT | [QAS-5](2-Architectural-Drivers.md#qas-5--modifiability-extensibility--새-측정필터그래프-추가) | L | M
 [R-16](#f-프로젝트--프로세스) | 해결 | Qt/C++·DSP·RPi 학습곡선으로 구현 품질이 흔들린다 | NT | [QAS-2](2-Architectural-Drivers.md#qas-2--performance-latency--소리-입력에서-화면-표시까지)<br>[QAS-3](2-Architectural-Drivers.md#qas-3) | L | M
-[R-17](#f-프로젝트--프로세스) 🔴 | 진행중 | AI/TinyML 기능 시도 시 on-device 불확실성이 커진다 | T | [QAS-2](2-Architectural-Drivers.md#qas-2--performance-latency--소리-입력에서-화면-표시까지)<br>[QAS-3](2-Architectural-Drivers.md#qas-3) | M | M
+[R-17](#f-프로젝트--프로세스) 🔴 | 해결 | AI/TinyML 기능 시도 시 on-device 불확실성이 커진다 | T | [QAS-2](2-Architectural-Drivers.md#qas-2--performance-latency--소리-입력에서-화면-표시까지)<br>[QAS-3](2-Architectural-Drivers.md#qas-3) | L | M
 [R-18](#f-프로젝트--프로세스) | 수용 | GenAI 생성 코드를 검증 없이 수용하면 그럴듯하지만 틀린 코드가 들어온다 | NT | [QAS-2](2-Architectural-Drivers.md#qas-2--performance-latency--소리-입력에서-화면-표시까지)<br>[QAS-3](2-Architectural-Drivers.md#qas-3)<br>[QAS-4](2-Architectural-Drivers.md#qas-4--consistency--표시-간-값-일치) | M | M
 [R-19](#f-프로젝트--프로세스) | 수용 | 테스트용 RPi5가 한 대뿐이라 실사용 검증 일정이 안 나온다 | NT | [QAS-2](2-Architectural-Drivers.md#qas-2--performance-latency--소리-입력에서-화면-표시까지) | **H** | **H**
 [R-20](#g-기타-또는-카테고리화-되지-않음) | 수용 | 의사소통 — 영어 대화 시 이해관계자 간 정확한 의사전달이 안 될 수 있다 | NT | - | L | L
@@ -208,15 +208,15 @@ Risk ID | 상태 | 리스크 타이틀 | 구분 | QAS | P | I
   - **결과**: 초기 technical experiment(EXP-01~03/05)로 위험 영역(렌더링·실시간·동시성)을 조기 학습하고 AI·페어링으로 학습곡선을 완화. 핵심 난제가 실험 단계에서 검증·구현돼 품질 위험이 소거됨.
 
 - **🔴 R-17 — AI/TinyML 기능을 시도하면 on-device 불확실성이 커진다**
-  - **상태**: 진행중
+  - **상태**: 해결
   - **리스크 근거**: pdf (p.12 AI Feature), [QAS-2](2-Architectural-Drivers.md#qas-2--performance-latency--소리-입력에서-화면-표시까지), [QAS-3](2-Architectural-Drivers.md#qas-3)
-  - **발생 확률 / 영향**: Medium / Medium
+  - **발생 확률 / 영향**: Low / Medium
   - **등급 근거**
-    - P-Medium: 시도 시 on-device AI 불확실성이 실재.
-    - I-Medium: 선택 스코프이며 룰베이스 폴백이 있음.
-  - **완화 방향**: optional 스코프로 분리, 미달 시 룰베이스 폴백
-  - **현 상태**: TinyML 소켓(`IBeatEventGate`)과 룰베이스 폴백(`PllMatchGate`)은 구현돼 주입 가능하나, ONNX/TFLite 모델·추론은 미구현. [EXP-04](4-Planned-Experiments.md#exp-04-온디바이스-tinyml-추론-타당성) 진행중(채택 여부 미결).
-  - **코멘트**: 우선 Windows 진행 후 RPi5에서 동작성 검토 후 반영 결정
+    - P-Low: [EXP-04](4-Planned-Experiments.md#exp-04-온디바이스-tinyml-추론-타당성)에서 ONNX signal-quality 분류기를 직접 측정했다. 43,200 BPH @ 192 kHz 30초 실행에서 audio 대비 처리 비율은 2.598%에서 3.548%(+0.950%p)로만 증가했고, detected BPH는 43,200으로 동일했다. 균형 feature matrix 검증 정확도는 99.65%였다.
+    - I-Medium: 기능은 여전히 optional이며 advisory다. 오분류는 warning 문구에 영향을 줄 수 있지만 rate, beat error, amplitude, event timing은 변경할 수 없다.
+  - **완화 방향**: TinyML을 `ISignalQualityClassifier` Strategy seam 뒤에 두고, Core는 ONNX Runtime 무의존을 유지하며, 모델 로드 실패 시 `HeuristicSignalQualityClassifier`로 폴백한다.
+  - **현 상태**: Conditional Go. ONNX signal-quality 모델은 `TimeGrapher.Inference`에 구현됐고, App 합성 루트가 ONNX-or-heuristic을 선택하며, [EXP-04](4-Planned-Experiments.md#exp-04-온디바이스-tinyml-추론-타당성)에 정확도/성능 근거를 기록했다.
+  - **코멘트**: RPi5 target 배포 전과 feature vector 또는 모델 artifact 변경 시 동일 release benchmark를 재실행한다.
 
 - **R-18 — GenAI 생성 코드를 검증 없이 수용하면 그럴듯하지만 틀린 코드가 들어온다 (특히 DSP/동시성/실시간 영역)**
   - **상태**: 수용

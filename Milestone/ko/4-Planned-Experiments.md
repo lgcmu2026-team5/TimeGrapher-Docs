@@ -295,46 +295,80 @@ xychart-beta horizontal
 
 ### 결과 및 결정 사항
 
-TO-DO: TinyML 기능 채택 여부(채택/조건부 채택/보류)와 채택 조건을 기록한다.
+- **결정 사항**: signal-quality TinyML은 **조건부 채택(Conditional Go)** 한다. ONNX 모델은 `ISignalQualityClassifier` Strategy seam 뒤의 선택 가능한 구현으로 두고, 판정은 `AnalysisFrame.SignalQuality`와 기존 warning overlay/status guidance로만 표시한다. 분류 결과는 측정 event나 rate/amplitude/beat-error 계산을 버리거나 수정하지 않는 **비파괴적 advisory** 정보로 제한한다.
+- **채택 조건**: ① Core는 계속 ONNX Runtime에 의존하지 않는다(`TimeGrapher.Inference` 리프 프로젝트에서만 로드), ② 모델 로드 실패 시 `HeuristicSignalQualityClassifier`로 폴백한다, ③ `SignalQualityFeatures` 계약이나 모델 파일이 바뀌면 trainer 검증·confusion matrix·오프/온 성능 측정을 다시 실행한다, ④ RPi5 배포 전에는 동일 43,200 BPH @ 192 kHz 기준으로 release benchmark를 재실행한다.
+- **성능 판정**: 2026-06-30 Windows 11 개발 PC에서 동일 30초 Realistic 합성 입력(43,200 BPH @ 192 kHz)을 TinyML off/on으로 비교했다. 분석 처리 비율은 **2.598% → 3.548%**로 **+0.950%p** 증가했고, 감지 BPH는 둘 다 **43,200**으로 동일했다. 이는 기존 EXP-03의 RPi5 worst-case 여유(36.46 ms / 83.3 ms)를 침범할 수준의 추가 부하가 아니다.
+- **분류 판정**: trainer 검증은 **micro/macro accuracy 0.997**, ONNX round-trip은 **2,000/2,000 rows 일치(100.00%)**였다. 별도 균형 feature validation confusion matrix는 **1,993/2,000 correct(99.65%)**로 signal-quality warning 용도로 충분하다.
+- **검증 결과**: `TimeGrapher.Inference.Tests` 14개, Core signal-quality 관련 25개, App signal-quality/status 관련 36개 테스트가 통과했다.
+
+**모델·추론 측정 (2026-06-30, Windows 11 x64):**
+
+| 항목 | 측정값 |
+|---|---:|
+| ONNX 모델 크기 | 513,867 B (~502 KiB) |
+| 입력 feature 수 | 8 |
+| 직접 추론 평균 시간 | 144.548 µs/call (100,000 calls) |
+| 직접 추론 할당량 | 1,504 B/call |
+| ONNX vs ML.NET round-trip | 2,000/2,000 일치 |
+
+**TinyML off/on 처리 비용 (동일 30초 입력, 43,200 BPH @ 192 kHz):**
+
+| 모드 | wall 처리시간 | audio 대비 처리비율 | CPU time | 18-core 실시간 환산 CPU | detected BPH | signal-quality frame |
+|---|---:|---:|---:|---:|---:|---:|
+| Off | 779.317 ms | 2.598% | 890.625 ms | 0.165% | 43,200 | 0 |
+| ONNX | 1,064.312 ms | 3.548% | 9,484.375 ms | 1.756% | 43,200 | 1,311 (Good) |
+| Delta | +284.995 ms | +0.950%p | +8,593.750 ms | +1.591%p | 0 | +1,311 |
+
+**균형 feature validation confusion matrix (expected × actual, 2,000 rows):**
+
+| Expected \ Actual | Good | Noisy | WeakSignal | Unstable |
+|---|---:|---:|---:|---:|
+| Good | 498 | 0 | 2 | 0 |
+| Noisy | 1 | 497 | 2 | 0 |
+| WeakSignal | 0 | 0 | 500 | 0 |
+| Unstable | 1 | 0 | 1 | 498 |
 
 ### 목적
 
-TinyML 기반 분류(예: signal-quality, bad-data-rejection)를 RPi 온디바이스로 추가했을 때 실시간성과 측정 신뢰성을 유지할 수 있는지 검증한다.
+TinyML 기반 **signal-quality 분류**(Good / Noisy / WeakSignal / Unstable)를 RPi 온디바이스 경로에 추가했을 때 실시간성과 측정 신뢰성을 유지할 수 있는지 검증한다.
 
 - Q1. TinyML 추론 추가 후에도 end-to-end 지연과 프레임 갱신 안정성이 허용 범위에 있는가?
-- Q2. TinyML 분류가 약신호/잡음 구간의 오표시를 줄이는 데 기여하는가?
+- Q2. TinyML 분류가 약신호/잡음/불안정 구간을 clean reading처럼 오해하게 만드는 위험을 줄이는가?
 
 ### 상태
 
-진행 중
+완료
 
 ### 산출물
 
-- 모델 크기/추론시간/CPU 점유율 비교표
-- TinyML on/off 성능 비교표(지연, 프레임타임, 오표시율, confusion matrix)
-- 채택 여부 결정 메모(Go/Conditional/No-Go)
+- 모델 크기/추론시간/CPU 점유율 비교표 ✓
+- TinyML on/off 성능 비교표(처리 지연, CPU time, signal-quality frame 수) ✓
+- signal-quality confusion matrix ✓
+- 채택 여부 결정 메모(Conditional Go) ✓
 
 ### 필요한 자원
 
-- Raspberry Pi 5 실장비 1대
-- TinyML 추론 런타임(TFLite 또는 동등 도구)
-- 검증용 라벨 데이터셋(Sim/Playback)
-- 성능 로깅 도구(지연, 프레임타임, CPU/RAM)
+- Raspberry Pi 5 target runtime(`linux-arm64`) 및 Windows 11 개발 PC(이번 측정 실행 환경)
+- ONNX Runtime 1.20.1
+- 합성 검증 데이터셋(Sim, `TimeGrapher.SignalQualityTrainer` 생성)
+- 성능 로깅 도구(Stopwatch, process CPU time, 균형 validation matrix)
 - 작업 공수: 1.5 person-days
 
 ### 실험 설명
 
-1. TinyML off/on 상태를 동일 입력으로 실행해 지연, 프레임 안정성, 자원 사용량의 기준선과 변화를 측정한다.
-2. 분류 정확도와 오표시율(약신호/잡음 구간)을 함께 비교해 기능 가치와 성능 비용을 동시에 평가한다.
-3. SAP 기준으로 실시간성 유지 여부를 판정해 채택/조건부 채택/보류와 폴백 경로를 확정한다.
+1. `TimeGrapher.SignalQualityTrainer`로 합성·자기 라벨링 feature 분포를 생성하고, 학습된 ONNX 모델의 validation accuracy와 ONNX round-trip 일치율을 확인한다.
+2. 동일한 30초 Realistic 합성 입력(43,200 BPH @ 192 kHz)을 TinyML off/on으로 실행해 처리 지연, CPU time, detected BPH, signal-quality frame 수를 비교한다.
+3. 균형 feature validation set으로 Good / Noisy / WeakSignal / Unstable confusion matrix를 산출한다.
+4. focused tests로 모델 로드·분류, Core 주입 경로, App warning mapping/status guidance를 검증한다.
+5. SAP 기준으로 실시간성 유지 여부를 판정해 조건부 채택과 폴백 경로를 확정한다.
 
 ### 기간
 
-- TBD
+- 2026-06-30: trainer 검증, TinyML off/on 성능 측정, 관련 테스트 실행
 
 ### 링크 및 참고 자료
 
-- NA
+- 실제 프로젝트 근거: `D:/dotnet1/src/TimeGrapher.Inference/OnnxSignalQualityClassifier.cs`, `D:/dotnet1/tools/TimeGrapher.SignalQualityTrainer/Program.cs`, `D:/dotnet1/tests/TimeGrapher.Inference.Tests/OnnxSignalQualityClassifierTests.cs`
 
 ## EXP-05: 장시간 24h+ 실행 안정성
 

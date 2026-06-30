@@ -1,4 +1,4 @@
-﻿# Risk Assessment
+# Risk Assessment
 
 > Risks threatening the project, grouped by area and rated by probability and impact (High/Medium/Low).
 
@@ -36,7 +36,7 @@ Risk ID | Status | Risk Title | Type | QAS | P | I
 [R-14](#f-project--process) | Resolved | Everything (12 features + AI) can't fit in 3 weeks — prioritization failure drops essentials | NT | QAS-ALL | M | **H**
 [R-15](#f-project--process) | Resolved | Understanding the baseline code takes time and delays the start | NT | [QAS-5](2-Architectural-Drivers.md#qas-5--modifiability-extensibility--adding-a-new-measurementfiltergraph) | L | M
 [R-16](#f-project--process) | Resolved | Qt/C++·DSP·RPi learning curve shakes implementation quality | NT | [QAS-2](2-Architectural-Drivers.md#qas-2--performance-latency--from-sound-input-to-screen-display)<br>[QAS-3](2-Architectural-Drivers.md#qas-3) | L | M
-[R-17](#f-project--process) 🔴 | In progress | Attempting the AI/TinyML feature raises on-device uncertainty | T | [QAS-2](2-Architectural-Drivers.md#qas-2--performance-latency--from-sound-input-to-screen-display)<br>[QAS-3](2-Architectural-Drivers.md#qas-3) | M | M
+[R-17](#f-project--process) 🔴 | Resolved | Attempting the AI/TinyML feature raises on-device uncertainty | T | [QAS-2](2-Architectural-Drivers.md#qas-2--performance-latency--from-sound-input-to-screen-display)<br>[QAS-3](2-Architectural-Drivers.md#qas-3) | L | M
 [R-18](#f-project--process) | Accepted | Accepting GenAI-generated code unverified lets in plausible-but-wrong code | NT | [QAS-2](2-Architectural-Drivers.md#qas-2--performance-latency--from-sound-input-to-screen-display)<br>[QAS-3](2-Architectural-Drivers.md#qas-3)<br>[QAS-4](2-Architectural-Drivers.md#qas-4--consistency--consistent-values-across-displays) | M | M
 [R-19](#f-project--process) | Accepted | Only one test RPi5 — real-use verification doesn't fit the schedule | NT | [QAS-2](2-Architectural-Drivers.md#qas-2--performance-latency--from-sound-input-to-screen-display) | **H** | **H**
 [R-20](#g-other--uncategorized) | Accepted | Communication — meaning may be lost between stakeholders when conversing in English | NT | - | L | L
@@ -208,15 +208,15 @@ Risk ID | Status | Risk Title | Type | QAS | P | I
   - **Result**: Front-loaded learning in the risky areas (rendering, real-time, concurrency) via early technical experiments (EXP-01~03/05), eased by AI and pairing. With the core challenges already validated and implemented, the path by which the learning curve shakes quality is eliminated.
 
 - **🔴 R-17 — Attempting the AI/TinyML feature raises on-device uncertainty**
-  - **Status**: In progress
+  - **Status**: Resolved
   - **Risk evidence**: pdf (p.12 AI Feature), [QAS-2](2-Architectural-Drivers.md#qas-2--performance-latency--from-sound-input-to-screen-display), [QAS-3](2-Architectural-Drivers.md#qas-3)
-  - **Probability / Impact**: Medium / Medium
+  - **Probability / Impact**: Low / Medium
   - **Grading rationale**
-    - P-Medium: on-device AI uncertainty is real if the feature is attempted.
-    - I-Medium: it is optional scope with a rule-based fallback.
-  - **Mitigation**: Separate as optional scope; rule-based fallback if it falls short
-  - **Current status**: The TinyML socket (`IBeatEventGate`) and the rule-based fallback (`PllMatchGate`) are implemented and injectable, but no ONNX/TFLite model or inference exists yet. [EXP-04](4-Planned-Experiments.md#exp-04-on-device-tinyml-inference-feasibility) is in progress (adoption undecided).
-  - **Comment**: Windows first, then assess operability on the RPi5 before adopting
+    - P-Low: [EXP-04](4-Planned-Experiments.md#exp-04-on-device-tinyml-inference-feasibility) measured the ONNX signal-quality classifier directly. The 43,200 BPH @ 192 kHz 30 s run increased processing/audio ratio only from 2.598% to 3.548% (+0.950 pp), with detected BPH unchanged at 43,200; classifier validation was 99.65% on the balanced feature matrix.
+    - I-Medium: the feature is still optional and advisory; a wrong verdict can affect warning text, but it cannot alter rate, beat error, amplitude, or event timing.
+  - **Mitigation**: Keep TinyML behind the `ISignalQualityClassifier` Strategy seam, keep Core free of ONNX Runtime, and fall back to `HeuristicSignalQualityClassifier` if model loading fails.
+  - **Current status**: Conditional Go. The ONNX signal-quality model is implemented in `TimeGrapher.Inference`, the App composition root selects ONNX-or-heuristic, and [EXP-04](4-Planned-Experiments.md#exp-04-on-device-tinyml-inference-feasibility) records the measured accuracy/performance evidence.
+  - **Comment**: Re-run the same release benchmark on the RPi5 target before deployment and whenever the feature vector or model artifact changes.
 
 - **R-18 — Accepting GenAI-generated code unverified lets in plausible-but-wrong code (esp. DSP / concurrency / real-time)**
   - **Status**: Accepted
