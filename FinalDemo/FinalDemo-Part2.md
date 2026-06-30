@@ -84,11 +84,11 @@
 >
 > Our QAS-1 is: computed rate within ±1.0 s/d of a known reference over 1,000 or more consecutive beats on clean input. And we hit that target.
 >
-> We ran two experiments to confirm it. First, a Verify experiment using simulation signals — synthetic fixtures with known timing are checked against detected results, and this runs automatically in CI on every commit. Second, we measured the same watch on both TimeGrapher and the Weishi Timegrapher reference device and compared the numbers. Rate, amplitude, and beat error all agreed within Witschi grade tolerance.
+> To confirm it, we measured the same watch on both TimeGrapher and the Weishi Timegrapher reference device and compared the numbers. Rate, amplitude, and beat error all agreed within Witschi grade tolerance.
 >
-> To get there, [수정 필요] we built four signal-processing blocks into Core.Detection, as shown in Figure 1. **Sub-sample interpolation** — linear for A events, parabolic for C events — gives us timing precision way beyond integer sample resolution at 192 kHz. The **adaptive noise floor** keeps tracking the ambient noise level automatically. **PLL-guided gating** predicts when the next beat should arrive and throws out anything that falls outside that window. And the **regime guard** waits for three consecutive consistent readings before updating — so one stray impulse can't break the lock.
+> To achieve this accuracy, as shown in the block diagram on screen, we added two blocks — highlighted in green — to the existing signal processing pipeline: Spurious beat rejection and A-onset Scale.
 >
-> But adding all those signal-processing blocks means more processing time — and that puts us in direct conflict with our second-most-important QA: Performance."
+> But adding these algorithm blocks means more processing time — and that puts us in direct conflict with our second-most-important QA: Performance."
 
 ---
 
