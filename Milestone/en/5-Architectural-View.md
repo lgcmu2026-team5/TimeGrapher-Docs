@@ -154,21 +154,24 @@ The common state-machine notation follows the legend below.
 
 ---
 
-## 4. TIMEGRAPHER SYSTEM DEPLOYMENT VIEW – Hardware & External Signal Path
+## 4. TIMEGRAPHER DEPLOYMENT / HARDWARE VIEW – Runtime Infrastructure
 
-Shows the external entities and boundaries the system interacts with. The deployment view below covers both the software delivery path and the runtime audio signal path.
+Shows the runtime computing infrastructure for TimeGrapher: hardware nodes, deployed application, external signal path, and connection properties used during measurement.
 
 ![Deployment view diagram](../assets/deployment-view-detailed-en.svg)
 
-**Deploy Targets (Releases):** <https://github.com/lgcmu2026-team5/TimeGrapher-Net/releases>
+**Runtime Infrastructure:**
 
-**Deployment Flow (3 stages):**
+1. **Mechanical Watch** produces the acoustic tick/tock signal.
+2. **Watch Measurement Microphone** captures the signal as mono PCM audio at 48 kHz.
+3. **Raspberry Pi 5** runs `TimeGrapher.App` on Raspberry Pi OS (`arm64`) with the bundled .NET 8 runtime.
+4. **Approved AI Backend / Gemini** is an optional HTTPS path for AI explanation; local measurement does not depend on it.
 
-1. **Develop & Share** — Multiple developers work on their own PCs in C#/.NET and collect the code on the Git server via `git push`.
-2. **Verify & Build** — On each push the Git server runs build/test verification through CI/CD, and on `tag v*` it builds per-target (Windows / Raspberry Pi) deploy Targets.
-3. **Deploy & Install** — The built Targets are distributed and installed onto each connected node over the Git server network (LAN).
+**Key Runtime Properties:**
 
-**External Signal Path:** At runtime, the mechanical watch's acoustic beat signal is captured via microphone/pickup, converted to an electrical signal, and delivered to each node's audio input through USB audio — an input path independent of the software deployment flow above.
+- **Raspberry Pi:** Raspberry Pi 5, ARM64 OS, 16GB RAM.
+- **Microphone:** watch measurement microphone, mono PCM at 48 kHz.
+- **Runtime Environment:** Raspberry Pi OS `arm64`, bundled .NET 8 runtime, Avalonia UI, PipeWire / ALSA tools, `TimeGrapher.App`.
 
 ---
 
