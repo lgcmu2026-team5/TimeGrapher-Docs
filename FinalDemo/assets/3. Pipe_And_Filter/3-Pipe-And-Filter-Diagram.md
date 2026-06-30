@@ -6,6 +6,8 @@ Draw.io source: [3. Pipe_And_Filter.drawio](<3. Pipe_And_Filter.drawio>)
 
 Rendered preview: [3. Pipe_And_Filter.png](<3. Pipe_And_Filter.png>)
 
+Rendered vector preview: [3. Pipe_And_Filter.svg](<3. Pipe_And_Filter.svg>)
+
 ## Slide Purpose
 
 이 다이어그램은 Context Diagram에서 사용한 용어를 기준으로, watch sound가 UI graph로 보이기 전까지 어떤 구조적 흐름을 거치는지 보여주는 Pipe-and-Filter 관점의 architecture view이다.
@@ -26,7 +28,7 @@ Rendered preview: [3. Pipe_And_Filter.png](<3. Pipe_And_Filter.png>)
 
 `AnalysisFrameReady(frame)` 라벨은 그림에 반드시 넣지 않아도 된다. 이 그림은 Pipe-and-Filter 구조를 보여주는 view이고, 이벤트/메서드 호출을 시간 순서로 보여주는 역할은 다음 Sequence Diagram이 담당한다. 발표에서는 구두로 "이 지점에서 `AnalysisFrame` DTO가 UI 쪽으로 넘어가고, 그 이후 renderer까지의 전달은 다음 sequence diagram에서 보여드리겠습니다"라고 연결하면 된다.
 
-다만 PNG preview는 draw.io 파일을 수정한 뒤 다시 export되어야 한다. 발표 자료나 GitHub markdown에서 이미지를 직접 볼 예정이면, 최종 draw.io 기준으로 `3. Pipe_And_Filter.png`를 다시 생성해야 한다.
+현재 PNG preview와 SVG preview는 최신 draw.io 파일 기준으로 갱신되어 있다. 발표 자료나 GitHub markdown에서 이미지를 직접 볼 때는 `3. Pipe_And_Filter.png`를 사용하고, 확대해서 확인하거나 벡터 품질이 필요하면 `3. Pipe_And_Filter.svg`를 참고하면 된다.
 
 ## Notation
 
