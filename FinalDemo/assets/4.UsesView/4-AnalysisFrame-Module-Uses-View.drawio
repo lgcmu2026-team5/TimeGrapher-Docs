@@ -1,75 +1,67 @@
 <mxfile host="app.diagrams.net">
   <diagram name="Module Uses View" id="LMWy49nrIuz81YeBvUFA">
-    <mxGraphModel dx="1127" dy="757" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="1099" dy="1134" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
         <mxCell id="OgCrlXXdDSYpith7exq1-3" parent="1" style="rounded=1;whiteSpace=wrap;html=1;arcSize=8;fillColor=#ffffff;strokeColor=#cbd5e1;strokeWidth=2;fontColor=#1f2937;fontSize=15;align=left;verticalAlign=top;spacing=14;" value="&lt;b&gt;Notation Key&lt;/b&gt;" vertex="1">
-          <mxGeometry height="150" width="264" x="1016" y="1097" as="geometry" />
+          <mxGeometry height="150" width="264" x="751" y="888" as="geometry" />
         </mxCell>
         <mxCell id="OgCrlXXdDSYpith7exq1-4" parent="1" style="rounded=1;whiteSpace=wrap;html=1;arcSize=8;strokeWidth=2;fontSize=16;align=left;verticalAlign=top;spacing=14;" value="" vertex="1">
-          <mxGeometry height="24" width="70" x="1036" y="1145" as="geometry" />
+          <mxGeometry height="24" width="70" x="771" y="936" as="geometry" />
         </mxCell>
         <mxCell id="OgCrlXXdDSYpith7exq1-5" parent="1" style="text;html=1;strokeColor=none;fillColor=none;fontColor=#64748b;fontSize=13;align=left;verticalAlign=middle;whiteSpace=wrap;" value="module" vertex="1">
-          <mxGeometry height="24" width="250" x="1120" y="1143" as="geometry" />
+          <mxGeometry height="24" width="250" x="855" y="934" as="geometry" />
         </mxCell>
         <mxCell id="OgCrlXXdDSYpith7exq1-6" edge="1" parent="1" style="endArrow=open;endFill=0;html=1;rounded=0;strokeWidth=2;dashed=1;dashPattern=8 6;strokeColor=#334155;" value="">
           <mxGeometry height="50" relative="1" width="50" as="geometry">
-            <mxPoint x="1036" y="1222" as="sourcePoint" />
-            <mxPoint x="1106" y="1222" as="targetPoint" />
+            <mxPoint x="771" y="1013" as="sourcePoint" />
+            <mxPoint x="841" y="1013" as="targetPoint" />
           </mxGeometry>
         </mxCell>
         <mxCell id="OgCrlXXdDSYpith7exq1-7" parent="1" style="text;html=1;strokeColor=none;fillColor=none;fontColor=#64748b;fontSize=13;align=left;verticalAlign=middle;whiteSpace=wrap;" value="&amp;lt;&amp;lt;uses&amp;gt;&amp;gt; dependency" vertex="1">
-          <mxGeometry height="24" width="260" x="1120" y="1210" as="geometry" />
+          <mxGeometry height="24" width="260" x="855" y="1001" as="geometry" />
         </mxCell>
         <mxCell id="OgCrlXXdDSYpith7exq1-8" parent="1" style="rounded=1;whiteSpace=wrap;html=1;arcSize=8;fillColor=#f8fbff;strokeColor=#2563eb;strokeWidth=2;fontColor=#2563eb;fontSize=18;align=left;verticalAlign=top;spacing=14;container=1;recursiveResize=0;" value="&lt;b&gt;Core modules&lt;/b&gt;" vertex="1">
-          <mxGeometry height="510" width="505" x="95" y="240" as="geometry" />
+          <mxGeometry height="340" width="335" x="95" y="240" as="geometry" />
         </mxCell>
         <mxCell id="OgCrlXXdDSYpith7exq1-9" parent="1" style="rounded=1;whiteSpace=wrap;html=1;arcSize=8;fillColor=#fbfffd;strokeColor=#059669;strokeWidth=2;fontColor=#059669;fontSize=18;align=left;verticalAlign=top;spacing=14;container=1;recursiveResize=0;" value="&lt;b&gt;App routing modules&lt;/b&gt;" vertex="1">
-          <mxGeometry height="510" width="520" x="655" y="240" as="geometry" />
+          <mxGeometry height="340" width="340" x="500" y="240" as="geometry" />
         </mxCell>
         <mxCell id="OgCrlXXdDSYpith7exq1-10" parent="1" style="rounded=1;whiteSpace=wrap;html=1;arcSize=8;fillColor=#fffdf8;strokeColor=#d97706;strokeWidth=2;fontColor=#d97706;fontSize=18;align=left;verticalAlign=top;spacing=14;container=0;recursiveResize=0;rotation=-90;" value="" vertex="1">
-          <mxGeometry height="857.27" width="309.69" x="378.48" y="591.52" as="geometry" />
+          <mxGeometry height="643.48" width="224.28" x="307.29" y="428.71000000000004" as="geometry" />
         </mxCell>
-        <mxCell id="OgCrlXXdDSYpith7exq1-11" parent="1" style="rounded=1;whiteSpace=wrap;html=1;arcSize=8;fillColor=#eff6ff;strokeColor=#2563eb;strokeWidth=2;fontColor=#1f2937;fontSize=16;align=left;verticalAlign=top;spacing=14;dashed=1;dashPattern=1 2;" value="&lt;b&gt;TimeGrapher.Core.Analysis&lt;/b&gt;&lt;br&gt;&lt;font color=&quot;#64748b&quot;&gt;AnalysisWorker&lt;br&gt;Detector / Metrics&lt;br&gt;FrameProjectors&lt;/font&gt;" vertex="1">
-          <mxGeometry height="142" width="380" x="155" y="335" as="geometry" />
+        <mxCell id="OgCrlXXdDSYpith7exq1-11" parent="1" style="rounded=1;whiteSpace=wrap;html=1;arcSize=8;fillColor=#eff6ff;strokeColor=#2563eb;strokeWidth=2;fontColor=#1f2937;fontSize=16;align=left;verticalAlign=top;spacing=14;dashed=1;dashPattern=1 2;" value="&lt;b&gt;TimeGrapher.Core.Analysis&lt;/b&gt;&lt;br&gt;&lt;font color=&quot;#64748b&quot;&gt;produces AnalysisFrame&amp;nbsp;&lt;/font&gt;&lt;div&gt;&lt;font color=&quot;#64748b&quot;&gt;from detection and metrics&lt;/font&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="95" width="260" x="130" y="295" as="geometry" />
         </mxCell>
-        <mxCell id="OgCrlXXdDSYpith7exq1-12" parent="1" style="rounded=1;whiteSpace=wrap;html=1;arcSize=8;fillColor=#eff6ff;strokeColor=#2563eb;strokeWidth=2;fontColor=#1f2937;fontSize=16;align=left;verticalAlign=top;spacing=14;dashed=1;dashPattern=1 2;" value="&lt;b&gt;TimeGrapher.Core.Shared&lt;/b&gt;&lt;br&gt;&lt;font color=&quot;#64748b&quot;&gt;AnalysisFrame DTO&lt;br&gt;PixelBuffer / snapshots&lt;br&gt;metric and quality payloads&lt;/font&gt;" vertex="1">
-          <mxGeometry height="142" width="380" x="155" y="570" as="geometry" />
+        <mxCell id="OgCrlXXdDSYpith7exq1-12" parent="1" style="rounded=1;whiteSpace=wrap;html=1;arcSize=8;fillColor=#eff6ff;strokeColor=#2563eb;strokeWidth=2;fontColor=#1f2937;fontSize=16;align=left;verticalAlign=top;spacing=14;dashed=1;dashPattern=1 2;" value="&lt;b&gt;TimeGrapher.Core.Shared&lt;/b&gt;&lt;br&gt;&lt;font color=&quot;#64748b&quot;&gt;shared DTO contract&lt;/font&gt;&lt;div&gt;&lt;font color=&quot;#64748b&quot;&gt;frame payloads for Core and UI&lt;/font&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="93" width="260" x="130" y="451" as="geometry" />
         </mxCell>
-        <mxCell id="OgCrlXXdDSYpith7exq1-13" parent="1" style="rounded=1;whiteSpace=wrap;html=1;arcSize=8;fillColor=#ecfdf5;strokeColor=default;strokeWidth=2;fontColor=#1f2937;fontSize=16;align=left;verticalAlign=top;spacing=14;dashed=1;dashPattern=1 1;" value="&lt;b&gt;TimeGrapher.App.Services / Views&lt;/b&gt;&lt;br&gt;&lt;font color=&quot;#64748b&quot;&gt;AnalysisFrameRenderScheduler&lt;br&gt;MainWindow&lt;br&gt;frame-ready UI dispatch&lt;/font&gt;" vertex="1">
-          <mxGeometry height="150" width="380" x="730" y="325" as="geometry" />
+        <mxCell id="OgCrlXXdDSYpith7exq1-13" parent="1" style="rounded=1;whiteSpace=wrap;html=1;arcSize=8;fillColor=#ecfdf5;strokeColor=default;strokeWidth=2;fontColor=#1f2937;fontSize=16;align=left;verticalAlign=top;spacing=14;dashed=1;dashPattern=1 1;" value="&lt;b&gt;TimeGrapher.App.UI Dispatch&lt;/b&gt;&lt;br&gt;&lt;font color=&quot;#64748b&quot;&gt;latest-frame handoff&lt;/font&gt;&lt;div&gt;&lt;font color=&quot;#64748b&quot;&gt;enters UI routing path&lt;/font&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="94" width="280" x="526" y="303" as="geometry" />
         </mxCell>
-        <mxCell id="OgCrlXXdDSYpith7exq1-14" parent="1" style="rounded=1;whiteSpace=wrap;html=1;arcSize=8;fillColor=#ecfdf5;strokeColor=#059669;strokeWidth=2;fontColor=#1f2937;fontSize=16;align=left;verticalAlign=top;spacing=14;dashed=1;dashPattern=1 2;" value="&lt;b&gt;TimeGrapher.App.Tabs&lt;/b&gt;&lt;br&gt;&lt;font color=&quot;#64748b&quot;&gt;AnalysisFrameRouter&lt;br&gt;IAnalysisFrameConsumer contract&lt;br&gt;Route(frame, activeTabId)&lt;br&gt;ObserveFrame / RenderFrame&lt;/font&gt;" vertex="1">
-          <mxGeometry height="170" width="380" x="730" y="545" as="geometry" />
+        <mxCell id="OgCrlXXdDSYpith7exq1-14" parent="1" style="rounded=1;whiteSpace=wrap;html=1;arcSize=8;fillColor=#ecfdf5;strokeColor=#059669;strokeWidth=2;fontColor=#1f2937;fontSize=16;align=left;verticalAlign=top;spacing=14;dashed=1;dashPattern=1 2;" value="&lt;b&gt;TimeGrapher.App.Tabs&lt;/b&gt;&lt;br&gt;&lt;font color=&quot;#64748b&quot;&gt;route by activeTabId&lt;/font&gt;&lt;div&gt;&lt;font color=&quot;#64748b&quot;&gt;defines consumer contract&lt;/font&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="94" width="290" x="521" y="450" as="geometry" />
         </mxCell>
         <mxCell id="OgCrlXXdDSYpith7exq1-17" parent="1" style="rounded=1;whiteSpace=wrap;html=1;arcSize=8;fillColor=#f8fafc;strokeColor=#64748b;strokeWidth=2;fontColor=#1f2937;fontSize=16;align=left;verticalAlign=top;spacing=14;" value="&lt;b&gt;External modules&lt;/b&gt;&lt;div&gt;&lt;font color=&quot;#64748b&quot;&gt;Avalonia UI&lt;br&gt;ScottPlot.Avalonia&lt;/font&gt;&lt;/div&gt;" vertex="1">
-          <mxGeometry height="95" width="305" x="1091" y="964" as="geometry" />
+          <mxGeometry height="95" width="305" x="890" y="748" as="geometry" />
         </mxCell>
-        <mxCell id="OgCrlXXdDSYpith7exq1-18" edge="1" parent="1" source="OgCrlXXdDSYpith7exq1-11" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;dashed=1;dashPattern=8 6;strokeColor=light-dark(#000000, #699eff);strokeWidth=2;endArrow=open;endFill=0;fontSize=12;fontColor=#2563eb;labelBackgroundColor=#ffffff;" target="OgCrlXXdDSYpith7exq1-12" value="&lt;font style=&quot;font-size: 15px; color: rgb(0, 0, 0);&quot;&gt;frame DTO&lt;/font&gt;">
-          <mxGeometry relative="1" as="geometry" />
+        <mxCell id="OgCrlXXdDSYpith7exq1-18" edge="1" parent="1" source="OgCrlXXdDSYpith7exq1-11" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;dashed=1;dashPattern=8 6;strokeColor=light-dark(#000000, #699eff);strokeWidth=2;endArrow=open;endFill=0;fontSize=12;fontColor=#2563eb;labelBackgroundColor=#ffffff;" target="OgCrlXXdDSYpith7exq1-12" value="&lt;font style=&quot;font-size: 15px; color: rgb(0, 0, 0);&quot;&gt;uses AnalysisFrame contract&lt;/font&gt;">
+          <mxGeometry relative="1" x="-0.0108" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
         </mxCell>
-        <mxCell id="OgCrlXXdDSYpith7exq1-19" edge="1" parent="1" source="OgCrlXXdDSYpith7exq1-13" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;dashed=1;dashPattern=8 6;strokeColor=light-dark(#000000, #2aa780);strokeWidth=2;endArrow=open;endFill=0;fontSize=12;fontColor=#059669;labelBackgroundColor=#ffffff;entryX=1;entryY=0.25;entryDx=0;entryDy=0;exitX=0;exitY=0.5;exitDx=0;exitDy=0;" target="OgCrlXXdDSYpith7exq1-12" value="&lt;font style=&quot;font-size: 15px; color: rgb(0, 0, 0);&quot;&gt;AnalysisFrame DTO&lt;/font&gt;">
+        <mxCell id="OgCrlXXdDSYpith7exq1-19" edge="1" parent="1" source="OgCrlXXdDSYpith7exq1-13" style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;dashed=1;dashPattern=8 6;strokeColor=light-dark(#000000, #2aa780);strokeWidth=2;endArrow=open;endFill=0;fontSize=12;fontColor=#059669;labelBackgroundColor=#ffffff;entryX=1;entryY=0.25;entryDx=0;entryDy=0;exitX=0;exitY=0.5;exitDx=0;exitDy=0;" target="OgCrlXXdDSYpith7exq1-12" value="&lt;font style=&quot;font-size: 15px; color: rgb(0, 0, 0);&quot;&gt;uses frame DTO&lt;/font&gt;">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
-              <mxPoint x="630" y="400" />
-              <mxPoint x="630" y="606" />
+              <mxPoint x="460" y="371" />
             </Array>
           </mxGeometry>
         </mxCell>
-        <mxCell id="OgCrlXXdDSYpith7exq1-20" edge="1" parent="1" source="OgCrlXXdDSYpith7exq1-13" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;dashed=1;dashPattern=8 6;strokeColor=light-dark(#000000, #699eff);strokeWidth=2;endArrow=open;endFill=0;fontSize=12;fontColor=#059669;labelBackgroundColor=#ffffff;" target="OgCrlXXdDSYpith7exq1-14" value="&lt;font style=&quot;font-size: 15px; color: rgb(0, 0, 0);&quot;&gt;router&lt;/font&gt;">
+        <mxCell id="OgCrlXXdDSYpith7exq1-20" edge="1" parent="1" source="OgCrlXXdDSYpith7exq1-13" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;dashed=1;dashPattern=8 6;strokeColor=light-dark(#000000, #699eff);strokeWidth=2;endArrow=open;endFill=0;fontSize=12;fontColor=#059669;labelBackgroundColor=#ffffff;" target="OgCrlXXdDSYpith7exq1-14" value="&lt;font style=&quot;font-size: 15px; color: rgb(0, 0, 0);&quot;&gt;uses router&lt;/font&gt;">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="OgCrlXXdDSYpith7exq1-21" edge="1" parent="1" source="OgCrlXXdDSYpith7exq1-14" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;dashed=1;dashPattern=8 6;strokeColor=light-dark(#000000, #2aa780);strokeWidth=2;endArrow=open;endFill=0;fontSize=12;fontColor=#059669;labelBackgroundColor=#ffffff;" target="OgCrlXXdDSYpith7exq1-12" value="&lt;font style=&quot;font-size: 15px; color: rgb(0, 0, 0);&quot;&gt;AnalysisFrame DTO&lt;/font&gt;">
-          <mxGeometry relative="1" x="-0.0194" y="19" as="geometry">
-            <mxPoint as="offset" />
-            <Array as="points">
-              <mxPoint x="710" y="641" />
-              <mxPoint x="710" y="641" />
-            </Array>
-          </mxGeometry>
-        </mxCell>
-        <mxCell id="OgCrlXXdDSYpith7exq1-23" edge="1" parent="1" style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;dashed=1;dashPattern=8 6;strokeColor=light-dark(#000000, #2aa780);strokeWidth=2;endArrow=open;endFill=0;fontSize=12;fontColor=#d97706;labelBackgroundColor=#ffffff;entryX=0.25;entryY=1;entryDx=0;entryDy=0;" target="OgCrlXXdDSYpith7exq1-12" value="&lt;font style=&quot;font-size: 15px; color: rgb(0, 0, 0);&quot;&gt;reads frame payload&lt;/font&gt;">
+        <mxCell id="OgCrlXXdDSYpith7exq1-23" edge="1" parent="1" source="OgCrlXXdDSYpith7exq1-15" style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;dashed=1;dashPattern=8 6;strokeColor=light-dark(#000000, #2aa780);strokeWidth=2;endArrow=open;endFill=0;fontSize=12;fontColor=#d97706;labelBackgroundColor=#ffffff;entryX=0.5;entryY=1;entryDx=0;entryDy=0;exitX=0.5;exitY=0;exitDx=0;exitDy=0;" target="OgCrlXXdDSYpith7exq1-12" value="&lt;font style=&quot;font-size: 15px; color: rgb(0, 0, 0);&quot;&gt;reads frame payload&lt;/font&gt;">
           <mxGeometry relative="1" x="0.2844" as="geometry">
             <mxPoint as="offset" />
             <Array as="points" />
@@ -77,45 +69,53 @@
             <mxPoint x="345.0000000000002" y="713" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="OgCrlXXdDSYpith7exq1-25" edge="1" parent="1" source="OgCrlXXdDSYpith7exq1-16" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;dashed=1;dashPattern=8 6;strokeColor=light-dark(#000000, #2aa780);strokeWidth=2;endArrow=open;endFill=0;fontSize=12;fontColor=#64748b;labelBackgroundColor=#ffffff;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="OgCrlXXdDSYpith7exq1-17" value="&lt;font style=&quot;font-size: 15px; color: rgb(0, 0, 0);&quot;&gt;draw UI/plot&lt;/font&gt;">
+        <mxCell id="OgCrlXXdDSYpith7exq1-25" edge="1" parent="1" source="OgCrlXXdDSYpith7exq1-16" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;dashed=1;dashPattern=8 6;strokeColor=light-dark(#000000, #2aa780);strokeWidth=2;endArrow=open;endFill=0;fontSize=12;fontColor=#64748b;labelBackgroundColor=#ffffff;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="OgCrlXXdDSYpith7exq1-17" value="&lt;font style=&quot;font-size: 15px; color: rgb(0, 0, 0);&quot;&gt;uses UI/plot libraries&lt;/font&gt;">
           <mxGeometry relative="1" x="-0.0512" y="-9" as="geometry">
             <mxPoint as="offset" />
-            <mxPoint x="1095" y="946" as="targetPoint" />
+            <mxPoint x="1095" y="844" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="OgCrlXXdDSYpith7exq1-22" edge="1" parent="1" source="OgCrlXXdDSYpith7exq1-15" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;dashed=1;dashPattern=8 6;strokeColor=light-dark(#000000, #2aa780);strokeWidth=2;endArrow=open;endFill=0;fontSize=12;fontColor=#d97706;labelBackgroundColor=#ffffff;exitX=0.75;exitY=0;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" value="&lt;font style=&quot;font-size: 15px; color: rgb(0, 0, 0);&quot;&gt;consumer contract&lt;/font&gt;">
-          <mxGeometry relative="1" x="-0.1722" as="geometry">
-            <mxPoint as="offset" />
+        <mxCell id="OgCrlXXdDSYpith7exq1-22" edge="1" parent="1" source="OgCrlXXdDSYpith7exq1-15" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;dashed=1;dashPattern=8 6;strokeColor=light-dark(#000000, #2aa780);strokeWidth=2;endArrow=open;endFill=0;fontSize=12;fontColor=#d97706;labelBackgroundColor=#ffffff;exitX=0.75;exitY=0;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" target="OgCrlXXdDSYpith7exq1-14" value="&lt;font style=&quot;font-size: 15px; color: rgb(0, 0, 0);&quot;&gt;implements consumer contract&lt;/font&gt;">
+          <mxGeometry relative="1" x="-0.1913" as="geometry">
+            <mxPoint x="-1" as="offset" />
             <Array as="points">
-              <mxPoint x="391" y="810" />
-              <mxPoint x="920" y="810" />
+              <mxPoint x="325" y="610" />
+              <mxPoint x="666" y="610" />
             </Array>
             <mxPoint x="920" y="715.9999999999998" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="OgCrlXXdDSYpith7exq1-15" parent="1" style="rounded=1;whiteSpace=wrap;html=1;arcSize=8;fillColor=#fffbeb;strokeColor=#d97706;strokeWidth=2;fontColor=#1f2937;fontSize=16;align=left;verticalAlign=top;spacing=14;dashed=1;dashPattern=1 2;" value="&lt;b&gt;TimeGrapher.App.Rendering&lt;/b&gt;&lt;br&gt;&lt;font color=&quot;#64748b&quot;&gt;Concrete FrameConsumers&lt;br&gt;cache/update graph state&lt;br&gt;select active graph payload&lt;/font&gt;" vertex="1">
-          <mxGeometry height="150" width="355" x="125.48000000000002" y="933.22" as="geometry" />
+        <mxCell id="OgCrlXXdDSYpith7exq1-15" parent="1" style="rounded=1;whiteSpace=wrap;html=1;arcSize=8;fillColor=#fffbeb;strokeColor=#d97706;strokeWidth=2;fontColor=#1f2937;fontSize=16;align=left;verticalAlign=top;spacing=14;dashed=1;dashPattern=1 2;" value="&lt;b&gt;TimeGrapher.App.Rendering&lt;/b&gt;&lt;br&gt;&lt;font color=&quot;#64748b&quot;&gt;updates lightweight graph state&lt;/font&gt;&lt;div&gt;&lt;font color=&quot;#64748b&quot;&gt;prepares active graph payload&lt;/font&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="100" width="260" x="130" y="678" as="geometry" />
         </mxCell>
-        <mxCell id="OgCrlXXdDSYpith7exq1-16" parent="1" style="rounded=1;whiteSpace=wrap;html=1;arcSize=8;fillColor=#fffbeb;strokeColor=#d97706;strokeWidth=2;fontColor=#1f2937;fontSize=16;align=left;verticalAlign=top;spacing=14;dashed=1;dashPattern=1 2;" value="&lt;b&gt;Graph-specific renderers&lt;/b&gt;&lt;br&gt;&lt;font color=&quot;#64748b&quot;&gt;RateScope / Spectrogram / Vario&lt;br&gt;BeatNoise / BeatError / ...&lt;br&gt;draw selected graph&lt;/font&gt;" vertex="1">
-          <mxGeometry height="150" width="355" x="540.48" y="936.22" as="geometry" />
+        <mxCell id="OgCrlXXdDSYpith7exq1-16" parent="1" style="rounded=1;whiteSpace=wrap;html=1;arcSize=8;fillColor=#fffbeb;strokeColor=#d97706;strokeWidth=2;fontColor=#1f2937;fontSize=16;align=left;verticalAlign=top;spacing=14;dashed=1;dashPattern=1 2;" value="&lt;b&gt;Graph-specific renderers&lt;/b&gt;&lt;br&gt;&lt;font color=&quot;#64748b&quot;&gt;draw selected graph&lt;/font&gt;&lt;div&gt;&lt;font color=&quot;#64748b&quot;&gt;using Avalonia / ScottPlot&lt;/font&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="100" width="276.52" x="440" y="678" as="geometry" />
         </mxCell>
-        <mxCell id="OgCrlXXdDSYpith7exq1-24" edge="1" parent="1" source="OgCrlXXdDSYpith7exq1-15" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;dashed=1;dashPattern=8 6;strokeColor=light-dark(#000000, #2aa780);strokeWidth=2;endArrow=open;endFill=0;fontSize=12;fontColor=#d97706;labelBackgroundColor=#ffffff;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" target="OgCrlXXdDSYpith7exq1-16" value="&lt;font style=&quot;font-size: 15px; color: rgb(0, 0, 0);&quot;&gt;delegate render&lt;/font&gt;">
+        <mxCell id="OgCrlXXdDSYpith7exq1-24" edge="1" parent="1" source="OgCrlXXdDSYpith7exq1-15" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;dashed=1;dashPattern=8 6;strokeColor=light-dark(#000000, #2aa780);strokeWidth=2;endArrow=open;endFill=0;fontSize=12;fontColor=#d97706;labelBackgroundColor=#ffffff;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" target="OgCrlXXdDSYpith7exq1-16" value="&lt;font style=&quot;font-size: 15px; color: rgb(0, 0, 0);&quot;&gt;delegates selected graph drawing&lt;/font&gt;">
           <mxGeometry relative="1" x="-0.115" y="-1" as="geometry">
             <mxPoint as="offset" />
             <Array as="points">
-              <mxPoint x="303.48" y="1129.52" />
-              <mxPoint x="718.48" y="1129.52" />
+              <mxPoint x="260" y="828" />
+              <mxPoint x="578" y="828" />
             </Array>
           </mxGeometry>
         </mxCell>
         <mxCell id="OgCrlXXdDSYpith7exq1-26" parent="1" style="text;whiteSpace=wrap;html=1;" value="&lt;b style=&quot;forced-color-adjust: none; color: rgb(217, 119, 6); font-family: Helvetica; font-size: 18px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; letter-spacing: normal; orphans: 2; text-align: left; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: normal; background-color: rgb(236, 236, 236); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial;&quot;&gt;Graph display modules&lt;/b&gt;" vertex="1">
-          <mxGeometry height="50" width="230" x="737.48" y="876.52" as="geometry" />
+          <mxGeometry height="50" width="230" x="521" y="636.52" as="geometry" />
         </mxCell>
         <mxCell id="OgCrlXXdDSYpith7exq1-28" parent="1" style="rounded=1;whiteSpace=wrap;html=1;arcSize=8;strokeWidth=2;fontSize=16;align=left;verticalAlign=top;spacing=14;dashed=1;dashPattern=1 2;" value="" vertex="1">
-          <mxGeometry height="24" width="70" x="1036" y="1178" as="geometry" />
+          <mxGeometry height="24" width="70" x="771" y="969" as="geometry" />
         </mxCell>
         <mxCell id="OgCrlXXdDSYpith7exq1-29" parent="1" style="text;html=1;strokeColor=none;fillColor=none;fontColor=#64748b;fontSize=13;align=left;verticalAlign=middle;whiteSpace=wrap;" value="implementation unit" vertex="1">
-          <mxGeometry height="24" width="250" x="1120" y="1176" as="geometry" />
+          <mxGeometry height="24" width="250" x="855" y="967" as="geometry" />
+        </mxCell>
+        <mxCell id="OgCrlXXdDSYpith7exq1-21" edge="1" parent="1" source="OgCrlXXdDSYpith7exq1-14" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;dashed=1;dashPattern=8 6;strokeColor=light-dark(#000000, #2aa780);strokeWidth=2;endArrow=open;endFill=0;fontSize=12;fontColor=#059669;labelBackgroundColor=#ffffff;entryX=1;entryY=0.5;entryDx=0;entryDy=0;exitX=0;exitY=0.5;exitDx=0;exitDy=0;" target="OgCrlXXdDSYpith7exq1-12" value="&lt;font style=&quot;font-size: 15px; color: rgb(0, 0, 0);&quot;&gt;uses frame DTO&lt;/font&gt;">
+          <mxGeometry relative="1" x="0.0054" y="22" as="geometry">
+            <mxPoint as="offset" />
+            <Array as="points" />
+            <mxPoint x="511" y="630" as="sourcePoint" />
+            <mxPoint x="381" y="630" as="targetPoint" />
+          </mxGeometry>
         </mxCell>
       </root>
     </mxGraphModel>
