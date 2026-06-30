@@ -16,7 +16,8 @@
 | 1-2 | Overall Architecture Overview | 0:30 | — |
 | 2-1 | Top Priority QA: Accuracy | 2:30 | **Area 3 (20 pts)** |
 | 2-2 | Second QA: Performance (Latency) | 2:30 | **Area 3·4 (20·25 pts)** |
-| 2-3 | Architecture Solution & Measured Evidence | 3:00 | **Area 4·5 (25·20 pts)** |
+| 2-3 | Architecture Solution | 2:30 | **Area 4·5 (25·20 pts)** |
+| 2-4 | Accuracy & Performance Results | 1:00 | **Area 3·4 (20·25 pts)** |
 | 3 | Extensibility (Modifiability) | 2:30 | **Area 5 (20 pts)** |
 | 4 | AI Feature | 2:00 | **Area 2·7 (25·15 pts)** |
 | 5-1 | Lessons Learned: Agentic Engineering | 2:00 | **Area 7 (15 pts)** |
@@ -83,9 +84,9 @@
 >
 > Our QAS-1 is: computed rate within ±1.0 s/d of a known reference over 1,000 or more consecutive beats on clean input. And we hit that target.
 >
-> We ran two experiments to confirm it. First, a Verify experiment using simulation signals — synthetic fixtures with known timing are checked against detected results, and this runs automatically in CI on every commit. Second, we measured the same watch simultaneously on both TimeGrapher and the Weishi Timegrapher reference device and compared the numbers. Rate, amplitude, and beat error all agreed within Witschi grade tolerance.
+> We ran two experiments to confirm it. First, a Verify experiment using simulation signals — synthetic fixtures with known timing are checked against detected results, and this runs automatically in CI on every commit. Second, we measured the same watch on both TimeGrapher and the Weishi Timegrapher reference device and compared the numbers. Rate, amplitude, and beat error all agreed within Witschi grade tolerance.
 >
-> To get there, we built four signal-processing blocks into Core.Detection, as shown in Figure 1. **Sub-sample interpolation** — linear for A events, parabolic for C events — gives us timing precision way beyond integer sample resolution at 192 kHz. The **adaptive noise floor** keeps tracking the ambient noise level automatically. **PLL-guided gating** predicts when the next beat should arrive and throws out anything that falls outside that window. And the **regime guard** waits for three consecutive consistent readings before updating — so one stray impulse can't break the lock.
+> To get there, [수정 필요] we built four signal-processing blocks into Core.Detection, as shown in Figure 1. **Sub-sample interpolation** — linear for A events, parabolic for C events — gives us timing precision way beyond integer sample resolution at 192 kHz. The **adaptive noise floor** keeps tracking the ambient noise level automatically. **PLL-guided gating** predicts when the next beat should arrive and throws out anything that falls outside that window. And the **regime guard** waits for three consecutive consistent readings before updating — so one stray impulse can't break the lock.
 >
 > But adding all those signal-processing blocks means more processing time — and that puts us in direct conflict with our second-most-important QA: Performance."
 
@@ -182,6 +183,15 @@ xychart-beta horizontal
 >
 > The third is the **single AnalysisFrame fan-out**. As shown in Figure 3, the final analysis result is packaged into one AnalysisFrame that all 13 displays share. No graph needs to do its own computation, so there's no CPU waste — and since all displays are reading the same data, inconsistency is structurally impossible.
 >
+"
+
+---
+
+## Slide 2-4. Accuracy & Performance Results (1:00)
+
+**[Presenter]**
+> "Accuracy result: TBD
+>
 > We measured the execution time for each of the 13 tabs. The slowest was Filter Scope at 36.46 ms, the fastest was Escapement at 15.09 ms. All 13 tabs came in under the 83.3 ms budget, Drop 0, Miss 0."
 
 ---
@@ -206,9 +216,7 @@ xychart-beta horizontal
 >
 > Two structural decisions made this work. The first is **Core zero dependency**. Core has no dependency on UI or OS whatsoever. This solved a performance problem in the original codebase where the GUI layer was handling audio signal processing directly, and it completely isolates the analysis engine from any UI change. The second is the **single AnalysisFrame fan-out**. Since every display consumes the same AnalysisFrame, adding a new display never requires modifying the analysis logic.
 >
-> In practice, adding a new graph touches exactly four places: one property on AnalysisFrame, one assignment in AnalysisWorker, one new renderer file in the App.Rendering folder, and one registration line in InfoTabCatalog. The routing infrastructure picks it up automatically — Detection, Metrics, and Imaging don't get touched at all. Every one of the 13 tabs was built exactly this way.
->
-> Future requirements work the same way. Supporting a new OS just means adding one Platform assembly — Core and App stay untouched. A new input source means one IAudioInputWorker implementation. And CI checks Core's zero-dependency rule on every single commit, so if that boundary ever breaks, the build fails."
+> In practice, adding a new graph touches exactly [수정 필요] four places: one property on AnalysisFrame, one assignment in AnalysisWorker, one new renderer file in the App.Rendering folder, and one registration line in InfoTabCatalog. The routing infrastructure picks it up automatically — Detection, Metrics, and Imaging don't get touched at all. Every one of the 13 tabs was built exactly this way."
 
 ---
 
@@ -240,7 +248,7 @@ xychart-beta horizontal
 >
 > **AGENTS.md** defines our project rules, commit format, and architectural principles. Every AI session starts from this context, so AI naturally follows our conventions instead of making things up. **DocRules.md**, taken from course materials, is our document quality standard. AI drafts a document, we review it against this standard, and we feed the review back to AI to improve it — a loop.
 >
-> Thanks to this structure, humans always made the final calls, and AI operated as one part of our defined process — not a wild card.
+> Thanks to this structure, humans always made the final calls, and AI operated as one part of our defined process.
 >
 > We applied AI across five areas. First, **base code conversion** — porting Qt/C++ to C# idioms, with correctness confirmed by Verify and tests. Second, **code implementation** — repetitive work like renderers, test fixtures, and buffer pool was AI-drafted and human-reviewed. Third, **CI/CD pipeline** design and automation. Fourth, **933 test generation**. Fifth, **document translation** — architecture documents and presentation scripts AI-drafted in both Korean and English, then reviewed and corrected against DocRules.md."
 
@@ -252,11 +260,11 @@ xychart-beta horizontal
 **[Presenter]**
 > "Here's what we took away from the experience.
 >
-> The biggest **strength** was productivity. AI let a small team port a large real-time app, add an on-device classifier, and automate the build/test/release workflow — all at once. Because we ran it through AGENTS.md and DocRules.md, it was a consistent team process, not individual improvised prompting.
+> The biggest strength was productivity. AI let a small team port a large real-time app, add an on-device classifier, and automate the build/test/release workflow — all at once. Because we ran it through AGENTS.md and DocRules.md, it was a consistent team process, not individual improvised prompting.
 >
-> But there were clear **limits** too. Every output needed careful review. AI doesn't fully understand project context and can make suggestions that sound right but aren't — you always have to test. It slips up on local environment and branch state, and deep design intent still needs a human to fill in.
+> But there were clear limits too. Every output needed careful review. AI doesn't fully understand project context and can make suggestions that sound right but aren't — you always have to test. It slips up on local environment and branch state, and deep design intent still needs a human to fill in.
 >
-> Our takeaway: **we treated AI as a fast collaborator that needs to be checked — not as an authority.**"
+> Our takeaway: we treated AI as a fast collaborator that needs to be checked — not as an authority."
 
 ---
 
