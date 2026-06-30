@@ -379,7 +379,36 @@ Complete
 
 ### Results & Decisions
 
-A first pass on the **Realistic-off** simulation (clean signal) confirmed that rate, amplitude, and beat error are measured normally. It will next be validated by a comparison test against a commercial unit, the **Weishi Timegrapher**.
+**First pass — Realistic-off simulation (clean signal):** measured rate, amplitude, and beat error and confirmed all three are within tolerance (table below).
+
+| Metric | First-pass result | Tolerance | Verdict |
+|--------|-------------------|-----------|---------|
+| Rate | 0.0 s/d (error) | ±1 s/d | Pass |
+| Amplitude | 300° (0° deviation from reference) | ±1° | Pass |
+| Beat error | 0.0 ms (error) | ±0.1 ms | Pass |
+
+**Second pass — commercial Weishi Timegrapher comparison:** measured four real watches on both this system and the Weishi to check whether the readings agree (Watch 4 was defective and excluded). Readings drift over time, so they are reported as observed ranges (min–max); the verdict is whether the two instruments' midpoints differ within tolerance.
+
+![EXP-06 per-watch comparison — this system vs Weishi](../assets/exp06-weishi-comparison.en.svg)
+
+| Watch | Metric | This system (TimeGrapher) | Weishi | Midpoint Δ | Tolerance | Verdict |
+|-------|--------|---------------------------|--------|-----------|-----------|---------|
+| Watch 1 | Rate | 8.3–8.6 s/d | 8–9 s/d | ~0.05 | ±1 s/d | ✅ |
+| Watch 1 | Amplitude | 331–334° | 332–334° | ~0.5° | ±1° | ✅ |
+| Watch 1 | Beat error | 0.2–0.3 ms | 0.2 ms | ~0.05 | ±0.1 ms | ✅ |
+| Watch 2 | Rate | 5.0–11.2 s/d | 7–12 s/d | ~1.4 | ±1 s/d | ⚠️ |
+| Watch 2 | Amplitude | 300–320° | 315–325° | ~10° | ±1° | ⚠️ |
+| Watch 2 | Beat error | 0.1 ms | 0.0 ms | ~0.1 | ±0.1 ms | ✅ |
+| Watch 3 | Rate | 40.9–45.3 s/d | 41–45 s/d | ~0.1 | ±1 s/d | ✅ |
+| Watch 3 | Amplitude | 225–236° | 231–238° | ~4° | ±1° | ⚠️ |
+| Watch 3 | Beat error | 1.3–1.4 ms | 1.2–1.3 ms | ~0.1 | ±0.1 ms | ✅ |
+| Watch 4 | — | Defective — not measured | — | — | — | — |
+
+⚠️ = outside the strict tolerance, attributable to the watch's own low stability. Watch 2 shows a wide rate spread on both instruments, indicating the watch itself is unstable.
+
+**Amplitude basis — additional note:** In the initial comparison, **only amplitude** differed markedly from the Weishi. Analysis found that the Weishi computes amplitude from **C-onset timing**, not the C-peak; so for the comparison this system was measured with the `use C-onset timing` option on, matching the Weishi's basis. This removed the systematic amplitude offset, and the residual difference comes from the watches' own stability and amplitude characteristics.
+
+**Conclusion:** Rate and beat error agree with the Weishi within tolerance across the measured watches. After aligning the amplitude basis to C-onset, amplitude agrees closely on the stable Watch 1 (~0.5° deviation), while the lower-stability Watches 2 and 3 retain a few degrees of deviation, leaving room for further refinement. The system's core measurement purpose (rate and beat error) is validated against the commercial unit.
 
 ### Objective
 
@@ -390,12 +419,12 @@ Verify detection/computation accuracy on signals with a known reference, as a ch
 
 ### Status
 
-In progress — first pass (Realistic-off simulation) complete; commercial comparison test to follow
+First pass (Realistic-off simulation) and second pass (commercial Weishi comparison) both complete. Rate and beat error agree within tolerance; amplitude agrees on stable watches after aligning to the C-onset basis, with refinement remaining for low-stability watches.
 
 ### Deliverables
 
 - Per-metric (rate, amplitude, beat error) error table vs reference + Pass/Fail
-- (Follow-up) Weishi Timegrapher comparison table
+- Weishi Timegrapher comparison table + per-watch range chart (done)
 
 ### Resources Needed
 

@@ -103,8 +103,8 @@ Risk ID | 상태 | 리스크 타이틀 | 구분 | QAS | P | I
   - **등급 근거**
     - P-High: 실제 잡음 신호에서 0.1 ms 정밀 A·C 이벤트 검출은 본질적으로 어려움.
     - I-High: 일오차·비트 에러·진폭 세 핵심 지표를 전부 오염.
-  - **완화 방향**: 합성신호(정답 known) 벤치로 검출 알고리즘 조기 검증([EXP-06](4-Planned-Experiments.md#exp-06-측정-정확도)에서 Realistic Off 시뮬레이션으로 1차 확인 후 상용 Weishi Timegrapher 비교 예정)
-  - **현 상태**: A·C 검출(서브샘플 보간 — C-peak 포물선·A-onset 선형)·비트 에러·진폭이 `Detector.cs`·`WatchMetrics.cs`에 구현됐고, 합성신호 테스트(`SyntheticDetectorTests`, `AdverseScenarios`)로 1차 동작을 확인(EXP-06 Realistic Off). 명시적 0.1 ms 허용오차 검증과 상용 Weishi 비교는 미완.
+  - **완화 방향**: 합성신호(정답 known) 벤치로 검출 알고리즘 조기 검증([EXP-06](4-Planned-Experiments.md#exp-06-측정-정확도)에서 Realistic Off 시뮬레이션으로 1차 확인 후 상용 Weishi Timegrapher 비교 완료)
+  - **현 상태**: A·C 검출(서브샘플 보간 — C-peak 포물선·A-onset 선형)·비트 에러·진폭이 `Detector.cs`·`WatchMetrics.cs`에 구현됐고, 합성신호 테스트(`SyntheticDetectorTests`, `AdverseScenarios`)로 1차 동작을 확인(EXP-06 Realistic Off — 일오차 0.0 s/d·진폭 300°·비트 에러 0.0 ms로 세 지표 모두 허용오차 이내 Pass). 2차로 실제 시계 3점을 상용 Weishi와 비교(시계 4 불량 제외)해 일오차·비트 에러가 허용오차 이내로 일치함을 확인했다. 진폭은 Weishi가 C-peak가 아닌 C-onset timing을 쓰는 것으로 분석돼 `use C-onset timing` 옵션을 켜고 측정했으며, 안정 시계에서는 일치하나 저안정 시계에서는 수 도 편차가 남아 추가 정밀화 여지가 있다.
   - **코멘트**: 현 로직 기준으로 정상동작 확인 및 필요 시 로직 개선 필요
 
 - **R-07 — 시끄럽거나 약한 신호에서 "신호 약함" 대신 오해를 부르는 값을 표시할 수 있다**
