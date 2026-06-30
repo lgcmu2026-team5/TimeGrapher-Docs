@@ -1,6 +1,6 @@
 <mxfile host="app.diagrams.net" agent="Codex">
   <diagram id="context-terms-paf" name="Worker-Level Partial Pipe-and-Filter">
-    <mxGraphModel dx="1577" dy="991" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1580" pageHeight="790" math="0" shadow="0">
+    <mxGraphModel dx="1183" dy="743" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1580" pageHeight="790" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -19,26 +19,26 @@
         <mxCell id="analysis-frame" parent="1" style="rounded=1;whiteSpace=wrap;html=1;arcSize=18;fontFamily=Arial;fontSize=12;fontColor=#52616f;strokeColor=#d29a21;fillColor=#fff8e8;strokeWidth=2;align=center;verticalAlign=middle;" value="AnalysisFrame&lt;div&gt;DTO&lt;/div&gt;" vertex="1">
           <mxGeometry height="52" width="145" x="806" y="317" as="geometry" />
         </mxCell>
-        <mxCell id="legend" parent="1" style="rounded=1;whiteSpace=wrap;html=1;arcSize=8;fontFamily=Arial;fontSize=17;fontColor=#1f2933;strokeColor=#c5ccd6;fillColor=#ffffff;strokeWidth=1.5;align=left;verticalAlign=top;spacing=24;" value="&lt;b&gt;Legend&lt;/b&gt;" vertex="1">
-          <mxGeometry height="150" width="710" x="282" y="450" as="geometry" />
+        <mxCell id="legend" parent="1" style="rounded=1;whiteSpace=wrap;html=1;arcSize=8;fontFamily=Arial;fontSize=17;fontColor=#1f2933;strokeColor=#c5ccd6;fillColor=#ffffff;strokeWidth=1.5;align=left;verticalAlign=top;spacing=24;" value="" vertex="1">
+          <mxGeometry height="150" width="638" x="282" y="450" as="geometry" />
         </mxCell>
-        <mxCell id="legend-filter-label" parent="1" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontFamily=Arial;fontSize=12;fontColor=#52616f;" value="Component" vertex="1">
+        <mxCell id="legend-filter-label" parent="1" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontFamily=Arial;fontSize=12;fontColor=#52616f;" value="Filter" vertex="1">
           <mxGeometry height="24" width="125" x="367" y="503" as="geometry" />
         </mxCell>
         <mxCell id="legend-pipe-label" parent="1" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontFamily=Arial;fontSize=12;fontColor=#52616f;" value="Shared Data / Buffer" vertex="1">
           <mxGeometry height="24" width="260" x="366" y="551" as="geometry" />
         </mxCell>
         <mxCell id="legend-stage-label" parent="1" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontFamily=Arial;fontSize=12;fontColor=#52616f;" value="Internal synchronous stage" vertex="1">
-          <mxGeometry height="24" width="190" x="613" y="506" as="geometry" />
+          <mxGeometry height="24" width="190" x="563" y="506" as="geometry" />
         </mxCell>
         <mxCell id="legend-frame" parent="1" style="rounded=1;whiteSpace=wrap;html=1;arcSize=12;strokeColor=#d29a21;fillColor=#fff8e8;strokeWidth=2;" value="" vertex="1">
-          <mxGeometry height="26" width="42" x="789" y="502" as="geometry" />
+          <mxGeometry height="26" width="42" x="732" y="502" as="geometry" />
         </mxCell>
         <mxCell id="legend-frame-label" parent="1" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontFamily=Arial;fontSize=12;fontColor=#52616f;" value="Boundary I/O or DTO" vertex="1">
-          <mxGeometry height="24" width="130" x="844" y="503" as="geometry" />
+          <mxGeometry height="24" width="130" x="787" y="503" as="geometry" />
         </mxCell>
         <mxCell id="legend-handoff-label" parent="1" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontFamily=Arial;fontSize=12;fontColor=#52616f;" value="Data handoff" vertex="1">
-          <mxGeometry height="24" width="120" x="627" y="551" as="geometry" />
+          <mxGeometry height="24" width="120" x="577" y="551" as="geometry" />
         </mxCell>
         <mxCell id="e-audio-shared" edge="1" parent="1" style="endArrow=block;html=1;rounded=0;strokeColor=#000000;strokeWidth=2.5;fontFamily=Arial;fontSize=11;fontColor=#52616f;labelBackgroundColor=#ffffff;exitX=1;exitY=0.5;exitDx=0;exitDy=0;" value="">
           <mxGeometry relative="1" as="geometry">
@@ -97,17 +97,17 @@
         </mxCell>
         <mxCell id="e-legend-handoff" edge="1" parent="1" style="endArrow=block;html=1;rounded=0;strokeColor=light-dark(#000000, #8993a0);strokeWidth=2.4;" value="">
           <mxGeometry relative="1" as="geometry">
-            <mxPoint x="552" y="563" as="sourcePoint" />
-            <mxPoint x="612" y="563" as="targetPoint" />
+            <mxPoint x="502" y="563" as="sourcePoint" />
+            <mxPoint x="562" y="563" as="targetPoint" />
           </mxGeometry>
         </mxCell>
         <mxCell id="4QGVIGkRyJmGPQDW8aRE-3" parent="1" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontFamily=Arial;fontSize=12;fontColor=#52616f;" value="Internal sync link" vertex="1">
-          <mxGeometry height="24" width="120" x="864" y="551" as="geometry" />
+          <mxGeometry height="24" width="120" x="807" y="551" as="geometry" />
         </mxCell>
         <mxCell id="4QGVIGkRyJmGPQDW8aRE-4" edge="1" parent="1" style="endArrow=open;html=1;rounded=0;strokeColor=light-dark(#000000, #8993a0);strokeWidth=2.4;endFill=0;" value="">
           <mxGeometry relative="1" as="geometry">
-            <mxPoint x="789" y="563" as="sourcePoint" />
-            <mxPoint x="849" y="563" as="targetPoint" />
+            <mxPoint x="732" y="563" as="sourcePoint" />
+            <mxPoint x="792" y="563" as="targetPoint" />
           </mxGeometry>
         </mxCell>
         <mxCell id="4QGVIGkRyJmGPQDW8aRE-151" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#d6e6f7;strokeColor=none;" value="" vertex="1">
@@ -198,7 +198,7 @@
           <mxGeometry height="30" width="38.5" x="312" y="503" as="geometry" />
         </mxCell>
         <mxCell id="4QGVIGkRyJmGPQDW8aRE-198" parent="1" style="ellipse;whiteSpace=wrap;html=1;strokeColor=#3b7f3f;fillColor=#dff2df;strokeWidth=2.2;" value="" vertex="1">
-          <mxGeometry height="26" width="38" x="560" y="505" as="geometry" />
+          <mxGeometry height="26" width="38" x="510" y="505" as="geometry" />
         </mxCell>
         <mxCell id="UUgV5B2Pv_KqCw-p46Zr-1" edge="1" parent="1" style="edgeStyle=none;rounded=0;html=1;endArrow=none;startArrow=none;strokeColor=#2f6db5;strokeWidth=1.8;entryX=0.952;entryY=0.927;entryDx=0;entryDy=0;entryPerimeter=0;" target="4QGVIGkRyJmGPQDW8aRE-165" value="">
           <mxGeometry relative="1" as="geometry">
@@ -220,6 +220,9 @@
             <mxPoint x="560" y="283" as="sourcePoint" />
             <mxPoint x="816" y="190" as="targetPoint" />
           </mxGeometry>
+        </mxCell>
+        <mxCell id="ghoCWqfO1J1q2VyTPoGe-1" parent="1" style="text;whiteSpace=wrap;html=1;" value="&lt;b style=&quot;forced-color-adjust: none; color: rgb(31, 41, 51); font-family: Arial; font-size: 17px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; letter-spacing: normal; orphans: 2; text-align: left; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: normal; background-color: rgb(236, 236, 236); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial;&quot;&gt;Notation&lt;/b&gt;" vertex="1">
+          <mxGeometry height="40" width="90" x="290" y="450" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>

@@ -6,7 +6,6 @@ Draw.io source: [3. Pipe_And_Filter.drawio](<3. Pipe_And_Filter.drawio>)
 
 Rendered preview: [3. Pipe_And_Filter.drawio.png](<3. Pipe_And_Filter.drawio.png>)
 
-Rendered vector preview: [3. Pipe_And_Filter.svg](<3. Pipe_And_Filter.svg>)
 
 ## Slide Purpose
 
