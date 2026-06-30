@@ -12,7 +12,8 @@
 | # | Slide | Time | Rubric |
 |---|---|---|---|
 | Title | TimeGrapher & Team Introduction | 0:30 | — |
-| 1 | UI & Architecture Overview | 1:00 | — |
+| 1-1 | UI Screenshot | 0:30 | — |
+| 1-2 | Overall Architecture Overview | 0:30 | — |
 | 2-1 | Top Priority QA: Accuracy | 2:30 | **Area 3 (20 pts)** |
 | 2-2 | Second QA: Performance (Latency) | 2:30 | **Area 3·4 (20·25 pts)** |
 | 2-3 | Architecture Solution & Measured Evidence | 3:00 | **Area 4·5 (25·20 pts)** |
@@ -36,20 +37,27 @@
 
 ---
 
-## Slide 1. UI & Architecture Overview (1:00)
+## Slide 1-1. UI Screenshot (0:30)
 
-**[Note]** Left side: TimeGrapher UI screenshot. Right side: overall architecture overview diagram (Figure 0).
+**[Note]** TimeGrapher UI screenshot slide.
 
 **[Slide Visual — TimeGrapher UI Screenshot]**
+
+**[Presenter]**
+> "Do you remember the impressive demo from this morning? Our TimeGrapher provides users with intuitive diagnostic information — just like the UI captures you see on screen."
+
+---
+
+## Slide 1-2. Overall Architecture Overview (0:30)
+
+**[Note]** Left: overall Overview Architecture diagram (Figure 0). Right: deployment diagram.
 
 **[Slide Visual — Figure 0: Overall Architecture Overview]**
 
 ![Overall Architecture Overview](assets/overview-architecture.svg)
 
 **[Presenter]**
-> "As you saw in this morning's demo, our TimeGrapher has three input modes — live, playback, and simulation — and provides all 13 real-time measurement displays.
->
-> On the right is the overall architecture overview. Audio input flows through Detection and Analysis and is delivered to the UI, with each function running on an independent thread. Let me explain how this structure achieves our quality targets."
+> "The diagram on the left shows the overall Overview Architecture — how the system is structured and how data flows through it. The diagram on the right gives a brief look at how our system is deployed. Let me now explain how this structure helps us achieve our quality targets."
 
 ---
 
@@ -71,15 +79,15 @@
 | 3 | **Test suite** | Core + App + Platform all layers | 0 failures | 933 passing |
 
 **[Presenter]**
-> "Early in the project, through discussion with Dan and Steve, we settled on **Accuracy** as the top priority quality attribute. A timegrapher's only job is to produce correct readings; if the rate is wrong, everything else is meaningless.
+> "When we kicked off the project, we talked with Dan and Steve and decided that **Accuracy** was our number one quality attribute. A timegrapher's only job is to give you correct readings — if the rate is wrong, nothing else matters.
 >
-> Our QAS-1 is: **computed rate within ±1.0 s/d of a known reference over ≥1,000 consecutive beats on clean input.**
+> Our QAS-1 is: computed rate within ±1.0 s/d of a known reference over 1,000 or more consecutive beats on clean input. And we hit that target.
 >
-> We achieved this target. To verify it, we ran two experiments. First, a Verify experiment using simulation signals — synthetic fixtures with known timing references are checked against detected results in CI on every change, automatically. Second, we measured the same watch simultaneously on both TimeGrapher and the Weishi Timegrapher reference device and compared the outputs. Rate, amplitude, and beat error all agreed within Witschi grade tolerance.
+> We ran two experiments to confirm it. First, a Verify experiment using simulation signals — synthetic fixtures with known timing are checked against detected results, and this runs automatically in CI on every commit. Second, we measured the same watch simultaneously on both TimeGrapher and the Weishi Timegrapher reference device and compared the numbers. Rate, amplitude, and beat error all agreed within Witschi grade tolerance.
 >
-> To achieve this accuracy, we implemented four signal-processing blocks in Core.Detection, as shown in Figure 1. **Sub-sample interpolation** — linear for A events, parabolic for C events — produces timing precision far beyond integer sample resolution at 192 kHz. The **adaptive noise floor** continuously tracks ambient noise levels. **PLL-guided gating** predicts when the next beat should arrive and rejects anything outside that window as noise. The **regime guard** waits for three consecutive consistent readings before updating — so a single impulse cannot break the lock.
+> To get there, we built four signal-processing blocks into Core.Detection, as shown in Figure 1. **Sub-sample interpolation** — linear for A events, parabolic for C events — gives us timing precision way beyond integer sample resolution at 192 kHz. The **adaptive noise floor** keeps tracking the ambient noise level automatically. **PLL-guided gating** predicts when the next beat should arrive and throws out anything that falls outside that window. And the **regime guard** waits for three consecutive consistent readings before updating — so one stray impulse can't break the lock.
 >
-> However, adding these signal-processing blocks means increased processing time — and this conflicts with our second-most-important QA: Performance."
+> But adding all those signal-processing blocks means more processing time — and that puts us in direct conflict with our second-most-important QA: Performance."
 
 ---
 
@@ -100,13 +108,13 @@
 | **2026-06-21** | **43200 BPH @ 192 kHz** | **Simulation** | **36.46 ms** | **83.333 ms** | **43.8%** | **0** | **0** | **Pass** |
 
 **[Presenter]**
-> "Our second-most-important QAS-2 is: **worst-case E2E latency within one beat period — 83.3 ms at 43200 BPH.**
+> "Our QAS-2 is: worst-case E2E latency within one beat period — 83.3 ms at 43200 BPH.
 >
-> Here is how we arrived at 83.3 ms: at 43200 BPH — the highest rate we support — one beat occurs every 3,600 seconds ÷ 43,200 = 0.0833 seconds = 83.3 ms. If E2E latency exceeds one beat period, the display lags more than one beat behind the live signal, which makes real-time monitoring meaningless. We therefore defined 83.3 ms — the worst case for our highest supported BPH — as our latency budget.
+> Where does 83.3 ms come from? At 43200 BPH — the fastest rate we support — one beat takes exactly 83.3 ms. If the display falls more than one beat behind, real-time monitoring loses its meaning. So we set that value as our latency budget.
 >
-> We achieved this target as well. To verify it, we measured capture-to-processing, processing-to-display, and total capture-to-display E2E latency for each graph on the Pi 5. Across every run: Drop 0, Miss 0, Result Pass — with a worst-case budget usage of only 43.8%.
+> We hit this target too. On the Pi 5, we measured capture-to-processing, processing-to-display, and total E2E latency for every graph. Every run came back Drop 0, Miss 0, Result Pass — and the worst-case budget usage was only 43.8%.
 >
-> So Accuracy and Performance were in a tradeoff relationship. The signal-processing blocks needed for accuracy increase latency, while reducing latency means simplifying processing. We needed an architecture that could satisfy both simultaneously."
+> So here's the situation: Accuracy and Performance were pulling against each other. More signal-processing blocks for accuracy means more processing time, which means higher latency. We needed an architecture that could satisfy both at the same time."
 
 ---
 
@@ -166,15 +174,15 @@ xychart-beta horizontal
 ```
 
 **[Presenter]**
-> "Our architecture solution for satisfying both Accuracy and Performance simultaneously has three parts.
+> "Our architecture solution for satisfying both Accuracy and Performance comes in three parts.
 >
-> First, **thread separation**. As shown in Figure 0, Audio Capture, Detection, Analysis, and UI Rendering each run on independent threads. The Detection worker runs at the highest thread priority, so UI delays cannot interfere with signal processing.
+> The first is **thread separation**. As shown in Figure 0, Audio Capture, Detection, Analysis, and UI Rendering each run on their own independent thread. The Detection worker runs at the highest thread priority, so even if the UI slows down, it has zero effect on signal processing.
 >
-> Second, **pipe-and-filter pattern**. As shown in Figure 2, the signal flows from audio capture through detection and analysis as a concurrent pipeline. Each stage runs independently so processing delays do not accumulate. The key decision was to keep Detection and Metrics as a single synchronous hot path — fully separating these two stages would add queuing overhead that eats into the 83.3 ms budget. That is the deliberate tradeoff between Modifiability and Latency.
+> The second is the **pipe-and-filter pattern**. As shown in Figure 2, the signal flows from audio capture through detection and analysis as a concurrent pipeline — each stage runs independently. One important decision here: we kept Detection and Metrics as a single synchronous hot path on purpose. Fully separating those two would introduce queuing overhead that would eat through the 83.3 ms budget. That was a deliberate tradeoff between Modifiability and Latency.
 >
-> Third, **single AnalysisFrame fan-out**. As shown in Figure 3, the final analysis result is packaged into one AnalysisFrame that all 13 displays share. No graph needs to perform its own computation, so there is no CPU duplication — and all displays using the same data makes inconsistency structurally impossible.
+> The third is the **single AnalysisFrame fan-out**. As shown in Figure 3, the final analysis result is packaged into one AnalysisFrame that all 13 displays share. No graph needs to do its own computation, so there's no CPU waste — and since all displays are reading the same data, inconsistency is structurally impossible.
 >
-> To confirm we met the target, we measured execution time for each of the 13 tabs. Filter Scope is the slowest at 36.46 ms; Escapement is the fastest at 15.09 ms. All 13 tabs are within the 83.3 ms budget — Drop 0, Miss 0 across all runs."
+> We measured the execution time for each of the 13 tabs. The slowest was Filter Scope at 36.46 ms, the fastest was Escapement at 15.09 ms. All 13 tabs came in under the 83.3 ms budget, Drop 0, Miss 0."
 
 ---
 
@@ -192,22 +200,22 @@ xychart-beta horizontal
 ![New Tab Recipe](assets/tab-extensibility-recipe.svg)
 
 **[Presenter]**
-> "Our third-most-important QA is Modifiability, and our scenario is: **a new graph, filter, or measurement touches ≤1 existing module.**
+> "Our third-most-important QA is Modifiability. The scenario: a new graph, filter, or measurement touches at most one existing module.
 >
-> The reason we defined it this way is simple: we had to implement many features in a short time. To deliver all 13 displays within our team size and schedule, adding one display had to leave the rest of the code untouched as much as possible.
+> The reason we defined it that way is straightforward — we had a lot of features to build in a short time. If every new display required touching a lot of existing code, shipping all 13 would have been impossible.
 >
-> Two structural decisions enabled this. First, **Core zero dependency**. As visible in Figure 3, Core has no dependency on UI or OS. This eliminated the performance problem in the original codebase where the GUI layer was handling audio signal processing, and completely isolated the analysis engine from UI changes. Second, **single AnalysisFrame fan-out**. Because every display consumes the same AnalysisFrame, adding a new display never requires modifying the analysis logic.
+> Two structural decisions made this work. The first is **Core zero dependency**. Core has no dependency on UI or OS whatsoever. This solved a performance problem in the original codebase where the GUI layer was handling audio signal processing directly, and it completely isolates the analysis engine from any UI change. The second is the **single AnalysisFrame fan-out**. Since every display consumes the same AnalysisFrame, adding a new display never requires modifying the analysis logic.
 >
-> When new measurements, filters, graphs, or displays are needed, the structure in Figure 4 requires touching exactly four places: one property on AnalysisFrame, one assignment in AnalysisWorker, one new renderer file in the App.Rendering folder, and one registration line in InfoTabCatalog. The routing infrastructure picks it up automatically — the existing Detection, Metrics, and Imaging modules are not touched at all. All 13 tabs were built exactly this way.
+> In practice, adding a new graph touches exactly four places: one property on AnalysisFrame, one assignment in AnalysisWorker, one new renderer file in the App.Rendering folder, and one registration line in InfoTabCatalog. The routing infrastructure picks it up automatically — Detection, Metrics, and Imaging don't get touched at all. Every one of the 13 tabs was built exactly this way.
 >
-> This structure also accommodates future requirements. Supporting a new OS means adding one Platform assembly — Core and App are untouched. Adding a new input source means adding one IAudioInputWorker implementation. CI monitors Core's zero-dependency rule on every commit, so any violation fails the build automatically."
+> Future requirements work the same way. Supporting a new OS just means adding one Platform assembly — Core and App stay untouched. A new input source means one IAudioInputWorker implementation. And CI checks Core's zero-dependency rule on every single commit, so if that boundary ever breaks, the build fails."
 
 ---
 
 ## Slide 4. AI Feature (2:00)
 > ▣ RUBRIC: **Area 2 (25 pts)** — AI Feature · **Area 7 (15 pts)** — Use of AI in Building the Software
 
-**[Note]** Figure 0 (overall architecture with AI components highlighted). Show TinyML path and LLM diagnosis path as distinct components.
+**[Note]** Figure 0 (overall architecture with AI components highlighted).
 
 **[Slide Visual — Figure 0: Overall Architecture — AI Component Locations]**
 
@@ -216,9 +224,9 @@ xychart-beta horizontal
 **[Presenter]**
 > "Our TimeGrapher has two AI features.
 >
-> The first is the **signal quality classifier**. It sits inside the Analysis path in Figure 0. It takes eight signal features — SNR, peak margin, noise floor, interval jitter, missed beat rate, and others — and classifies the current signal as one of four states: Good, Noisy, WeakSignal, or Unstable. The ONNX model runs on-device on the Raspberry Pi 5. This classifier is **advisory only** — it is architecturally constrained from creating beat events or altering timing, so even a wrong classification cannot affect measurement values.
+> The first is the **signal quality classifier**. It sits inside the Analysis path in Figure 0. It takes eight signal features — SNR, peak margin, noise floor, interval jitter, and others — and classifies the current signal as one of four states: Good, Noisy, WeakSignal, or Unstable. The ONNX model runs on-device on the Raspberry Pi 5. The important thing here is that this classifier is advisory only. It's architecturally blocked from creating beat events or changing timing in any way, so even if the model gets it wrong, it cannot touch the measurement values.
 >
-> The second is the **LLM-based watch diagnosis feature**. When the user requests a diagnosis from the UI, the UI calls an API server we built on AWS. The API server calls the external Gemini service, which analyzes the measurement data and returns a diagnosis of the watch condition. The result is displayed back in the UI. By using an external LLM rather than an on-device model, we can deliver complex watch-domain knowledge without training a dedicated model."
+> The second is the **LLM-based watch diagnosis feature**. When the user requests a diagnosis from the UI, the UI calls an API server we built on AWS. That API server calls the external Gemini service, which analyzes the measurement data and sends back a diagnosis of the watch condition. Rather than running complex domain knowledge on-device, we used an external LLM — which lets us deliver rich diagnostic information without training a dedicated model."
 
 ---
 
@@ -226,21 +234,15 @@ xychart-beta horizontal
 > ▣ RUBRIC: **Area 7 — Use of AI in Building the Software (15 pts)** — Description 5 pts / Thoughtful use 5 pts
 
 **[Presenter]**
-> "Finally, let me share what we learned from this project. Throughout the project, we actively practiced **Agentic Engineering** using generative AI.
+> "Finally, let me share what we learned from this project. We actively practiced **Agentic Engineering** using generative AI throughout development.
 >
-> We used two mechanisms to keep AI aligned with our team process rather than using individual improvised prompting.
+> Rather than just asking AI to write code on the fly, we built two mechanisms to keep AI aligned with how our team works.
 >
-> **AGENTS.md** defines our project rules, commit format, and architectural principles. Every AI session starts from this context — AI follows our conventions rather than its own defaults.
-> **DocRules.md**, derived from course materials, is our document quality standard. AI drafts documents; we review them against this standard; the review feedback goes back to AI for refinement.
+> **AGENTS.md** defines our project rules, commit format, and architectural principles. Every AI session starts from this context, so AI naturally follows our conventions instead of making things up. **DocRules.md**, taken from course materials, is our document quality standard. AI drafts a document, we review it against this standard, and we feed the review back to AI to improve it — a loop.
 >
-> This structure ensured that humans made all final decisions and AI remained part of our defined process — not a wildcard.
+> Thanks to this structure, humans always made the final calls, and AI operated as one part of our defined process — not a wild card.
 >
-> We applied AI across five areas:
-> **① Base code conversion** — Qt/C++ DSP logic, event detection, and audio buffers ported to C# idioms (Span\<T\>, Channel, IDisposable). Correctness confirmed by Verify fixtures and test pass counts.
-> **② Code implementation** — renderers, test fixtures, buffer pool, and other repetitive work drafted by AI and reviewed by us. Described the UI thread freeze to Claude, received the Producer-Consumer + Latest-Wins scheduler suggestion, validated it against the book's QA analysis, then implemented it.
-> **③ CI/CD pipeline** design and automation — Core zero-dependency boundary tests and cross-platform release structure proposed and applied.
-> **④ 933 test generation** — edge-case inputs near detection thresholds, ViewModelPurityTests reflection-based design.
-> **⑤ Document translation** — architecture documents and presentation scripts AI-drafted in both Korean and English, reviewed and corrected against DocRules.md."
+> We applied AI across five areas. First, **base code conversion** — porting Qt/C++ to C# idioms, with correctness confirmed by Verify and tests. Second, **code implementation** — repetitive work like renderers, test fixtures, and buffer pool was AI-drafted and human-reviewed. Third, **CI/CD pipeline** design and automation. Fourth, **933 test generation**. Fifth, **document translation** — architecture documents and presentation scripts AI-drafted in both Korean and English, then reviewed and corrected against DocRules.md."
 
 ---
 
@@ -248,20 +250,20 @@ xychart-beta horizontal
 > ▣ RUBRIC: **Area 7 (15 pts)** — Strengths, limits & risks 5 pts
 
 **[Presenter]**
-> "Here is what we learned from this process.
+> "Here's what we took away from the experience.
 >
-> **Strength**: AI let a small team port a large real-time app, add an on-device classifier, and automate the build/test/release workflow. The controlled process via AGENTS.md and DocRules.md — not individual improvised prompting — produced consistent results aligned with our team conventions.
+> The biggest **strength** was productivity. AI let a small team port a large real-time app, add an on-device classifier, and automate the build/test/release workflow — all at once. Because we ran it through AGENTS.md and DocRules.md, it was a consistent team process, not individual improvised prompting.
 >
-> **Limits**: AI output required careful review. It does not fully understand project context and can make plausible-but-wrong suggestions — functionality must always be tested. It can make mistakes with local environment and branch state, and deep design intent still needs humans to fill in.
+> But there were clear **limits** too. Every output needed careful review. AI doesn't fully understand project context and can make suggestions that sound right but aren't — you always have to test. It slips up on local environment and branch state, and deep design intent still needs a human to fill in.
 >
-> **We treated AI as a fast collaborator that must be checked — not as an authority.**"
+> Our takeaway: **we treated AI as a fast collaborator that needs to be checked — not as an authority.**"
 
 ---
 
 ## Conclusion (0:30)
 
 **[Presenter]**
-> "In short: to satisfy both Accuracy and Performance simultaneously, we designed a thread-separated, pipe-and-filter architecture. Our Core zero-dependency structure enabled 13 displays to be built efficiently under Modifiability constraints. We integrated two AI features — a TinyML signal quality classifier and an LLM-based diagnosis via AWS and Gemini — and Agentic Engineering let a small team complete a large real-time project. Thank you — we are happy to take questions."
+> "To wrap up: we designed a thread-separated, pipe-and-filter architecture to satisfy both Accuracy and Performance at the same time. A Core zero-dependency structure let us build all 13 displays efficiently under Modifiability constraints. We integrated two AI features — a TinyML signal quality classifier and an LLM-based diagnosis via AWS and Gemini. And Agentic Engineering let a small team deliver a large real-time project. Thank you — we're happy to take questions."
 
 ---
 
