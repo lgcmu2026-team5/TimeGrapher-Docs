@@ -185,39 +185,39 @@ xychart-beta horizontal
 ```
 - Even the slowest tab (Filter Scope, 48.70 ms) sits at ~58 % of the 83.3 ms budget — all 14 tabs keep headroom.
 
-The same tab benchmark is decomposed below using **worst** values for capture→process and process→display (RPi5, 43200@192k Sim, 2026-06-30). Segment worst values are independent maxima and are not additive; `E2E worst` is measured directly from `end_to_end_latency_ms`.
+The same tab benchmark is decomposed below using the **same row where E2E reaches its maximum** (RPi5, 43200@192k Sim, 2026-06-30). Therefore `capture→process at E2E max + process→display at E2E max = E2E worst` apart from rounding.
 
 ```mermaid
 %%{init: {"themeVariables": {"xyChart": {"plotColorPalette": "#A50034, #999999"}}}}%%
 xychart-beta horizontal
-    title "RPi5 per-tab segment worst (red = capture→process, gray = process→display)"
+    title "RPi5 segments at each tab's E2E max (red = capture→process, gray = process→display)"
     x-axis ["Filter Scope", "Beat Noise", "Waveforms", "Positions", "Rate/Scope", "Long-Term", "Sweep", "Beat Error", "Vario", "Escapement", "Trace", "Sound Print", "Spectrogram", "Health"]
-    y-axis "Latency (ms, worst)" 0 --> 50
-    bar [42.79, 43.29, 42.95, 37.67, 41.38, 41.27, 41.34, 41.07, 41.37, 41.75, 40.69, 38.56, 37.83, 37.46]
-    bar [25.42, 27.64, 22.91, 35.49, 26.55, 22.09, 34.90, 25.22, 31.47, 23.69, 23.77, 42.22, 36.05, 24.57]
+    y-axis "Latency (ms, at E2E max)" 0 --> 50
+    bar [42.79, 43.29, 42.95, 19.33, 41.38, 41.27, 41.34, 41.07, 41.37, 41.75, 40.69, 38.56, 37.83, 37.46]
+    bar [5.91, 4.60, 4.62, 28.18, 5.79, 5.78, 5.27, 4.58, 3.62, 3.16, 3.88, 5.30, 5.80, 4.37]
 ```
 - All tabs recorded drop 0 · miss 0.
 
 **Measurement data (2026-06-30, RPi5, 43,200 BPH @ 192 kHz, Simulation):**
 
-| Tab | capture→process worst (ms) | process→display worst (ms) | E2E worst (ms) | Budget usage | Frames |
+| Tab | capture→process at E2E max (ms) | process→display at E2E max (ms) | E2E worst (ms) | Budget usage | Frames |
 | :--- | ---: | ---: | ---: | ---: | ---: |
-| Filter Scope | 42.79 | 25.42 | 48.70 | 58.4% | 1250 |
-| Beat Noise | 43.29 | 27.64 | 47.90 | 57.5% | 1297 |
-| Waveforms | 42.95 | 22.91 | 47.57 | 57.1% | 1666 |
-| Positions | 37.67 | 35.49 | 47.51 | 57.0% | 987 |
-| Rate/Scope | 41.38 | 26.55 | 47.17 | 56.6% | 987 |
-| Long-Term | 41.27 | 22.09 | 47.06 | 56.5% | 1295 |
-| Sweep | 41.34 | 34.90 | 46.60 | 55.9% | 1301 |
-| Beat Error | 41.07 | 25.22 | 45.65 | 54.8% | 1038 |
-| Vario | 41.37 | 31.47 | 44.99 | 54.0% | 1450 |
-| Escapement | 41.75 | 23.69 | 44.91 | 53.9% | 1441 |
-| Trace | 40.69 | 23.77 | 44.57 | 53.5% | 1115 |
-| Sound Print | 38.56 | 42.22 | 43.85 | 52.6% | 553 |
-| Spectrogram | 37.83 | 36.05 | 43.63 | 52.4% | 410 |
-| Health | 37.46 | 24.57 | 41.83 | 50.2% | 1571 |
+| Filter Scope | 42.79 | 5.91 | 48.70 | 58.4% | 1250 |
+| Beat Noise | 43.29 | 4.60 | 47.90 | 57.5% | 1297 |
+| Waveforms | 42.95 | 4.62 | 47.57 | 57.1% | 1666 |
+| Positions | 19.33 | 28.18 | 47.51 | 57.0% | 987 |
+| Rate/Scope | 41.38 | 5.79 | 47.17 | 56.6% | 987 |
+| Long-Term | 41.27 | 5.78 | 47.06 | 56.5% | 1295 |
+| Sweep | 41.34 | 5.27 | 46.60 | 55.9% | 1301 |
+| Beat Error | 41.07 | 4.58 | 45.65 | 54.8% | 1038 |
+| Vario | 41.37 | 3.62 | 44.99 | 54.0% | 1450 |
+| Escapement | 41.75 | 3.16 | 44.91 | 53.9% | 1441 |
+| Trace | 40.69 | 3.88 | 44.57 | 53.5% | 1115 |
+| Sound Print | 38.56 | 5.30 | 43.85 | 52.6% | 553 |
+| Spectrogram | 37.83 | 5.80 | 43.63 | 52.4% | 410 |
+| Health | 37.46 | 4.37 | 41.83 | 50.2% | 1571 |
 
-> Values are rounded from the final cumulative row of each tab CSV. `capture→process worst` and `process→display worst` are independent segment maxima; they are not added. `E2E worst` is the direct maximum of `end_to_end_latency_ms`.
+> Values are rounded from the CSV row where `end_to_end_latency_ms` is maximal for each tab. Segment values come from that same row, not from independent segment-worst columns.
 
 ### Objective
 

@@ -189,39 +189,39 @@ xychart-beta horizontal
 ```
 - 가장 느린 Filter Scope도 48.70 ms로 83.3 ms 예산의 약 58% 수준 — 14개 탭 모두 예산 내 여유를 확보함.
 
-같은 탭들의 구간별 worst를 capture→process / process→display로 분리한 결과다(Raspberry Pi 5, 43200@192k Sim, 2026-06-30). 두 구간 worst는 서로 다른 프레임에서 발생할 수 있으므로 합산하지 않는다. `E2E worst`는 `end_to_end_latency_ms`에서 직접 관측한 최댓값이다.
+같은 탭들의 구간 값은 **E2E가 최댓값을 찍은 동일 행**에서 가져온다(Raspberry Pi 5, 43200@192k Sim, 2026-06-30). 따라서 반올림 오차를 제외하면 `E2E max 시점의 capture→process + E2E max 시점의 process→display = E2E worst`가 된다.
 
 ```mermaid
 %%{init: {"themeVariables": {"xyChart": {"plotColorPalette": "#A50034, #999999"}}}}%%
 xychart-beta horizontal
-    title "RPi5 탭별 구간 worst (빨강 = capture→process, 회색 = process→display)"
+    title "RPi5 탭별 E2E max 시점 구간값 (빨강 = capture→process, 회색 = process→display)"
     x-axis ["Filter Scope", "Beat Noise", "Waveforms", "Positions", "Rate/Scope", "Long-Term", "Sweep", "Beat Error", "Vario", "Escapement", "Trace", "Sound Print", "Spectrogram", "Health"]
-    y-axis "지연 (ms, worst)" 0 --> 50
-    bar [42.79, 43.29, 42.95, 37.67, 41.38, 41.27, 41.34, 41.07, 41.37, 41.75, 40.69, 38.56, 37.83, 37.46]
-    bar [25.42, 27.64, 22.91, 35.49, 26.55, 22.09, 34.90, 25.22, 31.47, 23.69, 23.77, 42.22, 36.05, 24.57]
+    y-axis "지연 (ms, E2E max 시점)" 0 --> 50
+    bar [42.79, 43.29, 42.95, 19.33, 41.38, 41.27, 41.34, 41.07, 41.37, 41.75, 40.69, 38.56, 37.83, 37.46]
+    bar [5.91, 4.60, 4.62, 28.18, 5.79, 5.78, 5.27, 4.58, 3.62, 3.16, 3.88, 5.30, 5.80, 4.37]
 ```
 - 전 탭 drop 0 · miss 0.
 
 **측정 데이터 (2026-06-30, Raspberry Pi 5, 43,200 BPH @ 192 kHz, Simulation):**
 
-| 탭 | capture→process worst (ms) | process→display worst (ms) | E2E worst (ms) | 예산 사용률 | 프레임 |
+| 탭 | E2E max 시점 capture→process (ms) | E2E max 시점 process→display (ms) | E2E worst (ms) | 예산 사용률 | 프레임 |
 | :--- | ---: | ---: | ---: | ---: | ---: |
-| Filter Scope | 42.79 | 25.42 | 48.70 | 58.4% | 1250 |
-| Beat Noise | 43.29 | 27.64 | 47.90 | 57.5% | 1297 |
-| Waveforms | 42.95 | 22.91 | 47.57 | 57.1% | 1666 |
-| Positions | 37.67 | 35.49 | 47.51 | 57.0% | 987 |
-| Rate/Scope | 41.38 | 26.55 | 47.17 | 56.6% | 987 |
-| Long-Term | 41.27 | 22.09 | 47.06 | 56.5% | 1295 |
-| Sweep | 41.34 | 34.90 | 46.60 | 55.9% | 1301 |
-| Beat Error | 41.07 | 25.22 | 45.65 | 54.8% | 1038 |
-| Vario | 41.37 | 31.47 | 44.99 | 54.0% | 1450 |
-| Escapement | 41.75 | 23.69 | 44.91 | 53.9% | 1441 |
-| Trace | 40.69 | 23.77 | 44.57 | 53.5% | 1115 |
-| Sound Print | 38.56 | 42.22 | 43.85 | 52.6% | 553 |
-| Spectrogram | 37.83 | 36.05 | 43.63 | 52.4% | 410 |
-| Health | 37.46 | 24.57 | 41.83 | 50.2% | 1571 |
+| Filter Scope | 42.79 | 5.91 | 48.70 | 58.4% | 1250 |
+| Beat Noise | 43.29 | 4.60 | 47.90 | 57.5% | 1297 |
+| Waveforms | 42.95 | 4.62 | 47.57 | 57.1% | 1666 |
+| Positions | 19.33 | 28.18 | 47.51 | 57.0% | 987 |
+| Rate/Scope | 41.38 | 5.79 | 47.17 | 56.6% | 987 |
+| Long-Term | 41.27 | 5.78 | 47.06 | 56.5% | 1295 |
+| Sweep | 41.34 | 5.27 | 46.60 | 55.9% | 1301 |
+| Beat Error | 41.07 | 4.58 | 45.65 | 54.8% | 1038 |
+| Vario | 41.37 | 3.62 | 44.99 | 54.0% | 1450 |
+| Escapement | 41.75 | 3.16 | 44.91 | 53.9% | 1441 |
+| Trace | 40.69 | 3.88 | 44.57 | 53.5% | 1115 |
+| Sound Print | 38.56 | 5.30 | 43.85 | 52.6% | 553 |
+| Spectrogram | 37.83 | 5.80 | 43.63 | 52.4% | 410 |
+| Health | 37.46 | 4.37 | 41.83 | 50.2% | 1571 |
 
-> 값은 각 탭 CSV 마지막 누적 행의 worst 컬럼을 2자리로 반올림한 것이다. `capture→process worst`와 `process→display worst`는 독립 구간 최댓값이므로 합산하지 않으며, `E2E worst`는 `end_to_end_latency_ms`의 직접 최댓값이다.
+> 값은 각 탭에서 `end_to_end_latency_ms`가 최댓값인 CSV 행을 2자리로 반올림한 것이다. 구간 값도 독립 segment-worst 컬럼이 아니라 그 동일 행의 값이다.
 
 ### 목적
 
