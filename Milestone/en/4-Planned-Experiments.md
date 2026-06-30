@@ -118,8 +118,6 @@ xychart-beta horizontal
     line [100, 100, 100, 100, 100, 100, 100]
 ```
 
-- **Remaining limit**: Because the implementation and measurement conditions can change, this should be measured continuously using the same criteria.
-
 ### Objective
 
 Confirm whether the input → analysis → display pipeline meets real-time requirements on the RPi5 Live environment.
@@ -129,7 +127,7 @@ Confirm whether the input → analysis → display pipeline meets real-time requ
 
 ### Status
 
-Complete (continuous measurement planned)
+Complete
 
 ### Deliverables
 
