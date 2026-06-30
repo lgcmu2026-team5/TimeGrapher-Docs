@@ -62,7 +62,7 @@
         <mxCell id="legend-box" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#333333;strokeWidth=1.2;fontFamily=Helvetica;fontSize=16;align=left;verticalAlign=top;spacing=8;fontColor=#111111;" value="" vertex="1">
           <mxGeometry height="260" width="470" x="-66" y="550" as="geometry" />
         </mxCell>
-        <mxCell id="legend-title" parent="1" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontFamily=Helvetica;fontSize=16;fontColor=#111111;fontStyle=1;" value="Legend · Shape / Line Key" vertex="1">
+        <mxCell id="legend-title" parent="1" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontFamily=Helvetica;fontSize=16;fontColor=#111111;fontStyle=1;" value="Notation Key" vertex="1">
           <mxGeometry height="22" width="250" x="-51" y="561" as="geometry" />
         </mxCell>
         <mxCell id="legend-hardware-shape" parent="1" style="shape=cube;boundedLbl=1;backgroundOutline=1;darkOpacity=0.05;size=8;fillColor=#ffffff;strokeColor=#333333;strokeWidth=1.2;align=center;verticalAlign=middle;whiteSpace=wrap;html=1;fontFamily=Helvetica;fontSize=16;fontColor=#111111;" value="" vertex="1">
