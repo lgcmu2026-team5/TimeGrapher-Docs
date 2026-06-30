@@ -151,7 +151,7 @@ Milestone 1 이후 다음과 같은 주요 변경사항이 있었습니다:
 우리는 두 가지 모듈 뷰를 작성했습니다:
 
 <details>
-<summary><strong><a href="5-Architectural-View.md#1-1-timegrapher-mvvm-view--responsibility-separation">1. TIMEGRAPHER MVVM VIEW – Responsibility Separation</a></strong></summary>
+<summary><strong><a href="5-Architectural-View/5-3-MVVM-View.md">1. TIMEGRAPHER MVVM VIEW – Responsibility Separation</a></strong></summary>
 
 세 레이어 간의 단방향 «use» 의존성을 보여줍니다:
 - **View Layer** (Main Window, Graph Tabs Window, Graph Rendering) → `MainWindowViewModel` 사용
@@ -163,14 +163,14 @@ Milestone 1 이후 다음과 같은 주요 변경사항이 있었습니다:
 </details>
 
 <details>
-<summary><strong><a href="5-Architectural-View.md#1-2-timegrapher-module-uses-view--actual-dependencies--internal-decomposition">2-1. TIMEGRAPHER MODULE USES VIEW – Actual Dependencies & Internal Decomposition</a></strong></summary>
+<summary><strong><a href="5-Architectural-View/5-2-Module-Uses-View.md">2-1. TIMEGRAPHER MODULE USES VIEW – Actual Dependencies & Internal Decomposition</a></strong></summary>
 
 어떤 모듈이 어떤 모듈을 사용하도록 구조화되어 있는지를 보여줍니다. 전체 프로젝트 수준에서 App·Core·플랫폼 오디오 어댑터·Verify의 관계를 표현하며, 핵심은 Core가 중심에 있고 App·Verify·`WindowsAudio`·`LinuxAudio`가 Core를 사용한다는 점입니다. `WindowsAudio`·`LinuxAudio`(platform adapters)는 OS별 오디오 의존성이 Core 안으로 들어오지 않도록 경계를 만듭니다.
 
 </details>
 
 <details>
-<summary><strong><a href="5-Architectural-View.md#core-internal-module-uses">2-2. Core-Internal Module Uses</a></strong></summary>
+<summary><strong><a href="5-Architectural-View/5-2-Module-Uses-View.md#core-internal-module-uses">2-2. Core-Internal Module Uses</a></strong></summary>
 
 Core를 확대한 내부 뷰입니다. `Analysis`가 분석 흐름을 조정하며 `Detection`·`Metrics`·`Imaging`·`AudioIo` 도메인 모듈을 사용합니다. `Shared`는 Core 내부 모듈들이 공통으로 사용하는 타입과 계약(`AnalysisFrame`, 공유 오디오 버퍼, 분석 worker 입출력 계약, sync/signal 상태 타입 등)을 모아둔 영역으로, 다른 Core 모듈에 의존하지 않습니다.
 
@@ -183,7 +183,7 @@ Core를 확대한 내부 뷰입니다. `Analysis`가 분석 흐름을 조정하�
 런타임 뷰는 2개의 시퀀스 다이어그램과 1개의 상태 머신으로 제시됩니다:
 
 <details>
-<summary><strong><a href="5-Architectural-View.md#3-1-timegrapher-run-lifecycle-cc-view--measurement-analysis-loop">런타임 데이터 흐름</a></strong></summary>
+<summary><strong><a href="5-Architectural-View/5-4-Run-Lifecycle-Sequence-View.md">런타임 데이터 흐름</a></strong></summary>
 
 `입력 소스(Live/Playback/Sim)` → `공유 오디오 버퍼` → `분석 워커(Detector → Metrics → SoundImage → Recorder)` → `AnalysisFrame` → `UI 스레드`
 
@@ -192,21 +192,21 @@ Core를 확대한 내부 뷰입니다. `Analysis`가 분석 흐름을 조정하�
 </details>
 
 <details>
-<summary><strong><a href="5-Architectural-View.md#3-1-timegrapher-run-lifecycle-cc-view--measurement-analysis-loop">Level 1 시퀀스 다이어그램</a></strong></summary>
+<summary><strong><a href="5-Architectural-View/5-4-Run-Lifecycle-Sequence-View.md">Level 1 시퀀스 다이어그램</a></strong></summary>
 
 User → View → ViewModel → RunCommandService → Model(RunSessionController + workers)로 이어지는 전체 실행 생명주기를 다룹니다.
 
 </details>
 
 <details>
-<summary><strong><a href="5-Architectural-View.md#3-1-timegrapher-run-lifecycle-cc-view--measurement-analysis-loop">Level 2 시퀀스 다이어그램</a></strong></summary>
+<summary><strong><a href="5-Architectural-View/5-4-Run-Lifecycle-Sequence-View.md">Level 2 시퀀스 다이어그램</a></strong></summary>
 
 `MasterAudioBuffer` → `AnalysisWorker` → `Core 파이프라인(Detection / Metrics / Projectors)`으로 이어지는 분석 루프를 전개하며, 하나의 비트 주기 안에 완료되어야 하는 반복 주기를 보여줍니다.
 
 </details>
 
 <details>
-<summary><strong><a href="5-Architectural-View.md#3-2-timegrapher-run-lifecycle-behavior-view--control-state-transitions">상태 머신</a></strong></summary>
+<summary><strong><a href="5-Architectural-View/5-5-Run-Lifecycle-State-Machine-View.md">상태 머신</a></strong></summary>
 
 Stopped → Starting → Running ⇄ Paused → Stopping → StopFailed 간의 전이를 State Pattern으로 관리합니다.
 
@@ -218,7 +218,7 @@ Stopped → Starting → Running ⇄ Paused → Stopping → StopFailed 간의 �
 
 ### 배포 관점
 
-[배포 뷰](5-Architectural-View.md#4-timegrapher-system-deployment-view--hardware--external-signal-path)는 3단계를 보여줍니다:
+[배포 뷰](5-Architectural-View/5-6-Deployment-View.md)는 3단계를 보여줍니다:
 
 <details>
 <summary><strong>1. 개발 & 공유</strong></summary>

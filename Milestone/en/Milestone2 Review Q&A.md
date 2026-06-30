@@ -150,7 +150,7 @@ All experiments were targeted at the top-rated risks (High probability × High i
 We created two module views:
 
 <details>
-<summary><strong><a href="5-Architectural-View.md#1-1-timegrapher-mvvm-view--responsibility-separation">1. TIMEGRAPHER MVVM VIEW – Responsibility Separation</a></strong></summary>
+<summary><strong><a href="5-Architectural-View/5-3-MVVM-View.md">1. TIMEGRAPHER MVVM VIEW – Responsibility Separation</a></strong></summary>
 
 Shows one-way «use» dependencies across three layers:
 - **View Layer** (Main Window, Graph Tabs Window, Graph Rendering) → uses `MainWindowViewModel`
@@ -162,14 +162,14 @@ Key constraint: ViewModel holds no Avalonia/View types (enforced by `ViewModelPu
 </details>
 
 <details>
-<summary><strong><a href="5-Architectural-View.md#1-2-timegrapher-module-uses-view--actual-dependencies--internal-decomposition">2-1. TIMEGRAPHER MODULE USES VIEW – Actual Dependencies & Internal Decomposition</a></strong></summary>
+<summary><strong><a href="5-Architectural-View/5-2-Module-Uses-View.md">2-1. TIMEGRAPHER MODULE USES VIEW – Actual Dependencies & Internal Decomposition</a></strong></summary>
 
 Shows how modules are structured to use each other. At the project level it maps the relationships among App, Core, platform adapters, and Verify: Core sits at the center, with App, Verify, `WindowsAudio`, and `LinuxAudio` all depending on it. `WindowsAudio` and `LinuxAudio` (platform adapters) form a boundary that keeps OS-specific audio dependencies out of Core.
 
 </details>
 
 <details>
-<summary><strong><a href="5-Architectural-View.md#core-internal-module-uses">2-2. Core-Internal Module Uses</a></strong></summary>
+<summary><strong><a href="5-Architectural-View/5-2-Module-Uses-View.md#core-internal-module-uses">2-2. Core-Internal Module Uses</a></strong></summary>
 
 A zoomed-in view of Core internals. `Analysis` orchestrates the analysis flow and uses the domain modules `Detection`, `Metrics`, `Imaging`, and `AudioIo`. `Shared` collects the common types and contracts used across Core-internal modules — `AnalysisFrame`, the shared audio buffer, analysis worker I/O contracts, and sync/signal state types — and depends on no other Core module.
 
@@ -182,7 +182,7 @@ A zoomed-in view of Core internals. `Analysis` orchestrates the analysis flow an
 The runtime view is presented through two sequence diagrams and one state machine:
 
 <details>
-<summary><strong><a href="5-Architectural-View.md#3-1-timegrapher-run-lifecycle-cc-view--measurement-analysis-loop">Runtime Data Flow</a></strong></summary>
+<summary><strong><a href="5-Architectural-View/5-4-Run-Lifecycle-Sequence-View.md">Runtime Data Flow</a></strong></summary>
 
 `Input Sources (Live/Playback/Sim)` → `Shared Audio Buffer` → `Analysis Worker (Detector → Metrics → SoundImage → Recorder)` → `AnalysisFrame` → `UI Thread`
 
@@ -191,21 +191,21 @@ This is a one-way Pipe-and-Filter flow. The analysis worker runs on a dedicated 
 </details>
 
 <details>
-<summary><strong><a href="5-Architectural-View.md#3-1-timegrapher-run-lifecycle-cc-view--measurement-analysis-loop">Level 1 Sequence Diagram</a></strong></summary>
+<summary><strong><a href="5-Architectural-View/5-4-Run-Lifecycle-Sequence-View.md">Level 1 Sequence Diagram</a></strong></summary>
 
 Covers the full run lifecycle — User → View → ViewModel → RunCommandService → Model (RunSessionController + workers).
 
 </details>
 
 <details>
-<summary><strong><a href="5-Architectural-View.md#3-1-timegrapher-run-lifecycle-cc-view--measurement-analysis-loop">Level 2 Sequence Diagram</a></strong></summary>
+<summary><strong><a href="5-Architectural-View/5-4-Run-Lifecycle-Sequence-View.md">Level 2 Sequence Diagram</a></strong></summary>
 
 Expands the analysis loop — `MasterAudioBuffer` → `AnalysisWorker` → `Core pipeline (Detection / Metrics / Projectors)` — showing the recurring cycle that must complete within one beat period.
 
 </details>
 
 <details>
-<summary><strong><a href="5-Architectural-View.md#3-2-timegrapher-run-lifecycle-behavior-view--control-state-transitions">State Machine</a></strong></summary>
+<summary><strong><a href="5-Architectural-View/5-5-Run-Lifecycle-State-Machine-View.md">State Machine</a></strong></summary>
 
 Defines transitions among Stopped → Starting → Running ⇄ Paused → Stopping → StopFailed, managed by `RunCommandService` using the State Pattern.
 
@@ -217,7 +217,7 @@ Key C&C connectors: Producer–Consumer shared buffer (input↔analysis), Observ
 
 ### Deployment View
 
-The [deployment view](5-Architectural-View.md#4-timegrapher-system-deployment-view--hardware--external-signal-path) shows three stages:
+The [deployment view](5-Architectural-View/5-6-Deployment-View.md) shows three stages:
 
 <details>
 <summary><strong>1. Develop & Share</strong></summary>
