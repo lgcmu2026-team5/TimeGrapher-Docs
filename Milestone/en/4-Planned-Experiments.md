@@ -183,17 +183,16 @@ xychart-beta horizontal
 ```
 - In the 2026-06-21 run, the slowest tab (Filter Scope, 36.46 ms) sat at ~44 % of the 83.3 ms budget.
 
-**Per-tab E2E max split (RPi5, 43200@192k Sim, 2026-06-30; bars = capture→process / process→display, blue line = E2E total, gray line = 83.3 ms budget)**
+**Per-tab E2E max split (RPi5, 43200@192k Sim, 2026-06-30; bars = capture→process / process→display, gray line = 83.3 ms budget)**
 
 ```mermaid
-%%{init: {"themeVariables": {"xyChart": {"plotColorPalette": "#A50034, #999999, #005EB8, #666666"}}}}%%
+%%{init: {"themeVariables": {"xyChart": {"plotColorPalette": "#A50034, #999999, #666666"}}}}%%
 xychart-beta horizontal
-    title "RPi5 per-tab E2E max — 2026-06-30 (bars = segments, blue line = E2E total, gray line = budget)"
+    title "RPi5 per-tab E2E max — 2026-06-30 (red = capture→process, gray = process→display)"
     x-axis ["Filter Scope", "Beat Noise", "Waveforms", "Positions", "Rate/Scope", "Long-Term", "Sweep", "Beat Error", "Vario", "Escapement", "Trace", "Sound Print", "Spectrogram", "Health"]
     y-axis "Latency (ms)" 0 --> 90
     bar [42.79, 43.29, 42.95, 19.33, 41.38, 41.27, 41.34, 41.07, 41.37, 41.75, 40.69, 38.56, 37.83, 37.46]
     bar [5.91, 4.60, 4.62, 28.18, 5.79, 5.78, 5.27, 4.58, 3.62, 3.16, 3.88, 5.30, 5.80, 4.37]
-    line [48.70, 47.90, 47.57, 47.51, 47.17, 47.06, 46.60, 45.65, 44.99, 44.91, 44.57, 43.85, 43.63, 41.83]
     line [83.3, 83.3, 83.3, 83.3, 83.3, 83.3, 83.3, 83.3, 83.3, 83.3, 83.3, 83.3, 83.3, 83.3]
 ```
 - Even the slowest tab (Filter Scope, 48.70 ms) sits at ~58 % of the 83.3 ms budget — all 14 tabs keep headroom.
