@@ -193,10 +193,10 @@ xychart-beta horizontal
 %%{init: {"themeVariables": {"xyChart": {"plotColorPalette": "#A50034, #999999, #666666"}}}}%%
 xychart-beta horizontal
     title "RPi5 탭별 E2E max — 2026-06-30 (빨강 = capture→process, 회색 = process→display)"
-    x-axis ["Filter Scope", "Beat Noise", "Waveforms", "Positions", "Rate/Scope", "Long-Term", "Sweep", "Beat Error", "Vario", "Escapement", "Trace", "Sound Print", "Spectrogram", "Health"]
+    x-axis ["Filter Scope", "Beat Noise", "Waveforms", "Rate/Scope", "Long-Term", "Sweep", "Beat Error", "Vario", "Escapement", "Trace", "Sound Print", "Spectrogram", "Health", "Positions"]
     y-axis "지연 (ms)" 0 --> 90
-    bar [42.79, 43.29, 42.95, 19.33, 41.38, 41.27, 41.34, 41.07, 41.37, 41.75, 40.69, 38.56, 37.83, 37.46]
-    bar [5.91, 4.60, 4.62, 28.18, 5.79, 5.78, 5.27, 4.58, 3.62, 3.16, 3.88, 5.30, 5.80, 4.37]
+    bar [42.79, 43.29, 42.95, 41.38, 41.27, 41.34, 41.07, 41.37, 41.75, 40.69, 38.56, 37.83, 37.46, 37.67]
+    bar [5.91, 4.60, 4.62, 5.79, 5.78, 5.27, 4.58, 3.62, 3.16, 3.88, 5.30, 5.80, 4.37, 4.03]
     line [83.3, 83.3, 83.3, 83.3, 83.3, 83.3, 83.3, 83.3, 83.3, 83.3, 83.3, 83.3, 83.3, 83.3]
 ```
 - 가장 느린 Filter Scope도 48.70 ms로 83.3 ms 예산의 약 58% 수준 — 14개 탭 모두 예산 내 여유를 확보함.
@@ -209,7 +209,6 @@ xychart-beta horizontal
 | Filter Scope | 42.79 | 5.91 | 48.70 | 58.4% | 1250 |
 | Beat Noise | 43.29 | 4.60 | 47.90 | 57.5% | 1297 |
 | Waveforms | 42.95 | 4.62 | 47.57 | 57.1% | 1666 |
-| Positions | 19.33 | 28.18 | 47.51 | 57.0% | 987 |
 | Rate/Scope | 41.38 | 5.79 | 47.17 | 56.6% | 987 |
 | Long-Term | 41.27 | 5.78 | 47.06 | 56.5% | 1295 |
 | Sweep | 41.34 | 5.27 | 46.60 | 55.9% | 1301 |
@@ -220,8 +219,9 @@ xychart-beta horizontal
 | Sound Print | 38.56 | 5.30 | 43.85 | 52.6% | 553 |
 | Spectrogram | 37.83 | 5.80 | 43.63 | 52.4% | 410 |
 | Health | 37.46 | 4.37 | 41.83 | 50.2% | 1571 |
+| Positions | 37.67 | 4.03 | 41.70 | 50.0% | 987 |
 
-> 값은 각 탭에서 `end_to_end_latency_ms`가 최댓값인 CSV 행을 2자리로 반올림한 것이다. 구간 값도 그 동일 행의 값이다.
+> 값은 소수점 둘째 자리로 반올림한 것이다.
 
 ### 목적
 
